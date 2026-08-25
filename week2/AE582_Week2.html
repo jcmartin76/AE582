@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AE 582 — Space Environment</title>
+<!-- MathJax for rendering LaTeX equations -->
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+:root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:"Calibri","Segoe UI",system-ui,sans-serif;background:#111}
+.slide{position:absolute;inset:0;bottom:48px;display:none;padding:48px 64px 36px;overflow-y:auto;
+  background:linear-gradient(160deg,#0e2b25,#091a16);color:#e0ede6}
+.slide.active{display:flex;flex-direction:column}
+h1{font-family:"Cambria",Georgia,serif;color:#fff;font-size:min(44px,4.8vw);margin-bottom:16px;line-height:1.2; border-bottom:1px solid rgba(218,201,97,0.3); padding-bottom:8px;}
+h2{font-family:"Cambria",Georgia,serif;color:var(--gold);font-size:min(30px,3.2vw);margin:16px 0 10px}
+h3{font-family:"Cambria",Georgia,serif;color:#7be1aa;font-size:min(22px,2.5vw);margin:12px 0 6px}
+p,li{font-size:min(20px,2.1vw);line-height:1.7}
+ul{margin:8px 0 12px 30px}
+li{margin-bottom:6px}
+b{color:var(--gold)}
+.eq{font-family:"Cambria",Georgia,serif;font-style:italic;background:rgba(218,201,97,.08);
+  padding:10px 16px;border-radius:8px;display:inline-block;margin:10px 0;font-size:min(20px,2.1vw); border-left: 3px solid var(--gold);}
+.eq b{font-style:normal}
+.source{font-size:13px;color:rgba(255,255,255,.35);margin-top:auto;padding-top:12px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:10px; align-items: start;}
+@media(max-width:800px){.cols{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:min(16px,1.7vw);margin:10px 0; background:rgba(0,0,0,0.2); border-radius:8px; overflow:hidden;}
+th{background:var(--petrol);color:#fff;padding:10px 14px;text-align:left;font-size:min(16px,1.5vw)}
+td{padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+tr:nth-child(even){background:rgba(255,255,255,.03)}
+.navbar{position:fixed;bottom:0;left:0;right:0;height:48px;z-index:999;background:var(--petrol);
+  border-top:2px solid var(--gold);display:flex;align-items:center;padding:0 20px;gap:10px}
+.navbar .brand{color:var(--gold);font-size:12px;font-weight:700;letter-spacing:1.5px;margin-right:auto}
+.navbar .pg{color:#fff;font-size:14px;min-width:70px;text-align:center}
+.navbar button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);
+  color:#fff;padding:7px 18px;border-radius:5px;cursor:pointer;font-weight:700;font-size:15px}
+.navbar button:hover{background:rgba(255,255,255,.15)}
+.sim-row{display:grid;grid-template-columns:1fr 300px;gap:16px;flex:1;min-height:0;margin-top:10px}
+@media(max-width:800px){.sim-row{grid-template-columns:1fr;grid-template-rows:1fr auto}}
+.sim-cv{position:relative;background:#0a1f1a;border-radius:12px;overflow:hidden; display:flex; justify-content:center; align-items:center; border: 1px solid rgba(255,255,255,0.15);}
+.sim-cv canvas{position:absolute;top:0;left:0;width:100%;height:100%}
+.sim-panel{background:rgba(255,255,255,.95);border-radius:12px;padding:14px 16px;overflow-y:auto;color:var(--ink)}
+.sim-panel h4{font-family:"Cambria",Georgia,serif;color:var(--forest);font-size:16px;margin:0 0 8px; border-bottom: 1px solid #ccc; padding-bottom: 4px;}
+.sim-panel label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:3px}
+.sim-panel label .n{color:var(--green);font-weight:700;}
+.sim-panel input[type=range]{width:100%;accent-color:var(--green);margin-bottom:10px}
+.sim-panel .segs{display:flex;gap:4px;margin-bottom:10px}
+.sim-panel .segs button{flex:1;padding:6px 3px;border:1px solid var(--line);background:#f6faf8;
+  border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;color:var(--forest)}
+.sim-panel .segs button.on{background:var(--green);color:#fff;border-color:var(--green)}
+.sim-panel .acts{display:flex;gap:5px;margin-top:8px}
+.sim-panel .acts button{flex:1;padding:6px;border-radius:6px;border:none;font-weight:700;cursor:pointer;font-size:12px}
+.sim-panel .hint{font-size:13px;color:var(--ink);margin-top:8px;line-height:1.4; background:#f0f0f0; padding:10px; border-radius:6px;}
+img{max-width:100%; border-radius: 8px; object-fit: contain; max-height: 50vh; box-shadow: 0 4px 10px rgba(0,0,0,0.4);}
+.img-wrap{display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 10px;}
+
+/* Drift Interactive Table Styles */
+.drift-btn{display:block; width:100%; text-align:left; padding:12px 16px; margin-bottom:8px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); border-radius:6px; color:#fff; font-size:16px; cursor:pointer; transition: 0.2s;}
+.drift-btn:hover{background:rgba(218,201,97,0.2); border-color:var(--gold);}
+.drift-btn.active{background:var(--petrol); border-color:var(--gold); font-weight:bold; box-shadow: 0 0 8px rgba(218,201,97,0.4);}
+.drift-content{display:none; animation: fadeIn 0.3s ease;}
+.drift-content.active{display:block;}
+@keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+<div class="navbar">
+  <span class="brand">KFUPM · AE 582 · SATELLITE ENGINEERING</span>
+  <button onclick="nav(-1)">◀</button>
+  <span class="pg" id="pgn">1 / 1</span>
+  <button onclick="nav(1)">▶</button>
+</div>
+
+<script>
+"use strict";
+var SLIDES=[];
+function addSlide(html){SLIDES.push({html:html});}
+
+// 0 TITLE
+addSlide('<div style="flex:1;display:flex;flex-direction:column;justify-content:center; align-items:center; text-align:center;"><p style="color:var(--gold);font-size:16px;font-weight:700;letter-spacing:2px;margin-bottom:12px">KING FAHD UNIVERSITY OF PETROLEUM & MINERALS<br>Aerospace Engineering Department</p><h1 style="font-size:min(48px,5.5vw); border:none;">AE 582: Satellite Engineering</h1><h2>Week 2: The Space Environment & Hazards</h2><p style="margin-top: 20px; font-size: 18px; color: #bbb;">Sessions 2.1 and 2.2 · The environment a spacecraft flies through<br><b>Dr. Juan Carlos Martínez Oliveros</b></p></div>');
+
+// 1 OUTLINE
+addSlide('<h1>Course Schedule</h1><div class="cols"><div><h2>The Space Environment (Today)</h2><ul><li>The Sun and the Solar Wind</li><li>The Interplanetary Magnetic Field (IMF)</li><li>Earth\'s Neutral & Ionized Atmosphere</li><li>The Magnetosphere & Boundaries</li></ul></div><div><h2>Hazards of the Space Environment</h2><ul><li>Micro-Gravity & Vacuum</li><li>Neutral Atmosphere (Drag & ATOX)</li><li>Plasma & Radiation Environments</li><li>Micrometeoroids and Orbital Debris (MMOD)</li></ul></div></div>');
+
+// 2 SUN TEXT
+addSlide('<h1>The Sun and the Solar Wind</h1><div class="cols"><div><ul><li>The Sun\'s million-degree corona is too hot for solar gravity to hold — it expands supersonically into space as the <b>solar wind</b> (Parker, 1958).</li><li>A continuous flow of quasi-neutral plasma: mostly protons and electrons, with ~4% alpha particles.</li><li>Typical values at 1 AU: speed ~400 km/s (slow) to 700–800 km/s (fast); density ~5–10 cm⁻³; T ~10⁵ K.</li><li>It carries mass, momentum, energy — and the Sun\'s magnetic field — outward past the planets.</li></ul></div><div class="img-wrap"><img src="sun.jpg" alt="Sun Structure"></div></div>');
+
+// 3 PARKER SPIRAL SIM
+addSlide('SIM:PARKER');
+
+// 4 IMF
+addSlide('<h1>The Interplanetary Magnetic Field (IMF)</h1><ul><li>The solar wind is highly conducting, so it "freezes in" and drags the Sun\'s magnetic field out with it (the <b>IMF</b>).</li><li>Because the Sun rotates (~25 days) while the wind flows radially, the field winds into the <b>Parker spiral</b>.</li><li>At 1 AU it is weak (~5 nT) and lies roughly 45° to the Sun–Earth line.</li><li>Its north–south component (<b>$B_z$</b>) is decisive: a southward IMF couples strongly to the Earth\'s magnetosphere, causing storms.</li></ul><div class="eq"><b>$B_r \\propto \\frac{1}{r^2}$</b> &nbsp; | &nbsp; <b>$B_\\phi \\propto \\frac{1}{r} \\tan(\\psi) = \\frac{\\Omega_{\\odot} r}{V_{sw}}$</b></div>');
+
+// 5 ATMOSPHERE PROFILE
+addSlide('<h1>From the Earth\'s Surface to the Edge of Space</h1><div class="cols"><div class="img-wrap"><img src="image_b142ca.png" alt="Atmospheric Layers"></div><div><h3>Neutral Gas</h3><ul><li>Troposphere → Stratosphere → Mesosphere → Thermosphere.</li><li>Above 100 km, the mean free path for n-n collisions is >1000 km. Species decouple resulting in different altitude profiles.</li></ul><h3>Ionized Gas (Plasma Density)</h3><ul><li>D Region → E Region → F Region → Protonosphere.</li><li>Notice the dramatic day/night plasma density changes.</li></ul></div></div><p class="source">Source: Kelly, "The Earth\'s Ionosphere," 1989.</p>');
+
+// 6 IONOSPHERE TEXT
+addSlide('<h1>The Ionosphere — Layers and Why They Matter</h1><ul><li><b>Solar UV and X-rays</b> ionize the upper atmosphere (~60–1000 km), creating a partially-ionized plasma layered by altitude.</li><li><b>D layer (~60–90 km):</b> weak ionization, daytime only; absorbs HF radio.</li><li><b>E layer (~90–150 km):</b> moderate density; supports some HF propagation.</li><li><b>F layer (~150–500 km; splits into F1/F2 by day):</b> the densest layer — peak electron density and the main HF reflector.</li><li><b>Topside:</b> above the F peak the density falls off, merging into the plasmasphere.</li><li><b>Spacecraft relevance:</b> GPS delay and scintillation, auroral-region charging, and atmospheric-drag coupling for LEO.</li></ul>');
+
+// 7 IONOSPHERE SIM
+addSlide('SIM:IONO');
+
+// 8 SOLAR WIND MEETS EARTH
+addSlide('<h1>The Solar Wind Meets the Earth\'s Magnetic Field</h1><ul><li>The Earth\'s internal dynamo produces a roughly <b>dipolar magnetic field</b>.</li><li>The supersonic solar wind cannot cross it, carving out the <b>magnetosphere</b>.</li><li>A <b>bow shock</b> forms upstream (supersonic → subsonic); behind it lies the turbulent <b>magnetosheath</b>.</li><li>The <b>magnetopause</b> is where solar-wind dynamic pressure balances magnetic pressure (~10 $R_E$ dayside).</li><li>The field is compressed on the dayside and stretched into a long <b>magnetotail</b> on the nightside.</li></ul><div class="eq">$P_{dyn} = \\frac{1}{2}\\rho V^2 \\approx \\frac{B^2}{2\\mu_0} \\implies$ <b>$R_{mp} \\approx 10 R_E$</b></div>');
+
+// 9 MAGNETO SIM
+addSlide('SIM:MAGNETO');
+
+// 10 PLASMAS TABLE
+addSlide('<h1>Plasmas Within the Magnetosphere</h1><table><tr><th>Region</th><th>Density [cm⁻³]</th><th>Temp [eV]</th><th>B-Field [nT]</th><th>Character</th></tr><tr><td>Solar Wind</td><td>3–10</td><td>10 (~10⁶ K)</td><td>1–10</td><td>Supersonic</td></tr><tr><td>Magnetosheath</td><td>10–30</td><td>30</td><td>20–60</td><td>Turbulent, subsonic</td></tr><tr><td>Magnetosphere</td><td>0.1–1.0</td><td>> 10³</td><td>100–1000</td><td>Trapped, hot</td></tr><tr><td>Plasmasphere</td><td>300–3000</td><td>0.1–1.0</td><td>10⁴–6×10⁴</td><td>Cold, dense</td></tr></table><p class="source">Source: Jursa (ed.), "Handbook of Geophysics and the Space Environment," 1985.</p>');
+
+// 11 AURORA VISUAL
+addSlide('<h1>Aurora — Magnetized Fluid Dynamics</h1><div class="cols"><div><ul><li>Natural processes accelerate charged particles along the Earth\'s magnetic field to energies of 100 eV to 100 keV.</li><li>These energetic particles strike atoms and molecules (O, N) in the Earth\'s upper atmosphere (100–300 km), energizing them.</li><li><b>Emissions:</b><br>- Red (630 nm): Atomic O at >200 km.<br>- Green (557.7 nm): Atomic O at 100–200 km.<br>- Blue/violet: N₂ at ~100 km.</li></ul></div><div class="img-wrap"><img src="aurora.jpg" alt="Aurora Borealis"></div></div>');
+
+// 12 DRIFTS TEXT (PPTX Slide 12 - INTERACTIVE TABLE)
+addSlide(`<h1>Particle Drifts in the Magnetosphere</h1>
+<p style="margin-bottom:16px;">Above 200–300 km altitude, electrodynamics dominate the fluid dynamics. Select a condition to see the derivations and differences between protons and electrons.</p>
+<div class="cols">
+  <div>
+    <button class="drift-btn active" onclick="switchDrift('homo', this)">A) Homogeneous B-Field</button>
+    <button class="drift-btn" onclick="switchDrift('exb', this)">B) E × B Drift</button>
+    <button class="drift-btn" onclick="switchDrift('grav', this)">C) External Force (Gravity)</button>
+    <button class="drift-btn" onclick="switchDrift('grad', this)">D) Gradient Drift</button>
+  </div>
+  <div style="background:rgba(255,255,255,0.95); color:#12211B; padding:20px; border-radius:8px; border:1px solid var(--green);">
+    
+    <!-- A) Homogeneous -->
+    <div id="drift-homo" class="drift-content active">
+      <h3 style="color:var(--forest); border-bottom:1px solid #ccc; padding-bottom:8px;">A) Homogeneous B-Field</h3>
+      <div class="eq" style="background:#eef4f1; border-left:3px solid var(--green); color:#111;">
+        $m \\frac{d\\vec{v}}{dt} = q(\\vec{v} \\times \\vec{B})$
+      </div>
+      <p style="font-size:16px; margin-top:10px;"><b>Behavior:</b> No disturbing force. Particles execute pure circular gyromotion around the magnetic field lines.</p>
+      <ul style="font-size:15px; margin-top:10px;">
+        <li><b>Protons (+):</b> Orbit in a left-handed sense about B.</li>
+        <li><b>Electrons (-):</b> Orbit in a right-handed sense about B.</li>
+      </ul>
+    </div>
+
+    <!-- B) ExB Drift -->
+    <div id="drift-exb" class="drift-content">
+      <h3 style="color:var(--forest); border-bottom:1px solid #ccc; padding-bottom:8px;">B) E × B Drift</h3>
+      <div class="eq" style="background:#eef4f1; border-left:3px solid var(--green); color:#111;">
+        $\\vec{v}_E = \\frac{\\vec{E} \\times \\vec{B}}{B^2}$
+      </div>
+      <p style="font-size:16px; margin-top:10px;"><b>Derivation:</b> Set Lorentz force to zero: $q(\\vec{E} + \\vec{v} \\times \\vec{B}) = 0$. Solve for $\\vec{v}$.</p>
+      <p style="font-size:16px; margin-top:10px;"><b>Behavior:</b> The charge $q$ cancels out!</p>
+      <ul style="font-size:15px; margin-top:10px;">
+        <li><b>Protons and Electrons</b> drift in the <b>SAME</b> direction.</li>
+        <li>Does not create an electric current.</li>
+      </ul>
+    </div>
+
+    <!-- C) Gravity -->
+    <div id="drift-grav" class="drift-content">
+      <h3 style="color:var(--forest); border-bottom:1px solid #ccc; padding-bottom:8px;">C) External Force (Gravity)</h3>
+      <div class="eq" style="background:#eef4f1; border-left:3px solid var(--green); color:#111;">
+        $\\vec{v}_F = \\frac{\\vec{F}_{ext} \\times \\vec{B}}{qB^2}$
+      </div>
+      <p style="font-size:16px; margin-top:10px;"><b>Derivation:</b> Substitute $\\vec{F}_{ext}$ for $q\\vec{E}$ in the previous derivation.</p>
+      <p style="font-size:16px; margin-top:10px;"><b>Behavior:</b> The charge $q$ remains in the denominator.</p>
+      <ul style="font-size:15px; margin-top:10px;">
+        <li><b>Protons and Electrons</b> drift in <b>OPPOSITE</b> directions.</li>
+        <li>This opposing drift creates an electric current perpendicular to both $\\vec{F}$ and $\\vec{B}$.</li>
+      </ul>
+    </div>
+
+    <!-- D) Gradient -->
+    <div id="drift-grad" class="drift-content">
+      <h3 style="color:var(--forest); border-bottom:1px solid #ccc; padding-bottom:8px;">D) Gradient B-Field Drift</h3>
+      <div class="eq" style="background:#eef4f1; border-left:3px solid var(--green); color:#111;">
+        $\\vec{v}_\\nabla = \\frac{m v_\\perp^2}{2 q B^3} (\\vec{B} \\times \\nabla B)$
+      </div>
+      <p style="font-size:16px; margin-top:10px;"><b>Behavior:</b> When the B-field is not uniform, the gyroradius changes during the orbit, causing the particle to "walk" sideways.</p>
+      <ul style="font-size:15px; margin-top:10px;">
+        <li>Because $q$ is in the denominator, Protons and Electrons drift in <b>OPPOSITE</b> directions.</li>
+        <li>This is the primary driver of the Earth's massive <b>Ring Current</b>.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>`);
+
+// 13 GYROMOTION TABLE (PPTX Slide 14)
+addSlide('<h1>On Gyromotion</h1><div class="cols"><div><div class="eq"><b>$m \\frac{d\\vec{v}}{dt} = q(\\vec{v} \\times \\vec{B})$</b></div><p style="margin-top:12px">Gyrofrequency: <b>$\\omega_c = \\frac{qB_0}{m}$</b> <br>Gyroradius: <b>$\\rho_g = \\frac{mv_0}{qB_0}$</b></p><ul style="margin-top:12px;"><li>Each velocity component perpendicular to B executes Simple Harmonic Motion.</li><li>Electrons orbit right-handed; Protons orbit left-handed.</li><li>For electrons, $f_c = \\frac{\\omega_c}{2\\pi} = (28 \\text{ Hz/nT}) \\cdot B_0$</li></ul></div><div><table><tr><th>Region</th><th>B₀ [nT]</th><th>ω<sub>c</sub> (Protons)</th><th>ρ<sub>g</sub> (Protons)</th></tr><tr><td>Solar Wind</td><td>~5</td><td>~0.5 rad/s</td><td>~100 km</td></tr><tr><td>Magnetosphere</td><td>~500</td><td>~50 rad/s</td><td>~2 km</td></tr><tr><td>Ionosphere</td><td>~50,000</td><td>~5000 rad/s</td><td>~0.2 km</td></tr></table></div></div>');
+
+// 14 GYRO SIM
+addSlide('SIM:GYRO');
+
+// 15 MIRROR SIM
+addSlide('SIM:MIRROR');
+
+// 16 BELTS SIM
+addSlide('SIM:BELTS');
+
+// 17 RAD BELT DATA (PPTX Slide 21)
+addSlide('<h1>Multi-year Radiation Belt Measurements</h1><div class="cols"><div><p>The Earth\'s magnetic field is dynamic. Processes release trapped particles only to accelerate and trap fresh populations in turn (e.g., Solar Flares, CMEs).</p><ul style="margin-top:10px;"><li><b>REPT data (right):</b> Shows electron flux variations across L-shells over several years.</li><li>Notice the sudden dropouts and subsequent rapid injections of MeV electrons deep into the inner magnetosphere.</li><li>These processes operate on multi-year and days-long time scales and are highly critical for radiation shielding design.</li></ul></div><div class="img-wrap"><img src="rad_belts.jpg" alt="Baker 2019 Rad Belt Data"></div></div><p class="source">Source: Baker et al., JGR Space Physics, 2019.</p>');
+
+// 18 HAZARDS INTRO
+addSlide('<h1>Hazards of the Space Environment</h1><div class="cols"><div><p style="font-style:italic;padding:16px;background:rgba(255,255,255,.05);border-left:4px solid var(--green);margin:12px 0;font-size:17px;">"One tiny crack in the hull and our blood boils in 13 seconds. A solar flare might crop up, cook us in our seats. And wait till you\'re sitting pretty with a case of Andorian shingles... Space is disease and danger wrapped in darkness and silence."<br><b style="font-style:normal;font-size:14px;color:var(--gold);">— Dr. McCoy, Star Trek (2009)</b></p><ul><li>The Space Environment is radically different than the terrestrial environment.</li><li><b>Goal:</b> Develop intuition for what aspects of spacecraft design have to change to survive.</li></ul></div><div class="img-wrap"><img src="mccoy.jpg" alt="Bones McCoy"></div></div>');
+
+// 19 HAZARDS TABLE
+addSlide('<h1>Effects on Spacecraft Subsystems</h1><div style="overflow-x:auto"><table><tr><th>Subsystem</th><th>Vacuum</th><th>Neutral (Drag/ATOX)</th><th>Plasma</th><th>Radiation</th><th>MMOD</th></tr><tr><td><b>ADC</b></td><td>Sensor degradation</td><td>Aerodynamic Torques</td><td>Induced Potentials</td><td>Sensor Degradation</td><td>Hyper-velocity Upsets</td></tr><tr><td><b>Avionics</b></td><td>—</td><td>—</td><td>EMI Due to Arcing</td><td>Degradation, Latchup</td><td>EMI Due to Impacts</td></tr><tr><td><b>Power</b></td><td>Coverslide Transmittance</td><td>Coverslide Transmittance</td><td>Contaminant Reattraction</td><td>Cell Efficiency Drop</td><td>Destruction of Cells</td></tr><tr><td><b>Propulsion</b></td><td>—</td><td>Drag Makeup Fuel</td><td>—</td><td>—</td><td>Tank Rupture</td></tr></table></div><p class="source">Source: Tribble, "Space Environment Effects on Spacecraft Subsystems".</p>');
+
+// 20 MICRO-G
+addSlide('<h1>Micro-Gravity Environment</h1><div class="cols"><div><h3>Convection / Buoyancy doesn\'t work:</h3><ul><li>Effects on heat and mass transport (no natural convection for electronics cooling).</li><li>Effects on combustion and fluid mixing.</li></ul><h3>Surface Tension Dominates:</h3><ul><li>Dictates where fuel settles in tanks (requires ullage motors or diaphragms).</li><li>Dictates how fuel sloshes during maneuvers.</li></ul><p style="margin-top:16px;font-weight:700;color:var(--gold);font-size:16px">(STRUCTURAL DESIGN, PROPULSION, THERMAL)</p></div><div class="img-wrap"><img src="microgravity.jpg" alt="Astronauts in ISS Microgravity"></div></div>');
+
+// 21 VACUUM SIM
+addSlide('SIM:VACUUM');
+
+// 22 NEUTRAL
+addSlide('<h1>Neutral Environment — Drag & Chemistry</h1><div class="cols"><div><h3>Orbital Drag</h3><ul><li>$B = \\frac{\\text{Mass}}{C_d \\cdot \\text{Area}}$ (Ballistic Coefficient).</li><li>Atmospheric density varies heavily with the solar cycle.</li><li><b>New Space Rule:</b> Passive Reentry after 5 years (down from 25 years).</li></ul></div><div><h3>Atomic Oxygen (ATOX)</h3><ul><li>Created by UV disassociation of O₂ in LEO.</li><li>Converts nitrided surfaces to oxides (turns conductors into insulators).</li><li>Strips Carbon and disrupts thermal control coatings.</li></ul><p style="margin-top:16px;font-weight:700;color:var(--gold);font-size:16px">(ORBITAL DYNAMICS, MATERIAL SELECTION)</p></div></div>');
+
+// 23 ORBITS HAZARD MAP SIM
+addSlide('SIM:ORBITS');
+
+// 24 MMOD TEXT
+addSlide('<h1>Micrometeoroids and Orbital Debris (MMOD)</h1><ul><li>A threefold increase in tracked objects and a doubling in "debris" since the 1990s.</li><li>Objects in intersecting orbits strike with relative velocities of several to tens of km/s (<b>hyper-velocity projectiles</b>).</li><li>Major debris generating events: Chinese ASAT (2007), Cosmos-Iridium collision (2009), Russian ASAT (2021).</li><li><b>Kessler Syndrome:</b> Cascading collisions generating more debris, potentially rendering specific orbital regimes unusable.</li></ul>');
+
+// 25 MMOD VISUALS
+addSlide('<h1>MMOD Impacts & Growth</h1><div class="cols"><div><div class="img-wrap"><img src="mmod_graph.jpg" alt="MMOD Graph"></div><p style="font-size: 14px; color:#aaa; margin-top:8px;">Tracked Objects in Orbit, 1957-2024. Notice spikes from ASAT tests and collisions.</p></div><div><div class="img-wrap"><img src="mmod_damage.jpg" alt="Micrometeorite Strike"></div><p style="font-size: 14px; color:#aaa; margin-top:8px;">Solar panel damage from a micro-particle. E.g., SpainSat NG-2 (2025) was critically damaged by a millimetric particle.</p></div></div><p class="source">Sources: Scientific American (2024); SpaceNews</p>');
+
+// 26 END
+addSlide('<div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center"><h1 style="font-size:min(44px,5vw); border:none;">End of Module:<br>"The Space Environment & Hazards"</h1><h2 style="margin-top:24px;color:#7be1aa;">Next Up:<br>"Orbits and Rotational Dynamics"</h2></div>');
+
+// ========== BUILD & RENDER ==========
+var container=document.createElement('div');
+document.body.insertBefore(container,document.querySelector('.navbar'));
+SLIDES.forEach(function(s,i){
+  var d=document.createElement('div');
+  d.className='slide';
+  d.id='sl'+i;
+  if(s.html.indexOf('SIM:')===0){d.setAttribute('data-sim',s.html.replace('SIM:','').toLowerCase());}
+  else{d.innerHTML=s.html;}
+  container.appendChild(d);
+});
+var cur=0,total=SLIDES.length;
+function show(n){
+  if(n<0||n>=total)return;
+  var o=document.getElementById('sl'+cur);
+  if(o)o.classList.remove('active');
+  cur=n;
+  var el=document.getElementById('sl'+cur);
+  el.classList.add('active');
+  document.getElementById('pgn').textContent=(cur+1)+' / '+total;
+  
+  // Trigger MathJax render for the newly active slide
+  if (window.MathJax) { MathJax.typesetPromise([el]); }
+
+  var sim=el.getAttribute('data-sim');
+  if(sim&&!el.getAttribute('data-ready')){
+    el.setAttribute('data-ready','1');
+    setTimeout(function(){initSim(el,sim);},50);
+  }
+}
+function nav(d){show(cur+d);}
+show(0);
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();nav(1);}else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();nav(-1);}else if(e.key==='f'){e.preventDefault();document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}});
+
+// ========== SIMULATIONS ROUTER ==========
+function initSim(el,type){
+  if(type==='parker')simParker(el);
+  else if(type==='iono')simIono(el);
+  else if(type==='magneto')simMagneto(el);
+  else if(type==='gyro')simGyro(el);
+  else if(type==='mirror')simMirror(el);
+  else if(type==='belts')simBelts(el);
+  else if(type==='vacuum')simVacuum(el);
+  else if(type==='orbits')simOrbits(el);
+}
+function mkSim(el,title,panel){
+  el.innerHTML='<h1>'+title+'</h1><div class="sim-row"><div class="sim-cv"><canvas></canvas></div><div class="sim-panel">'+panel+'</div></div>';
+  var c=el.querySelector('canvas'),w=el.querySelector('.sim-cv');
+  function rs(){c.width=w.clientWidth;c.height=w.clientHeight;}
+  rs();new ResizeObserver(rs).observe(w);
+  return{c:c,x:function(){return c.getContext('2d');},w:function(){return c.width;},h:function(){return c.height;},p:el.querySelector('.sim-panel')};
+}
+
+// 1. PARKER SPIRAL
+function simParker(el){
+  var s=mkSim(el,'Interactive: Parker Spiral','<h4>Solar Wind</h4><label>V<sub>sw</sub> <span class="n" id="pV">400 km/s</span></label><input type="range" id="pVR" min="300" max="900" value="400"><label>Sun Rotation <span class="n" id="pT">25 days</span></label><input type="range" id="pTR" min="20" max="35" value="25"><div class="hint">The IMF is "frozen" into the solar wind. Faster wind stretches the field radially. Slower wind creates a tighter spiral.</div>');
+  var V=400,T=25,phi=0;
+  s.p.querySelector('#pVR').oninput=function(){V=+this.value;s.p.querySelector('#pV').textContent=V+' km/s';};
+  s.p.querySelector('#pTR').oninput=function(){T=+this.value;s.p.querySelector('#pT').textContent=T+' days';};
+  (function loop(){phi+=0.015;var W=s.w(),H=s.h(),ctx=s.x(),cx=W/2,cy=H/2;ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#DAC961';ctx.beginPath();ctx.arc(cx,cy,12,0,7);ctx.fill();
+  var om=2*Math.PI/(T*86400),vs=V*1000,sc=Math.min(W,H)*.35/1.5e11;
+  for(var i=0;i<8;i++){var p0=phi+i*Math.PI/4;ctx.strokeStyle='hsla('+(150+i*15)+',60%,50%,.6)';ctx.lineWidth=2;ctx.beginPath();for(var r=3e10;r<1.5e11;r+=5e9){var a=p0-om*r/vs,x=cx+r*sc*Math.cos(a),y=cy-r*sc*Math.sin(a);r<4e10?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();}
+  var au=1.496e11*sc;ctx.strokeStyle='rgba(255,255,255,.3)';ctx.setLineDash([4,4]);ctx.beginPath();ctx.arc(cx,cy,au,0,7);ctx.stroke();ctx.setLineDash([]);
+  var ea=phi*.2;ctx.fillStyle='#4488ff';ctx.beginPath();ctx.arc(cx+au*Math.cos(ea),cy-au*Math.sin(ea),6,0,7);ctx.fill();
+  var ang=Math.atan(om*1.496e11/vs)*180/Math.PI;ctx.fillStyle='white';ctx.font='15px Calibri';ctx.fillText('Spiral angle at Earth: '+ang.toFixed(1)+'°',12,H-16);requestAnimationFrame(loop);})();
+}
+
+// 2. IONOSPHERE
+function simIono(el){
+  var s=mkSim(el,'Interactive: Ionosphere Profile','<h4>Conditions</h4><div class="segs" id="iT"><button class="on" data-v="day">Day</button><button data-v="night">Night</button></div><label>Solar F10.7 <span class="n" id="iF">150</span></label><input type="range" id="iFR" min="70" max="250" value="150"><div class="hint">Toggle day/night. Notice the D-region disappears at night, allowing AM radio to bounce further globally.</div>');
+  var isDay=true,f107=150;
+  s.p.querySelectorAll('#iT button').forEach(function(b){b.onclick=function(){s.p.querySelectorAll('#iT button').forEach(function(x){x.classList.remove('on');});this.classList.add('on');isDay=this.dataset.v==='day';};});
+  s.p.querySelector('#iFR').oninput=function(){f107=+this.value;s.p.querySelector('#iF').textContent=f107;};
+  (function loop(){var W=s.w(),H=s.h(),ctx=s.x();ctx.clearRect(0,0,W,H);
+  function ne(a){var sf=(f107-70)/180,n=0;if(isDay){n+=1e3*Math.exp(-Math.pow((a-75)/12,2))*(.5+.5*sf);n+=1e5*Math.exp(-Math.pow((a-110)/20,2))*(.6+.4*sf);n+=2e5*Math.exp(-Math.pow((a-180)/25,2))*(.5+.5*sf);n+=1e6*(.4+.6*sf)*Math.exp(-Math.pow((a-300)/80,2));}else{n+=1e4*Math.exp(-Math.pow((a-110)/18,2))*.3;n+=3e5*(.3+.5*sf)*Math.exp(-Math.pow((a-350)/100,2));}return Math.max(n*=a>400?Math.exp(-(a-400)/200):1,10);}
+  var ml=50,mt=15,mr=15,mb=30,pw=W-ml-mr,ph=H-mt-mb;ctx.strokeStyle='rgba(255,255,255,.2)';ctx.beginPath();ctx.moveTo(ml,mt);ctx.lineTo(ml,mt+ph);ctx.lineTo(ml+pw,mt+ph);ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,.6)';ctx.font='13px Calibri';ctx.textAlign='right';for(var a=200;a<=1000;a+=200){ctx.fillText(a+'km',ml-5,mt+ph-(a-50)/950*ph+4);}ctx.textAlign='center';for(var p=2;p<=6;p++){ctx.fillText('10^'+p,ml+(p-1)/5*pw,mt+ph+16);}
+  ctx.strokeStyle=isDay?'#DAC961':'#4488ff';ctx.lineWidth=3;ctx.beginPath();for(var a=50;a<=1000;a+=3){var v=ne(a),lv=Math.log10(Math.max(v,1)),x=ml+(lv-1)/5*pw,y=mt+ph-(a-50)/950*ph;a===50?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();
+  var ls=isDay?[['D',75],['E',110],['F1',180],['F2',300]]:[['F2',350]];ctx.fillStyle='#7be1aa';ctx.textAlign='left';ctx.font='bold 14px Calibri';ls.forEach(function(l){var lv=Math.log10(Math.max(ne(l[1]),1));ctx.fillText(l[0],ml+(lv-1)/5*pw+10,mt+ph-(l[1]-50)/950*ph+4);});requestAnimationFrame(loop);})();
+}
+
+// 3. MAGNETOSPHERE
+function simMagneto(el){
+  var s=mkSim(el,'Interactive: Magnetosphere Boundaries','<h4>Solar Wind</h4><label>V<sub>sw</sub> <span class="n" id="mV">400 km/s</span></label><input type="range" id="mVR" min="300" max="900" value="400"><label>IMF B<sub>z</sub> <span class="n" id="mBz">0 nT</span></label><input type="range" id="mBzR" min="-10" max="10" value="0"><div class="hint">Adjust solar wind speed to compress the boundaries. Southward B<sub>z</sub> (negative) drives magnetic reconnection and storms.</div>');
+  var Vsw=400,Bz=0,t=0;
+  s.p.querySelector('#mVR').oninput=function(){Vsw=+this.value;s.p.querySelector('#mV').textContent=Vsw+' km/s';};
+  s.p.querySelector('#mBzR').oninput=function(){Bz=+this.value;s.p.querySelector('#mBz').textContent=Bz+' nT';};
+  (function loop(){t+=0.02;var W=s.w(),H=s.h(),ctx=s.x(),cx=W*.4,cy=H*.5,Re=Math.min(W,H)*.06,mpDist=Re*(6+4*(400/Vsw)),bsDist=mpDist*1.3;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(218,201,97,.3)';ctx.lineWidth=1;for(var yy=cy-H*.4;yy<cy+H*.4;yy+=25){ctx.beginPath();ctx.moveTo(W,yy);ctx.lineTo(bsDist+cx+15,yy);ctx.stroke();}
+  ctx.strokeStyle='rgba(255,100,50,.7)';ctx.lineWidth=2;ctx.beginPath();for(var ang=-1.2;ang<=1.2;ang+=.05){var r=bsDist/Math.cos(ang*.7),x=cx+r*Math.cos(ang),y=cy+r*Math.sin(ang)*.8;ang===-1.2?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();
+  ctx.fillStyle='rgba(255,150,50,.1)';ctx.beginPath();for(var ang=-1.2;ang<=1.2;ang+=.05){ctx.lineTo(cx+(bsDist/Math.cos(ang*.7))*Math.cos(ang),cy+(bsDist/Math.cos(ang*.7))*Math.sin(ang)*.8);}for(var ang=1.2;ang>=-1.2;ang-=.05){ctx.lineTo(cx+(mpDist/Math.cos(ang*.6))*Math.cos(ang),cy+(mpDist/Math.cos(ang*.6))*Math.sin(ang)*.75);}ctx.fill();
+  ctx.strokeStyle='rgba(100,200,255,.6)';ctx.lineWidth=2;ctx.beginPath();for(var ang=-1.3;ang<=1.3;ang+=.05){var r=mpDist/Math.cos(ang*.6),x=cx+r*Math.cos(ang),y=cy+r*Math.sin(ang)*.75;ang===-1.3?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();
+  ctx.strokeStyle='rgba(120,200,255,.3)';ctx.lineWidth=1;for(var L=1.5;L<=5;L+=.7){ctx.beginPath();for(var th=-Math.PI*.45;th<=Math.PI*.45;th+=.05){var r=L*Math.pow(Math.cos(th),2)*Re;ctx.lineTo(cx-r*Math.sin(th),cy-r*Math.cos(th));}ctx.stroke();}
+  var eg=ctx.createRadialGradient(cx,cy,0,cx,cy,Re);eg.addColorStop(0,'#4488ff');eg.addColorStop(1,'#003E51');ctx.fillStyle=eg;ctx.beginPath();ctx.arc(cx,cy,Re,0,7);ctx.fill();
+  if(Bz<-3){ctx.fillStyle='rgba(255,255,100,'+(0.4+0.4*Math.sin(t*5))+')';ctx.font='bold 14px Calibri';ctx.textAlign='center';ctx.fillText('⚡ Reconnection',cx+mpDist*.95,cy);ctx.fillStyle='rgba(255,50,50,.6)';ctx.beginPath();ctx.arc(cx+mpDist*.95,cy,8+4*Math.sin(t*8),0,7);ctx.fill();}
+  ctx.font='bold 13px Calibri';ctx.textAlign='center';
+  ctx.fillStyle='rgba(255,100,50,.8)';ctx.fillText('Bow Shock',cx+bsDist*.85,cy-bsDist*.5);
+  ctx.fillStyle='rgba(100,200,255,.8)';ctx.fillText('Magnetopause',cx+mpDist*.7,cy-mpDist*.6);
+  requestAnimationFrame(loop);})();
+}
+
+// 4. GYRO
+function simGyro(el){
+  var s=mkSim(el,'Interactive: Gyromotion','<h4>Particle Type</h4><div class="segs" id="gS"><button class="on" data-p="e">Electron (e⁻)</button><button data-p="p">Proton (p⁺)</button></div><label>B-Field <span class="n" id="gB">100 nT</span></label><input type="range" id="gBR" min="1" max="1000" value="500"><label>Velocity ⊥ <span class="n" id="gV">1000 km/s</span></label><input type="range" id="gVR" min="100" max="5000" value="1000"><div class="hint">Notice how the immense mass difference between Protons and Electrons drastically changes the gyroradius and frequency.</div>');
+  var p='e', B=500e-9, vp=1e6, phi=0;
+  s.p.querySelectorAll('#gS button').forEach(function(b){b.onclick=function(){s.p.querySelectorAll('#gS button').forEach(function(x){x.classList.remove('on');});this.classList.add('on');p=this.dataset.p;};});
+  s.p.querySelector('#gBR').oninput=function(){B=(+this.value)*1e-9;s.p.querySelector('#gB').textContent=this.value+' nT';};
+  s.p.querySelector('#gVR').oninput=function(){vp=(+this.value)*1e3;s.p.querySelector('#gV').textContent=this.value+' km/s';};
+  (function loop(){phi+=0.06;var W=s.w(),H=s.h(),ctx=s.x();ctx.clearRect(0,0,W,H);
+  var q=1.6e-19, m=p==='e'?9.1e-31:1.67e-27, w=(q*B)/m, rg=(m*vp)/(q*B), sense=p==='e'?1:-1;
+  ctx.fillStyle='rgba(255,255,255,.1)';ctx.font='16px sans-serif';ctx.textAlign='center';for(var x=20;x<W;x+=40)for(var y=20;y<H;y+=40){ctx.fillText('⊗',x,y);}
+  var cx=W/2, cy=H/2, dispR = Math.min(Math.max(rg*0.005, 12), Math.min(W,H)*0.35);
+  ctx.strokeStyle='rgba(123,225,170,.4)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,cy,dispR,0,7);ctx.stroke();
+  var px=cx+Math.cos(sense*phi)*dispR, py=cy+Math.sin(sense*phi)*dispR;
+  ctx.fillStyle=p==='e'?'#7be1aa':'#DAC961';ctx.beginPath();ctx.arc(px,py,8,0,7);ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='15px Calibri';ctx.textAlign='left';
+  ctx.fillText('Gyroradius = '+(rg>=1000?(rg/1000).toFixed(1)+' km':rg.toFixed(1)+' m'),16,H-26);
+  ctx.fillText('Frequency = '+(w/6.28>=1e3?(w/6.28e3).toFixed(1)+' kHz':(w/6.28).toFixed(1)+' Hz'),16,H-10);
+  requestAnimationFrame(loop);})();
+}
+
+// 5. MIRROR
+function simMirror(el){
+  var s=mkSim(el,'Interactive: Magnetic Mirroring','<h4>Parameters</h4><label>Pitch angle α₀ <span class="n" id="mA">45°</span></label><input type="range" id="mAR" min="5" max="85" value="45"><label>B<sub>max</sub>/B<sub>min</sub> Ratio <span class="n" id="mR">4.0</span></label><input type="range" id="mRR" min="150" max="1000" value="400"><div class="hint"><b>μ = mv⊥²/(2B) = const</b><br>As the particle moves into stronger B, v⊥ increases and v∥ decreases. If it falls into the "Loss Cone", it hits the atmosphere!</div>');
+  var a0=45,mr=4,t=0;
+  s.p.querySelector('#mAR').oninput=function(){a0=+this.value;s.p.querySelector('#mA').textContent=a0+'°';};
+  s.p.querySelector('#mRR').oninput=function(){mr=+this.value/100;s.p.querySelector('#mR').textContent=mr.toFixed(1);};
+  (function loop(){t+=0.016;var W=s.w(),H=s.h(),ctx=s.x(),cx=W/2,cy=H*.42,fl=W*.76,x0=cx-fl/2;
+  ctx.clearRect(0,0,W,H);
+  for(var i=1;i<=5;i++){var off=(i/6-.5)*H*.5,mid=off*.3;ctx.strokeStyle='rgba(218,201,97,.3)';ctx.beginPath();ctx.moveTo(x0,cy+off);ctx.bezierCurveTo(cx-fl*.2,cy+mid,cx+fl*.2,cy+mid,x0+fl,cy+off);ctx.stroke();}
+  function Bp(xN){return 1+(mr-1)*4*Math.pow(xN-.5,2);}
+  var aLC=Math.asin(Math.sqrt(1/mr))*180/Math.PI,trapped=a0>aLC,s2=Math.pow(Math.sin(a0*Math.PI/180),2),xm=trapped&&mr>1?Math.min(Math.sqrt((1/s2-1)/(4*(mr-1))),.5):.5;
+  var xN = trapped ? .5+xm*Math.sin(t*3) : Math.min((t*1.5)%1.2,1);
+  var px=x0+xN*fl, la=Math.min(90,Math.asin(Math.min(1,Math.sqrt(s2*Bp(xN))))*180/Math.PI), py=cy+12*Math.sin(la*Math.PI/180)*Math.sin(t*12);
+  ctx.fillStyle=trapped?'#7be1aa':'#ff6b6b';ctx.beginPath();ctx.arc(px,py,6,0,7);ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.9)';ctx.font='15px Calibri';ctx.textAlign='center';
+  ctx.fillText(trapped?'TRAPPED (Bouncing)':'LOST CONE (Precipitating!)',cx,H-16);
+  requestAnimationFrame(loop);})();
+}
+
+// 6. BELTS (Fixed CME Injection)
+function simBelts(el){
+  var s=mkSim(el,'Interactive: Radiation Belts','<h4>Composition</h4><div class="hint" style="margin-top:0;"><b style="color:#ff6b6b">Inner Belt (Red):</b> Dominated by high-energy Protons (CRAND process).<br><br><b style="color:#4488ff">Outer Belt (Blue):</b> Dominated by Electrons (Solar Wind origin).</div><label style="margin-top:16px;">Solar Storm Trigger</label><button id="stormBtn" style="width:100%; padding:10px; background:var(--gold); border:none; border-radius:6px; font-weight:bold; cursor:pointer; color:#000;">Inject CME Particles</button>');
+  var storm=0;
+  var particles=[];
+  s.p.querySelector('#stormBtn').onclick=function(){storm=1.5;};
+  
+  var t=0;
+  (function loop(){
+    t+=0.02;
+    var W=s.w(),H=s.h(),ctx=s.x(),cx=W*.5,cy=H*.5,Re=Math.min(W,H)*.06;
+    ctx.clearRect(0,0,W,H);
+    
+    // Slow decay for the storm variable
+    if(storm>0) { 
+       storm *= 0.99; 
+       if(storm < 0.01) storm = 0;
+       ctx.fillStyle='rgba(255,255,255,'+(storm*0.1)+')'; 
+       ctx.fillRect(0,0,W,H); 
+    }
+
+    function dip(Lv,th){var r=Lv*Math.pow(Math.cos(th),2);return{x:cx+r*Re*Math.sin(th),y:cy-r*Re*Math.cos(th)};}
+    
+    // Draw fields
+    for(var Ls=1.2;Ls<7.5;Ls+=.2){
+      var inn = Math.exp(-Math.pow((Ls-1.6)/0.4, 2));
+      var out = Math.exp(-Math.pow((Ls-4.5)/1.2, 2));
+      
+      // Storm injection fills the slot region (L=2.5 to 3.5) and intensifies outer belt
+      var stormEffect = storm * Math.exp(-Math.pow((Ls-3.0)/1.5, 2));
+      out += stormEffect; 
+
+      if(inn<.05 && out<.05) continue;
+      
+      var isInner = inn > out;
+      var alpha = isInner ? Math.min(inn*0.6, 1) : Math.min(out*0.7, 1);
+      var color = isInner ? '255,80,80' : (stormEffect > 0.1 && !isInner ? '150,220,255' : '80,150,255');
+      
+      ctx.strokeStyle = 'rgba('+color+','+alpha+')';
+      ctx.lineWidth=Re*.15;
+      ctx.beginPath();
+      for(var th=-1.1;th<=1.1;th+=.08){var p=dip(Ls,th);th<-1?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);}ctx.stroke();
+      ctx.beginPath();for(var th=2.04;th<=4.24;th+=.08){var p=dip(Ls,th);th<2.1?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);}ctx.stroke();
+    }
+
+    // Add flying dots during a storm to make injection obvious
+    if (storm > 0.1 && Math.random() < storm) {
+        particles.push({
+            L: 2.5 + Math.random() * 3.5, 
+            th: (Math.random() > 0.5 ? 0 : Math.PI), 
+            speed: (0.05 + Math.random()*0.05),
+            dir: (Math.random() > 0.5 ? 1 : -1)
+        });
+    }
+    
+    ctx.fillStyle = '#fff';
+    for(var i=particles.length-1; i>=0; i--){
+        var p = particles[i];
+        p.th += p.speed * p.dir;
+        var pos = dip(p.L, p.th);
+        ctx.beginPath(); ctx.arc(pos.x, pos.y, 2, 0, 7); ctx.fill();
+        var absTh = Math.abs(p.th % (Math.PI*2));
+        if ((absTh > 1.0 && absTh < 2.1) || (absTh > 4.2 && absTh < 5.3) || Math.random() < 0.01) {
+            particles.splice(i, 1);
+        }
+    }
+    
+    // Earth
+    var eg=ctx.createRadialGradient(cx,cy,0,cx,cy,Re);
+    eg.addColorStop(0,'#4488ff');eg.addColorStop(1,'#003E51');
+    ctx.fillStyle=eg;ctx.beginPath();ctx.arc(cx,cy,Re,0,7);ctx.fill();
+    
+    // Warning text
+    if (storm > 0.05) {
+        ctx.fillStyle = 'rgba(255, 200, 100, ' + Math.min(storm, 1) + ')';
+        ctx.font = 'bold 16px Calibri';
+        ctx.textAlign = 'center';
+        ctx.fillText('⚡ CME Injection: Slot Region Filling!', cx, cy - Re*5);
+    }
+
+    requestAnimationFrame(loop);
+  })();
+}
+
+// 7. VACUUM
+function simVacuum(el){
+  var s=mkSim(el,'Interactive: Vacuum Hazards','<h4>Environment Pressure</h4><label>Pressure <span class="n" id="vP">1 ATM</span></label><input type="range" id="vPR" min="0" max="100" value="100"><div class="hint"><b>Mid Pressure (~70kft):</b> Paschen breakdown! Particles gain ionizing energy within a mean free path, causing sustained arcing.<br><br><b>Vacuum:</b> Whiskers (tin/zinc) slowly grow and short circuits!</div>');
+  var press=100, whiskerL=0;
+  s.p.querySelector('#vPR').oninput=function(){
+    press=+this.value; 
+    s.p.querySelector('#vP').textContent=press>80?'1 ATM':press>30?'10⁻² Torr (High Alt)':press>5?'10⁻⁴ Torr':'10⁻⁹ Torr (Vacuum)';
+    if(press>5) whiskerL=0;
+  };
+  (function loop(){
+    var W=s.w(),H=s.h(),ctx=s.x(), cy=H/2, ex1=W*0.3, ex2=W*0.7; ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#888'; ctx.fillRect(ex1-20, cy-35, 40, 70); ctx.fillRect(ex2-20, cy-35, 40, 70);
+    ctx.fillStyle='#fff'; ctx.font='bold 13px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('Electrode A', ex1, cy+55); ctx.fillText('Electrode B', ex2, cy+55);
+    var gap = ex2 - ex1 - 40;
+    if(press > 30 && press < 80){
+      ctx.strokeStyle='rgba(150,200,255,0.9)'; ctx.lineWidth=3; ctx.shadowColor='#4488ff'; ctx.shadowBlur=12;
+      ctx.beginPath(); ctx.moveTo(ex1+20, cy);
+      for(var i=1;i<5;i++) ctx.lineTo(ex1+20+i*(gap/5), cy + (Math.random()-0.5)*25);
+      ctx.lineTo(ex2-20, cy); ctx.stroke(); ctx.shadowBlur=0;
+      ctx.fillStyle='#4488ff'; ctx.fillText('ARCING! (Paschen Breakdown)', W/2, cy-50);
+    } else if (press <= 5) {
+      whiskerL = Math.min(whiskerL + 0.4, gap);
+      ctx.strokeStyle='#DAC961'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(ex1+20, cy+10); ctx.lineTo(ex1+20+whiskerL, cy+10); ctx.stroke();
+      ctx.fillStyle=whiskerL>=gap?'#ff6b6b':'#DAC961'; ctx.fillText(whiskerL>=gap?'SHORT CIRCUIT! (Whisker)':'Growing Whisker...', W/2, cy-50);
+    } else {
+      ctx.fillStyle='#7be1aa'; ctx.fillText('Safe Operating Regime', W/2, cy-50);
+    }
+    requestAnimationFrame(loop);
+  })();
+}
+
+// 8. ORBITS (New Polar Passing Simulation)
+function simOrbits(el){
+  var s=mkSim(el,'Interactive: Orbit & Hazards','<h4>Orbit Altitude</h4><label>Altitude <span class="n" id="oA">400 km (LEO)</span></label><input type="range" id="oAR" min="1" max="360" value="4"><div class="hint" id="oH"><b style="color:#7be1aa;">LEO Hazards:</b> High atmospheric drag, Atomic Oxygen (ATOX) erosion, highest MMOD density. Mostly stays below severe radiation.</div>');
+  var alt=400; // km
+  s.p.querySelector('#oAR').oninput=function(){
+    alt = (+this.value)*100;
+    var type = alt<2000?'LEO':alt<35000?'MEO':'GEO';
+    s.p.querySelector('#oA').textContent=alt+' km ('+type+')';
+    var txt='';
+    if(type==='LEO') txt='<b style="color:#7be1aa;">LEO Hazards:</b> High atmospheric drag, Atomic Oxygen (ATOX) erosion, highest MMOD density. Mostly stays below severe radiation.';
+    else if(type==='MEO') txt='<b style="color:#ff6b6b;">MEO Hazards:</b> Extreme Radiation! Satellite actively crosses the Van Allen Belts. High risk of Single Event Upsets (SEU) and total dose degradation.';
+    else txt='<b style="color:#DAC961;">GEO Hazards:</b> Deep dielectric surface charging (plasma environment), Solar Wind exposure. Drag is non-existent.';
+    s.p.querySelector('#oH').innerHTML = txt;
+  };
+  
+  var theta = 0;
+  (function loop(){
+    var W=s.w(),H=s.h(),ctx=s.x(), cy=H/2, cx=W/2;
+    ctx.clearRect(0,0,W,H);
+    
+    // Scale so Earth is reasonably small to allow GEO viewing
+    var Re = Math.min(W,H) / 16; 
+    
+    // Draw Belts (Meridional projection)
+    function dip(Lv,th){var r=Lv*Math.pow(Math.cos(th),2);return{x:cx+r*Re*Math.sin(th),y:cy-r*Re*Math.cos(th)};}
+    for(var Ls=1.2;Ls<7.5;Ls+=.3){
+      var inn=Math.exp(-Math.pow((Ls-1.6)/0.4, 2));
+      var out=Math.exp(-Math.pow((Ls-4.5)/1.2, 2));
+      if(inn<.05 && out<.05) continue;
+      var isInner = inn > out;
+      var alpha = isInner ? Math.min(inn*0.4, 1) : Math.min(out*0.4, 1);
+      var color = isInner ? '255,80,80' : '80,150,255';
+      ctx.strokeStyle = 'rgba('+color+','+alpha+')';
+      ctx.lineWidth=Re*.2;
+      ctx.beginPath();
+      for(var th=-1.1;th<=1.1;th+=.08){var p=dip(Ls,th);th<-1?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);}ctx.stroke();
+      ctx.beginPath();for(var th=2.04;th<=4.24;th+=.08){var p=dip(Ls,th);th<2.1?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);}ctx.stroke();
+    }
+
+    // Draw Earth
+    var eg=ctx.createRadialGradient(cx,cy,0,cx,cy,Re);
+    eg.addColorStop(0,'#4488ff');eg.addColorStop(1,'#003E51');
+    ctx.fillStyle=eg; ctx.beginPath(); ctx.arc(cx,cy,Re,0,7); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.font='10px sans-serif'; ctx.textAlign='center'; ctx.fillText('Earth', cx, cy+4);
+
+    // Calculate orbit radius (Re is 6371 km)
+    var orbitR_km = 6371 + alt;
+    var orbitR_px = (orbitR_km / 6371) * Re;
+
+    // Draw Orbit path (polar orbit to slice through belts on 2D projection)
+    ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.setLineDash([4,4]); 
+    ctx.beginPath(); ctx.arc(cx, cy, orbitR_px, 0, 7); ctx.stroke(); ctx.setLineDash([]);
+
+    // Orbit speed (Keplerian angular velocity)
+    var omega = 0.05 * Math.pow(6371 / orbitR_km, 1.5);
+    theta += omega;
+
+    var satX = cx + orbitR_px * Math.cos(theta);
+    var satY = cy + orbitR_px * Math.sin(theta);
+
+    // Pulse red if in MEO radiation belt zone
+    if(alt >= 2000 && alt < 35000) {
+       ctx.shadowColor = '#ff6b6b'; ctx.shadowBlur = 15;
+    }
+
+    ctx.fillStyle='#DAC961'; ctx.beginPath(); ctx.arc(satX, satY, 5, 0, 7); ctx.fill();
+    ctx.shadowBlur = 0; 
+    
+    // Labels
+    ctx.fillStyle='rgba(255,255,255,0.8)'; ctx.textAlign='left'; ctx.font='14px sans-serif';
+    ctx.fillText('Altitude: ' + alt + ' km', 12, 24);
+    
+    requestAnimationFrame(loop);
+  })();
+}
+</script>
+<script>
+  // Expose switchDrift to global scope for the buttons in Slide 12
+  window.switchDrift = function(id, btn) {
+    document.querySelectorAll('.drift-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.drift-content').forEach(c => c.classList.remove('active'));
+    document.getElementById('drift-' + id).classList.add('active');
+    if (window.MathJax) { MathJax.typesetPromise(); }
+  };
+</script>
+</body>
+</html>
