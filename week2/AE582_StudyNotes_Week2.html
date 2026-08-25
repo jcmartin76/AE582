@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Study Notes: AE 582 - Space Environment</title>
+
+    <script>
+      window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$'],['\\[','\\]']] } };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root { --green:#007A33; --gold:#FDB913; --dark:#12211B; --light-bg:#F8F9FA; --border:#DEE2E6; }
+        body { font-family:"Segoe UI",system-ui,sans-serif; background:var(--light-bg); color:var(--dark);
+            line-height:1.65; margin:0; padding:0; }
+        header { background:var(--dark); color:white; padding:30px 20px; text-align:center; border-bottom:5px solid var(--gold); }
+        header h1 { margin:0; color:var(--gold); font-family:"Cambria",serif; }
+        header p { margin:5px 0 0 0; font-size:1.1em; color:#ccc; }
+        .container { max-width:900px; margin:40px auto; background:white; padding:40px; border-radius:8px;
+            box-shadow:0 4px 15px rgba(0,0,0,0.05); }
+        h2 { color:var(--green); font-family:"Cambria",serif; border-bottom:2px solid var(--border);
+            padding-bottom:5px; margin-top:45px; }
+        h3 { color:var(--dark); margin-top:28px; font-size:1.22em; }
+        h4 { color:var(--green); margin-top:22px; margin-bottom:6px; font-size:1.05em; }
+        p { margin:12px 0; }
+        ul { margin-left:20px; padding-left:0; } li { margin-bottom:8px; }
+        .lead { font-size:1.05em; color:#333; }
+        .equation-box { background:#f1f8f5; border-left:4px solid var(--green); padding:15px; margin:20px 0;
+            font-family:"Cambria",serif; font-size:1.05em; overflow-x:auto; }
+        .highlight { font-weight:bold; color:var(--green); }
+        .keyidea { background:#fff8e6; border:1px solid var(--gold); border-radius:8px; padding:14px 18px; margin:20px 0; }
+        .keyidea b { color:var(--dark); }
+        .design-note { background:#eef6f1; border-left:4px solid var(--green); border-radius:0 6px 6px 0;
+            padding:12px 16px; margin:18px 0; font-size:.97em; }
+        .design-note b { color:var(--green); }
+
+        details.derivation { margin:16px 0; border:1px solid var(--border); border-radius:6px; background:#fbfdfc; overflow:hidden; }
+        details.derivation > summary { cursor:pointer; padding:11px 16px; font-weight:600; color:var(--green);
+            background:#f1f8f5; list-style:none; user-select:none; }
+        details.derivation > summary::-webkit-details-marker { display:none; }
+        details.derivation > summary::before { content:"▸  Derivation"; }
+        details.derivation[open] > summary::before { content:"▾  Derivation"; }
+        details.derivation > summary .lbl { color:var(--dark); font-weight:600; }
+        details.derivation .dbody { padding:4px 22px 14px; }
+
+        /* Embedded interactive demos (break out wider than the text column) */
+        .demo-wrap { position:relative; left:50%; transform:translateX(-50%); width:min(1180px,95vw); margin:28px 0 10px; }
+        .demo-label { display:inline-block; background:var(--green); color:#fff; font-weight:700; font-size:.8em;
+            padding:4px 11px; border-radius:6px; margin-bottom:8px; letter-spacing:.5px; }
+        .demo-wrap iframe { width:100%; height:730px; border:1px solid var(--border); border-radius:10px;
+            box-shadow:0 6px 20px rgba(0,0,0,.10); background:#fff; }
+        .demo-cap { text-align:center; font-size:.9em; color:#667; margin-top:8px; }
+
+        .problem { background:#fffdf5; border:1px solid var(--gold); border-radius:8px; padding:18px 22px; margin:22px 0; }
+        .problem .ptitle { font-weight:700; color:var(--dark); margin-bottom:6px; }
+        .show-sol { margin-top:12px; background:var(--green); color:#fff; border:none; padding:9px 16px;
+            border-radius:6px; font-weight:600; cursor:pointer; font-size:.95em; }
+        .show-sol:hover { background:#005f28; }
+        .solution { display:none; margin-top:15px; padding:15px 20px; background:#f1f8f5;
+            border-left:4px solid var(--green); border-radius:0 6px 6px 0; }
+        .solution.show { display:block; }
+        .solution .ans { font-weight:700; color:var(--green); }
+
+        .quiz-section { background:#fffdf5; border:1px solid var(--gold); padding:30px; border-radius:8px; margin-top:50px; }
+        .check { background:#fffdf5; border:1px solid var(--gold); border-radius:8px; padding:8px 24px; margin:26px 0; }
+        .check .qlabel { font-family:"Cambria",serif; color:var(--green); font-weight:700; font-size:.95em; margin-top:14px; }
+        .question-card { margin-bottom:30px; padding-bottom:20px; border-bottom:1px dashed var(--border); }
+        .question-card:last-child { border-bottom:none; margin-bottom:0; }
+        .check .question-card { border-bottom:none; margin-bottom:6px; padding-bottom:6px; }
+        .question-text { font-size:1.1em; font-weight:600; margin-bottom:15px; }
+        .option-btn { display:block; width:100%; text-align:left; padding:12px 15px; margin-bottom:8px; background:white;
+            border:1px solid var(--border); border-radius:5px; font-size:1em; cursor:pointer; transition:0.2s; }
+        .option-btn:hover:not(:disabled) { background:#f0f0f0; border-color:#bbb; }
+        .option-btn:disabled { cursor:not-allowed; }
+        .feedback { margin-top:10px; font-weight:600; min-height:24px; }
+        .feedback.wrong { color:#dc3545; } .feedback.correct { color:var(--green); }
+        .reveal-link { display:inline-block; margin-top:6px; font-size:.9em; color:var(--green); background:none;
+            border:none; cursor:pointer; text-decoration:underline; padding:0; }
+        .toc { background:#f8faf9; border:1px solid var(--border); border-radius:8px; padding:16px 22px; margin:24px 0; }
+        .toc h4 { margin-top:0; } .toc ol { margin:6px 0 0 18px; } .toc a { color:var(--green); text-decoration:none; }
+        .toc a:hover { text-decoration:underline; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>AE 582: Satellite Engineering</h1>
+    <p>Study Notes: The Space Environment &amp; Hazards</p>
+</header>
+
+<div class="container">
+    <p class="lead">A spacecraft never flies through empty space. From the moment it separates from its launch vehicle it is immersed in a tenuous but violent environment: a hot plasma streaming from the Sun, the Earth's magnetic cavity and its trapped-radiation belts, a residual atmosphere that erodes and drags, hard vacuum, and a growing swarm of debris. <strong>Every one of these forces a design decision.</strong> These notes explain what that environment is, the physics that governs it, and the hazards it creates — with derivations you can expand, three interactive demos embedded right in the page, and questions whose answers reveal only when you click.</p>
+
+    <div class="toc">
+        <h4>Contents</h4>
+        <ol>
+            <li><a href="#s1">The Solar-Terrestrial Connection</a> — the Sun, the solar wind, and the IMF</li>
+            <li><a href="#s2">Atmosphere, Ionosphere &amp; Magnetosphere</a></li>
+            <li><a href="#s3">Charged-Particle Motion &amp; Trapping</a> — gyration, drifts, mirroring <em>(interactive)</em></li>
+            <li><a href="#s4">The Radiation Belts</a> <em>(interactive)</em></li>
+            <li><a href="#s5">Spacecraft Hazards</a></li>
+            <li><a href="#s6">Knowledge Check</a></li>
+        </ol>
+    </div>
+
+    <!-- ============================================================= -->
+    <h2 id="s1">1. The Solar-Terrestrial Connection</h2>
+
+    <h3>1.1 The Sun and the Solar Wind</h3>
+    <p>The Sun's visible surface (the photosphere) is about 5800 K, yet just above it the temperature <em>rises</em> to over a million kelvin in the <strong>corona</strong>. At that temperature the protons and electrons are moving so fast that the Sun's gravity cannot hold the outer corona down. In 1958 Eugene Parker showed that the only steady solution is one in which the corona <em>continuously expands outward</em>, accelerating through the speed of sound and becoming a supersonic flow — the <span class="highlight">solar wind</span>.</p>
+    <p>The solar wind is a <strong>plasma</strong>: an ionised gas that is electrically quasi-neutral (equal positive and negative charge) but, unlike an ordinary gas, responds collectively to electric and magnetic fields. Its typical properties at Earth's distance (1 AU) are worth memorising as order-of-magnitude anchors:</p>
+    <ul>
+        <li><b>Composition:</b> ~95% protons and electrons, ~4% alpha particles (He²⁺), traces of heavier ions.</li>
+        <li><b>Speed:</b> 400 km/s in the "slow" wind; 700–800 km/s in the "fast" wind that streams out of coronal holes.</li>
+        <li><b>Density:</b> only ~5–10 particles per cm³ — a far better vacuum than any laboratory can make.</li>
+        <li><b>Temperature:</b> ~10⁵ K, and it is <em>collisionless</em>: particles almost never hit one another over an astronomical unit.</li>
+    </ul>
+    <p>Because it is a magnetised, collisionless plasma, the solar wind carries the Sun's influence — momentum, energy, and crucially its <em>magnetic field</em> — all the way out past the planets to the <strong>heliopause</strong>, roughly 120 AU away, where it finally meets the interstellar medium. For a spacecraft, the solar wind is the "weather system" of interplanetary space: it sets the plasma environment beyond the magnetosphere, and its gusts (from flares and coronal mass ejections) drive the geomagnetic storms that stress every satellite at Earth.</p>
+
+    <h3>1.2 The Interplanetary Magnetic Field (IMF)</h3>
+    <p>Why does the solar wind carry the Sun's magnetic field at all? Because a highly conducting plasma and a magnetic field are locked together — the "<span class="highlight">frozen-in flux</span>" theorem (Alfvén). Intuitively: any attempt to move the field relative to the plasma would drive huge currents (the conductivity is nearly infinite), and those currents produce forces that oppose the relative motion. The practical result is that the field lines are dragged along wherever the plasma goes. So as the solar wind flows radially outward, it stretches the Sun's field out with it into interplanetary space; that dragged-out field is the <strong>IMF</strong>.</p>
+    <p>But the Sun also <em>rotates</em> (about once every 25 days). A parcel of wind flies straight out radially, yet its "root" on the Sun keeps rotating. The field line connecting the parcel back to its root therefore gets wound into a spiral — exactly like the stream of water from a rotating garden sprinkler curves into a spiral even though each droplet flies straight. This is the <span class="highlight">Parker spiral</span>. At Earth the spiral has wound up to about 45° from the radial (Sun–Earth) direction.</p>
+
+    <div class="equation-box">
+        <strong>Parker spiral angle</strong> (angle of the IMF from the radial direction):
+        $$\tan\psi = \frac{\Omega\, r \cos\lambda}{v_{sw}} \;\;\Rightarrow\;\; \psi \approx 45^\circ \text{ at } 1\,\text{AU}$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — the ~45° spiral at Earth</span></summary>
+    <div class="dbody">
+        <p>A parcel leaves the Sun radially at speed $v_{sw}$; its foot-point rotates at angular rate $\Omega$. In the time $t=r/v_{sw}$ needed to reach radius $r$, the foot rotates by $\Delta\phi=\Omega t$. The connecting field line is an Archimedean spiral, and its local angle from radial obeys</p>
+        $$\tan\psi = \frac{r\,d\phi}{dr} = \frac{\Omega\,r}{v_{sw}}\quad(\text{ecliptic, }\lambda=0).$$
+        <p>At 1 AU: $\Omega = 2.9\times10^{-6}\,\text{s}^{-1}$, $r = 1.5\times10^{11}$ m, $v_{sw}\approx 4\times10^{5}$ m/s, giving $\tan\psi\approx 1.1$, so $\psi\approx 47^\circ$. Closer to the Sun the spiral is nearly radial; far out (e.g. at Jupiter) it is almost circular.</p>
+    </div></details>
+
+    <p>The single most important property of the IMF for Earth is its <strong>north–south component, $B_z$</strong>. When $B_z$ points <span class="highlight">southward</span> — opposite to the Earth's northward-pointing field on the dayside — the two fields can <strong>magnetically reconnect</strong>: the field lines break and re-join, opening a door that lets solar-wind energy and plasma pour into the magnetosphere. This is the trigger for magnetic storms and substorms, bright aurorae, and the injection of the energetic particles that inflate the radiation belts. A northward IMF, by contrast, leaves the magnetosphere "closed" and comparatively quiet.</p>
+
+    <div class="keyidea"><b>Why space weather matters to you as a designer:</b> a severe storm can charge surfaces to kilovolts, inflate the atmosphere (increasing drag and orbit decay), inject penetrating electrons that bury charge deep in dielectrics (internal charging), and raise single-event-upset rates. The chain always starts here — with a southward IMF reconnecting at the dayside magnetopause.</div>
+
+    <div class="check">
+        <div class="qlabel">QUICK CHECK</div>
+        <div class="question-card" id="q1">
+            <div class="question-text">Which IMF orientation most strongly drives severe geomagnetic storms?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q1')">A) Strong radial $B_r$</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q1')">B) Strong northward $B_z$</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q1','A southward $B_z$ opposes Earth&rsquo;s dayside field, enabling reconnection.')">C) Strong southward $B_z$</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q1')">D) Eastward $B_y$</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q1',this)">Show solution</button>
+            <div class="solution" id="sol_q1"><span class="ans">Answer: C — southward $B_z$.</span> Dayside reconnection needs the IMF to oppose Earth's northward field. A southward IMF opens the magnetopause and drives convection, storms and aurorae; a northward IMF keeps the system closed and quiet.</div>
+        </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <h2 id="s2">2. Atmosphere, Ionosphere &amp; Magnetosphere</h2>
+
+    <h3>2.1 The Neutral Atmosphere</h3>
+    <p>The atmosphere does not "end" at any altitude — it simply thins out, with density falling roughly exponentially. What changes with height is the <em>temperature gradient</em>, and its sign flips several times. Sunlight is absorbed at the ground (warming the troposphere), by ozone in the stratosphere (a warm layer), then the mesosphere cools again, and finally the thermosphere is heated to 500–1500 K by the absorption of solar extreme-ultraviolet radiation. These reversals are what define the named "spheres."</p>
+    <p>The rate of the exponential falloff is the <span class="highlight">scale height</span> $H$ — the altitude increase over which the density drops by a factor of $e$. It comes straight from balancing pressure against gravity:</p>
+    <div class="equation-box">
+        $$\rho(h)=\rho_0\,e^{-h/H},\qquad H=\frac{k_B T}{m g},\qquad \lambda_{mfp}=\frac{1}{n\sigma}$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — the scale height $H$</span></summary>
+    <div class="dbody">
+        <p>Hydrostatic balance: the pressure gradient holds up the weight of the gas, $\dfrac{dP}{dh}=-\rho g$. For an ideal gas $P=n k_B T = \rho\,\dfrac{k_B T}{m}$, so $\rho=\dfrac{Pm}{k_BT}$ and</p>
+        $$\frac{dP}{dh}=-\frac{Pmg}{k_BT}=-\frac{P}{H},\qquad H\equiv\frac{k_BT}{mg}.$$
+        <p>Integrating gives $P=P_0e^{-h/H}$ (hence $\rho=\rho_0e^{-h/H}$). Larger $H$ (hotter gas, or lighter molecules) means a more gradual falloff. In the thermosphere ($T\sim1000$ K, atomic O, $g\approx8.9$): $H\approx58$ km.</p>
+    </div></details>
+    <p>A second quantity governs the character of the gas: the <strong>mean free path</strong> $\lambda_{mfp}=1/(n\sigma)$, the average distance a molecule travels between collisions. Near the ground it is tens of nanometres; above ~100 km it exceeds 1000 km. Once the mean free path is enormous, molecules essentially never collide — the gas becomes <em>collisionless</em>, ordinary fluid concepts (pressure, viscosity, sound) break down, and the different species stop mixing. Heavy molecules settle low and light ones (H, He) float to the top, forming the extended <strong>geocorona</strong> of hydrogen that reaches thousands of kilometres up.</p>
+
+    <h3>2.2 The Ionosphere</h3>
+    <p>Solar ultraviolet and X-ray photons are energetic enough to knock electrons off atmospheric atoms. The resulting plasma — free electrons and ions embedded in the neutral gas between ~60 and ~1000 km — is the <span class="highlight">ionosphere</span>. Its density is set by a balance between production (photoionisation, which needs sunlight and neutrals) and loss (recombination), which is why it is strongly layered and strongly day/night dependent:</p>
+    <ul>
+        <li><b>D region (~60–90 km):</b> weakly ionised, present only in daytime. It absorbs HF radio (and vanishes at night, which is why distant AM stations come in after dark).</li>
+        <li><b>E region (~90–150 km):</b> moderate density; supports some radio propagation and shows sporadic-E patches.</li>
+        <li><b>F region (~150–500 km):</b> the densest layer, splitting into F1 and F2 by day. Its peak electron density reflects HF radio around the world and is the main contributor to <span class="highlight">GPS signal delay and scintillation</span>.</li>
+    </ul>
+    <div class="design-note"><b>Design relevance:</b> the ionosphere refracts and delays radio and GPS signals (a major navigation error source), scintillates trans-ionospheric links, charges surfaces in the auroral zones, and is the plasma that LEO spacecraft and the ISS actually fly through. Above the F-peak the density falls into the plasmasphere and merges with the magnetosphere.</div>
+
+    <h3>2.3 The Magnetosphere and its Boundaries</h3>
+    <p>Deep inside the Earth, convecting molten iron acts as a dynamo and produces a roughly <strong>dipolar</strong> magnetic field. Out in space this field meets the supersonic solar wind. Because the solar wind is a magnetised plasma, it cannot simply mix with the Earth's field; instead it is deflected around it, carving out a comet-shaped cavity — the <span class="highlight">magnetosphere</span> — that shields the planet from most of the direct solar-wind flux.</p>
+    <p>Three boundaries form where a supersonic flow meets an obstacle:</p>
+    <ul>
+        <li>The <span class="highlight">bow shock</span>: like the shock ahead of a supersonic aircraft, the flow is abruptly slowed from supersonic to subsonic and heated.</li>
+        <li>The <span class="highlight">magnetosheath</span>: the turbulent, shocked, compressed solar-wind plasma between the bow shock and the magnetopause.</li>
+        <li>The <span class="highlight">magnetopause</span>: the actual boundary of the Earth's field, where the solar-wind pressure pushing in balances the magnetic pressure pushing out. On the sunward side it sits near $10\,R_E$; on the night side the field is stretched into a long <strong>magnetotail</strong> that reaches past the Moon's orbit.</li>
+    </ul>
+    <div class="equation-box">
+        <strong>Magnetopause standoff distance</strong> (pressure balance):
+        $$\rho_{sw}v_{sw}^2 \approx \frac{B_{mp}^2}{2\mu_0}\;\;\Rightarrow\;\;\frac{R_{mp}}{R_E}\approx\left(\frac{2B_0^2}{\mu_0\rho_{sw}v_{sw}^2}\right)^{1/6}\approx 10$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — the standoff distance and why it barely moves</span></summary>
+    <div class="dbody">
+        <p>The wind's ram (dynamic) pressure $\rho_{sw}v_{sw}^2$ is balanced by the magnetic pressure of the compressed dipole. The dipole falls as $B(r)=B_0(R_E/r)^3$, and boundary currents roughly double it: $B_{mp}\approx 2B_0(R_E/R_{mp})^3$. Equating pressures,</p>
+        $$\rho_{sw}v_{sw}^2=\frac{[2B_0(R_E/R_{mp})^3]^2}{2\mu_0}\;\Rightarrow\;\left(\frac{R_{mp}}{R_E}\right)^6=\frac{2B_0^2}{\mu_0\rho_{sw}v_{sw}^2}.$$
+        <p>With nominal numbers this gives $R_{mp}\approx 9.7\,R_E$. The <strong>1/6 power</strong> is the key: to halve the standoff distance you must raise the solar-wind pressure by $2^6=64\times$. That is why the magnetopause normally sits near $10\,R_E$ but, in the most extreme storms, can be pushed inside geostationary orbit ($6.6\,R_E$) — briefly exposing GEO satellites directly to the solar wind.</p>
+    </div></details>
+
+    <div class="problem">
+        <div class="ptitle">Worked Problem 1 — Magnetopause standoff</div>
+        Estimate $R_{mp}$ for a fast stream: $n=10$ cm$^{-3}$, $v_{sw}=700$ km/s ($B_0=3.1\times10^{-5}$ T).
+        <button class="show-sol" onclick="revealSol('sol_p1',this)">Show solution</button>
+        <div class="solution" id="sol_p1">
+            $\rho_{sw}=nm_p=(10^{7})(1.67\times10^{-27})=1.67\times10^{-20}$ kg/m³;&nbsp; $\rho v^2=(1.67\times10^{-20})(7\times10^{5})^2=8.2\times10^{-9}$ Pa.<br>
+            $\left(R_{mp}/R_E\right)^6=\dfrac{2(3.1\times10^{-5})^2}{(1.257\times10^{-6})(8.2\times10^{-9})}=1.87\times10^{5}$.<br>
+            <span class="ans">$R_{mp}\approx(1.87\times10^{5})^{1/6}\,R_E\approx 7.6\,R_E$</span> — compressed from ~10 to ~7.6 $R_E$. Note how small the change is despite nearly doubling the wind speed: that is the 1/6 power at work.
+        </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <h2 id="s3">3. Charged-Particle Motion &amp; Trapping</h2>
+    <p>Below ~200 km the neutral gas dominates; above it, the plasma does, and a spacecraft's environment is set by how individual charged particles move in the Earth's field. That motion follows the <strong>Lorentz force</strong>. The trick that makes it tractable is to split the motion into a fast, tight <em>gyration</em> around a field line plus a slow <em>drift</em> of the centre of that circle (the "guiding centre").</p>
+    <div class="equation-box">
+        $$m\frac{d\vec v}{dt}=q\left(\vec E+\vec v\times\vec B\right)+\vec F_{ext}$$
+    </div>
+
+    <h3>3.1 Gyration</h3>
+    <p>Take the simplest case: a uniform $\vec B$, no electric field. The magnetic force is always perpendicular to the velocity, so it does no work (the speed is constant) and it bends the path into a circle. The particle therefore <strong>spirals around the field line</strong>: it circles in the plane perpendicular to $\vec B$ while sliding freely along $\vec B$, tracing a helix. Two numbers describe it — how fast it goes around (the <span class="highlight">gyrofrequency</span>) and how big the circle is (the <span class="highlight">gyroradius</span>):</p>
+    <div class="equation-box">
+        $$\omega_c=\frac{qB}{m},\qquad r_g=\frac{mv_\perp}{qB}=\frac{v_\perp}{\omega_c}$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — gyrofrequency and gyroradius</span></summary>
+    <div class="dbody">
+        <p>With $\vec B=B\hat z$, the cross product gives $\vec v\times\vec B=(v_yB,-v_xB,0)$, so</p>
+        $$m\dot v_x=qBv_y,\qquad m\dot v_y=-qBv_x.$$
+        <p>Differentiate the first and substitute the second: $\ddot v_x=-(qB/m)^2 v_x$ — simple harmonic motion at $\omega_c=qB/m$. Circular motion at that rate with rim speed $v_\perp$ has radius $r_g=v_\perp/\omega_c=mv_\perp/(qB)$.</p>
+    </div></details>
+    <p>Read these formulas physically. The gyroradius grows with momentum ($mv_\perp$) and shrinks with field strength: heavy or fast particles make wide circles, strong fields wind them tight. The gyrofrequency is independent of speed but depends on charge-to-mass ratio, so an electron gyrates about 1800 times faster than a proton in the same field. And because $q$ appears with its sign, electrons and ions circle in <em>opposite</em> senses. Across the regions a spacecraft meets, $r_g$ ranges from metres (electrons in a strong field) to thousands of kilometres (energetic ions in the weak outer field) — which is exactly why "the plasma" behaves so differently from place to place.</p>
+
+    <div class="demo-wrap">
+        <span class="demo-label">▶ INTERACTIVE 1</span>
+        <iframe title="Gyromotion demo" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Gyromotion — interactive · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{
+    --green:#008540; --forest:#00573F; --petrol:#003E51; --gold:#DAC961;
+    --stone:#8A6D00; --tint:#EAF3EE; --ink:#12211B; --mut:#5C6B64; --line:#D9DAE4;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);
+       background:linear-gradient(180deg,#f4f8f6,#eef4f1);}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);
+         background:var(--petrol);color:#fff;}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0 2px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#0e2b25;border-radius:14px;overflow:hidden;
+         box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:420px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:10px;flex-wrap:wrap;pointer-events:none}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:7px 12px;min-width:120px;
+        box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .chip .l{font-size:10.5px;letter-spacing:.5px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:20px;font-weight:700;color:var(--forest);line-height:1.1}
+  .chip.gold .v{color:var(--stone)} .chip.petrol .v{color:var(--petrol)}
+  .sense{position:absolute;bottom:12px;left:14px;background:rgba(0,0,0,.32);color:#eaf3ee;
+         padding:6px 12px;border-radius:8px;font-size:12.5px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+         box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}
+  .row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px;color:var(--ink)}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  .segs{display:flex;gap:6px}
+  .segs button{flex:1;padding:8px 4px;border:1px solid var(--line);background:#f6faf8;border-radius:9px;
+    font-weight:700;font-size:13px;cursor:pointer;color:var(--forest)}
+  .segs button.on{background:var(--green);color:#fff;border-color:var(--green)}
+  .presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;
+    font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .actions{display:flex;gap:8px;margin-top:6px}
+  .actions button{flex:1;padding:9px;border-radius:9px;border:none;font-weight:700;cursor:pointer;font-size:13px}
+  #play{background:var(--green);color:#fff}
+  #reset{background:#eef1f0;color:var(--ink)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 · WEEK 2 — SPACE ENVIRONMENT&lt;/div&gt;
+  &lt;h1&gt;Gyromotion — a charged particle in a magnetic field&lt;/h1&gt;
+  &lt;div class=&quot;eq&quot;&gt;Gyrofrequency&amp;nbsp; &lt;b&gt;ω&lt;sub&gt;c&lt;/sub&gt; = qB / m&lt;/b&gt; &amp;nbsp;·&amp;nbsp; Gyroradius&amp;nbsp; &lt;b&gt;ρ&lt;sub&gt;g&lt;/sub&gt; = m v&lt;sub&gt;⊥&lt;/sub&gt; / (qB)&lt;/b&gt; &amp;nbsp;·&amp;nbsp; Lorentz force&amp;nbsp; &lt;b&gt;m dv/dt = q(v × B)&lt;/b&gt;&lt;/div&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;c&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;Gyroradius&amp;nbsp;ρ&lt;sub&gt;g&lt;/sub&gt;&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;rOut&quot;&gt;–&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;Gyrofrequency&amp;nbsp;f&lt;sub&gt;c&lt;/sub&gt;&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;fOut&quot;&gt;–&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;Period&amp;nbsp;T&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;tOut&quot;&gt;–&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;sense&quot; id=&quot;senseOut&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Particle&lt;/h2&gt;
+    &lt;div class=&quot;segs&quot; id=&quot;pSeg&quot;&gt;
+      &lt;button data-p=&quot;e&quot; class=&quot;on&quot;&gt;Electron&lt;/button&gt;
+      &lt;button data-p=&quot;p&quot;&gt;Proton&lt;/button&gt;
+      &lt;button data-p=&quot;a&quot;&gt;Alpha (He²⁺)&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;h2&gt;Field &amp;amp; motion&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;label&gt;Magnetic field&amp;nbsp;B &lt;span class=&quot;num&quot; id=&quot;bNum&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;bR&quot; min=&quot;0&quot; max=&quot;1000&quot; value=&quot;560&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;label&gt;Perp. speed&amp;nbsp;v&lt;sub&gt;⊥&lt;/sub&gt; &lt;span class=&quot;num&quot; id=&quot;vpNum&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;vpR&quot; min=&quot;0&quot; max=&quot;1000&quot; value=&quot;600&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;label&gt;Parallel speed&amp;nbsp;v&lt;sub&gt;∥&lt;/sub&gt; (helix pitch) &lt;span class=&quot;num&quot; id=&quot;vparNum&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;vparR&quot; min=&quot;0&quot; max=&quot;1000&quot; value=&quot;300&quot;&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;h2&gt;Presets — regions from the table&lt;/h2&gt;
+    &lt;div class=&quot;presets&quot; id=&quot;presets&quot;&gt;
+      &lt;button data-b=&quot;5&quot;   data-vp=&quot;4e5&quot; data-p=&quot;p&quot;&gt;Solar wind (5 nT)&lt;/button&gt;
+      &lt;button data-b=&quot;200&quot; data-vp=&quot;1e6&quot; data-p=&quot;p&quot;&gt;Magnetosphere (200 nT)&lt;/button&gt;
+      &lt;button data-b=&quot;3000&quot; data-vp=&quot;1e7&quot; data-p=&quot;e&quot;&gt;Radiation belt (3000 nT)&lt;/button&gt;
+      &lt;button data-b=&quot;30000&quot; data-vp=&quot;3e5&quot; data-p=&quot;e&quot;&gt;Ionosphere (0.3 G)&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;actions&quot;&gt;
+      &lt;button id=&quot;play&quot;&gt;❚❚ Pause&lt;/button&gt;
+      &lt;button id=&quot;reset&quot;&gt;↺ Reset&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;The dashed line is the field line (&lt;b&gt;B&lt;/b&gt;). The particle spirals around it — a wide, slow orbit for heavy particles &amp;amp; weak fields, a tight, fast one for light particles &amp;amp; strong fields. Add parallel speed to stretch the circle into a helix. Sense of rotation flips with the sign of the charge.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+
+&lt;script&gt;
+const E=1.602176634e-19, ME=9.1093837e-31, MP=1.67262192e-27, MA=6.6446573e-27;
+const PART={e:{q:-E,m:ME,name:&quot;electron&quot;}, p:{q:E,m:MP,name:&quot;proton&quot;}, a:{q:2*E,m:MA,name:&quot;alpha&quot;}};
+const st={p:&quot;e&quot;, B:100e-9, vperp:1e6, vpar:5e5, phi:0, paused:false, trail:[]};
+
+// ---- slider mappings (log) ----
+const bFromS = s =&gt; Math.pow(10, (s/1000)*Math.log10(50000)) * 1e-9;      // 1 nT .. 50000 nT
+const sFromB = B =&gt; 1000*Math.log10(B/1e-9)/Math.log10(50000);
+const vpFromS= s =&gt; Math.pow(10, 4 + (s/1000)*3);                          // 1e4 .. 1e7 m/s
+const sFromVp= v =&gt; 1000*(Math.log10(v)-4)/3;
+const vparFromS = s =&gt; (s/1000)*5e6;                                        // 0 .. 5e6 m/s
+const sFromVpar = v =&gt; 1000*v/5e6;
+
+// ---- number formatting ----
+function fmtLen(m){const a=Math.abs(m);
+  if(a&gt;=1e6)return (m/1e6).toPrecision(3)+&quot; Mm&quot;;
+  if(a&gt;=1e3)return (m/1e3).toPrecision(3)+&quot; km&quot;;
+  if(a&gt;=1)  return m.toPrecision(3)+&quot; m&quot;;
+  if(a&gt;=1e-2)return (m*100).toPrecision(3)+&quot; cm&quot;;
+  return (m*1000).toPrecision(3)+&quot; mm&quot;;}
+function fmtFreq(f){const a=Math.abs(f);
+  if(a&gt;=1e9)return (f/1e9).toPrecision(3)+&quot; GHz&quot;;
+  if(a&gt;=1e6)return (f/1e6).toPrecision(3)+&quot; MHz&quot;;
+  if(a&gt;=1e3)return (f/1e3).toPrecision(3)+&quot; kHz&quot;;
+  return f.toPrecision(3)+&quot; Hz&quot;;}
+function fmtTime(t){const a=Math.abs(t);
+  if(a&gt;=1)  return t.toPrecision(3)+&quot; s&quot;;
+  if(a&gt;=1e-3)return (t*1e3).toPrecision(3)+&quot; ms&quot;;
+  if(a&gt;=1e-6)return (t*1e6).toPrecision(3)+&quot; µs&quot;;
+  if(a&gt;=1e-9)return (t*1e9).toPrecision(3)+&quot; ns&quot;;
+  return (t*1e12).toPrecision(3)+&quot; ps&quot;;}
+function fmtB(B){const nT=B/1e-9;
+  if(nT&gt;=1e4)return (nT/1e4).toPrecision(3)+&quot;×10⁴ nT&quot;;
+  if(nT&gt;=1e3)return (nT/1e3).toPrecision(3)+&quot; µT&quot;;
+  return nT.toPrecision(3)+&quot; nT&quot;;}
+function fmtV(v){return v&gt;=1e6?(v/1e6).toPrecision(3)+&quot;×10⁶ m/s&quot;:(v/1e3).toPrecision(3)+&quot;×10³ m/s&quot;;}
+
+// ---- physics ----
+function physics(){
+  const P=PART[st.p], q=Math.abs(P.q);
+  const omega=q*st.B/P.m, f=omega/(2*Math.PI), T=1/f, rg=P.m*st.vperp/(q*st.B);
+  const sense=(P.q&gt;0)?-1:1;           // rotation sense
+  return {omega,f,T,rg,sense,name:P.name,sign:P.q&gt;0?&quot;+&quot;:&quot;−&quot;};
+}
+
+// ---- canvas ----
+const cv=document.getElementById(&#x27;c&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+let W=0,Hh=0,DPR=1;
+function resize(){const r=cv.parentElement.getBoundingClientRect();DPR=Math.min(2,window.devicePixelRatio||1);
+  W=r.width; Hh=r.height; cv.width=W*DPR; cv.height=Hh*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);}
+new ResizeObserver(resize).observe(document.querySelector(&#x27;.stage&#x27;));
+
+function visRadius(rg){ // log-scaled so electrons and protons are both visible
+  const L=Math.log10(Math.max(rg,1e-3));               // rg in m
+  const px=18 + (Math.min(L,7))*16;                    // ~18px (small) up to ~130px
+  return Math.max(14,Math.min(px, Math.min(W,Hh)*0.34));
+}
+
+function draw(ph){
+  const cx=W*0.5, cy=Hh*0.54;
+  const R=visRadius(ph.rg);
+  const pitchRatio=(st.vperp&gt;0)? st.vpar/st.vperp : 4;  // gyroradii advanced per radian
+  const axPx=R*0.85, dX=R*0.58, dY=R*0.34;              // along-field px &amp; depth projection
+  // background
+  ctx.clearRect(0,0,W,Hh);
+  const g=ctx.createLinearGradient(0,0,0,Hh); g.addColorStop(0,&quot;#123a31&quot;);g.addColorStop(1,&quot;#0b241f&quot;);
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,Hh);
+  // field lines (horizontal, B to the right)
+  ctx.lineWidth=1.5;
+  for(let k=-2;k&lt;=2;k++){
+    const yy=cy - k*R*0.62 + (k? 0:0);
+    ctx.strokeStyle= k===0? &quot;rgba(218,201,97,.55)&quot;:&quot;rgba(160,190,180,.16)&quot;;
+    ctx.setLineDash(k===0?[7,6]:[]);
+    ctx.beginPath();ctx.moveTo(30,yy);ctx.lineTo(W-30,yy);ctx.stroke();
+    // arrowheads
+    ctx.setLineDash([]);
+    for(let ax=90; ax&lt;W-40; ax+=150){
+      ctx.fillStyle= k===0? &quot;rgba(218,201,97,.7)&quot;:&quot;rgba(160,190,180,.22)&quot;;
+      ctx.beginPath();ctx.moveTo(ax,yy);ctx.lineTo(ax-8,yy-4);ctx.lineTo(ax-8,yy+4);ctx.closePath();ctx.fill();
+    }
+  }
+  ctx.setLineDash([]);
+  ctx.fillStyle=&quot;rgba(218,201,97,.95)&quot;;ctx.font=&quot;bold 15px Cambria,serif&quot;;
+  ctx.fillText(&quot;B&quot;,W-52,cy-10);
+
+  const phi=ph_state.phi, sense=ph.sense;
+  // trail
+  const span=Math.PI*2*2.4, N=90;
+  ctx.lineWidth=2.4;
+  for(let i=0;i&lt;N;i++){
+    const t0=phi-span*(i+1)/N, t1=phi-span*i/N;
+    const p0=proj(t0), p1=proj(t1);
+    const a=0.9*(1-i/N);
+    ctx.strokeStyle=`rgba(120,225,170,${a})`;
+    ctx.beginPath();ctx.moveTo(p0.x,p0.y);ctx.lineTo(p1.x,p1.y);ctx.stroke();
+  }
+  // guiding centre marker
+  const gc=projRaw(0,0,phi);
+  ctx.fillStyle=&quot;rgba(255,255,255,.5)&quot;;ctx.beginPath();ctx.arc(gc.x,gc.y,3,0,7);ctx.fill();
+  // particle
+  const pp=proj(phi);
+  // velocity vector (tangent)
+  const vt=proj(phi+0.14);
+  ctx.strokeStyle=&quot;#fff&quot;;ctx.lineWidth=2;
+  const vx=(vt.x-pp.x), vy=(vt.y-pp.y), vl=Math.hypot(vx,vy)||1, vs=34/vl;
+  arrow(pp.x,pp.y,pp.x+vx*vs,pp.y+vy*vs,&quot;#ffffff&quot;);
+  ctx.fillStyle=&quot;#eaf3ee&quot;;ctx.font=&quot;12px Calibri&quot;;ctx.fillText(&quot;v&quot;,pp.x+vx*vs+4,pp.y+vy*vs);
+  // particle dot
+  const col = st.p===&quot;e&quot; ? &quot;#7be1aa&quot; : (st.p===&quot;p&quot; ? &quot;#DAC961&quot; : &quot;#f2a65a&quot;);
+  ctx.shadowColor=col;ctx.shadowBlur=16;
+  ctx.fillStyle=col;ctx.beginPath();ctx.arc(pp.x,pp.y,8,0,7);ctx.fill();
+  ctx.shadowBlur=0;
+  ctx.fillStyle=&quot;#0e2b25&quot;;ctx.font=&quot;bold 11px Calibri&quot;;ctx.textAlign=&quot;center&quot;;
+  ctx.fillText(ph.sign,pp.x,pp.y+4);ctx.textAlign=&quot;left&quot;;
+
+  function proj(t){return projRaw(Math.sin(sense*t), Math.cos(sense*t), t);}
+  function projRaw(Y,Z,t){
+    const relx=(pitchRatio*(t-phi))*axPx;        // along-field, camera follows particle
+    return { x: cx + relx + Z*dX, y: cy - Y*R - Z*dY };
+  }
+}
+function arrow(x1,y1,x2,y2,c){ctx.strokeStyle=c;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  const ang=Math.atan2(y2-y1,x2-x1);ctx.fillStyle=c;ctx.beginPath();
+  ctx.moveTo(x2,y2);ctx.lineTo(x2-9*Math.cos(ang-.4),y2-9*Math.sin(ang-.4));
+  ctx.lineTo(x2-9*Math.cos(ang+.4),y2-9*Math.sin(ang+.4));ctx.closePath();ctx.fill();}
+
+// keep phi in a stable object for closures
+const ph_state=st;
+
+// ---- update readouts + labels ----
+function refresh(){
+  const ph=physics();
+  document.getElementById(&#x27;rOut&#x27;).textContent=fmtLen(ph.rg);
+  document.getElementById(&#x27;fOut&#x27;).textContent=fmtFreq(ph.f);
+  document.getElementById(&#x27;tOut&#x27;).textContent=fmtTime(ph.T);
+  document.getElementById(&#x27;senseOut&#x27;).innerHTML =
+    `${PART[st.p].name} (${ph.sign})&amp;nbsp; · &amp;nbsp;rotates ${ph.sense&gt;0?&quot;counter-clockwise&quot;:&quot;clockwise&quot;} about B `+
+    `&amp;nbsp; · &amp;nbsp;${st.vpar&gt;0? &quot;helix (pitch &quot;+fmtLen(2*Math.PI*st.vpar/ph.omega)+&quot;)&quot;:&quot;pure circle (v∥ = 0)&quot;}`;
+  document.getElementById(&#x27;bNum&#x27;).textContent=fmtB(st.B);
+  document.getElementById(&#x27;vpNum&#x27;).textContent=fmtV(st.vperp);
+  document.getElementById(&#x27;vparNum&#x27;).textContent= st.vpar&gt;0? fmtV(st.vpar) : &quot;0&quot;;
+  return ph;
+}
+
+// ---- controls ----
+const bR=document.getElementById(&#x27;bR&#x27;), vpR=document.getElementById(&#x27;vpR&#x27;), vparR=document.getElementById(&#x27;vparR&#x27;);
+bR.value=sFromB(st.B); vpR.value=sFromVp(st.vperp); vparR.value=sFromVpar(st.vpar);
+bR.oninput   =()=&gt;{st.B=bFromS(+bR.value); refresh();};
+vpR.oninput  =()=&gt;{st.vperp=vpFromS(+vpR.value); refresh();};
+vparR.oninput=()=&gt;{st.vpar=vparFromS(+vparR.value); refresh();};
+document.querySelectorAll(&#x27;#pSeg button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{
+  document.querySelectorAll(&#x27;#pSeg button&#x27;).forEach(x=&gt;x.classList.remove(&#x27;on&#x27;));
+  b.classList.add(&#x27;on&#x27;); st.p=b.dataset.p; refresh();});
+document.querySelectorAll(&#x27;#presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{
+  st.B=(+b.dataset.b)*1e-9; st.vperp=(+b.dataset.vp);
+  st.p=b.dataset.p||st.p;
+  document.querySelectorAll(&#x27;#pSeg button&#x27;).forEach(x=&gt;x.classList.toggle(&#x27;on&#x27;,x.dataset.p===st.p));
+  bR.value=sFromB(st.B); vpR.value=sFromVp(st.vperp); refresh();});
+const playBtn=document.getElementById(&#x27;play&#x27;);
+playBtn.onclick=()=&gt;{st.paused=!st.paused; playBtn.textContent=st.paused?&quot;▶ Play&quot;:&quot;❚❚ Pause&quot;;};
+document.getElementById(&#x27;reset&#x27;).onclick=()=&gt;{
+  st.p=&quot;e&quot;; st.B=100e-9; st.vperp=1e6; st.vpar=5e5; st.phi=0; st.paused=false;
+  playBtn.textContent=&quot;❚❚ Pause&quot;;
+  bR.value=sFromB(st.B); vpR.value=sFromVp(st.vperp); vparR.value=sFromVpar(st.vpar);
+  document.querySelectorAll(&#x27;#pSeg button&#x27;).forEach(x=&gt;x.classList.toggle(&#x27;on&#x27;,x.dataset.p===&quot;e&quot;));
+  refresh();};
+
+// ---- loop ----
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(0.05,(now-last)/1000); last=now;
+  const ph=physics(); st.omega=ph.omega;
+  if(!st.paused) st.phi += 2.6*dt;                 // steady visual rotation rate
+  // update readouts live (period/pitch depend on phi-independent physics)
+  document.getElementById(&#x27;rOut&#x27;).textContent=fmtLen(ph.rg);
+  document.getElementById(&#x27;fOut&#x27;).textContent=fmtFreq(ph.f);
+  document.getElementById(&#x27;tOut&#x27;).textContent=fmtTime(ph.T);
+  document.getElementById(&#x27;senseOut&#x27;).innerHTML =
+    `${PART[st.p].name} (${ph.sign})&amp;nbsp;·&amp;nbsp;rotates ${ph.sense&gt;0?&quot;counter-clockwise&quot;:&quot;clockwise&quot;} about B`+
+    `&amp;nbsp;·&amp;nbsp;${st.vpar&gt;0? &quot;helix — pitch &quot;+fmtLen(2*Math.PI*st.vpar/ph.omega):&quot;pure circle (v∥ = 0)&quot;}`;
+  draw(ph);
+  requestAnimationFrame(loop);
+}
+resize(); refresh(); requestAnimationFrame(loop);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+        <div class="demo-cap">Vary the particle, field strength and velocity components. Watch the gyroradius and gyrofrequency update, the helix stretch when you add parallel speed, and the rotation sense flip with charge. Presets match the regions in the "On gyromotion" lecture table.</div>
+    </div>
+
+    <h3>3.2 Guiding-centre drifts</h3>
+    <p>If some <em>other</em> force acts in addition to $\vec B$, the circle's centre slowly drifts. The most important case is a perpendicular electric field, which produces the <span class="highlight">$\vec E\times\vec B$ drift</span>. Its remarkable feature is that it is completely independent of charge and mass — protons and electrons drift together, at the same velocity, so no current flows. This is the drift that circulates plasma through the entire magnetosphere ("convection").</p>
+    <div class="equation-box">
+        $$\vec v_{E\times B}=\frac{\vec E\times\vec B}{B^2}\qquad(\text{same for every particle})$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — why the $E\times B$ drift is charge-independent</span></summary>
+    <div class="dbody">
+        <p>Look for a steady drift $\vec v_d$ that exactly cancels the electric force, leaving pure gyration: $0=q(\vec E+\vec v_d\times\vec B)$, i.e. $\vec E=-\vec v_d\times\vec B$. Cross with $\vec B$ and use $\vec v_d\perp\vec B$:</p>
+        $$\vec E\times\vec B=-(\vec v_d\times\vec B)\times\vec B=\vec v_d B^2\;\Rightarrow\;\vec v_d=\frac{\vec E\times\vec B}{B^2}.$$
+        <p>Both $q$ and $m$ cancel. By contrast, the <em>gradient</em> and <em>curvature</em> drifts (from a non-uniform field) scale as $\dfrac{mv^2}{qB^3}$ — they carry $1/q$, so electrons and ions drift in <em>opposite</em> directions. That charge separation is a <em>current</em>: it is precisely what forms the westward <strong>ring current</strong> that circles the Earth and depresses the surface field during magnetic storms.</p>
+    </div></details>
+
+    <div class="check">
+        <div class="qlabel">QUICK CHECK</div>
+        <div class="question-card" id="q2">
+            <div class="question-text">Under an $\vec E\times\vec B$ drift, how do protons and electrons behave?</div>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q2','The charge cancels in $\\vec v_d=\\vec E\\times\\vec B/B^2$ — both drift together.')">A) Same direction, same speed</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q2')">B) Opposite directions, making a current</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q2')">C) Only electrons drift (lighter)</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q2')">D) They stay fixed on their field lines</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q2',this)">Show solution</button>
+            <div class="solution" id="sol_q2"><span class="ans">Answer: A.</span> $\vec v_{E\times B}$ has no $q$ or $m$, so no current results. It is the gradient/curvature drifts (which carry $1/q$) that separate charges and drive the ring current.</div>
+        </div>
+    </div>
+
+    <h3>3.3 Magnetic mirroring and the loss cone</h3>
+    <p>The Earth's field is not uniform — it gets stronger toward the poles, where the field lines crowd together. Watch what happens to a spiralling particle heading poleward. As it enters stronger field, a quantity called the <strong>magnetic moment</strong> $\mu=mv_\perp^2/2B$ stays almost constant (it is an <span class="highlight">adiabatic invariant</span> — conserved whenever the field changes slowly compared with a gyration). Since $\mu$ is fixed and $B$ is rising, $v_\perp^2$ must rise too; but the total speed is fixed (the magnetic force does no work), so $v_\parallel$ must fall. The particle's forward motion slows, stops, and reverses: it has <strong>mirrored</strong>. Trapped particles therefore bounce back and forth between a northern and a southern mirror point.</p>
+    <div class="equation-box">
+        $$\mu=\frac{mv_\perp^2}{2B}=\text{const},\qquad B_{\text{mirror}}=\frac{B_{eq}}{\sin^2\alpha_{eq}},\qquad \sin^2\alpha_{lc}=\frac{B_{min}}{B_{max}}$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — mirror point and loss-cone angle</span></summary>
+    <div class="dbody">
+        <p>With $\mu$ and speed $v^2=v_\perp^2+v_\parallel^2$ both conserved, $v_\perp^2=\dfrac{2\mu}{m}B$ grows with $B$, so $v_\parallel^2=v^2-\dfrac{2\mu}{m}B$. The particle mirrors ($v_\parallel=0$) where $B=B_m=\dfrac{mv^2}{2\mu}$. Using the equatorial pitch angle $\alpha_{eq}$ (with $v_{\perp,eq}=v\sin\alpha_{eq}$) gives $\mu=\dfrac{mv^2\sin^2\alpha_{eq}}{2B_{eq}}$, hence</p>
+        $$B_m=\frac{B_{eq}}{\sin^2\alpha_{eq}}.$$
+        <p>A particle is <strong>lost</strong> if its mirror point would lie below the atmosphere, i.e. if it needs $B_m>B_{max}$ (the field at the top of the atmosphere). The marginal case $B_m=B_{max}$ defines the <strong>loss-cone</strong> half-angle: $\sin^2\alpha_{lc}=B_{eq}/B_{max}=B_{min}/B_{max}=1/R_m$. Particles with equatorial pitch angle inside the cone ($\alpha_{eq}<\alpha_{lc}$) plunge into the atmosphere; the rest bounce and stay trapped. The loss cone depends only on field geometry — not on the particle's energy or charge.</p>
+    </div></details>
+    <p>The particles that fall inside the loss cone precipitate into the upper atmosphere near the poles, deposit their energy, and light up the <strong>aurora</strong>. The particles outside it stay trapped for months or years — the raw material of the radiation belts. The mirror machine is thus both the aurora's cause and the belts' container.</p>
+
+    <div class="demo-wrap">
+        <span class="demo-label">▶ INTERACTIVE 2</span>
+        <iframe title="Magnetic mirroring demo" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Magnetic mirroring — interactive · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);
+       background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#0e2b25;border-radius:14px;overflow:hidden;
+         box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:440px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:10px;flex-wrap:wrap;pointer-events:none}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:7px 12px;min-width:120px;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .chip .l{font-size:10.5px;letter-spacing:.5px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:20px;font-weight:700;color:var(--forest);line-height:1.1}
+  .chip.gold .v{color:var(--stone)}
+  #status{position:absolute;bottom:12px;left:14px;padding:7px 14px;border-radius:8px;font-weight:700;font-size:13px}
+  .trapped{background:rgba(0,133,64,.9);color:#fff}.lost{background:rgba(176,32,32,.92);color:#fff}
+  .bars{position:absolute;bottom:12px;right:14px;width:190px;background:rgba(255,255,255,.94);border-radius:10px;padding:9px 12px;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .bars .lab{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--mut);margin:2px 0}
+  .bar{height:8px;background:#e6ece9;border-radius:5px;overflow:hidden;margin-bottom:6px}
+  .bar span{display:block;height:100%}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}
+  .row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .actions{display:flex;gap:8px;margin-top:8px}
+  .actions button{flex:1;padding:9px;border-radius:9px;border:none;font-weight:700;cursor:pointer;font-size:13px}
+  #play{background:var(--green);color:#fff}#reset{background:#eef1f0;color:var(--ink)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 · WEEK 2 — SPACE ENVIRONMENT&lt;/div&gt;
+  &lt;h1&gt;Magnetic mirroring — the magnetic bottle&lt;/h1&gt;
+  &lt;div class=&quot;eq&quot;&gt;Invariant magnetic moment&amp;nbsp; &lt;b&gt;μ = m v&lt;sub&gt;⊥&lt;/sub&gt;² / 2B = const&lt;/b&gt; &amp;nbsp;·&amp;nbsp; mirror where&amp;nbsp; &lt;b&gt;B = B&lt;sub&gt;eq&lt;/sub&gt; / sin²α&lt;sub&gt;eq&lt;/sub&gt;&lt;/b&gt; &amp;nbsp;·&amp;nbsp; loss cone&amp;nbsp; &lt;b&gt;sin²α&lt;sub&gt;lc&lt;/sub&gt; = B&lt;sub&gt;min&lt;/sub&gt;/B&lt;sub&gt;max&lt;/sub&gt;&lt;/b&gt;&lt;/div&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;c&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;Loss-cone angle&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;lcOut&quot;&gt;–&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;Mirror point&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;mpOut&quot;&gt;–&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;status&quot; class=&quot;trapped&quot;&gt;TRAPPED&lt;/div&gt;
+    &lt;div class=&quot;bars&quot;&gt;
+      &lt;div class=&quot;lab&quot;&gt;&lt;span&gt;v∥ (along B)&lt;/span&gt;&lt;span id=&quot;vparTxt&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;bar&quot;&gt;&lt;span id=&quot;vparBar&quot; style=&quot;background:#003E51&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;lab&quot;&gt;&lt;span&gt;v⊥ (gyration)&lt;/span&gt;&lt;span id=&quot;vperpTxt&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;bar&quot;&gt;&lt;span id=&quot;vperpBar&quot; style=&quot;background:#008540&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Controls&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;label&gt;Equatorial pitch angle&amp;nbsp;α&lt;sub&gt;eq&lt;/sub&gt; &lt;span class=&quot;num&quot; id=&quot;aNum&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;aR&quot; min=&quot;5&quot; max=&quot;90&quot; value=&quot;45&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;label&gt;Mirror ratio&amp;nbsp;B&lt;sub&gt;max&lt;/sub&gt;/B&lt;sub&gt;min&lt;/sub&gt; &lt;span class=&quot;num&quot; id=&quot;rNum&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;rR&quot; min=&quot;2&quot; max=&quot;20&quot; step=&quot;0.5&quot; value=&quot;6&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;label&gt;Particle speed (energy) &lt;span class=&quot;num&quot; id=&quot;vNum&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;vR&quot; min=&quot;20&quot; max=&quot;100&quot; value=&quot;60&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;h2&gt;Try&lt;/h2&gt;
+    &lt;div class=&quot;presets&quot; id=&quot;presets&quot;&gt;
+      &lt;button data-a=&quot;70&quot;&gt;Trapped (steep)&lt;/button&gt;
+      &lt;button data-a=&quot;30&quot;&gt;Near loss cone&lt;/button&gt;
+      &lt;button data-a=&quot;12&quot;&gt;In the loss cone →&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;actions&quot;&gt;
+      &lt;button id=&quot;play&quot;&gt;❚❚ Pause&lt;/button&gt;
+      &lt;button id=&quot;reset&quot;&gt;↺ Reset&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;As the particle spirals into the stronger field near the throats, its magnetic moment μ is conserved, so &lt;b&gt;v⊥ grows and v∥ shrinks&lt;/b&gt; — the gyration tightens and the parallel motion stops. It &lt;b&gt;reflects&lt;/b&gt; (mirrors) and bounces back. If the equatorial pitch angle is inside the &lt;b&gt;loss cone&lt;/b&gt; (α&lt;sub&gt;eq&lt;/sub&gt; &amp;lt; α&lt;sub&gt;lc&lt;/sub&gt;), the mirror point lies beyond the throat and the particle escapes — precipitating into the atmosphere.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+
+&lt;script&gt;
+const st={a:45, Rm:6, v:0.6, x:0, dir:1, phi:0, paused:false, lost:false, lostT:0, trail:[]};
+const DEG=Math.PI/180;
+function Bfield(x){return 1+(st.Rm-1)*x*x;}          // B0 = 1 at centre
+function calc(){
+  const s2=Math.sin(st.a*DEG)**2, Bm=1/s2;
+  const xm2=(Bm-1)/(st.Rm-1);
+  const trapped = xm2&lt;=1;
+  const xm = trapped? Math.sqrt(xm2) : 1;
+  const alc = Math.asin(1/Math.sqrt(st.Rm))/DEG;
+  return {Bm,xm,trapped,alc};
+}
+// ---------- canvas ----------
+const cv=document.getElementById(&#x27;c&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+let W=0,Hh=0,DPR=1;
+function resize(){const r=cv.parentElement.getBoundingClientRect();DPR=Math.min(2,devicePixelRatio||1);
+  W=r.width;Hh=r.height;cv.width=W*DPR;cv.height=Hh*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+new ResizeObserver(resize).observe(document.querySelector(&#x27;.stage&#x27;));
+
+function draw(C){
+  const cx=W*0.5, cy=Hh*0.52, halfW=W*0.40;
+  ctx.clearRect(0,0,W,Hh);
+  const g=ctx.createLinearGradient(0,0,0,Hh);g.addColorStop(0,&quot;#123a31&quot;);g.addColorStop(1,&quot;#0b241f&quot;);
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,Hh);
+  // field lines forming the bottle: y(x)=Y0/sqrt(B(x))
+  const lines=[0.28,0.5,0.74];
+  ctx.lineWidth=1.6;
+  for(const Y0 of lines){for(const s of [1,-1]){
+    ctx.strokeStyle=&quot;rgba(160,195,182,.28)&quot;;ctx.beginPath();
+    for(let i=0;i&lt;=120;i++){const x=-1.15+2.3*i/120;const y=s*Y0/Math.sqrt(Bfield(x));
+      const sx=cx+x*halfW, sy=cy-y*halfW; i?ctx.lineTo(sx,sy):ctx.moveTo(sx,sy);}
+    ctx.stroke();}}
+  // axis + B arrows
+  ctx.setLineDash([7,6]);ctx.strokeStyle=&quot;rgba(218,201,97,.5)&quot;;ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(cx-halfW*1.15,cy);ctx.lineTo(cx+halfW*1.15,cy);ctx.stroke();ctx.setLineDash([]);
+  // throats (strong-B coils) + atmosphere caps if loss cone
+  for(const s of[1,-1]){const tx=cx+s*halfW;
+    ctx.strokeStyle=&quot;rgba(218,201,97,.8)&quot;;ctx.lineWidth=3;
+    ctx.beginPath();ctx.ellipse(tx,cy,7,halfW*0.30/Math.sqrt(st.Rm),0,0,7);ctx.stroke();
+    ctx.fillStyle=&quot;rgba(218,201,97,.85)&quot;;ctx.font=&quot;bold 12px Cambria,serif&quot;;
+    ctx.fillText(&quot;strong B&quot;,tx-(s&gt;0?26:60),cy-halfW*0.34);
+    if(!C.trapped){ctx.fillStyle=&quot;rgba(176,60,60,.85)&quot;;ctx.fillRect(tx-(s&gt;0?0:8),cy-30,8,60);
+      ctx.fillStyle=&quot;#ffd7d7&quot;;ctx.font=&quot;10px Calibri&quot;;}
+  }
+  // mirror-point markers
+  for(const s of[1,-1]){const mx=cx+s*C.xm*halfW;
+    ctx.strokeStyle=&quot;rgba(255,255,255,.5)&quot;;ctx.lineWidth=1.4;ctx.setLineDash([3,4]);
+    ctx.beginPath();ctx.moveTo(mx,cy-halfW*0.42);ctx.lineTo(mx,cy+halfW*0.42);ctx.stroke();ctx.setLineDash([]);}
+  ctx.fillStyle=&quot;rgba(255,255,255,.55)&quot;;ctx.font=&quot;11px Calibri&quot;;
+  ctx.fillText(&quot;mirror points&quot;,cx-38,cy-halfW*0.45);
+
+  // helix trail
+  ctx.lineWidth=2.4;
+  for(let i=0;i&lt;st.trail.length-1;i++){const p0=proj(st.trail[i]),p1=proj(st.trail[i+1]);
+    const a=0.85*(i/st.trail.length);
+    ctx.strokeStyle=`rgba(120,225,170,${a})`;ctx.beginPath();ctx.moveTo(p0.x,p0.y);ctx.lineTo(p1.x,p1.y);ctx.stroke();}
+  // particle
+  const P=proj(st.trail[st.trail.length-1]||{x:st.x,y:0,z:0.25});
+  const col= st.lost? &quot;#ff8a8a&quot;:&quot;#7be1aa&quot;;
+  ctx.shadowColor=col;ctx.shadowBlur=16;ctx.fillStyle=col;
+  ctx.beginPath();ctx.arc(P.x,P.y,8,0,7);ctx.fill();ctx.shadowBlur=0;
+  ctx.fillStyle=&quot;#0e2b25&quot;;ctx.font=&quot;bold 11px Calibri&quot;;ctx.textAlign=&quot;center&quot;;ctx.fillText(&quot;−&quot;,P.x,P.y+4);ctx.textAlign=&quot;left&quot;;
+
+  function proj(pt){const rx=pt.x*halfW + pt.z*halfW*0.26;
+    return {x:cx+rx, y:cy - pt.y*halfW - pt.z*halfW*0.15};}
+}
+// ---------- update ----------
+function fmt(){
+  const C=calc();
+  document.getElementById(&#x27;lcOut&#x27;).textContent=C.alc.toFixed(1)+&quot;°&quot;;
+  document.getElementById(&#x27;mpOut&#x27;).textContent= C.trapped? &quot;±&quot;+(C.xm).toFixed(2)+&quot; L&quot; : &quot;beyond throat&quot;;
+  const stt=document.getElementById(&#x27;status&#x27;);
+  if(C.trapped){stt.className=&quot;trapped&quot;;stt.textContent=&quot;TRAPPED — bounces between mirror points&quot;;}
+  else{stt.className=&quot;lost&quot;;stt.textContent=&quot;LOSS CONE — precipitates into atmosphere&quot;;}
+  document.getElementById(&#x27;aNum&#x27;).textContent=st.a+&quot;°&quot;;
+  document.getElementById(&#x27;rNum&#x27;).textContent=st.Rm.toFixed(1);
+  document.getElementById(&#x27;vNum&#x27;).textContent=(st.v*100|0)+&quot;%&quot;;
+  return C;
+}
+// bars showing v∥ / v⊥ exchange
+function bars(x,C){
+  const B=Bfield(x), frac=Math.min(1,B/C.Bm);
+  const vpar=Math.sqrt(Math.max(0,1-frac)), vperp=Math.sqrt(frac);
+  document.getElementById(&#x27;vparBar&#x27;).style.width=(vpar*100)+&quot;%&quot;;
+  document.getElementById(&#x27;vperpBar&#x27;).style.width=(vperp*100)+&quot;%&quot;;
+  document.getElementById(&#x27;vparTxt&#x27;).textContent=vpar.toFixed(2);
+  document.getElementById(&#x27;vperpTxt&#x27;).textContent=vperp.toFixed(2);
+}
+// ---------- controls ----------
+const aR=document.getElementById(&#x27;aR&#x27;),rR=document.getElementById(&#x27;rR&#x27;),vR=document.getElementById(&#x27;vR&#x27;);
+aR.oninput=()=&gt;{st.a=+aR.value;respawn();fmt();};
+rR.oninput=()=&gt;{st.Rm=+rR.value;respawn();fmt();};
+vR.oninput=()=&gt;{st.v=+vR.value/100;fmt();};
+document.querySelectorAll(&#x27;#presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{st.a=+b.dataset.a;aR.value=st.a;respawn();fmt();});
+const playBtn=document.getElementById(&#x27;play&#x27;);
+playBtn.onclick=()=&gt;{st.paused=!st.paused;playBtn.textContent=st.paused?&quot;▶ Play&quot;:&quot;❚❚ Pause&quot;;};
+document.getElementById(&#x27;reset&#x27;).onclick=()=&gt;{st.a=45;st.Rm=6;st.v=0.6;aR.value=45;rR.value=6;vR.value=60;respawn();fmt();st.paused=false;playBtn.textContent=&quot;❚❚ Pause&quot;;};
+function respawn(){st.x=0;st.dir=1;st.phi=0;st.lost=false;st.lostT=0;st.trail=[];}
+
+// ---------- loop ----------
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(0.05,(now-last)/1000);last=now;
+  const C=calc();
+  if(!st.paused &amp;&amp; !st.lost){
+    const B=Bfield(st.x), frac=Math.min(1,B/C.Bm);
+    const vpar=Math.sqrt(Math.max(0,1-frac));
+    st.x += st.dir*vpar*st.v*1.7*dt;
+    st.phi += (0.7+B*0.9)* (6.0)*dt* (0.4+st.v*0.6);   // gyration faster where B larger
+    if(C.trapped){ if(st.x&gt;=C.xm){st.x=C.xm;st.dir=-1;} else if(st.x&lt;=-C.xm){st.x=-C.xm;st.dir=1;} }
+    else { if(Math.abs(st.x)&gt;=1){st.lost=true;st.lostT=now;} }
+    // world position
+    const r=0.30/Math.sqrt(Bfield(st.x));               // gyroradius shrinks in strong B
+    st.trail.push({x:st.x, y:r*Math.sin(st.phi), z:r*Math.cos(st.phi)});
+    if(st.trail.length&gt;110)st.trail.shift();
+    bars(st.x,C);
+  }
+  if(st.lost &amp;&amp; now-st.lostT&gt;1100) respawn();
+  draw(C);
+  requestAnimationFrame(loop);
+}
+resize();fmt();respawn();requestAnimationFrame(loop);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+        <div class="demo-cap">Set the equatorial pitch angle and the mirror ratio. Watch $v_\perp$ grow and $v_\parallel$ shrink toward the throats, see where the particle reflects — and push the pitch angle into the loss cone to make it precipitate.</div>
+    </div>
+
+    <div class="problem">
+        <div class="ptitle">Worked Problem 2 — Loss cone</div>
+        A field line has mirror ratio $R_m=B_{max}/B_{min}=64$. (a) Find the loss-cone angle. (b) Is a particle with $\alpha_{eq}=10^\circ$ trapped or lost?
+        <button class="show-sol" onclick="revealSol('sol_p2',this)">Show solution</button>
+        <div class="solution" id="sol_p2">
+            (a) $\sin\alpha_{lc}=\sqrt{1/64}=0.125\Rightarrow$ <span class="ans">$\alpha_{lc}=7.2^\circ$.</span><br>
+            (b) $10^\circ>7.2^\circ$, so its mirror point is above the atmosphere — <span class="ans">trapped, it bounces.</span> A particle at $5^\circ$ (inside the cone) would precipitate and be lost.
+        </div>
+    </div>
+    <div class="problem">
+        <div class="ptitle">Worked Problem 3 — Gyroradius &amp; gyrofrequency</div>
+        Find $r_g$ and $f_c$ for a 10 keV proton where $B=100$ nT (velocity perpendicular; $m_p=1.67\times10^{-27}$ kg).
+        <button class="show-sol" onclick="revealSol('sol_p3',this)">Show solution</button>
+        <div class="solution" id="sol_p3">
+            $v_\perp=\sqrt{2E/m}=\sqrt{2(1.6\times10^{-15})/1.67\times10^{-27}}=1.39\times10^{6}$ m/s.<br>
+            $r_g=\dfrac{mv_\perp}{qB}=\dfrac{(1.67\times10^{-27})(1.39\times10^{6})}{(1.6\times10^{-19})(10^{-7})}$ <span class="ans">$\approx 145$ km.</span> &nbsp;
+            $f_c=\dfrac{qB}{2\pi m}$ <span class="ans">$\approx 1.5$ Hz.</span><br>
+            An electron of the same energy would gyrate ~43× tighter and ~1800× faster — try both in Interactive 1.
+        </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <h2 id="s4">4. The Radiation Belts</h2>
+    <p>Now combine everything. A trapped particle does <span class="highlight">three periodic motions at once</span>, on three very different timescales:</p>
+    <ul>
+        <li><b>Gyration</b> around the field line — microseconds to milliseconds.</li>
+        <li><b>Bounce</b> between the northern and southern mirror points — tenths of a second to seconds.</li>
+        <li><b>Drift</b> in longitude around the whole Earth — minutes to hours (electrons eastward, ions westward, from the gradient/curvature drift).</li>
+    </ul>
+    <p>Because $\tau_{gyro}\ll\tau_{bounce}\ll\tau_{drift}$, each motion has its own conserved "adiabatic invariant," and together they confine the particle to a <strong>drift shell</strong>: the slow drift carries the bouncing particle all the way around the planet, sweeping its bounce path into a closed, doughnut-shaped shell. Fill many such shells with particles of many energies and you have the <span class="highlight">Van Allen radiation belts</span> — the first discovery of the Space Age (Explorer 1, 1958).</p>
+
+    <div class="demo-wrap">
+        <span class="demo-label">▶ INTERACTIVE 3</span>
+        <iframe title="Radiation belt formation demo" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Radiation belt formation — interactive · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:460px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:104px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}
+  #status{position:absolute;bottom:12px;left:14px;padding:7px 14px;border-radius:8px;font-weight:700;font-size:13px;background:rgba(0,133,64,.9);color:#fff}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  .segs{display:flex;gap:6px}
+  .segs button{flex:1;padding:8px 4px;border:1px solid var(--line);background:#f6faf8;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;color:var(--forest)}
+  .segs button.on{background:var(--green);color:#fff;border-color:var(--green)}
+  .chkrow{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;margin:4px 0 2px}
+  .actions{display:flex;gap:8px;margin-top:10px}
+  .actions button{flex:1;padding:9px;border-radius:9px;border:none;font-weight:700;cursor:pointer;font-size:13px}
+  #play{background:var(--green);color:#fff}#clear{background:#eef1f0;color:var(--ink)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 · WEEK 2 — SPACE ENVIRONMENT&lt;/div&gt;
+  &lt;h1&gt;How the radiation belts form&lt;/h1&gt;
+  &lt;div class=&quot;eq&quot;&gt;Three combined motions:&amp;nbsp; &lt;b&gt;gyration&lt;/b&gt; (µs–ms) &amp;nbsp;≪&amp;nbsp; &lt;b&gt;bounce / mirroring&lt;/b&gt; (~s) &amp;nbsp;≪&amp;nbsp; &lt;b&gt;drift around Earth&lt;/b&gt; (min–hours) &amp;nbsp;→&amp;nbsp; a trapped &lt;b&gt;shell&lt;/b&gt;&lt;/div&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;c&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;Gyration period&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;gOut&quot;&gt;–&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;Bounce&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;bOut&quot;&gt;~ seconds&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;Drift&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;dOut&quot;&gt;–&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;status&quot;&gt;Building the belt…&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Particle&lt;/h2&gt;
+    &lt;div class=&quot;segs&quot; id=&quot;pSeg&quot;&gt;
+      &lt;button data-p=&quot;e&quot; class=&quot;on&quot;&gt;Electron → east&lt;/button&gt;
+      &lt;button data-p=&quot;p&quot;&gt;Proton → west&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;h2&gt;Orbit on the shell&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;label&gt;L-shell (distance)&amp;nbsp; &lt;span class=&quot;num&quot; id=&quot;lNum&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;lR&quot; min=&quot;1.5&quot; max=&quot;6.5&quot; step=&quot;0.1&quot; value=&quot;4&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;label&gt;Equatorial pitch angle&amp;nbsp;α&lt;sub&gt;eq&lt;/sub&gt; &lt;span class=&quot;num&quot; id=&quot;aNum&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;aR&quot; min=&quot;15&quot; max=&quot;90&quot; value=&quot;35&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;label&gt;Animation speed &lt;span class=&quot;num&quot; id=&quot;sNum&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;sR&quot; min=&quot;20&quot; max=&quot;140&quot; value=&quot;70&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;chkrow&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;shell&quot; checked&gt;&lt;label for=&quot;shell&quot;&gt;Accumulate the belt shell&lt;/label&gt;&lt;/div&gt;
+    &lt;div class=&quot;actions&quot;&gt;&lt;button id=&quot;play&quot;&gt;❚❚ Pause&lt;/button&gt;&lt;button id=&quot;clear&quot;&gt;↺ Clear shell&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;A trapped particle does three things at once: it &lt;b&gt;gyrates&lt;/b&gt; around a field line, &lt;b&gt;bounces&lt;/b&gt; between mirror points in the two hemispheres, and &lt;b&gt;drifts&lt;/b&gt; slowly in longitude around the Earth (electrons east, ions west). The drift sweeps the bouncing path all the way around — filling a doughnut-shaped &lt;b&gt;shell&lt;/b&gt;. Do this for many particles and energies and you get the &lt;b&gt;radiation belts&lt;/b&gt;. Smaller pitch angles bounce closer to the poles (a taller shell); larger L sits farther out.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+
+&lt;script&gt;
+const PARexp={e:&quot;electron&quot;,p:&quot;proton&quot;};
+const st={p:&quot;e&quot;, L:4, a:35, speed:0.7, phiD:0, bounce:0, gyro:0, paused:false, shellOn:true, shell:[]};
+const DEG=Math.PI/180;
+const B0=3.11e-5, RE=6.371e6, ME=9.109e-31, MP=1.673e-27, QE=1.602e-19;
+
+function lamMax(){return Math.acos(Math.sqrt(1/st.L));}
+function lamMirror(){ // mirror latitude from equatorial pitch angle (dipole)
+  const s2=Math.sin(st.a*DEG)**2;
+  // solve B(lam)/B_eq = 1/sin^2 a  -&gt;  sqrt(1+3sin^2 lam)/cos^6 lam = 1/s2
+  let lo=0, hi=lamMax(), target=1/s2;
+  for(let i=0;i&lt;40;i++){const m=(lo+hi)/2, lam=m;
+    const val=Math.sqrt(1+3*Math.sin(lam)**2)/Math.cos(lam)**6;
+    if(val&gt;target)hi=m;else lo=m;}
+  return Math.min((lo+hi)/2, lamMax()*0.995);
+}
+function periods(){
+  const Beq=B0/(st.L**3), m=(st.p===&quot;e&quot;)?ME:MP, q=QE;
+  const Tg=2*Math.PI*m/(q*Beq);                 // gyration period (s)
+  // rough drift period (min): ~ 43 min /(L * (E in MeV)) for ~1 MeV assume 1 MeV
+  const Tdrift_min = 43/(st.L);                  // representative for ~1 MeV
+  return {Tg, Tdrift_min};
+}
+function fmtT(t){if(t&gt;=1)return t.toPrecision(3)+&quot; s&quot;;if(t&gt;=1e-3)return (t*1e3).toPrecision(3)+&quot; ms&quot;;
+  if(t&gt;=1e-6)return (t*1e6).toPrecision(3)+&quot; µs&quot;;return (t*1e9).toPrecision(3)+&quot; ns&quot;;}
+
+// ---------- projection (tilted view of the dipole) ----------
+const cv=document.getElementById(&#x27;c&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+let W=0,Hh=0,DPR=1,scale=40,cx=0,cy=0;
+function resize(){const r=cv.parentElement.getBoundingClientRect();DPR=Math.min(2,devicePixelRatio||1);
+  W=r.width;Hh=r.height;cv.width=W*DPR;cv.height=Hh*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+new ResizeObserver(resize).observe(document.querySelector(&#x27;.stage&#x27;));
+function setScale(){cx=W*0.5;cy=Hh*0.52;scale=Math.min(W*0.44/(st.L+1.0), Hh*0.42/(st.L*0.75+1.0));}
+function proj(X,Y,Z){return {x:cx+(X+Y*0.34)*scale, y:cy-Z*scale+Y*0.22*scale, depth:Y};}
+// dipole field-line point at longitude phi, latitude lam
+function fp(phi,lam){const r=st.L*Math.cos(lam)**2, cyl=r*Math.cos(lam);
+  return proj(cyl*Math.cos(phi), cyl*Math.sin(phi), r*Math.sin(lam));}
+function fieldArc(phi,lamA,lamB,col,wd){ctx.strokeStyle=col;ctx.lineWidth=wd;ctx.beginPath();
+  const n=26;for(let i=0;i&lt;=n;i++){const lam=lamA+(lamB-lamA)*i/n,p=fp(phi,lam);i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);}ctx.stroke();}
+
+function draw(){
+  setScale();
+  ctx.clearRect(0,0,W,Hh);
+  const g=ctx.createRadialGradient(cx,cy,10,cx,cy,Math.max(W,Hh)*0.7);
+  g.addColorStop(0,&quot;#0b1226&quot;);g.addColorStop(1,&quot;#05070f&quot;);ctx.fillStyle=g;ctx.fillRect(0,0,W,Hh);
+  // starfield
+  ctx.fillStyle=&quot;rgba(255,255,255,.25)&quot;;for(let i=0;i&lt;60;i++){const sx=(i*137.5)%W, sy=(i*89.3)%Hh;ctx.fillRect(sx,sy,1,1);}
+
+  const lm=lamMirror(), lmax=lamMax();
+  const shellCol=(st.p===&quot;e&quot;)?&quot;120,225,170&quot;:&quot;218,201,97&quot;;
+  // equatorial drift ring (split back/front)
+  function ring(back){ctx.strokeStyle=`rgba(${shellCol},${back?0.18:0.32})`;ctx.setLineDash([5,6]);ctx.lineWidth=1.4;ctx.beginPath();
+    let started=false;for(let i=0;i&lt;=120;i++){const ph=2*Math.PI*i/120;const fr=Math.sin(ph)&gt;=0;
+      if(fr===!back){const p=fp(ph,0);started?ctx.lineTo(p.x,p.y):(ctx.moveTo(p.x,p.y),started=true);}else started=false;}
+    ctx.stroke();ctx.setLineDash([]);}
+  // accumulated shell arcs (back half first)
+  function shellHalf(back){for(const ph of st.shell){const fr=Math.sin(ph)&gt;=0; if(fr===!back)
+      fieldArc(ph,-lm,lm,`rgba(${shellCol},0.13)`,2);}}
+  ring(true); shellHalf(true);
+
+  // Earth
+  const eg=ctx.createRadialGradient(cx-scale*0.3,cy-scale*0.3,scale*0.15,cx,cy,scale);
+  eg.addColorStop(0,&quot;#5aa0e0&quot;);eg.addColorStop(0.55,&quot;#2b6fb0&quot;);eg.addColorStop(1,&quot;#123a63&quot;);
+  ctx.fillStyle=eg;ctx.beginPath();ctx.arc(cx,cy,scale,0,7);ctx.fill();
+  ctx.strokeStyle=&quot;rgba(120,180,240,.4)&quot;;ctx.lineWidth=1;ctx.beginPath();ctx.arc(cx,cy,scale,0,7);ctx.stroke();
+
+  ring(false); shellHalf(false);
+
+  // current field line (full, bright) + mirror markers
+  fieldArc(st.phiD,-lmax,lmax,&quot;rgba(255,255,255,.28)&quot;,1.4);
+  fieldArc(st.phiD,-lm,lm,&quot;rgba(255,255,255,.75)&quot;,2.2);
+  for(const s of [1,-1]){const p=fp(st.phiD,s*lm);
+    ctx.fillStyle=&quot;#fff&quot;;ctx.beginPath();ctx.arc(p.x,p.y,3,0,7);ctx.fill();}
+
+  // particle (bounce position) with little gyration ring
+  const lamP=lm*Math.sin(st.bounce);
+  const pp=fp(st.phiD,lamP);
+  const col=(st.p===&quot;e&quot;)?&quot;#7be1aa&quot;:&quot;#DAC961&quot;;
+  ctx.strokeStyle=col;ctx.lineWidth=1.6;ctx.globalAlpha=.8;
+  ctx.beginPath();ctx.ellipse(pp.x,pp.y,9,4,0,0,7);ctx.stroke();ctx.globalAlpha=1;
+  ctx.shadowColor=col;ctx.shadowBlur=15;ctx.fillStyle=col;
+  const gx=pp.x+9*Math.cos(st.gyro), gy=pp.y+4*Math.sin(st.gyro);
+  ctx.beginPath();ctx.arc(gx,gy,6,0,7);ctx.fill();ctx.shadowBlur=0;
+
+  // drift-direction arrow on the equatorial ring
+  const dsign=(st.p===&quot;e&quot;)?1:-1;
+  const pe=fp(st.phiD,0), pe2=fp(st.phiD+dsign*0.12,0);
+  ctx.strokeStyle=col;ctx.lineWidth=2.4;
+  const ang=Math.atan2(pe2.y-pe.y,pe2.x-pe.x);
+  ctx.beginPath();ctx.moveTo(pe.x,pe.y);ctx.lineTo(pe.x+22*Math.cos(ang),pe.y+22*Math.sin(ang));ctx.stroke();
+  ctx.fillStyle=col;ctx.beginPath();const ex=pe.x+22*Math.cos(ang),ey=pe.y+22*Math.sin(ang);
+  ctx.moveTo(ex,ey);ctx.lineTo(ex-9*Math.cos(ang-.4),ey-9*Math.sin(ang-.4));ctx.lineTo(ex-9*Math.cos(ang+.4),ey-9*Math.sin(ang+.4));ctx.closePath();ctx.fill();
+
+  // labels
+  ctx.fillStyle=&quot;rgba(235,243,238,.9)&quot;;ctx.font=&quot;12px Calibri&quot;;
+  ctx.fillText(&quot;gyration + bounce along field line&quot;,pp.x+14,pp.y-6);
+  ctx.fillText(&quot;drift around Earth →&quot;,cx-60,cy+scale+26);
+}
+
+// ---------- readouts ----------
+function fmt(){
+  const P=periods();
+  document.getElementById(&#x27;gOut&#x27;).textContent=fmtT(P.Tg);
+  document.getElementById(&#x27;dOut&#x27;).textContent=(st.p===&quot;e&quot;?&quot;east · &quot;:&quot;west · &quot;)+P.Tdrift_min.toFixed(0)+&quot; min&quot;;
+  document.getElementById(&#x27;lNum&#x27;).textContent=&quot;L = &quot;+st.L.toFixed(1);
+  document.getElementById(&#x27;aNum&#x27;).textContent=st.a+&quot;°&quot;;
+  document.getElementById(&#x27;sNum&#x27;).textContent=(st.speed*100|0)+&quot;%&quot;;
+  const reg = st.L&lt;2?&quot;inner belt&quot;:(st.L&lt;3?&quot;slot region&quot;:&quot;outer belt&quot;);
+  document.getElementById(&#x27;status&#x27;).textContent = st.shellOn? (&quot;Building the &quot;+reg+&quot; shell…&quot;) : reg;
+}
+// ---------- controls ----------
+const lR=document.getElementById(&#x27;lR&#x27;),aR=document.getElementById(&#x27;aR&#x27;),sR=document.getElementById(&#x27;sR&#x27;);
+lR.oninput=()=&gt;{st.L=+lR.value;st.shell=[];fmt();};
+aR.oninput=()=&gt;{st.a=+aR.value;st.shell=[];fmt();};
+sR.oninput=()=&gt;{st.speed=+sR.value/100;fmt();};
+document.querySelectorAll(&#x27;#pSeg button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{
+  document.querySelectorAll(&#x27;#pSeg button&#x27;).forEach(x=&gt;x.classList.remove(&#x27;on&#x27;));
+  b.classList.add(&#x27;on&#x27;);st.p=b.dataset.p;st.shell=[];fmt();});
+document.getElementById(&#x27;shell&#x27;).onchange=e=&gt;{st.shellOn=e.target.checked; if(!st.shellOn)st.shell=[];};
+const playBtn=document.getElementById(&#x27;play&#x27;);
+playBtn.onclick=()=&gt;{st.paused=!st.paused;playBtn.textContent=st.paused?&quot;▶ Play&quot;:&quot;❚❚ Pause&quot;;};
+document.getElementById(&#x27;clear&#x27;).onclick=()=&gt;{st.shell=[];};
+
+// ---------- loop ----------
+let last=performance.now(), lastStamp=0;
+function loop(now){
+  const dt=Math.min(0.05,(now-last)/1000);last=now;
+  if(!st.paused){
+    st.gyro += 22*dt;
+    st.bounce += (1.6+st.speed*1.4)*dt;
+    st.phiD += (st.p===&quot;e&quot;?1:-1)*(0.30+st.speed*0.5)*dt;
+    if(st.shellOn){ // stamp a shell arc every ~5° of drift
+      if(Math.abs(st.phiD-lastStamp)&gt;0.09){lastStamp=st.phiD; st.shell.push(st.phiD);
+        if(st.shell.length&gt;140)st.shell.shift();}
+    }
+  }
+  draw();fmt();
+  requestAnimationFrame(loop);
+}
+resize();fmt();requestAnimationFrame(loop);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+        <div class="demo-cap">Watch gyration + bounce + drift combine to build a belt shell around the Earth. Change the particle (electrons drift east, ions west), the L-shell, and the pitch angle (which sets how tall the shell is).</div>
+    </div>
+
+    <p>There are two main belts. The <strong>inner belt</strong> ($L\lesssim2$, roughly 1000–6000 km) is dominated by very energetic protons; it is stable and long-lived, fed partly by cosmic-ray impacts on the atmosphere (CRAND). The <strong>outer belt</strong> ($L\sim3$–7, straddling GPS and GEO) is mostly relativistic electrons; it is highly dynamic, brightening and emptying within hours during storms as waves accelerate and scatter electrons. Between them lies the relatively empty <strong>slot region</strong>.</p>
+    <p>One more twist matters enormously in LEO. The Earth's dipole is <em>tilted and offset</em> from the planet's centre, so over the South Atlantic the inner belt dips down to just a few hundred kilometres — the <span class="highlight">South Atlantic Anomaly (SAA)</span>. Low-orbiting spacecraft (including the ISS and most Earth-observation satellites) take the great majority of their radiation dose and single-event upsets during their brief passes through the SAA. It is common practice to safe sensitive instruments while crossing it.</p>
+
+    <div class="equation-box">
+        <strong>Dipole field along a field line</strong> (magnetic latitude $\lambda$, shell parameter $L$):
+        $$B(\lambda)=\frac{B_0}{L^3}\,\frac{\sqrt{1+3\sin^2\lambda}}{\cos^6\lambda}$$
+    </div>
+    <div class="design-note"><b>Design relevance:</b> where your orbit sits in $L$ decides your dose. LEO below the belts is mild except for the SAA; MEO and GTO transits push straight through the heart of the belts (harsh); GEO sits in the variable outer edge. This drives part selection, spot shielding, and radiation-tolerant electronics — the subject of §5.</div>
+
+    <div class="check">
+        <div class="qlabel">QUICK CHECK</div>
+        <div class="question-card" id="q3">
+            <div class="question-text">Which motion mainly fills out the belt into a closed shell (rather than a single ring)?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q3')">A) Gyration around the field line</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q3')">B) The bounce between hemispheres</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q3','The slow longitudinal drift carries the bouncing particle around all longitudes.')">C) The longitudinal drift around Earth</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q3')">D) Atmospheric scattering</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q3',this)">Show solution</button>
+            <div class="solution" id="sol_q3"><span class="ans">Answer: C.</span> Gyration is a tiny local circle; the bounce covers one field line (latitude); only the drift sweeps the particle around all longitudes, closing the shell.</div>
+        </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <h2 id="s5">5. Spacecraft Hazards</h2>
+    <p>Everything above sets the stage; here is how it actually threatens hardware, and what designers do about it.</p>
+
+    <h3>5.1 Micro-gravity</h3>
+    <p>In free fall there is no "down," so <strong>buoyancy vanishes</strong> and natural convection stops. On the ground, hot fluid rises and cool fluid sinks; in orbit it does not, so heat and mass must be moved deliberately — by pumps, fans, wicks and heat pipes rather than by letting warmth rise. Fluids are governed instead by surface tension and by how they were last accelerated. Propellant does not sit obediently at the bottom of a tank; it clings to walls and forms floating blobs. Before an engine can be fired, the fuel must be <em>settled</em> over the outlet — with a small ullage thrust, a spinning motion, or capillary <em>propellant-management devices</em> (vanes and sponges) inside the tank. Micro-gravity therefore reaches into structures, propulsion, attitude control and thermal design at once.</p>
+
+    <h3>5.2 The Vacuum Environment</h3>
+    <p>Space is a hard vacuum (~$10^{-9}$ Pa or lower in GEO), and that emptiness causes several distinct problems:</p>
+    <ul>
+        <li><b>Outgassing &amp; contamination:</b> materials slowly release trapped gases and volatiles, which re-condense on cold surfaces — fogging optics and darkening thermal coatings. Materials are screened for low outgassing (TML/CVCM limits).</li>
+        <li><b>Electrical breakdown (Paschen's curve):</b> the voltage at which a gap arcs depends on pressure × gap distance and has a <em>minimum</em> at intermediate pressure. In a hard vacuum there are almost no molecules to ionise, so the breakdown voltage is very high. But during ascent or on-orbit venting the spacecraft passes through that dangerous mid-pressure range (around ~70 kft equivalent), where an electron can gain ionising energy between collisions and a self-sustaining arc forms at surprisingly low voltage. High-voltage systems must be sealed, potted, or kept out of that regime while venting. (A related in-vacuum arc, <em>multipactor</em>, plagues RF components.)</li>
+        <li><b>Cold welding:</b> in air, every metal wears a thin oxide/adsorbed-gas layer that keeps surfaces from bonding. In vacuum those layers can be lost, and two clean metal surfaces pressed together may fuse — jamming mechanisms. Cold welding contributed to the partial failure of Galileo's high-gain antenna.</li>
+        <li><b>Metallic whiskers:</b> tin and zinc coatings spontaneously grow hair-thin conductive filaments in vacuum, which can bridge conductors and short circuits. This is why aerospace electronics avoid pure-tin finishes.</li>
+    </ul>
+
+    <h3>5.3 The Neutral Atmosphere in LEO — Drag and Atomic Oxygen</h3>
+    <p>Even at hundreds of kilometres there is enough residual atmosphere to matter. Two effects dominate:</p>
+    <p><b>Drag and orbital decay.</b> The thin gas exerts a drag force that removes orbital energy, lowering the orbit until the satellite re-enters. How fast this happens depends on the <span class="highlight">ballistic coefficient</span> $B_c=m/(C_DA)$ — a satellite's mass spread over its drag area. Heavy, compact spacecraft (large $B_c$) shrug off drag; light, high-area ones (CubeSats, or anything with deployed panels) decay quickly. Crucially, drag also varies by an order of magnitude over the 11-year solar cycle, because solar EUV heats and inflates the thermosphere near solar maximum — the same 400 km orbit can have a lifetime of years at solar minimum but months at solar maximum.</p>
+    <div class="equation-box">
+        $$\vec F_D=-\tfrac12\rho v^2 C_D A\,\hat v,\qquad B_c=\frac{m}{C_DA},\qquad \frac{\Delta\tau}{\tau}\approx -3\pi\,\rho\,a\,\frac{C_DA}{m}\ \text{per orbit}$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — bigger ballistic coefficient → longer life (and why drag "speeds you up")</span></summary>
+    <div class="dbody">
+        <p>The drag deceleration is $a_D=\dfrac{F_D}{m}=\dfrac{\tfrac12\rho v^2 C_DA}{m}=\dfrac{\rho v^2}{2B_c}$, so decay scales as $1/B_c$. A circular orbit has total energy $E=-\dfrac{\mu m}{2a}$ and speed $v=\sqrt{\mu/a}$. Drag removes energy, so $a$ decreases — but then $v=\sqrt{\mu/a}$ <em>increases</em>. Counter-intuitively, drag makes a satellite go <strong>faster</strong> as it spirals down (the lost potential energy more than pays for the gained kinetic energy). And since $\rho$ climbs steeply as the orbit lowers, decay accelerates catastrophically near the end — re-entry is abrupt.</p>
+    </div></details>
+    <p><b>Atomic oxygen (ATOX).</b> Above ~100 km, solar UV splits molecular oxygen ($O_2$) into single, highly reactive oxygen atoms — the most abundant species at LEO altitudes. A spacecraft rams into these atoms at ~8 km/s, and the collisions chemically erode organic materials: polymer films (like Kapton), carbon composites, and silver interconnects are oxidised and worn away. Ram-facing surfaces are protected with atomic-oxygen-resistant coatings (e.g. $SiO_2$ overcoats) or robust materials.</p>
+
+    <h3>5.4 The Radiation Environment</h3>
+    <p>Energetic particles — trapped belt electrons and protons, solar energetic particles from flares/CMEs, and galactic cosmic rays — damage spacecraft in three distinct ways:</p>
+    <ul>
+        <li><b>Total ionising dose (TID):</b> the slow accumulation of absorbed dose gradually shifts transistor thresholds and degrades electronics over the mission. Countered by shielding and rad-tolerant parts.</li>
+        <li><b>Displacement damage:</b> particles knock atoms out of the crystal lattice, degrading solar cells, sensors and optocouplers.</li>
+        <li><b>Single-event effects (SEE):</b> a <em>single</em> heavy particle can flip a memory bit (SEU), trigger a latch-up (SEL, potentially destructive), or a transient (SET). These are random and cannot be shielded away entirely — they are handled with error-correcting codes, watchdogs, current-limiting and redundancy.</li>
+    </ul>
+    <p>Shielding helps for dose but has limits: adding mass gives diminishing returns, and high-atomic-number shields generate secondary <em>bremsstrahlung</em> X-rays. Real designs combine modest shielding, careful part selection and qualification, spot-shielding of sensitive components, and fault-tolerant architecture.</p>
+
+    <h3>5.5 Micrometeoroids and Orbital Debris (MMOD)</h3>
+    <p>Finally, the mechanical threat. <strong>Micrometeoroids</strong> are natural dust; <strong>orbital debris</strong> is human-made — spent stages, dead satellites, and fragments from explosions and collisions. Both strike at hypervelocity (several to tens of km/s), and at those speeds even a tiny fragment carries enormous kinetic energy (a 1 mm aluminium fleck ≈ the energy of a fast baseball, concentrated on a pinhead). Impacts pit surfaces, puncture blankets and tanks, and can sever booms or destroy a spacecraft outright.</p>
+    <p>Designers respond with <strong>Whipple shields</strong> (a thin "bumper" standoff layer that vaporises an impactor before it reaches the wall), with conjunction tracking and collision-avoidance manoeuvres for larger objects, and with end-of-life disposal (de-orbit or graveyard orbits) to limit growth. The looming systemic risk is the <span class="highlight">Kessler syndrome</span>: once the debris density is high enough, collisions generate more debris faster than it decays, and certain orbits could become a self-sustaining cascade — a strong argument for the 25-year (now moving to 5-year) post-mission disposal guidelines.</p>
+
+    <div class="equation-box">
+        $$B_c=\frac{m}{C_DA}\quad(\text{drag}),\qquad E_{impact}=\tfrac12 m v^2\quad(\text{MMOD})$$
+    </div>
+    <div class="problem">
+        <div class="ptitle">Worked Problem 4 — Ballistic coefficient &amp; drag sail</div>
+        A 3U CubeSat: $m=4$ kg, $C_D=2.2$, $A=0.03$ m². (a) Its ballistic coefficient? (b) It deploys a drag sail raising $A$ to $0.5$ m² — effect on decay rate?
+        <button class="show-sol" onclick="revealSol('sol_p4',this)">Show solution</button>
+        <div class="solution" id="sol_p4">
+            (a) $B_c=\dfrac{4}{(2.2)(0.03)}$ <span class="ans">$\approx 61$ kg/m².</span><br>
+            (b) New $B_c=\dfrac{4}{(2.2)(0.5)}=3.6$ kg/m² — about <span class="ans">17× smaller</span>, so decay ($\propto 1/B_c$) is ~17× faster. Exactly how drag sails de-orbit small satellites without propellant.
+        </div>
+    </div>
+    <div class="problem">
+        <div class="ptitle">Worked Problem 5 — MMOD impact energy</div>
+        Kinetic energy of a 1 mm aluminium sphere ($\rho=2700$ kg/m³) at 10 km/s?
+        <button class="show-sol" onclick="revealSol('sol_p5',this)">Show solution</button>
+        <div class="solution" id="sol_p5">
+            $V=\tfrac43\pi(5\times10^{-4})^3=5.2\times10^{-10}$ m³; $m=\rho V=1.4\times10^{-6}$ kg.<br>
+            $E=\tfrac12 mv^2=\tfrac12(1.4\times10^{-6})(10^4)^2$ <span class="ans">$\approx 70$ J</span> — a fast-pitched baseball's energy on a pinhead. Hence Whipple shields and avoidance.
+        </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <div class="quiz-section" id="s6">
+        <h2 style="margin-top:0; border-bottom:1px solid var(--gold);">Interactive Knowledge Check</h2>
+        <p><em>Incorrect answers turn red; the correct explanation reveals when you pick the right answer — or click "Show solution" any time to check yourself.</em></p>
+
+        <div class="question-card" id="q4">
+            <div class="question-text">1. According to Paschen's curve, what is the main electrical hazard while a spacecraft vents gas or crosses the mid-atmosphere (~70 kft)?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q4')">A) Growth of tin whiskers</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q4','At mid-pressure, electrons reach ionising energy between collisions, so breakdown voltage plunges and arcs form.')">B) A large drop in breakdown voltage → severe arcing</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q4')">C) Infinite breakdown voltage, no current</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q4')">D) Cold welding of contacts</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q4',this)">Show solution</button>
+            <div class="solution" id="sol_q4"><span class="ans">Answer: B.</span> Paschen's curve has a minimum breakdown voltage at intermediate pressure×gap, where the mean free path lets electrons gain ionising energy yet collisions still build an avalanche. Avoid operating high-voltage systems in that regime while venting/ascending.</div>
+        </div>
+
+        <div class="question-card" id="q5">
+            <div class="question-text">2. What creates the corrosive atomic-oxygen (ATOX) environment in LEO?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q5')">A) Collisions with atmospheric nitrogen</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q5')">B) Solar-wind protons reacting with the thermosphere</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q5')">C) Outgassing of the spacecraft's own polymers</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q5','Solar UV photodissociates $O_2$ into single, highly reactive O atoms.')">D) Solar UV dissociating diatomic oxygen $O_2$</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q5',this)">Show solution</button>
+            <div class="solution" id="sol_q5"><span class="ans">Answer: D.</span> Above ~100 km solar UV splits $O_2$ into atomic O, the dominant LEO species. Ram impact of these atoms erodes polymers, silver and carbon — hence protective coatings on ram-facing surfaces.</div>
+        </div>
+
+        <div class="question-card" id="q6">
+            <div class="question-text">3. A designer wants the <em>slowest</em> drag-driven decay. Which helps most?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q6')">A) Maximise frontal area</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q6','Decay $\\propto 1/B_c$, so maximise $B_c=m/(C_DA)$.')">B) Maximise the ballistic coefficient $m/(C_DA)$</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q6')">C) Fly at solar maximum</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q6')">D) Increase $C_D$</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q6',this)">Show solution</button>
+            <div class="solution" id="sol_q6"><span class="ans">Answer: B.</span> Since $a_D=\rho v^2/(2B_c)$, larger $B_c$ decays slowest. More area or $C_D$ speeds decay; solar maximum inflates the atmosphere (higher $\rho$), also speeding decay.</div>
+        </div>
+
+        <div class="question-card" id="q7">
+            <div class="question-text">4. Which pair of motions makes the belts a closed shell, not just a ring?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q7')">A) Gyration + gradient drift</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q7','Bounce spreads the particle in latitude; drift spreads it in longitude — together, a 3-D shell.')">B) Bounce (mirroring) + longitudinal drift</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q7')">C) $E\times B$ drift + gyration</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q7')">D) Drag + reconnection</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q7',this)">Show solution</button>
+            <div class="solution" id="sol_q7"><span class="ans">Answer: B.</span> The bounce covers latitude along a field line; the drift covers longitude around Earth. Together they sweep a doughnut-shaped shell — the belt.</div>
+        </div>
+
+        <div class="question-card" id="q8">
+            <div class="question-text">5. Why does the magnetopause standoff distance change so little even when the solar-wind pressure varies a lot?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q8')">A) The solar wind pressure is actually constant</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q8','$R_{mp}\\propto(\\text{pressure})^{-1/6}$ — a very weak dependence.')">B) $R_{mp}$ depends on pressure only to the $-1/6$ power</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q8')">C) Earth's field grows to compensate</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q8')">D) The bow shock absorbs all the change</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q8',this)">Show solution</button>
+            <div class="solution" id="sol_q8"><span class="ans">Answer: B.</span> From pressure balance, $R_{mp}\propto(\rho v^2)^{-1/6}$. To halve the standoff distance you need a $2^6=64\times$ pressure increase — so it normally stays near $10\,R_E$ and only extreme storms push it inside GEO.</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function checkAnswer(btn, isCorrect, questionId, explanation = "") {
+        let container = document.getElementById(questionId);
+        let feedback = container.querySelector('.feedback');
+        if (isCorrect) {
+            feedback.innerHTML = "<b>Correct!</b> " + explanation;
+            feedback.className = "feedback correct";
+            btn.style.backgroundColor = "#007A33"; btn.style.color = "white"; btn.style.borderColor = "#007A33";
+            container.querySelectorAll('.option-btn').forEach(b => { b.disabled = true; if (b !== btn) b.style.opacity = "0.5"; });
+            if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([feedback]);
+        } else {
+            feedback.innerHTML = "<b>Incorrect.</b> Try again!";
+            feedback.className = "feedback wrong";
+            btn.style.backgroundColor = "#fff0f0"; btn.style.color = "#dc3545"; btn.style.borderColor = "#dc3545";
+            btn.disabled = true;
+        }
+    }
+    function revealSol(id, btn) {
+        let s = document.getElementById(id);
+        let show = !s.classList.contains('show');
+        s.classList.toggle('show', show);
+        if (btn) btn.textContent = show ? (btn.classList.contains('reveal-link') ? "Hide solution" : "Hide solution ▴")
+                                        : (btn.classList.contains('reveal-link') ? "Show solution" : "Show solution ▾");
+        if (show && window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([s]);
+    }
+</script>
+
+</body>
+</html>
