@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AE 582: Satellite Engineering - Course Portal</title>
+    <style>
+        :root {
+            --green: #007A33;
+            --gold: #FDB913;
+            --dark: #12211B;
+            --light-bg: #F8F9FA;
+            --border: #DEE2E6;
+        }
+        body {
+            font-family: "Segoe UI", system-ui, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--gold);
+        }
+        header h1 {
+            margin: 0;
+            color: var(--gold);
+            font-family: "Cambria", serif;
+            font-size: 2.5em;
+        }
+        header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            color: #ddd;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h2 {
+            color: var(--green);
+            font-family: "Cambria", serif;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+        h3 {
+            color: var(--dark);
+            margin-top: 25px;
+        }
+        ul {
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .info-card {
+            background: #f1f8f5;
+            border-left: 4px solid var(--green);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background-color: var(--green);
+            color: white;
+            font-weight: 600;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        /* Schedule Grid */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .week-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .week-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            border-color: var(--gold);
+        }
+        .week-number {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: var(--mut);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .week-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--green);
+            margin: 0 0 15px 0;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .module-link {
+            display: inline-block;
+            background: var(--dark);
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: background 0.2s;
+            text-align: center;
+        }
+        .module-link:hover {
+            background: var(--green);
+        }
+        .citation {
+            font-size: 0.8em;
+            color: #999;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <p style="color:var(--green); font-weight:bold; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px;">King Fahd University of Petroleum & Minerals <span class="citation">[cite: 4]</span></p>
+    <h1>AE 582: Satellite Engineering</h1>
+    <p>Aerospace Engineering Department <span class="citation">[cite: 4]</span> | (3.00-0-3.00) <span class="citation">[cite: 4]</span></p>
+    <p style="margin-top: 15px; color: var(--gold); font-weight: 600;">Instructor: Dr. Juan Carlos Martínez Oliveros</p>
+</header>
+
+<div class="container">
+
+    <!-- Course Info Section -->
+    <h2>Course Catalog Description</h2>
+    <p>The course will cover the main aspects of a space mission lifecycle from requirements development to spacecraft and ground system design, assembly integration and test, and in-orbit operations <span class="citation">[cite: 4]</span>. It also includes mission statement and definition, Project organization, Mission design, System Engineering, Science & instruments <span class="citation">[cite: 4]</span>. Multiple subsystems, including but not limited to Telecom, Electrical power, Structure and Configuration, C&DH, ADCS, Propulsion, Thermal <span class="citation">[cite: 4]</span>.</p>
+
+    <h2>Course Objectives</h2>
+    <ul>
+        <li>The main objective is to learn to apply the fundamentals of space system engineering & design <span class="citation">[cite: 4]</span>.</li>
+        <li>The course introduces the various phases, systems, & subsystems involved in the design of spacecraft describing the techniques & best practices to plan <span class="citation">[cite: 4]</span>.</li>
+        <li>Show a common understanding of all spacecraft fundamentals <span class="citation">[cite: 4]</span>.</li>
+    </ul>
+
+    <h2>Course Learning Outcomes (CLOs)</h2>
+    <div class="info-card">
+        <ul>
+            <li><strong>CLO1.</strong> Understand the function of spacecraft subsystems <span class="citation">[cite: 4]</span>.</li>
+            <li><strong>CLO2.</strong> Understand the effect of launch system on satellite and payload design and performance <span class="citation">[cite: 4]</span>.</li>
+            <li><strong>CLO3.</strong> Apply orbital mechanics formula and tools to spacecraft mission design <span class="citation">[cite: 4]</span>.</li>
+            <li><strong>CLO4.</strong> Evaluate spacecraft subsystem performance and trades <span class="citation">[cite: 4]</span>.</li>
+        </ul>
+    </div>
+
+    <h2>Learning Resources</h2>
+    <ul>
+        <li><em>SPACECRAFT SYSTEMS ENGINEERING Fourth Edition</em>, Edited by Peter Fortescue, University of Southampton, UK Graham Swinerd, University of Southampton, UK, John Stark, Queen Mary, University of London, UK <span class="citation">[cite: 4]</span>.</li>
+        <li><em>Space Mission Analysis and Design</em> by James R. Wertz (Author), Wiley J. Larson (Author) <span class="citation">[cite: 4]</span>.</li>
+    </ul>
+
+    <h2>Assessment Plan</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Assessment Task</th>
+                <th>Due</th>
+                <th>Weight</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Assignments <span class="citation">[cite: 4]</span></td>
+                <td>Every 3rd to 4t week <span class="citation">[cite: 4]</span></td>
+                <td>10.0% <span class="citation">[cite: 4]</span></td>
+            </tr>
+            <tr>
+                <td>Home work <span class="citation">[cite: 4]</span></td>
+                <td>Every 3rd week <span class="citation">[cite: 4]</span></td>
+                <td>10.0% <span class="citation">[cite: 4]</span></td>
+            </tr>
+            <tr>
+                <td>Quizzes <span class="citation">[cite: 4]</span></td>
+                <td>Every 3rd week <span class="citation">[cite: 4]</span></td>
+                <td>15.0% <span class="citation">[cite: 4]</span></td>
+            </tr>
+            <tr>
+                <td>Project <span class="citation">[cite: 4]</span></td>
+                <td>Continuous <span class="citation">[cite: 4]</span></td>
+                <td>20.0% <span class="citation">[cite: 4]</span></td>
+            </tr>
+            <tr>
+                <td>Midterm/Major exams <span class="citation">[cite: 4]</span></td>
+                <td>mid <span class="citation">[cite: 4]</span></td>
+                <td>30.0% <span class="citation">[cite: 4]</span></td>
+            </tr>
+            <tr>
+                <td>Final Exam <span class="citation">[cite: 4]</span></td>
+                <td>End <span class="citation">[cite: 4]</span></td>
+                <td>10.0% <span class="citation">[cite: 4]</span></td>
+            </tr>
+            <tr>
+                <td>Attendance <span class="citation">[cite: 4]</span></td>
+                <td>End <span class="citation">[cite: 4]</span></td>
+                <td>5.0% <span class="citation">[cite: 4]</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Schedule Section -->
+    <h2>Lecture Weekly Schedule</h2>
+    <p>Click on the available modules below to access the interactive study notes and presentations for that week.</p>
+    
+    <div class="schedule-grid">
+        <div class="week-card">
+            <div class="week-number">Week 1</div>
+            <h3 class="week-title">INTRODUCTION <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card" style="border-left: 4px solid var(--gold);">
+            <div class="week-number">Week 2</div>
+            <h3 class="week-title">THE SPACECRAFT ENVIRONMENT AND ITS EFFECT ON DESIGN <span class="citation">[cite: 4]</span></h3>
+            <!-- Updated links reflecting the "week2" directory structure -->
+            <div class="btn-group">
+                <a href="week2/AE582_Week2.html" class="module-link">Interactive Presentation &rarr;</a>
+                <a href="week2/AE582_StudyNotes_Week2.html" class="module-link">Study Notes &rarr;</a>
+            </div>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 3</div>
+            <h3 class="week-title">DYNAMICS OF SPACECRAFT <br> CELESTIAL MECHANICS <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 4</div>
+            <h3 class="week-title">CELESTIAL MECHANICS (Continue) <br> MISSION ANALYSIS <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 5</div>
+            <h3 class="week-title">MISSION ANALYSIS (Continue) <br> PROPULSION SYSTEMS <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 6</div>
+            <h3 class="week-title">LAUNCH VEHICLES <br> SPACECRAFT STRUCTURES <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 7</div>
+            <h3 class="week-title">SPACECRAFT STRUCTURES (Continue) <br> ATTITUDE CONTROL & ELECTRICAL POWER SYSTEMS <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 8</div>
+            <h3 class="week-title">ATTITUDE CONTROL & ELECTRICAL POWER SYSTEMS (Continue) <br> THERMAL CONTROL OF SPACECRAFT <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 9</div>
+            <h3 class="week-title">THERMAL CONTROL OF SPACECRAFT (Continue) <br> TELECOMMUNICATIONS <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 10</div>
+            <h3 class="week-title">TELEMETRY, COMMAND, DATA HANDLING AND PROCESSING <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 11</div>
+            <h3 class="week-title">GROUND SEGMENT <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 12</div>
+            <h3 class="week-title">SPACECRAFT MECHANISMS <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 13</div>
+            <h3 class="week-title">ASSEMBLY, INTEGRATION AND VERIFICATION <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 14</div>
+            <h3 class="week-title">SMALL SATELLITE ENGINEERING AND APPLICATIONS <span class="citation">[cite: 4]</span></h3>
+        </div>
+        
+        <div class="week-card">
+            <div class="week-number">Week 15</div>
+            <h3 class="week-title">SMALL SATELLITE ENGINEERING AND APPLICATIONS (Continue) <br> SPACECRAFT SYSTEM ENGINEERING <span class="citation">[cite: 4]</span></h3>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
