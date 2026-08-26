@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Study Notes: AE 582 - Missions &amp; Spacecraft (Week 1)</title>
+
+    <script>
+      window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$'],['\\[','\\]']] } };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root { --green:#007A33; --gold:#FDB913; --dark:#12211B; --light-bg:#F8F9FA; --border:#DEE2E6; }
+        body { font-family:"Segoe UI",system-ui,sans-serif; background:var(--light-bg); color:var(--dark);
+            line-height:1.65; margin:0; padding:0; }
+        header { background:var(--dark); color:white; padding:30px 20px; text-align:center; border-bottom:5px solid var(--gold); }
+        header h1 { margin:0; color:var(--gold); font-family:"Cambria",serif; }
+        header p { margin:5px 0 0 0; font-size:1.1em; color:#ccc; }
+        .container { max-width:900px; margin:40px auto; background:white; padding:40px; border-radius:8px;
+            box-shadow:0 4px 15px rgba(0,0,0,0.05); }
+        h2 { color:var(--green); font-family:"Cambria",serif; border-bottom:2px solid var(--border);
+            padding-bottom:5px; margin-top:45px; }
+        h3 { color:var(--dark); margin-top:28px; font-size:1.22em; }
+        p { margin:12px 0; }
+        ul { margin-left:20px; padding-left:0; } li { margin-bottom:8px; }
+        .lead { font-size:1.05em; color:#333; }
+        .equation-box { background:#f1f8f5; border-left:4px solid var(--green); padding:15px; margin:20px 0;
+            font-family:"Cambria",serif; font-size:1.05em; overflow-x:auto; }
+        .highlight { font-weight:bold; color:var(--green); }
+        .keyidea { background:#fff8e6; border:1px solid var(--gold); border-radius:8px; padding:14px 18px; margin:20px 0; }
+        .keyidea b { color:var(--dark); }
+        .design-note { background:#eef6f1; border-left:4px solid var(--green); border-radius:0 6px 6px 0;
+            padding:12px 16px; margin:18px 0; font-size:.97em; }
+        .design-note b { color:var(--green); }
+        table.reg { width:100%; border-collapse:collapse; margin:16px 0; font-size:.95em; }
+        table.reg th, table.reg td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+        table.reg th { background:#f1f8f5; color:var(--green); font-family:"Cambria",serif; }
+
+        details.derivation { margin:16px 0; border:1px solid var(--border); border-radius:6px; background:#fbfdfc; overflow:hidden; }
+        details.derivation > summary { cursor:pointer; padding:11px 16px; font-weight:600; color:var(--green);
+            background:#f1f8f5; list-style:none; user-select:none; }
+        details.derivation > summary::-webkit-details-marker { display:none; }
+        details.derivation > summary::before { content:"▸  Derivation"; }
+        details.derivation[open] > summary::before { content:"▾  Derivation"; }
+        details.derivation > summary .lbl { color:var(--dark); font-weight:600; }
+        details.derivation .dbody { padding:4px 22px 14px; }
+
+        .demo-wrap { position:relative; left:50%; transform:translateX(-50%); width:min(1180px,95vw); margin:28px 0 10px; }
+        .demo-label { display:inline-block; background:var(--green); color:#fff; font-weight:700; font-size:.8em;
+            padding:4px 11px; border-radius:6px; margin-bottom:8px; letter-spacing:.5px; }
+        .demo-wrap iframe { width:100%; height:730px; border:1px solid var(--border); border-radius:10px;
+            box-shadow:0 6px 20px rgba(0,0,0,.10); background:#fff; }
+        .demo-cap { text-align:center; font-size:.9em; color:#667; margin-top:8px; }
+
+        .problem { background:#fffdf5; border:1px solid var(--gold); border-radius:8px; padding:18px 22px; margin:22px 0; }
+        .problem .ptitle { font-weight:700; color:var(--dark); margin-bottom:6px; }
+        .show-sol { margin-top:12px; background:var(--green); color:#fff; border:none; padding:9px 16px;
+            border-radius:6px; font-weight:600; cursor:pointer; font-size:.95em; }
+        .show-sol:hover { background:#005f28; }
+        .solution { display:none; margin-top:15px; padding:15px 20px; background:#f1f8f5;
+            border-left:4px solid var(--green); border-radius:0 6px 6px 0; }
+        .solution.show { display:block; }
+        .solution .ans { font-weight:700; color:var(--green); }
+
+        .quiz-section { background:#fffdf5; border:1px solid var(--gold); padding:30px; border-radius:8px; margin-top:50px; }
+        .check { background:#fffdf5; border:1px solid var(--gold); border-radius:8px; padding:8px 24px; margin:26px 0; }
+        .check .qlabel { font-family:"Cambria",serif; color:var(--green); font-weight:700; font-size:.95em; margin-top:14px; }
+        .question-card { margin-bottom:30px; padding-bottom:20px; border-bottom:1px dashed var(--border); }
+        .question-card:last-child { border-bottom:none; margin-bottom:0; }
+        .check .question-card { border-bottom:none; margin-bottom:6px; padding-bottom:6px; }
+        .question-text { font-size:1.1em; font-weight:600; margin-bottom:15px; }
+        .option-btn { display:block; width:100%; text-align:left; padding:12px 15px; margin-bottom:8px; background:white;
+            border:1px solid var(--border); border-radius:5px; font-size:1em; cursor:pointer; transition:0.2s; }
+        .option-btn:hover:not(:disabled) { background:#f0f0f0; border-color:#bbb; }
+        .option-btn:disabled { cursor:not-allowed; }
+        .feedback { margin-top:10px; font-weight:600; min-height:24px; }
+        .feedback.wrong { color:#dc3545; } .feedback.correct { color:var(--green); }
+        .reveal-link { display:inline-block; margin-top:6px; font-size:.9em; color:var(--green); background:none;
+            border:none; cursor:pointer; text-decoration:underline; padding:0; }
+        .toc { background:#f8faf9; border:1px solid var(--border); border-radius:8px; padding:16px 22px; margin:24px 0; }
+        .toc h4 { margin:0 0 6px; color:var(--green); } .toc ol { margin:6px 0 0 18px; } .toc a { color:var(--green); text-decoration:none; }
+        .toc a:hover { text-decoration:underline; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>AE 582: Satellite Engineering</h1>
+    <p>Study Notes — Week 1: Missions &amp; Spacecraft</p>
+</header>
+
+<div class="container">
+    <p class="lead">Week 1 sets the stage for the whole course. First we ask <em>why</em> we put things in space and <em>what</em> it really takes to get there — which turns out to be a problem of <strong>velocity</strong>, not altitude. Then we survey the orbits missions actually use, the complete space-and-ground system, and finally the anatomy of the spacecraft itself and the systems-engineering discipline that keeps a design honest. Expand any <strong>Derivation</strong> to see where a formula comes from, play with the three embedded <strong>interactive demos</strong>, and use the questions — whose answers reveal only when you click — to test yourself.</p>
+
+    <div class="toc">
+        <h4>Contents</h4>
+        <ol>
+            <li><a href="#s1">Why we go to space — satellites, orbits &amp; velocity</a></li>
+            <li><a href="#s2">The velocities that define spaceflight</a> <em>(interactive)</em></li>
+            <li><a href="#s3">Orbit regimes &amp; mission design</a></li>
+            <li><a href="#s4">The total system — space &amp; ground segments</a></li>
+            <li><a href="#s5">Anatomy of a spacecraft — payload &amp; bus</a></li>
+            <li><a href="#s6">Systems engineering — requirements, budgets &amp; margins</a> <em>(interactive)</em></li>
+            <li><a href="#s7">Reliability &amp; the mission lifecycle</a></li>
+            <li><a href="#s8">Knowledge check</a></li>
+        </ol>
+    </div>
+
+    <!-- ===================== 1 ===================== -->
+    <h2 id="s1">1. Why We Go to Space — Satellites, Orbits &amp; Velocity</h2>
+    <p>An <span class="highlight">orbit</span> is a regular, repeating path that one body takes around another under gravity, and a <span class="highlight">satellite</span> is simply any body in orbit — natural (the Moon) or artificial (a spacecraft). We go to space for the <em>vantage</em> it gives: a global view for communications, navigation, weather and Earth observation; an undisturbed platform for astronomy above the atmosphere; access to micro-gravity; and the reach to explore other worlds.</p>
+    <p>The crucial insight — Newton's — is that orbiting is just <em>falling and continually missing the ground</em>. Imagine a cannon on a very tall mountain firing horizontally. Fire slowly and the ball arcs down and hits the Earth. Fire faster and it lands farther away. Fire fast enough and the curve of its fall exactly matches the curvature of the Earth: it falls forever without getting closer — it is in orbit. Getting to space is therefore not mainly about going <em>up</em>; it is about going <em>sideways fast enough</em>. Altitude is cheap; <strong>velocity is the real challenge</strong>, and everything in launch and mission design flows from that fact.</p>
+
+    <!-- ===================== 2 ===================== -->
+    <h2 id="s2">2. The Velocities That Define Spaceflight</h2>
+    <p>Three speeds separate the three families of space vehicles: the speed to <em>orbit</em> the Earth (~7.9 km/s), the speed to <em>escape</em> it (~11.2 km/s), and the still-higher energies needed for <em>interplanetary</em> trajectories. Let us derive the first two from Newton's law of gravity.</p>
+
+    <h3>2.1 Circular orbital velocity</h3>
+    <p>For a circular orbit, gravity supplies exactly the centripetal force needed to bend the path into a circle. Setting the two equal gives the orbital speed:</p>
+    <div class="equation-box">
+        $$v_{circ}=\sqrt{\frac{\mu}{r}},\qquad \mu=GM_\oplus=3.986\times10^{5}\ \text{km}^3/\text{s}^2$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — circular orbital velocity</span></summary>
+    <div class="dbody">
+        <p>Gravity on a satellite of mass $m$ at radius $r$ is $F_g=\dfrac{GM_\oplus m}{r^2}=\dfrac{\mu m}{r^2}$. For a circular orbit this must equal the centripetal force $F_c=\dfrac{mv^2}{r}$:</p>
+        $$\frac{\mu m}{r^2}=\frac{mv^2}{r}\;\Rightarrow\; v^2=\frac{\mu}{r}\;\Rightarrow\; v_{circ}=\sqrt{\frac{\mu}{r}}.$$
+        <p>The mass $m$ cancels — all satellites at the same altitude orbit at the same speed. Lower orbits (smaller $r$) are <em>faster</em>: this is why LEO satellites whip around in ~90 minutes while GEO takes 24 hours.</p>
+    </div></details>
+
+    <h3>2.2 Orbital period — Kepler's third law</h3>
+    <div class="equation-box">
+        $$T=\frac{2\pi r}{v}=2\pi\sqrt{\frac{r^3}{\mu}}\qquad(\text{circular}),\qquad T=2\pi\sqrt{\frac{a^3}{\mu}}\ \ (\text{general})$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — the period from the speed</span></summary>
+    <div class="dbody">
+        <p>The satellite travels one circumference $2\pi r$ per revolution at speed $v_{circ}=\sqrt{\mu/r}$, so</p>
+        $$T=\frac{2\pi r}{v_{circ}}=\frac{2\pi r}{\sqrt{\mu/r}}=2\pi\sqrt{\frac{r^3}{\mu}}.$$
+        <p>For an ellipse the same result holds with the semi-major axis $a$ in place of $r$ — this is Kepler's third law, $T^2\propto a^3$.</p>
+    </div></details>
+
+    <h3>2.3 Escape velocity</h3>
+    <p>To leave the Earth entirely, a vehicle needs enough kinetic energy to climb out of the gravitational well and just barely reach infinity with zero speed left over:</p>
+    <div class="equation-box">
+        $$v_{esc}=\sqrt{\frac{2\mu}{r}}=\sqrt{2}\;v_{circ}$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — escape velocity is $\sqrt2$ × circular</span></summary>
+    <div class="dbody">
+        <p>The specific mechanical energy is $\varepsilon=\dfrac12 v^2-\dfrac{\mu}{r}$. To "just escape," the vehicle reaches $r\to\infty$ with $v\to0$, i.e. $\varepsilon=0$:</p>
+        $$\frac12 v_{esc}^2-\frac{\mu}{r}=0\;\Rightarrow\; v_{esc}=\sqrt{\frac{2\mu}{r}}=\sqrt2\,\sqrt{\frac{\mu}{r}}=\sqrt2\,v_{circ}.$$
+        <p>So escape needs only about 41% more speed than a circular orbit at the same radius — 11.2 km/s versus 7.9 km/s at the Earth's surface.</p>
+    </div></details>
+
+    <h3>2.4 The rocket equation — why velocity is so hard to buy</h3>
+    <p>Why is reaching 7.9 km/s the whole game? Because a rocket must carry and throw out its own propellant, and the price of velocity is <em>exponential</em> in mass. Tsiolkovsky's rocket equation relates the velocity change $\Delta v$ to the exhaust speed $v_e$ and the mass ratio:</p>
+    <div class="equation-box">
+        $$\Delta v = v_e\,\ln\!\frac{m_0}{m_f}\qquad\Longleftrightarrow\qquad \frac{m_0}{m_f}=e^{\,\Delta v/v_e}$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — Tsiolkovsky's rocket equation</span></summary>
+    <div class="dbody">
+        <p>In free space, conservation of momentum for a rocket of instantaneous mass $m$ ejecting propellant at exhaust speed $v_e$ gives $m\,dv=-v_e\,dm$. Rearranging and integrating from initial mass $m_0$ to final (burnout) mass $m_f$:</p>
+        $$\int_0^{\Delta v}dv=-v_e\int_{m_0}^{m_f}\frac{dm}{m}\;\Rightarrow\; \Delta v=v_e\ln\frac{m_0}{m_f}.$$
+        <p>The dependence is logarithmic in mass but the mass ratio is <em>exponential</em> in the required $\Delta v$. With $v_e\approx 3$ km/s (a good chemical engine) and $\Delta v\approx 9.4$ km/s to reach LEO (orbital speed plus gravity and drag losses), $m_0/m_f=e^{3.1}\approx 23$ — the vehicle must be roughly 95% propellant. That is why launch vehicles are giant tanks, why we <em>stage</em> them, and why every kilogram of spacecraft mass is fought over.</p>
+    </div></details>
+
+    <div class="keyidea"><b>The one-sentence takeaway of Week 1:</b> what makes spaceflight hard is not distance but <em>velocity</em> — and because the rocket equation makes velocity cost exponential propellant, <em>mass is the currency of the entire enterprise.</em></div>
+
+    <p>Use the demo below to feel these relationships: drop the altitude and watch the speed climb toward 7.9 km/s and the period shrink; jump to GEO and see the 24-hour period; add eccentricity to trace a transfer ellipse where the satellite races through perigee and coasts at apogee (vis-viva in action).</p>
+
+    <div class="demo-wrap">
+        <span class="demo-label">▶ INTERACTIVE 1</span>
+        <iframe title="Orbit explorer" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Orbit explorer — interactive · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:460px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:96px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}
+  #regime{position:absolute;bottom:12px;left:14px;padding:7px 14px;border-radius:8px;font-weight:700;font-size:13px;background:rgba(0,133,64,.9);color:#fff}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .actions{display:flex;gap:8px;margin-top:10px}
+  .actions button{flex:1;padding:9px;border-radius:9px;border:none;font-weight:700;cursor:pointer;font-size:13px}
+  #play{background:var(--green);color:#fff}#reset{background:#eef1f0;color:var(--ink)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 · WEEK 1 — MISSIONS &amp;amp; SPACECRAFT&lt;/div&gt;
+  &lt;h1&gt;Orbit explorer — velocity, period &amp;amp; regimes&lt;/h1&gt;
+  &lt;div class=&quot;eq&quot;&gt;Circular speed &lt;b&gt;v = √(μ/r)&lt;/b&gt; · Period &lt;b&gt;T = 2π√(a³/μ)&lt;/b&gt; · Vis-viva &lt;b&gt;v = √(μ(2/r − 1/a))&lt;/b&gt; · Escape &lt;b&gt;v&lt;sub&gt;esc&lt;/sub&gt; = √(2μ/r)&lt;/b&gt;&lt;/div&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;c&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;Speed (now)&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;vOut&quot;&gt;–&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;Period&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;tOut&quot;&gt;–&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;Perigee alt&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;hpOut&quot;&gt;–&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;Apogee alt&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;haOut&quot;&gt;–&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;regime&quot;&gt;LEO&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Orbit&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;label&gt;Perigee altitude &lt;span class=&quot;num&quot; id=&quot;hpNum&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;hpR&quot; min=&quot;200&quot; max=&quot;45000&quot; step=&quot;50&quot; value=&quot;500&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;label&gt;Eccentricity &lt;span class=&quot;num&quot; id=&quot;eNum&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;eR&quot; min=&quot;0&quot; max=&quot;0.8&quot; step=&quot;0.01&quot; value=&quot;0&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;h2&gt;Presets&lt;/h2&gt;
+    &lt;div class=&quot;presets&quot; id=&quot;presets&quot;&gt;
+      &lt;button data-hp=&quot;500&quot;   data-e=&quot;0&quot;&gt;LEO (500 km)&lt;/button&gt;
+      &lt;button data-hp=&quot;800&quot;   data-e=&quot;0&quot;&gt;Sun-sync (800 km)&lt;/button&gt;
+      &lt;button data-hp=&quot;20200&quot; data-e=&quot;0&quot;&gt;MEO / GPS&lt;/button&gt;
+      &lt;button data-hp=&quot;35786&quot; data-e=&quot;0&quot;&gt;GEO&lt;/button&gt;
+      &lt;button data-hp=&quot;250&quot;   data-e=&quot;0.73&quot;&gt;GTO&lt;/button&gt;
+      &lt;button data-hp=&quot;500&quot;   data-e=&quot;0.74&quot;&gt;Molniya (HEO)&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;actions&quot;&gt;&lt;button id=&quot;play&quot;&gt;❚❚ Pause&lt;/button&gt;&lt;button id=&quot;reset&quot;&gt;↺ Reset&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;The dashed grey ring is &lt;b&gt;GEO&lt;/b&gt; (35 786 km), where the period is 24 h so a satellite hangs over one spot. Lower orbits move faster (Kepler): drag the altitude down and watch the speed climb toward 7.9 km/s. Add eccentricity to make an ellipse — the satellite races through perigee and coasts at apogee.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+const MU=398600, RE=6378, GEO=42164;   // km, km³/s²
+const st={hp:500, e:0, M:0, paused:false, speed:1};
+function orbit(){
+  const rp=RE+st.hp, a=rp/(1-st.e), ra=a*(1+st.e);
+  return {rp,ra,a, ha:ra-RE, T:2*Math.PI*Math.sqrt(a**3/MU),
+          vp:Math.sqrt(MU*(2/rp-1/a)), va:Math.sqrt(MU*(2/ra-1/a)),
+          vesc:Math.sqrt(2*MU/rp)};
+}
+function kepler(M,e){let E=M; for(let i=0;i&lt;6;i++){E=E-(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));} return E;}
+function fmtT(s){return s&lt;10800? (s/60).toFixed(1)+&quot; min&quot; : (s/3600).toFixed(2)+&quot; h&quot;;}
+function regimeOf(o){
+  if(st.e&gt;0.25) return (o.ha&gt;30000?&quot;Highly elliptical (HEO / GTO)&quot;:&quot;Elliptical orbit&quot;);
+  const h=o.a-RE;
+  if(h&lt;2000) return &quot;LEO — low Earth orbit&quot;;
+  if(h&lt;34000) return &quot;MEO — medium Earth orbit&quot;;
+  if(h&lt;37500) return &quot;GEO — geostationary&quot;;
+  return &quot;High orbit (above GEO)&quot;;
+}
+const cv=document.getElementById(&#x27;c&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+let W=0,Hh=0,DPR=1;
+function resize(){const r=cv.parentElement.getBoundingClientRect();DPR=Math.min(2,devicePixelRatio||1);
+  W=r.width;Hh=r.height;cv.width=W*DPR;cv.height=Hh*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+new ResizeObserver(resize).observe(document.querySelector(&#x27;.stage&#x27;));
+function draw(o){
+  const cx=W*0.42, cy=Hh*0.5;
+  const fit=Math.max(o.ra, GEO)*1.12;
+  const scale=Math.min(W*0.44, Hh*0.46)/fit;
+  ctx.clearRect(0,0,W,Hh);
+  const g=ctx.createRadialGradient(cx,cy,10,cx,cy,Math.max(W,Hh)); g.addColorStop(0,&quot;#0b1226&quot;);g.addColorStop(1,&quot;#05070f&quot;);
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,Hh);
+  ctx.fillStyle=&quot;rgba(255,255,255,.22)&quot;;for(let i=0;i&lt;70;i++){ctx.fillRect((i*151.3)%W,(i*97.7)%Hh,1,1);}
+  // GEO reference ring
+  ctx.strokeStyle=&quot;rgba(160,175,200,.35)&quot;;ctx.setLineDash([5,6]);ctx.lineWidth=1.2;
+  ctx.beginPath();ctx.arc(cx,cy,GEO*scale,0,7);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=&quot;rgba(160,175,200,.6)&quot;;ctx.font=&quot;11px Calibri&quot;;ctx.fillText(&quot;GEO&quot;,cx+GEO*scale+4,cy-4);
+  // orbit ellipse (focus at Earth = cx,cy). centre offset by a*e toward perigee (+x)
+  const a=o.a*scale, bb=a*Math.sqrt(1-st.e*st.e), off=st.a? 0:0, ox=cx - st.e*a; // ellipse centre
+  ctx.strokeStyle=&quot;rgba(120,225,170,.7)&quot;;ctx.lineWidth=2;
+  ctx.beginPath();ctx.ellipse(cx - st.e*a, cy, a, bb, 0, 0, 7);ctx.stroke();
+  // Earth
+  const er=Math.max(RE*scale,10);
+  const eg=ctx.createRadialGradient(cx-er*0.3,cy-er*0.3,er*0.15,cx,cy,er);
+  eg.addColorStop(0,&quot;#5aa0e0&quot;);eg.addColorStop(.55,&quot;#2b6fb0&quot;);eg.addColorStop(1,&quot;#123a63&quot;);
+  ctx.fillStyle=eg;ctx.beginPath();ctx.arc(cx,cy,er,0,7);ctx.fill();
+  // satellite position via Kepler
+  const E=kepler(st.M,st.e);
+  const r=o.a*(1-st.e*Math.cos(E));
+  const nu=Math.atan2(Math.sqrt(1-st.e*st.e)*Math.sin(E), Math.cos(E)-st.e);
+  const x=r*Math.cos(nu), y=r*Math.sin(nu);
+  const sx=cx+x*scale, sy=cy - y*scale;
+  const v=Math.sqrt(MU*(2/r-1/o.a));
+  // velocity vector (perp-ish: tangent direction)
+  const E2=kepler(st.M+0.05,st.e), r2=o.a*(1-st.e*Math.cos(E2)), nu2=Math.atan2(Math.sqrt(1-st.e*st.e)*Math.sin(E2),Math.cos(E2)-st.e);
+  const vx=(r2*Math.cos(nu2)-x), vy=(r2*Math.sin(nu2)-y), vl=Math.hypot(vx,vy)||1;
+  ctx.strokeStyle=&quot;#DAC961&quot;;ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(sx+vx/vl*34, sy-vy/vl*34);ctx.stroke();
+  // satellite dot
+  ctx.shadowColor=&quot;#7be1aa&quot;;ctx.shadowBlur=14;ctx.fillStyle=&quot;#eafff3&quot;;
+  ctx.beginPath();ctx.arc(sx,sy,6,0,7);ctx.fill();ctx.shadowBlur=0;
+  document.getElementById(&#x27;vOut&#x27;).textContent=v.toFixed(2)+&quot; km/s&quot;;
+  return {r,v};
+}
+function fmt(){
+  const o=orbit();
+  document.getElementById(&#x27;tOut&#x27;).textContent=fmtT(o.T);
+  document.getElementById(&#x27;hpOut&#x27;).textContent=Math.round(st.hp).toLocaleString()+&quot; km&quot;;
+  document.getElementById(&#x27;haOut&#x27;).textContent=Math.round(o.ha).toLocaleString()+&quot; km&quot;;
+  document.getElementById(&#x27;hpNum&#x27;).textContent=Math.round(st.hp).toLocaleString()+&quot; km&quot;;
+  document.getElementById(&#x27;eNum&#x27;).textContent=st.e.toFixed(2);
+  document.getElementById(&#x27;regime&#x27;).textContent=regimeOf(o);
+}
+const hpR=document.getElementById(&#x27;hpR&#x27;), eR=document.getElementById(&#x27;eR&#x27;);
+hpR.oninput=()=&gt;{st.hp=+hpR.value;fmt();};
+eR.oninput=()=&gt;{st.e=+eR.value;fmt();};
+document.querySelectorAll(&#x27;#presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{
+  st.hp=+b.dataset.hp; st.e=+b.dataset.e; hpR.value=st.hp; eR.value=st.e; st.M=0; fmt();});
+const playBtn=document.getElementById(&#x27;play&#x27;);
+playBtn.onclick=()=&gt;{st.paused=!st.paused;playBtn.textContent=st.paused?&quot;▶ Play&quot;:&quot;❚❚ Pause&quot;;};
+document.getElementById(&#x27;reset&#x27;).onclick=()=&gt;{st.hp=500;st.e=0;st.M=0;hpR.value=500;eR.value=0;fmt();st.paused=false;playBtn.textContent=&quot;❚❚ Pause&quot;;};
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(0.05,(now-last)/1000);last=now;
+  const o=orbit();
+  if(!st.paused){ const n=2*Math.PI/(o.T*7.4e-4); st.M=(st.M+n*dt)%(2*Math.PI); }
+  draw(o);
+  requestAnimationFrame(loop);
+}
+resize();fmt();requestAnimationFrame(loop);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+        <div class="demo-cap">Orbit explorer — altitude and eccentricity set the speed, period and regime. The dashed ring marks GEO. Presets: LEO, Sun-sync, MEO/GPS, GEO, GTO and Molniya.</div>
+    </div>
+
+    <div class="problem">
+        <div class="ptitle">Worked Problem 1 — Circular-orbit speed and period (the lecture example)</div>
+        A circular orbit at altitude $h=500$ km. Use $R_\oplus=6378$ km, $\mu=398\,600$ km³/s². Find the orbital speed and period.
+        <button class="show-sol" onclick="revealSol('sol_p1',this)">Show solution</button>
+        <div class="solution" id="sol_p1">
+            Radius: $r=R_\oplus+h=6878$ km.<br>
+            Speed: $v=\sqrt{\mu/r}=\sqrt{398600/6878}=\sqrt{57.95}$ <span class="ans">$\approx 7.61$ km/s.</span><br>
+            Period: $T=2\pi\sqrt{r^3/\mu}=2\pi\sqrt{6878^3/398600}=2\pi\sqrt{8.16\times10^{5}}\approx 5677$ s <span class="ans">$\approx 94.6$ min.</span><br>
+            Check both in Interactive 1 with the LEO preset.
+        </div>
+    </div>
+    <div class="problem">
+        <div class="ptitle">Worked Problem 2 — Escape speed from the surface</div>
+        What speed just escapes Earth from near the surface ($r\approx R_\oplus=6378$ km)?
+        <button class="show-sol" onclick="revealSol('sol_p2',this)">Show solution</button>
+        <div class="solution" id="sol_p2">
+            $v_{esc}=\sqrt{2\mu/r}=\sqrt{2(398600)/6378}=\sqrt{125.0}$ <span class="ans">$\approx 11.2$ km/s</span> $=\sqrt2\times 7.9$ km/s. The three vehicle families — Earth satellites ($\sim$7.9 km/s), escape missions ($\sim$11.2 km/s) and interplanetary probes (more still) — are separated exactly by these speeds.
+        </div>
+    </div>
+
+    <div class="check">
+        <div class="qlabel">QUICK CHECK</div>
+        <div class="question-card" id="q1">
+            <div class="question-text">What is the fundamental reason getting to orbit is difficult?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q1')">A) Space is very far away (high altitude)</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q1','Orbit is falling while moving sideways fast enough to miss the Earth — reaching ~7.9 km/s is the real challenge, and the rocket equation makes that speed cost exponential propellant.')">B) You must reach enormous horizontal velocity (~7.9 km/s)</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q1')">C) The air is too thin to fly in</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q1')">D) Gravity is stronger in space</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q1',this)">Show solution</button>
+            <div class="solution" id="sol_q1"><span class="ans">Answer: B.</span> Orbiting is falling sideways fast enough to keep missing the Earth. Altitude is comparatively cheap; the ~7.9 km/s of horizontal speed is the hard part, and by the rocket equation that velocity demands a vehicle that is mostly propellant.</div>
+        </div>
+    </div>
+
+    <!-- ===================== 3 ===================== -->
+    <h2 id="s3">3. Orbit Regimes &amp; Mission Design</h2>
+    <p>Once in orbit, the shape and size of that orbit are chosen to serve the mission. The master equation relating speed to position on <em>any</em> orbit is the <span class="highlight">vis-viva</span> equation, which follows from energy conservation:</p>
+    <div class="equation-box">
+        $$v=\sqrt{\mu\left(\frac{2}{r}-\frac{1}{a}\right)}$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — the vis-viva equation</span></summary>
+    <div class="dbody">
+        <p>The specific orbital energy is constant and, for a bound orbit of semi-major axis $a$, equals $\varepsilon=-\dfrac{\mu}{2a}$. Writing $\varepsilon$ also as kinetic plus potential energy per unit mass:</p>
+        $$\frac12 v^2-\frac{\mu}{r}=-\frac{\mu}{2a}\;\Rightarrow\; v^2=\mu\left(\frac{2}{r}-\frac{1}{a}\right).$$
+        <p>Special cases fall straight out: a circle ($a=r$) gives $v=\sqrt{\mu/r}$; the escape limit ($a\to\infty$) gives $v=\sqrt{2\mu/r}$. On an ellipse, $v$ is largest at perigee (small $r$) and smallest at apogee — exactly what the demo shows.</p>
+    </div></details>
+
+    <h3>3.1 A tour of the regimes</h3>
+    <table class="reg">
+        <tr><th>Regime</th><th>Altitude / period</th><th>Typical use</th></tr>
+        <tr><td><b>LEO</b> — low Earth orbit</td><td>&lt; 2 000 km · ~90 min</td><td>Imaging, the ISS, comms constellations; low latency and high resolution, but drag and short passes.</td></tr>
+        <tr><td><b>MEO</b> — medium</td><td>~20 000 km · ~12 h</td><td>Navigation (GPS, Galileo): a few satellites give wide, continuous coverage.</td></tr>
+        <tr><td><b>GEO</b> — geostationary</td><td>35 786 km · 24 h</td><td>Communications and weather: the satellite appears fixed over one spot, so ground antennas need not track.</td></tr>
+        <tr><td><b>HEO</b> — highly elliptical (e.g. Molniya)</td><td>high apogee, low perigee</td><td>Long dwell over high latitudes that GEO cannot see well.</td></tr>
+        <tr><td><b>SSO</b> — Sun-synchronous</td><td>~600–800 km, near-polar</td><td>Earth observation with constant lighting: the orbit plane precesses to keep a fixed local solar time.</td></tr>
+        <tr><td><b>Lagrange points</b></td><td>e.g. L1, L2 (~1.5M km)</td><td>Space telescopes (JWST at L2) and solar monitors (SOHO at L1): stable vantage points in the Sun–Earth system.</td></tr>
+    </table>
+
+    <h3>3.2 Why GEO sits at 35 786 km</h3>
+    <p>The geostationary altitude is not arbitrary — it is exactly the radius whose orbital period equals one Earth rotation, so the satellite keeps pace with the ground beneath it.</p>
+    <div class="equation-box">
+        $$r_{GEO}=\left(\frac{\mu T^2}{4\pi^2}\right)^{1/3}=42\,164\ \text{km}\;\Rightarrow\; h_{GEO}=r_{GEO}-R_\oplus\approx 35\,786\ \text{km}$$
+    </div>
+    <details class="derivation"><summary><span class="lbl"> — solving Kepler's third law for GEO</span></summary>
+    <div class="dbody">
+        <p>Set the period equal to one <em>sidereal</em> day, $T=86\,164$ s, and invert $T=2\pi\sqrt{r^3/\mu}$:</p>
+        $$r=\left(\frac{\mu T^2}{4\pi^2}\right)^{1/3}=\left(\frac{(3.986\times10^{5})(86\,164)^2}{4\pi^2}\right)^{1/3}\approx 42\,164\ \text{km}.$$
+        <p>Subtracting $R_\oplus=6378$ km gives the familiar $35\,786$ km altitude. (Using the sidereal day, not the 24-h solar day, is what makes the satellite truly track the stars-fixed rotation of the Earth.)</p>
+    </div></details>
+
+    <div class="problem">
+        <div class="ptitle">Worked Problem 3 — Confirm the GEO altitude</div>
+        Verify that a 24-hour orbit sits at ~35 800 km altitude.
+        <button class="show-sol" onclick="revealSol('sol_p3',this)">Show solution</button>
+        <div class="solution" id="sol_p3">
+            $r=\left(\dfrac{\mu T^2}{4\pi^2}\right)^{1/3}$ with $T=86\,164$ s: $\mu T^2=(3.986\times10^{5})(7.42\times10^{9})=2.96\times10^{15}$; divide by $4\pi^2=39.48\Rightarrow 7.49\times10^{13}$; cube root <span class="ans">$\approx 42\,160$ km</span>, so $h\approx$ <span class="ans">35 780 km.</span> Set the GEO preset in Interactive 1 and read the 24-h period.
+        </div>
+    </div>
+
+    <div class="check">
+        <div class="qlabel">QUICK CHECK</div>
+        <div class="question-card" id="q2">
+            <div class="question-text">A mission must provide 24/7 TV broadcast to fixed dishes over one region. Best orbit?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q2')">A) A low LEO for high resolution</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q2','At GEO the 24-h period keeps the satellite fixed over one spot, so home dishes never need to move.')">B) GEO — it appears stationary over the region</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q2')">C) A Sun-synchronous polar orbit</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q2')">D) A Lagrange-point halo orbit</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q2',this)">Show solution</button>
+            <div class="solution" id="sol_q2"><span class="ans">Answer: B — GEO.</span> Its period equals one Earth rotation, so the satellite hangs over one longitude and fixed ground antennas need no tracking. (Global low-latency broadband instead wants a LEO <em>constellation</em>; constant-lighting imaging wants Sun-synchronous.)</div>
+        </div>
+    </div>
+
+    <!-- ===================== 4 ===================== -->
+    <h2 id="s4">4. The Total System — Space &amp; Ground Segments</h2>
+    <p>A "satellite mission" is never just the satellite. It is a system with two halves that must be designed together:</p>
+    <ul>
+        <li>The <span class="highlight">space segment</span> — the spacecraft itself (payload + bus), and often several of them in a constellation.</li>
+        <li>The <span class="highlight">ground segment</span> — the ground stations that send commands and receive data, the mission-operations centre that flies the spacecraft, and the data-processing and distribution chain that turns raw downlink into a usable product for the end user.</li>
+    </ul>
+    <p>Linking them is the <em>data flow</em>: the payload senses; the bus points, powers and stores; the communications subsystem downlinks to a ground station in view; operations schedules contacts and uploads commands; and processing delivers the science or service. Coverage gaps, contact times, downlink volume and latency are all system-level trades — a decision about the orbit (§3) ripples straight into how many ground stations you need and how quickly a user gets their data.</p>
+
+    <!-- ===================== 5 ===================== -->
+    <h2 id="s5">5. Anatomy of a Spacecraft — Payload &amp; Bus</h2>
+    <p>Every spacecraft divides into two parts. The <span class="highlight">payload</span> is the reason the mission exists — the camera, radar, transponder or science instrument. The <span class="highlight">bus</span> (or service module) is everything that exists to keep the payload alive, aimed and connected. A useful way to remember the bus's job is the <strong>seven things a spacecraft must do for its payload</strong>:</p>
+    <ul>
+        <li><b>Point it</b> — aim the payload accurately (attitude determination &amp; control).</li>
+        <li><b>Power it</b> — generate, store and distribute electrical power (solar arrays, batteries).</li>
+        <li><b>Talk for it</b> — send its data down and receive commands (communications / TT&amp;C).</li>
+        <li><b>Keep it at temperature</b> — reject or retain heat (thermal control).</li>
+        <li><b>Hold it together</b> — carry launch and on-orbit loads (structure &amp; mechanisms).</li>
+        <li><b>Move it</b> — change or maintain the orbit and dump momentum (propulsion).</li>
+        <li><b>Run it</b> — command, schedule, store and process data (command &amp; data handling, C&amp;DH).</li>
+    </ul>
+    <p>These map onto the <span class="highlight">bus subsystems</span>, which are tightly coupled — a change in one ripples into the others (a bigger payload needs more power → bigger arrays and batteries → more mass → more structure and propellant → a bigger launch mass):</p>
+    <table class="reg">
+        <tr><th>Subsystem</th><th>Job</th></tr>
+        <tr><td>Structure &amp; mechanisms</td><td>The backbone that carries launch loads and mounts everything; deploys arrays and antennas.</td></tr>
+        <tr><td>Thermal control</td><td>Keeps every unit within its temperature limits using radiators, heaters, coatings and insulation.</td></tr>
+        <tr><td>Electrical power (EPS)</td><td>Generates (solar arrays), stores (batteries) and regulates/distributes power.</td></tr>
+        <tr><td>Attitude determination &amp; control (ADCS)</td><td>Senses orientation (star trackers, gyros, Sun sensors) and controls it (reaction wheels, thrusters, magnetorquers).</td></tr>
+        <tr><td>Propulsion</td><td>Provides $\Delta v$ for orbit insertion, maintenance and disposal, and momentum management.</td></tr>
+        <tr><td>Communications (TT&amp;C)</td><td>Telemetry down, commands up; and the payload data downlink.</td></tr>
+        <tr><td>Command &amp; data handling (C&amp;DH)</td><td>The on-board computer: runs the flight software, executes commands, stores and processes data.</td></tr>
+    </table>
+
+    <div class="check">
+        <div class="qlabel">QUICK CHECK</div>
+        <div class="question-card" id="q3">
+            <div class="question-text">Which statement best captures the payload-vs-bus split?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q3')">A) The bus is the mission; the payload is optional</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q3','The payload is the reason the mission exists; the bus is everything that keeps the payload alive, aimed and connected.')">B) The payload is why the mission exists; the bus serves and supports it</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q3')">C) They are independent and never interact</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q3')">D) The bus is only the structure</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q3',this)">Show solution</button>
+            <div class="solution" id="sol_q3"><span class="ans">Answer: B.</span> The payload delivers the mission (the "why"); the bus provides the seven services — point, power, talk, cool, hold, move, run — that let the payload do its job. The two are tightly coupled: sizing the payload sizes the whole bus.</div>
+        </div>
+    </div>
+
+    <!-- ===================== 6 ===================== -->
+    <h2 id="s6">6. Systems Engineering — Requirements, Budgets &amp; Margins</h2>
+    <p>Systems engineering is the discipline that keeps all those coupled subsystems pulling in the same direction. It starts by turning <em>what the mission must achieve</em> into <em>what each subsystem must do</em>, and it keeps everyone honest with <em>budgets</em>.</p>
+
+    <h3>6.1 Requirements flow-down and traceability</h3>
+    <p>High-level <strong>mission objectives</strong> (shaped by user needs and political/financial constraints) become <strong>mission requirements</strong>, which flow down into <strong>system</strong> and then <strong>subsystem requirements</strong>, and finally into component specifications. Two tables keep this chain traceable:</p>
+    <ul>
+        <li>The <span class="highlight">Science (or System) Traceability Matrix (STM)</span> — the "why": it traces top-level goals down to the measurements and the hardware needed to achieve them, so every instrument earns its place.</li>
+        <li>The <span class="highlight">Requirements Traceability Matrix (RTM)</span> — the "what/how-verified": it links every requirement to its parent and to the test or analysis that will verify it, so nothing is orphaned or unproven.</li>
+    </ul>
+    
+    <div class="design-note"><b>Why traceability matters:</b> flow-down prevents "requirements creep" and gold-plating — if a requirement can't be traced up to a mission objective, it shouldn't drive the design; and if it can't be traced down to a verification, you can't prove you met it.</div>
+
+    <p>Explore the interactive module below to see how this works in practice for a real-world example: the <b>PADRE CubeSat Mission</b>. Click on any box to trace how the top-level scientific goal flows directly down into the engineering design of the spacecraft bus, and finally into the specific tests required before launch.</p>
+
+    <div class="demo-wrap">
+        <span class="demo-label">▶ INTERACTIVE 2</span>
+        <iframe title="Traceability Explorer" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Traceability Explorer · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--bg:#F4F7F5;--mut:#5C6B64;}
+  body{margin:0;font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,sans-serif;background:var(--bg);color:#12211B;padding:20px;display:flex;flex-direction:column;height:100vh;box-sizing:border-box;}
+  .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
+  .header p{margin:0;font-size:14px;color:var(--mut);}
+  .matrix-wrapper{display:flex;flex:1;background:#fff;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.05);overflow:hidden;border:1px solid #D9DAE4;position:relative;}
+  
+  .stm-zone{flex:3;background:rgba(0,133,64,0.03);padding:20px;border-right:2px dashed #ccc;}
+  .rtm-zone{flex:2;background:rgba(218,201,97,0.08);padding:20px;}
+  
+  .zone-title{font-family:&quot;Cambria&quot;,serif;font-weight:bold;color:var(--forest);font-size:18px;margin-bottom:20px;text-align:center;text-transform:uppercase;letter-spacing:1px;}
+  .grid{display:grid;grid-template-columns:repeat(5, 1fr);gap:15px;height:calc(100% - 40px);position:absolute;top:60px;left:20px;right:20px;}
+  .col{display:flex;flex-direction:column;gap:20px;}
+  .col-title{font-weight:bold;font-size:14px;text-align:center;color:var(--petrol);border-bottom:2px solid var(--gold);padding-bottom:8px;}
+  
+  .node{background:#fff;border:2px solid #D9DAE4;border-radius:8px;padding:12px;font-size:13px;line-height:1.4;cursor:pointer;transition:all 0.3s ease;box-shadow:0 2px 5px rgba(0,0,0,0.02);position:relative;z-index:2;}
+  .node:hover{border-color:var(--gold);transform:translateY(-2px);}
+  
+  .node.active{border-color:var(--green);background:#eafff3;box-shadow:0 4px 12px rgba(0,133,64,0.15);}
+  .node.active-rtm{border-color:var(--petrol);background:#eef6f8;box-shadow:0 4px 12px rgba(0,62,81,0.15);}
+  
+  .node-title{font-weight:bold;color:var(--forest);margin-bottom:4px;font-size:14px;}
+  .node-tag{display:inline-block;background:#eee;color:#555;font-size:10px;padding:2px 6px;border-radius:4px;margin-bottom:6px;font-weight:bold;}
+  
+  svg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
+  path{stroke:#ccc;stroke-width:2;fill:none;transition:all 0.3s;}
+  path.active{stroke:var(--green);stroke-width:4;}
+  path.active-rtm{stroke:var(--petrol);stroke-width:4;}
+  
+  .hint{text-align:center;font-size:13px;color:var(--mut);margin-top:15px;}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class=&quot;header&quot;&gt;
+  &lt;div&gt;&lt;b style=&quot;color:var(--forest);font-size:18px;&quot;&gt;PADRE Mission Traceability Explorer&lt;/b&gt;&lt;br&gt;
+  &lt;p&gt;Click any box to trace how high-level science flows down into engineering hardware and test plans.&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;matrix-wrapper&quot;&gt;
+  &lt;div class=&quot;stm-zone&quot;&gt;&lt;div class=&quot;zone-title&quot;&gt;Science Traceability Matrix (STM)&lt;/div&gt;&lt;/div&gt;
+  &lt;div class=&quot;rtm-zone&quot;&gt;&lt;div class=&quot;zone-title&quot;&gt;Req. Traceability Matrix (RTM)&lt;/div&gt;&lt;/div&gt;
+  
+  &lt;svg id=&quot;lines&quot;&gt;&lt;/svg&gt;
+  
+  &lt;div class=&quot;grid&quot;&gt;
+    &lt;!-- Col 1: Mission Objective --&gt;
+    &lt;div class=&quot;col&quot;&gt;
+      &lt;div class=&quot;col-title&quot;&gt;1. Mission Objective&lt;/div&gt;
+      &lt;div class=&quot;node group-a&quot; id=&quot;n1a&quot;&gt;
+        &lt;span class=&quot;node-tag&quot;&gt;OBJ-01&lt;/span&gt;&lt;br&gt;
+        &lt;div class=&quot;node-title&quot;&gt;Solar Flare Dynamics&lt;/div&gt;
+        Understand particle acceleration and X-ray directivity during solar flare events.
+      &lt;/div&gt;
+      &lt;div class=&quot;node group-b&quot; id=&quot;n1b&quot;&gt;
+        &lt;span class=&quot;node-tag&quot;&gt;OBJ-02&lt;/span&gt;&lt;br&gt;
+        &lt;div class=&quot;node-title&quot;&gt;Coronal Structures&lt;/div&gt;
+        Observe fine-scale coronal structures during solar eclipses.
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- Col 2: Measurement Req --&gt;
+    &lt;div class=&quot;col&quot;&gt;
+      &lt;div class=&quot;col-title&quot;&gt;2. Measurement Req.&lt;/div&gt;
+      &lt;div class=&quot;node group-a&quot; id=&quot;n2a&quot;&gt;
+        &lt;span class=&quot;node-tag&quot;&gt;MR-01.1&lt;/span&gt;&lt;br&gt;
+        &lt;div class=&quot;node-title&quot;&gt;Hard X-Ray Spectra&lt;/div&gt;
+        Measure X-ray spectra from 10 to 100 keV with high temporal resolution.
+      &lt;/div&gt;
+      &lt;div class=&quot;node group-b&quot; id=&quot;n2b&quot;&gt;
+        &lt;span class=&quot;node-tag&quot;&gt;MR-02.1&lt;/span&gt;&lt;br&gt;
+        &lt;div class=&quot;node-title&quot;&gt;Visible Light Imagery&lt;/div&gt;
+        Capture high-dynamic-range visible light imagery of the corona.
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- Col 3: Instrument / Payload --&gt;
+    &lt;div class=&quot;col&quot;&gt;
+      &lt;div class=&quot;col-title&quot;&gt;3. Instrument (Payload)&lt;/div&gt;
+      &lt;div class=&quot;node group-a&quot; id=&quot;n3a&quot;&gt;
+        &lt;span class=&quot;node-tag&quot;&gt;PL-SHARP&lt;/span&gt;&lt;br&gt;
+        &lt;div class=&quot;node-title&quot;&gt;SHARP Detector&lt;/div&gt;
+        SHielded Instrument Package / Medium-Resolution Doppler-Effect Analyzer.
+      &lt;/div&gt;
+      &lt;div class=&quot;node group-b&quot; id=&quot;n3b&quot;&gt;
+        &lt;span class=&quot;node-tag&quot;&gt;PL-CAM&lt;/span&gt;&lt;br&gt;
+        &lt;div class=&quot;node-title&quot;&gt;Optical Camera&lt;/div&gt;
+        Eclipse Megamovie heritage imaging sensor.
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- Col 4: Subsystem Req (Bus) --&gt;
+    &lt;div class=&quot;col&quot;&gt;
+      &lt;div class=&quot;col-title&quot;&gt;4. Subsystem Req. (Bus)&lt;/div&gt;
+      &lt;div class=&quot;node group-a rtm-node&quot; id=&quot;n4a&quot;&gt;
+        &lt;span class=&quot;node-tag&quot;&gt;SYS-ADCS-01&lt;/span&gt;&lt;br&gt;
+        &lt;div class=&quot;node-title&quot;&gt;Sun Pointing&lt;/div&gt;
+        Maintain Sun-pointing with 2 deployed side panels (+Y and -Y) to &amp;lt; 1&amp;deg;.
+      &lt;/div&gt;
+      &lt;div class=&quot;node group-b rtm-node&quot; id=&quot;n4b&quot;&gt;
+        &lt;span class=&quot;node-tag&quot;&gt;SYS-CDH-01&lt;/span&gt;&lt;br&gt;
+        &lt;div class=&quot;node-title&quot;&gt;Data Throughput&lt;/div&gt;
+        C&amp;amp;DH must process and downlink &amp;gt; 1 GB of image telemetry per day.
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- Col 5: Verification --&gt;
+    &lt;div class=&quot;col&quot;&gt;
+      &lt;div class=&quot;col-title&quot;&gt;5. Verification Test&lt;/div&gt;
+      &lt;div class=&quot;node group-a rtm-node&quot; id=&quot;n5a&quot;&gt;
+        &lt;span class=&quot;node-tag&quot;&gt;VER-01-HWIL&lt;/span&gt;&lt;br&gt;
+        &lt;div class=&quot;node-title&quot;&gt;ADCS HWIL Test&lt;/div&gt;
+        Orbital commissioning and hardware-in-the-loop dynamic simulation.
+      &lt;/div&gt;
+      &lt;div class=&quot;node group-b rtm-node&quot; id=&quot;n5b&quot;&gt;
+        &lt;span class=&quot;node-tag&quot;&gt;VER-02-TLM&lt;/span&gt;&lt;br&gt;
+        &lt;div class=&quot;node-title&quot;&gt;Telemetry Pipeline&lt;/div&gt;
+        Data throughput test using simulated packets via TimescaleDB/Grafana.
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;hint&quot;&gt;The &lt;b&gt;STM&lt;/b&gt; ensures every piece of payload hardware serves a scientific purpose. The &lt;b&gt;RTM&lt;/b&gt; ensures every bus requirement driven by that payload is actively tested before launch.&lt;/div&gt;
+
+&lt;script&gt;
+  const paths = [
+    { nodes: [&#x27;n1a&#x27;, &#x27;n2a&#x27;, &#x27;n3a&#x27;, &#x27;n4a&#x27;, &#x27;n5a&#x27;], type: &#x27;a&#x27; },
+    { nodes: [&#x27;n1b&#x27;, &#x27;n2b&#x27;, &#x27;n3b&#x27;, &#x27;n4b&#x27;, &#x27;n5b&#x27;], type: &#x27;b&#x27; }
+  ];
+  
+  function drawLines() {
+    const svg = document.getElementById(&#x27;lines&#x27;);
+    svg.innerHTML = &#x27;&#x27;;
+    paths.forEach((path, pathIdx) =&gt; {
+      for (let i = 0; i &lt; path.nodes.length - 1; i++) {
+        const el1 = document.getElementById(path.nodes[i]);
+        const el2 = document.getElementById(path.nodes[i+1]);
+        if(!el1 || !el2) continue;
+        
+        const rect1 = el1.getBoundingClientRect();
+        const rect2 = el2.getBoundingClientRect();
+        const svgRect = svg.getBoundingClientRect();
+        
+        const x1 = rect1.right - svgRect.left;
+        const y1 = rect1.top + rect1.height/2 - svgRect.top;
+        const x2 = rect2.left - svgRect.left;
+        const y2 = rect2.top + rect2.height/2 - svgRect.top;
+        
+        const p = document.createElementNS(&#x27;http://www.w3.org/2000/svg&#x27;, &#x27;path&#x27;);
+        p.setAttribute(&#x27;d&#x27;, `M ${x1} ${y1} C ${x1+40} ${y1}, ${x2-40} ${y2}, ${x2} ${y2}`);
+        p.setAttribute(&#x27;id&#x27;, `path-${path.type}-${i}`);
+        svg.appendChild(p);
+      }
+    });
+  }
+
+  window.addEventListener(&#x27;resize&#x27;, drawLines);
+  setTimeout(drawLines, 100);
+
+  document.querySelectorAll(&#x27;.node&#x27;).forEach(node =&gt; {
+    node.addEventListener(&#x27;click&#x27;, () =&gt; {
+      // clear all
+      document.querySelectorAll(&#x27;.node&#x27;).forEach(n =&gt; n.className = n.className.replace(/ active-rtm| active/g, &#x27;&#x27;));
+      document.querySelectorAll(&#x27;path&#x27;).forEach(p =&gt; p.className.baseVal = &#x27;&#x27;);
+      
+      // find which path this node belongs to
+      const group = node.classList.contains(&#x27;group-a&#x27;) ? &#x27;a&#x27; : &#x27;b&#x27;;
+      const pathObj = paths.find(p =&gt; p.type === group);
+      
+      // activate nodes
+      pathObj.nodes.forEach((id, idx) =&gt; {
+        const el = document.getElementById(id);
+        if(idx &gt;= 3) el.className += &#x27; active-rtm&#x27;; // RTM nodes
+        else el.className += &#x27; active&#x27;; // STM nodes
+      });
+      
+      // activate paths
+      for (let i = 0; i &lt; pathObj.nodes.length - 1; i++) {
+        const p = document.getElementById(`path-${group}-${i}`);
+        if(p) {
+          if(i &gt;= 2) p.className.baseVal = &#x27;active-rtm&#x27;;
+          else p.className.baseVal = &#x27;active&#x27;;
+        }
+      }
+    });
+  });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+        <div class="demo-cap">Traceability Explorer — Click any block to trace the flow of requirements across the STM and RTM for the PADRE Mission.</div>
+    </div>
+
+
+    <h3>6.3 Budgets and margins</h3>
+    <p>Everyone competes for the same finite resources, so the systems engineer tracks them in <strong>budgets</strong>. The two most important are:</p>
+    <ul>
+        <li><b>Mass budget:</b> every component's mass rolls up to the <em>launch mass</em> the rocket must lift. Because the rocket equation makes mass so precious (§2.4), this is often the binding constraint.</li>
+        <li><b>Power budget:</b> generation (arrays) versus consumption (all loads), across every mission mode and worst-case eclipse — the batteries must carry the spacecraft through the dark.</li>
+    </ul>
+    <p>Because early estimates are uncertain, budgets carry <span class="highlight">margin</span> — a deliberate reserve (often ~20% early in a program) that shrinks as the design matures and masses are actually measured. A budget with no margin is a budget that will be blown.</p>
+    <div class="equation-box">
+        $$m_{dry}=m_{payload}+m_{bus},\qquad m_{launch}=m_{dry}\,(1+\text{margin})+m_{propellant}$$
+    </div>
+
+    <p>The builder below is that budget made live: set the payload, bus, propellant and margin and watch the launch mass stack up against a launcher's capacity. The default reproduces the lecture example exactly.</p>
+
+    <div class="demo-wrap">
+        <span class="demo-label">▶ INTERACTIVE 3</span>
+        <iframe title="Mass budget builder" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Mass budget builder — interactive · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#0e2b25;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:460px;
+         padding:22px 26px;display:flex;flex-direction:column}
+  .stage h3{color:#eafff3;font-family:&quot;Cambria&quot;,serif;margin:2px 0 4px;font-size:18px}
+  .stage .sub{color:#9ec9b6;font-size:13px;margin-bottom:14px}
+  .barwrap{flex:1;display:flex;align-items:flex-end;gap:34px;padding:10px 6px 0}
+  .col{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .bar{width:120px;background:rgba(255,255,255,.06);border-radius:8px 8px 0 0;position:relative;
+       display:flex;flex-direction:column-reverse;overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+  .seg{width:100%;display:flex;align-items:center;justify-content:center;color:#08251c;font-weight:700;font-size:12px;
+       border-top:1px solid rgba(0,0,0,.15);transition:height .25s}
+  .seg small{opacity:.8;font-weight:600}
+  .col .cap{color:#cfe9dd;font-size:12.5px;font-weight:700;text-align:center}
+  .col .tot{color:#fff;font-family:&quot;Cambria&quot;,serif;font-size:19px;font-weight:700}
+  .limit{position:absolute;left:0;right:0;border-top:2px dashed #DAC961;}
+  .limit span{position:absolute;right:4px;top:-18px;color:#DAC961;font-size:11px;font-weight:700;background:rgba(0,0,0,.25);padding:1px 5px;border-radius:4px}
+  .verdict{margin-top:12px;padding:8px 14px;border-radius:8px;font-weight:700;font-size:13px;align-self:flex-start}
+  .ok{background:rgba(0,133,64,.9);color:#fff}.over{background:rgba(176,32,32,.92);color:#fff}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 13px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  .readrow{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--line)}
+  .readrow b{font-family:&quot;Cambria&quot;,serif;color:var(--forest)}
+  .presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .divider{height:1px;background:var(--line);margin:13px 0}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 · WEEK 1 — MISSIONS &amp;amp; SPACECRAFT&lt;/div&gt;
+  &lt;h1&gt;Mass budget builder — dry, margin &amp;amp; wet mass&lt;/h1&gt;
+  &lt;div class=&quot;eq&quot;&gt;Dry = payload + bus · With margin = dry×(1+M) · &lt;b&gt;Launch (wet) = dry×(1+M) + propellant&lt;/b&gt;&lt;/div&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;h3&gt;Launch-mass build-up&lt;/h3&gt;
+    &lt;div class=&quot;sub&quot;&gt;Every kilogram competes for the mass the rocket can lift. Watch the margin and propellant stack on top of the dry mass.&lt;/div&gt;
+    &lt;div class=&quot;barwrap&quot;&gt;
+      &lt;div class=&quot;col&quot;&gt;
+        &lt;div class=&quot;bar&quot; id=&quot;bar&quot; style=&quot;height:340px&quot;&gt;
+          &lt;div class=&quot;seg&quot; id=&quot;segPay&quot;  style=&quot;background:#7bd0a6&quot;&gt;Payload&lt;br&gt;&lt;small id=&quot;lPay&quot;&gt;&lt;/small&gt;&lt;/div&gt;
+          &lt;div class=&quot;seg&quot; id=&quot;segBus&quot;  style=&quot;background:#4fae86&quot;&gt;Bus (dry)&lt;br&gt;&lt;small id=&quot;lBus&quot;&gt;&lt;/small&gt;&lt;/div&gt;
+          &lt;div class=&quot;seg&quot; id=&quot;segMar&quot;  style=&quot;background:#DAC961&quot;&gt;Margin&lt;br&gt;&lt;small id=&quot;lMar&quot;&gt;&lt;/small&gt;&lt;/div&gt;
+          &lt;div class=&quot;seg&quot; id=&quot;segProp&quot; style=&quot;background:#8FB0C9;color:#0c2230&quot;&gt;Propellant&lt;br&gt;&lt;small id=&quot;lProp&quot;&gt;&lt;/small&gt;&lt;/div&gt;
+          &lt;div class=&quot;limit&quot; id=&quot;limit&quot;&gt;&lt;span&gt;launcher limit&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;cap&quot;&gt;LAUNCH (WET) MASS&lt;/div&gt;
+        &lt;div class=&quot;tot&quot; id=&quot;totOut&quot;&gt;– kg&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;verdict ok&quot; id=&quot;verdict&quot;&gt;within launcher capacity&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Inputs&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Payload (instrument) &lt;span class=&quot;num&quot; id=&quot;nPay&quot;&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;rPay&quot; min=&quot;0&quot; max=&quot;200&quot; value=&quot;40&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Bus subsystems (dry) &lt;span class=&quot;num&quot; id=&quot;nBus&quot;&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;rBus&quot; min=&quot;0&quot; max=&quot;400&quot; value=&quot;120&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Propellant &lt;span class=&quot;num&quot; id=&quot;nProp&quot;&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;rProp&quot; min=&quot;0&quot; max=&quot;300&quot; value=&quot;25&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;System margin &lt;span class=&quot;num&quot; id=&quot;nMar&quot;&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;rMar&quot; min=&quot;0&quot; max=&quot;40&quot; value=&quot;20&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Launcher capacity &lt;span class=&quot;num&quot; id=&quot;nCap&quot;&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;rCap&quot; min=&quot;100&quot; max=&quot;800&quot; step=&quot;10&quot; value=&quot;300&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;readrow&quot;&gt;&lt;span&gt;Dry mass (payload + bus)&lt;/span&gt;&lt;b id=&quot;oDry&quot;&gt;&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;readrow&quot;&gt;&lt;span&gt;Dry + margin&lt;/span&gt;&lt;b id=&quot;oDryM&quot;&gt;&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;readrow&quot;&gt;&lt;span&gt;Launch (wet) mass&lt;/span&gt;&lt;b id=&quot;oWet&quot;&gt;&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;readrow&quot;&gt;&lt;span&gt;Propellant mass fraction&lt;/span&gt;&lt;b id=&quot;oPmf&quot;&gt;&lt;/b&gt;&lt;/div&gt;
+    &lt;div class=&quot;presets&quot; style=&quot;margin-top:12px&quot;&gt;
+      &lt;button data-p=&quot;40&quot; data-b=&quot;120&quot; data-pr=&quot;25&quot; data-m=&quot;20&quot;&gt;Lecture example&lt;/button&gt;
+      &lt;button data-p=&quot;6&quot; data-b=&quot;8&quot; data-pr=&quot;0.5&quot; data-m=&quot;20&quot;&gt;CubeSat (12U)&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;The lecture example (payload 40, bus 120, propellant 25, margin 20%) gives a dry mass of 160 kg, 192 kg with margin, and a 217 kg launch mass. Push any slider past the gold &lt;b&gt;launcher limit&lt;/b&gt; and the verdict turns red — that is the moment a mission has to shed mass or change rockets.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+const st={pay:40,bus:120,prop:25,mar:20,cap:300};
+const el=id=&gt;document.getElementById(id);
+function calc(){
+  const dry=st.pay+st.bus, margin=dry*st.mar/100, dryM=dry+margin, wet=dryM+st.prop;
+  const pmf=wet? st.prop/wet*100:0;
+  return {dry,margin,dryM,wet,pmf};
+}
+function render(){
+  const c=calc(), H=340, cap=st.cap;
+  const scaleMax=Math.max(c.wet, cap)*1.08;
+  const px=v=&gt;Math.max(0, v/scaleMax*H);
+  el(&#x27;segPay&#x27;).style.height=px(st.pay)+&quot;px&quot;;
+  el(&#x27;segBus&#x27;).style.height=px(st.bus)+&quot;px&quot;;
+  el(&#x27;segMar&#x27;).style.height=px(c.margin)+&quot;px&quot;;
+  el(&#x27;segProp&#x27;).style.height=px(st.prop)+&quot;px&quot;;
+  el(&#x27;lPay&#x27;).textContent=Math.round(st.pay)+&quot; kg&quot;;
+  el(&#x27;lBus&#x27;).textContent=Math.round(st.bus)+&quot; kg&quot;;
+  el(&#x27;lMar&#x27;).textContent=Math.round(c.margin)+&quot; kg&quot;;
+  el(&#x27;lProp&#x27;).textContent=Math.round(st.prop)+&quot; kg&quot;;
+  el(&#x27;limit&#x27;).style.bottom=px(cap)+&quot;px&quot;;
+  el(&#x27;totOut&#x27;).textContent=Math.round(c.wet).toLocaleString()+&quot; kg&quot;;
+  el(&#x27;oDry&#x27;).textContent=Math.round(c.dry)+&quot; kg&quot;;
+  el(&#x27;oDryM&#x27;).textContent=Math.round(c.dryM)+&quot; kg&quot;;
+  el(&#x27;oWet&#x27;).textContent=Math.round(c.wet)+&quot; kg&quot;;
+  el(&#x27;oPmf&#x27;).textContent=c.pmf.toFixed(1)+&quot; %&quot;;
+  el(&#x27;nPay&#x27;).textContent=Math.round(st.pay)+&quot; kg&quot;;
+  el(&#x27;nBus&#x27;).textContent=Math.round(st.bus)+&quot; kg&quot;;
+  el(&#x27;nProp&#x27;).textContent=Math.round(st.prop)+&quot; kg&quot;;
+  el(&#x27;nMar&#x27;).textContent=Math.round(st.mar)+&quot; %&quot;;
+  el(&#x27;nCap&#x27;).textContent=Math.round(st.cap)+&quot; kg&quot;;
+  const v=el(&#x27;verdict&#x27;);
+  if(c.wet&lt;=cap){v.className=&quot;verdict ok&quot;;v.textContent=&quot;within launcher capacity (&quot;+Math.round(cap-c.wet)+&quot; kg to spare)&quot;;}
+  else{v.className=&quot;verdict over&quot;;v.textContent=&quot;OVER capacity by &quot;+Math.round(c.wet-cap)+&quot; kg — shed mass or change launcher&quot;;}
+}
+[[&quot;rPay&quot;,&quot;pay&quot;],[&quot;rBus&quot;,&quot;bus&quot;],[&quot;rProp&quot;,&quot;prop&quot;],[&quot;rMar&quot;,&quot;mar&quot;],[&quot;rCap&quot;,&quot;cap&quot;]].forEach(([r,k])=&gt;{
+  el(r).oninput=()=&gt;{st[k]=+el(r).value;render();};
+});
+document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{
+  st.pay=+b.dataset.p;st.bus=+b.dataset.b;st.prop=+b.dataset.pr;st.mar=+b.dataset.m;
+  el(&#x27;rPay&#x27;).value=st.pay;el(&#x27;rBus&#x27;).value=st.bus;el(&#x27;rProp&#x27;).value=st.prop;el(&#x27;rMar&#x27;).value=st.mar;render();});
+render();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+        <div class="demo-cap">Mass budget builder — payload + bus give the dry mass; margin and propellant stack on top to the launch (wet) mass. Push past the gold launcher-capacity line and the verdict turns red.</div>
+    </div>
+
+    <div class="problem">
+        <div class="ptitle">Worked Problem 4 — First-cut mass budget (the lecture example)</div>
+        Payload 40 kg, bus (dry) 120 kg, propellant 25 kg, required system margin 20%. Find the dry mass, the mass with margin, and the launch (wet) mass.
+        <button class="show-sol" onclick="revealSol('sol_p4',this)">Show solution</button>
+        <div class="solution" id="sol_p4">
+            Dry mass: $40+120=$ <span class="ans">160 kg.</span><br>
+            With 20% margin: $160\times1.20=$ <span class="ans">192 kg.</span><br>
+            Launch (wet) mass: $192+25=$ <span class="ans">217 kg.</span><br>
+            Propellant mass fraction $=25/217\approx 11.5\%$. Load the "Lecture example" preset in Interactive 3 to see the same stack — then push a slider past the launcher limit to watch a mission "go over budget."
+        </div>
+    </div>
+    <div class="problem">
+        <div class="ptitle">Worked Problem 5 — Why mass is the currency (rocket equation)</div>
+        A stage needs $\Delta v=3.0$ km/s with an engine of exhaust speed $v_e=3.0$ km/s. What fraction of the initial mass must be propellant?
+        <button class="show-sol" onclick="revealSol('sol_p5',this)">Show solution</button>
+        <div class="solution" id="sol_p5">
+            $\dfrac{m_0}{m_f}=e^{\Delta v/v_e}=e^{1.0}=2.72$. So $m_f=m_0/2.72=0.368\,m_0$, and the propellant is $m_0-m_f=$ <span class="ans">$0.63\,m_0$ — about 63% of the launch mass.</span> Ask for $\Delta v=9.4$ km/s to LEO and the ratio balloons to $e^{3.1}\approx 23$ (~95% propellant) — the exponential reason launchers are giant tanks and spacecraft dry mass is fought over kilogram by kilogram.
+        </div>
+    </div>
+
+    <!-- ===================== 7 ===================== -->
+    <h2 id="s7">7. Reliability &amp; the Mission Lifecycle</h2>
+    <p>You cannot send a technician to orbit. A spacecraft must work first time and keep working for years, so reliability is engineered in from the start:</p>
+    <ul>
+        <li><b>Redundancy</b> on the most critical, hardest-to-replace functions (dual strings, cross-strapping), so a single failure is not fatal — spent where it buys the most survival per kilogram.</li>
+        <li><b>Space qualification</b> — parts and assemblies are tested to survive launch (vibration, shock, acoustics) and the space environment (vacuum, thermal cycling, radiation) with margin, before they ever fly.</li>
+        <li><b>Simplicity and heritage</b> — proven designs and fewer moving parts fail less often.</li>
+    </ul>
+    <p>All of this is organised by the <span class="highlight">mission lifecycle</span>, a sequence of phases with reviews (gates) between them. In the ESA/NASA scheme:</p>
+    <table class="reg">
+        <tr><th>Phase</th><th>What happens</th></tr>
+        <tr><td>Phase 0 / A</td><td>Mission analysis and feasibility; concept and requirements — is it worth doing, and roughly how?</td></tr>
+        <tr><td>Phase B</td><td>Preliminary definition — the design is baselined (PDR).</td></tr>
+        <tr><td>Phase C</td><td>Detailed design — everything is specified for build (CDR).</td></tr>
+        <tr><td>Phase D</td><td>Production, assembly, integration and test (AIT/AIV), then launch.</td></tr>
+        <tr><td>Phase E</td><td>Operations — flying the mission and returning the data (and, at end of life, disposal).</td></tr>
+    </table>
+    <div class="design-note"><b>The course project</b> — a CubeSat — walks this same path in miniature: objectives → requirements → subsystem design → budgets → build and test.</div>
+
+    <div class="check">
+        <div class="qlabel">QUICK CHECK</div>
+        <div class="question-card" id="q4">
+            <div class="question-text">Where should limited redundancy mass be spent first?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q4')">A) Everywhere equally</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q4')">B) On whatever is cheapest to duplicate</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q4','Redundancy is spent where a single failure would be mission-ending and cannot be worked around — critical, hard-to-replace functions.')">C) On the most critical, single-point-of-failure functions</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q4')">D) On the payload only</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q4',this)">Show solution</button>
+            <div class="solution" id="sol_q4"><span class="ans">Answer: C.</span> Redundancy costs mass and money, so it is concentrated where a single failure would kill the mission and there is no workaround. Less-critical or gracefully-degradable functions can be left single-string.</div>
+        </div>
+    </div>
+
+    <!-- ===================== QUIZ ===================== -->
+    <div class="quiz-section" id="s8">
+        <h2 style="margin-top:0; border-bottom:1px solid var(--gold);">Interactive Knowledge Check</h2>
+        <p><em>Incorrect answers turn red; the correct explanation reveals when you pick the right answer — or click "Show solution" any time to check yourself.</em></p>
+
+        <div class="question-card" id="q5">
+            <div class="question-text">1. Two satellites orbit at the same altitude but one is twice as massive. How do their orbital speeds compare?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q5')">A) The heavier one is slower</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q5')">B) The heavier one is faster</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q5','Mass cancels in $v=\\sqrt{\\mu/r}$ — speed depends only on radius.')">C) They are identical — speed depends only on radius</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q5')">D) It depends on their shape</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q5',this)">Show solution</button>
+            <div class="solution" id="sol_q5"><span class="ans">Answer: C.</span> In $v=\sqrt{\mu/r}$ the satellite mass has cancelled out. At a given radius every object orbits at the same speed — a heavy telescope and a paint fleck keep pace.</div>
+        </div>
+
+        <div class="question-card" id="q6">
+            <div class="question-text">2. Escape velocity from a given radius is larger than the circular-orbit velocity there by what factor?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q6')">A) 2×</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q6','$v_{esc}=\\sqrt{2\\mu/r}=\\sqrt2\\,v_{circ}$ — about 41% more.')">B) √2 × (about 41% more)</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q6')">C) 4×</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q6')">D) The same</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q6',this)">Show solution</button>
+            <div class="solution" id="sol_q6"><span class="ans">Answer: B.</span> $v_{esc}=\sqrt{2\mu/r}=\sqrt2\,\sqrt{\mu/r}=\sqrt2\,v_{circ}$ — 11.2 vs 7.9 km/s at the Earth's surface.</div>
+        </div>
+
+        <div class="question-card" id="q7">
+            <div class="question-text">3. In a first-cut mass budget, the 20% margin is applied to…</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q7')">A) the propellant mass</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q7','Margin is carried on the uncertain dry mass (payload + bus); propellant is sized separately from the $\\Delta v$ needed.')">B) the dry mass (payload + bus)</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q7')">C) the launcher's capacity</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q7')">D) nothing — margins are not used</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q7',this)">Show solution</button>
+            <div class="solution" id="sol_q7"><span class="ans">Answer: B.</span> The uncertain, still-growing dry mass carries the margin: $160\times1.2=192$ kg, then propellant is added to reach the 217 kg launch mass. Load the lecture preset in Interactive 2 to see it.</div>
+        </div>
+
+        <div class="question-card" id="q8">
+            <div class="question-text">4. A mission needs continuous global navigation with only a couple of dozen satellites. Which regime fits best?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q8')">A) LEO</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q8','MEO (~20 000 km) is where GPS/Galileo sit: high enough that a modest number of satellites give continuous global coverage.')">B) MEO (~20 000 km)</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q8')">C) A single GEO satellite</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q8')">D) A Lagrange point</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q8',this)">Show solution</button>
+            <div class="solution" id="sol_q8"><span class="ans">Answer: B — MEO.</span> GPS and Galileo fly near 20 000 km: high enough that ~24–30 satellites cover the whole globe continuously, yet far cheaper in count than a LEO mega-constellation. A single GEO can't provide the geometry navigation needs.</div>
+        </div>
+
+        <div class="question-card" id="q9">
+            <div class="question-text">5. Why is the ballistic penalty of extra spacecraft mass so severe?</div>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q9')">A) Heavier satellites orbit faster and overheat</button>
+            <button class="option-btn" onclick="checkAnswer(this,true,'q9','The rocket equation makes the propellant/mass ratio exponential in $\\Delta v$, so each extra kg of dry mass drags a much larger mass of propellant and structure.')">B) The rocket equation makes required propellant grow exponentially with $\\Delta v$</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q9')">C) Extra mass increases gravity</button>
+            <button class="option-btn" onclick="checkAnswer(this,false,'q9')">D) It doesn't — mass is free once in orbit</button>
+            <div class="feedback"></div>
+            <button class="reveal-link" onclick="revealSol('sol_q9',this)">Show solution</button>
+            <div class="solution" id="sol_q9"><span class="ans">Answer: B.</span> From $m_0/m_f=e^{\Delta v/v_e}$, buying velocity costs exponentially in mass. Every extra kilogram of spacecraft must be lifted by a much larger mass of propellant (and tankage) — which is exactly why the mass budget is the systems engineer's tightest leash.</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function checkAnswer(btn, isCorrect, questionId, explanation = "") {
+        let container = document.getElementById(questionId);
+        let feedback = container.querySelector('.feedback');
+        if (isCorrect) {
+            feedback.innerHTML = "<b>Correct!</b> " + explanation;
+            feedback.className = "feedback correct";
+            btn.style.backgroundColor = "#007A33"; btn.style.color = "white"; btn.style.borderColor = "#007A33";
+            container.querySelectorAll('.option-btn').forEach(b => { b.disabled = true; if (b !== btn) b.style.opacity = "0.5"; });
+            if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([feedback]);
+        } else {
+            feedback.innerHTML = "<b>Incorrect.</b> Try again!";
+            feedback.className = "feedback wrong";
+            btn.style.backgroundColor = "#fff0f0"; btn.style.color = "#dc3545"; btn.style.borderColor = "#dc3545";
+            btn.disabled = true;
+        }
+    }
+    function revealSol(id, btn) {
+        let s = document.getElementById(id);
+        let show = !s.classList.contains('show');
+        s.classList.toggle('show', show);
+        if (btn) btn.textContent = show ? (btn.classList.contains('reveal-link') ? "Hide solution" : "Hide solution ▴")
+                                        : (btn.classList.contains('reveal-link') ? "Show solution" : "Show solution ▾");
+        if (show && window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([s]);
+    }
+</script>
+
+</body>
+</html>
