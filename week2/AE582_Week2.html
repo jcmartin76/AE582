@@ -119,78 +119,12 @@ addSlide('<h1>Plasmas Within the Magnetosphere</h1><div class="cols" style="grid
 // 11 AURORA VISUAL
 addSlide('<h1>Aurora — Magnetized Fluid Dynamics</h1><div class="cols"><div><ul><li>Natural processes accelerate charged particles along the Earth\'s magnetic field to energies of 100 eV to 100 keV.</li><li>These energetic particles strike atoms and molecules (O, N) in the Earth\'s upper atmosphere (100–300 km), energizing them.</li><li><b>Emissions:</b><br>- Red (630 nm): Atomic O at >200 km.<br>- Green (557.7 nm): Atomic O at 100–200 km.<br>- Blue/violet: N₂ at ~100 km.</li></ul></div><div class="img-wrap"><img src="aurora.jpg" alt="Aurora Borealis"></div></div>');
 
-// 12 DRIFTS TEXT (PPTX Slide 12 - INTERACTIVE TABLE)
-addSlide(`<h1>Particle Drifts in the Magnetosphere</h1>
-<p style="margin-bottom:16px;">Above 200–300 km altitude, electrodynamics dominate the fluid dynamics. Select a condition to see the derivations and differences between protons and electrons.</p>
-<div class="cols">
-  <div>
-    <button class="drift-btn active" onclick="switchDrift('homo', this)">A) Homogeneous B-Field</button>
-    <button class="drift-btn" onclick="switchDrift('exb', this)">B) E × B Drift</button>
-    <button class="drift-btn" onclick="switchDrift('grav', this)">C) External Force (Gravity)</button>
-    <button class="drift-btn" onclick="switchDrift('grad', this)">D) Gradient Drift</button>
-  </div>
-  <div style="background:rgba(255,255,255,0.95); color:#12211B; padding:20px; border-radius:8px; border:1px solid var(--green);">
-    
-    <!-- A) Homogeneous -->
-    <div id="drift-homo" class="drift-content active">
-      <h3 style="color:var(--forest); border-bottom:1px solid #ccc; padding-bottom:8px;">A) Homogeneous B-Field</h3>
-      <div class="eq" style="background:#eef4f1; border-left:3px solid var(--green); color:#111;">
-        $m \\frac{d\\vec{v}}{dt} = q(\\vec{v} \\times \\vec{B})$
-      </div>
-      <p style="font-size:16px; margin-top:10px;"><b>Behavior:</b> No disturbing force. Particles execute pure circular gyromotion around the magnetic field lines.</p>
-      <ul style="font-size:15px; margin-top:10px;">
-        <li><b>Protons (+):</b> Orbit in a left-handed sense about B.</li>
-        <li><b>Electrons (-):</b> Orbit in a right-handed sense about B.</li>
-      </ul>
-    </div>
+// 12 DRIFTS
+addSlide('<h1>Particle Drifts in the Magnetosphere</h1><div class="cols" style="grid-template-columns: 1fr 1fr; gap: 30px;"><div><p style="font-size:18px; margin-top:0;">Above 200–300 km, electrodynamics dominate the fluid dynamics. The Lorentz force creates four distinct motion regimes[cite: 2]:</p><ul style="font-size: 16px; line-height: 1.5;"><li><b>(A) Gyromotion:</b> In a uniform B-field with no other forces, particles simply spiral. Protons and electrons circle in opposite directions[cite: 2].</li><li><b>(B) $\\vec{E} \\times \\vec{B}$ Drift:</b> An electric field pushes the spiraling particle. Because charge $q$ cancels out in the derivation, <b>both positive and negative particles drift in the exact same direction</b>, moving the plasma as a bulk fluid[cite: 2].</li><li><b>(C) External Force (Gravity):</b> A force independent of charge causes the spiral to stretch. Here, protons and electrons drift in <b>opposite directions</b>, creating an electrical current in space[cite: 2].</li><li><b>(D) Gradient Drift:</b> If the B-field is stronger on one side, the particle\'s turning radius tightens on that side, making it "walk" perpendicular to the gradient[cite: 2].</li></ul></div><div class="img-wrap" style="background: transparent; padding: 0;"><img src="drifts.jpg" alt="Particle Drifts" style="max-height: 70vh; width: 100%; box-shadow: none; object-fit: contain;"></div></div>');
 
-    <!-- B) ExB Drift -->
-    <div id="drift-exb" class="drift-content">
-      <h3 style="color:var(--forest); border-bottom:1px solid #ccc; padding-bottom:8px;">B) E × B Drift</h3>
-      <div class="eq" style="background:#eef4f1; border-left:3px solid var(--green); color:#111;">
-        $\\vec{v}_E = \\frac{\\vec{E} \\times \\vec{B}}{B^2}$
-      </div>
-      <p style="font-size:16px; margin-top:10px;"><b>Derivation:</b> Set Lorentz force to zero: $q(\\vec{E} + \\vec{v} \\times \\vec{B}) = 0$. Solve for $\\vec{v}$.</p>
-      <p style="font-size:16px; margin-top:10px;"><b>Behavior:</b> The charge $q$ cancels out!</p>
-      <ul style="font-size:15px; margin-top:10px;">
-        <li><b>Protons and Electrons</b> drift in the <b>SAME</b> direction.</li>
-        <li>Does not create an electric current.</li>
-      </ul>
-    </div>
-
-    <!-- C) Gravity -->
-    <div id="drift-grav" class="drift-content">
-      <h3 style="color:var(--forest); border-bottom:1px solid #ccc; padding-bottom:8px;">C) External Force (Gravity)</h3>
-      <div class="eq" style="background:#eef4f1; border-left:3px solid var(--green); color:#111;">
-        $\\vec{v}_F = \\frac{\\vec{F}_{ext} \\times \\vec{B}}{qB^2}$
-      </div>
-      <p style="font-size:16px; margin-top:10px;"><b>Derivation:</b> Substitute $\\vec{F}_{ext}$ for $q\\vec{E}$ in the previous derivation.</p>
-      <p style="font-size:16px; margin-top:10px;"><b>Behavior:</b> The charge $q$ remains in the denominator.</p>
-      <ul style="font-size:15px; margin-top:10px;">
-        <li><b>Protons and Electrons</b> drift in <b>OPPOSITE</b> directions.</li>
-        <li>This opposing drift creates an electric current perpendicular to both $\\vec{F}$ and $\\vec{B}$.</li>
-      </ul>
-    </div>
-
-    <!-- D) Gradient -->
-    <div id="drift-grad" class="drift-content">
-      <h3 style="color:var(--forest); border-bottom:1px solid #ccc; padding-bottom:8px;">D) Gradient B-Field Drift</h3>
-      <div class="eq" style="background:#eef4f1; border-left:3px solid var(--green); color:#111;">
-        $\\vec{v}_\\nabla = \\frac{m v_\\perp^2}{2 q B^3} (\\vec{B} \\times \\nabla B)$
-      </div>
-      <p style="font-size:16px; margin-top:10px;"><b>Behavior:</b> When the B-field is not uniform, the gyroradius changes during the orbit, causing the particle to "walk" sideways.</p>
-      <ul style="font-size:15px; margin-top:10px;">
-        <li>Because $q$ is in the denominator, Protons and Electrons drift in <b>OPPOSITE</b> directions.</li>
-        <li>This is the primary driver of the Earth's massive <b>Ring Current</b>.</li>
-      </ul>
-    </div>
-
-  </div>
-</div>`);
-
-// 13 GYROMOTION TABLE (PPTX Slide 14)
-addSlide('<h1>On Gyromotion</h1><div class="cols"><div><div class="eq"><b>$m \\frac{d\\vec{v}}{dt} = q(\\vec{v} \\times \\vec{B})$</b></div><p style="margin-top:12px">Gyrofrequency: <b>$\\omega_c = \\frac{qB_0}{m}$</b> <br>Gyroradius: <b>$\\rho_g = \\frac{mv_0}{qB_0}$</b></p><ul style="margin-top:12px;"><li>Each velocity component perpendicular to B executes Simple Harmonic Motion.</li><li>Electrons orbit right-handed; Protons orbit left-handed.</li><li>For electrons, $f_c = \\frac{\\omega_c}{2\\pi} = (28 \\text{ Hz/nT}) \\cdot B_0$</li></ul></div><div><table><tr><th>Region</th><th>B₀ [nT]</th><th>ω<sub>c</sub> (Protons)</th><th>ρ<sub>g</sub> (Protons)</th></tr><tr><td>Solar Wind</td><td>~5</td><td>~0.5 rad/s</td><td>~100 km</td></tr><tr><td>Magnetosphere</td><td>~500</td><td>~50 rad/s</td><td>~2 km</td></tr><tr><td>Ionosphere</td><td>~50,000</td><td>~5000 rad/s</td><td>~0.2 km</td></tr></table></div></div>');
-
+// 13 GYROMOTION
+addSlide('<h1>The Mathematics of Gyromotion</h1><div class="cols" style="grid-template-columns: 1fr 1fr; gap: 30px;"><div><p style="font-size:18px; margin-top:0;">Why does a magnetic field force particles into a circular spiral? We can see it by breaking down the Lorentz force in a uniform, static B-field (no E-field)[cite: 2]:</p><div class="eqbox" style="font-size: 20px;">$$m\\frac{d\\vec{v}}{dt} = q(\\vec{v} \\times \\vec{B})$$</div><ul style="font-size: 17px; line-height: 1.6;"><li>Assume the magnetic field points straight up the z-axis: $\\vec{B} = (0, 0, B_0)$[cite: 2].</li><li>The cross product couples the x and y velocities[cite: 2]: <br> $m\\frac{dv_x}{dt} = qB_0v_y$ &nbsp; and &nbsp; $m\\frac{dv_y}{dt} = -qB_0v_x$</li><li>Taking the derivative again uncouples them into the classic <b>Simple Harmonic Oscillator</b> equation[cite: 2]: <br> $\\frac{d^2v_x}{dt^2} = -\\left(\\frac{qB_0}{m}\\right)^2 v_x$</li></ul></div><div><div style="background:rgba(0,133,64,0.05); border:1px solid var(--green); padding:20px; border-radius:8px; margin-top:0;"><h3 style="color:var(--forest); margin-top:0;">What does this mean physically?</h3><p style="font-size: 18px; line-height: 1.5;">The equation $\\frac{d^2x}{dt^2} = -\\omega^2 x$ describes a pendulum or a spring. The $v_x$ and $v_y$ velocity components are oscillating as a sine and cosine wave[cite: 2].</p><p style="font-size: 18px; line-height: 1.5;">Because sine and cosine are exactly <b>90 degrees out of phase (in quadrature)</b>, tracing their combined path creates a perfect circle[cite: 2]! The particle orbits with an angular frequency known as the <b>gyrofrequency</b>[cite: 2]: $$\\omega_c = \\frac{qB_0}{m}$$</p></div></div></div>');
+  
 // 14 GYRO SIM
 addSlide('SIM:GYRO');
 
