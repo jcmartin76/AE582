@@ -135,14 +135,128 @@ addSlide('SIM:MIRROR');
 addSlide('SIM:BELTS');
 
 // 17 RAD BELT DATA (PPTX Slide 21)
-addSlide('<h1>Multi-year Radiation Belt Measurements</h1><div class="cols"><div><p>The Earth\'s magnetic field is dynamic. Processes release trapped particles only to accelerate and trap fresh populations in turn (e.g., Solar Flares, CMEs).</p><ul style="margin-top:10px;"><li><b>REPT data (right):</b> Shows electron flux variations across L-shells over several years.</li><li>Notice the sudden dropouts and subsequent rapid injections of MeV electrons deep into the inner magnetosphere.</li><li>These processes operate on multi-year and days-long time scales and are highly critical for radiation shielding design.</li></ul></div><div class="img-wrap"><img src="rad_belts.jpg" alt="Baker 2019 Rad Belt Data"></div></div><p class="source">Source: Baker et al., JGR Space Physics, 2019.</p>');
+addSlide('<h1>Outer Radiation Belt Dynamics (Van Allen Probes / REPT)</h1><div class="cols" style="grid-template-columns: 1fr 1.3fr; gap: 25px;"><div><p style="font-size: 16px; margin-top: 0; line-height: 1.45;">Multi-year observations from the <b>Relativistic Electron-Proton Telescope (REPT)</b> aboard NASA\'s Van Allen Probes demonstrate that the radiation belts are not static structures, but highly variable plasma systems driven by solar wind conditions:</p><ul style="font-size: 14.5px; line-height: 1.4; margin-bottom: 12px;"><li><b>Panels (a)–(d) [Electron Fluxes]:</b> Spin-averaged relativistic electron flux across four energy channels (1.8, 2.6, 4.2, and 6.3 MeV) plotted vs. McIlwain $L$-shell ($L \\approx 2.5$ to $7$) over 6 years. Red/yellow vertical "fingers" show rapid particle acceleration events where flux jumps by multiple orders of magnitude.</li><li><b>Panels (e)–(h) [Solar Wind Drivers]:</b> In-situ upstream drivers including solar wind speed ($V_{sw}$), total IMF strength ($B$), southward magnetic field component ($B_z$), and the interplanetary electric field ($V \\times B_z$)[cite: 2].</li></ul><div style="background: rgba(0,133,64,0.06); border-left: 4px solid var(--green); padding: 10px 14px; border-radius: 0 6px 6px 0;"><h4 style="color: var(--forest); margin: 0 0 4px; font-size: 15px;">Engineering Takeaway</h4><p style="font-size: 13.5px; margin: 0; line-height: 1.4;">High-speed solar wind streams ($V_{sw} > 500\\text{ km/s}$) and sustained southward $B_z$ trigger geomagnetic storms that inject and accelerate mega-electron-volt (MeV) "killer electrons" deep into MEO/GEO orbits ($L \\approx 3.5\\text{--}5.5$), drastically escalating internal charging and Total Ionizing Dose (TID) risks[cite: 2].</p></div><p class="source" style="margin-top: 8px; font-size: 12px;">Baker et al., <i>JGR Space Physics</i>, 124(4), 2588–2602 (2019)[cite: 2].</p></div><div class="img-wrap" style="background: transparent; padding: 0;"><img src="image_579304.jpg" alt="Van Allen Probes REPT Multiyear Electron Flux" style="max-height: 72vh; width: 100%; box-shadow: none; object-fit: contain;"></div></div>');
 
 // 18 HAZARDS INTRO
 addSlide('<h1>Hazards of the Space Environment</h1><div class="cols"><div><p style="font-style:italic;padding:16px;background:rgba(255,255,255,.05);border-left:4px solid var(--green);margin:12px 0;font-size:17px;">"One tiny crack in the hull and our blood boils in 13 seconds. A solar flare might crop up, cook us in our seats. And wait till you\'re sitting pretty with a case of Andorian shingles... Space is disease and danger wrapped in darkness and silence."<br><b style="font-style:normal;font-size:14px;color:var(--gold);">— Dr. McCoy, Star Trek (2009)</b></p><ul><li>The Space Environment is radically different than the terrestrial environment.</li><li><b>Goal:</b> Develop intuition for what aspects of spacecraft design have to change to survive.</li></ul></div><div class="img-wrap"><img src="mccoy.jpg" alt="Bones McCoy"></div></div>');
 
-// 19 HAZARDS TABLE
-addSlide('<h1>Effects on Spacecraft Subsystems</h1><div style="overflow-x:auto"><table><tr><th>Subsystem</th><th>Vacuum</th><th>Neutral (Drag/ATOX)</th><th>Plasma</th><th>Radiation</th><th>MMOD</th></tr><tr><td><b>ADC</b></td><td>Sensor degradation</td><td>Aerodynamic Torques</td><td>Induced Potentials</td><td>Sensor Degradation</td><td>Hyper-velocity Upsets</td></tr><tr><td><b>Avionics</b></td><td>—</td><td>—</td><td>EMI Due to Arcing</td><td>Degradation, Latchup</td><td>EMI Due to Impacts</td></tr><tr><td><b>Power</b></td><td>Coverslide Transmittance</td><td>Coverslide Transmittance</td><td>Contaminant Reattraction</td><td>Cell Efficiency Drop</td><td>Destruction of Cells</td></tr><tr><td><b>Propulsion</b></td><td>—</td><td>Drag Makeup Fuel</td><td>—</td><td>—</td><td>Tank Rupture</td></tr></table></div><p class="source">Source: Tribble, "Space Environment Effects on Spacecraft Subsystems".</p>');
+// 19 SUBSYSTEMS ENVIRONMENT MATRIX
+addSlide(`
+<h1>Space Environment Effects on Subsystems</h1>
+<style>
+  .fx-tbl { width: 100%; border-collapse: collapse; font-size: 1.5vmin; text-align: center; box-shadow: 0 1vmin 3vmin rgba(0,0,0,0.05); }
+  .fx-tbl th { background: var(--forest); color: #fff; padding: 1.2vmin; font-family: 'Cambria', serif; border: 1px solid var(--line); }
+  .fx-tbl td { border: 1px solid var(--line); padding: 1vmin; background: #fff; vertical-align: middle; }
+  .fx-tbl .rhead { text-align: left; font-weight: bold; background: var(--tint); color: var(--forest); }
+  .fx-tbl td.has-fx { cursor: pointer; background: rgba(0,133,64,0.06); color: var(--petrol); font-weight: 600; transition: all 0.2s; }
+  .fx-tbl td.has-fx:hover { background: rgba(218,201,97,0.3); transform: scale(1.03); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+  .fx-tbl td.active-fx { background: var(--green) !important; color: #fff !important; transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,133,64,0.3); border-radius: 4px; }
+  .fx-tbl td.no-fx { color: #ccc; background: var(--bg); }
+</style>
+<div class="cols" style="grid-template-columns: 1.6fr 1fr; gap: 30px; align-items: start;">
+  <div>
+    <table class="fx-tbl">
+      <tr>
+        <th style="text-align:left;">Subsystem</th>
+        <th>Vacuum</th>
+        <th>Neutral</th>
+        <th>Plasma</th>
+        <th>Radiation</th>
+        <th>MMOD</th>
+      </tr>
+      
+      <!-- ADCS -->
+      <tr>
+        <td class="rhead">ADCS</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='ADCS vs. Vacuum'; document.getElementById('rIcon').innerText='🌌'; document.getElementById('rDesc').innerHTML='<b>Solar UV &amp; Contamination:</b> Causes degradation of sensitive optical sensors (e.g., Star Trackers, Earth sensors)[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Degradation</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='ADCS vs. Neutral'; document.getElementById('rIcon').innerText='💨'; document.getElementById('rDesc').innerHTML='<b>Aerodynamic Drag &amp; AO:</b> Induces forces and torques, alters sensor coatings, and causes sensor noise (glow)[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Torques</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='ADCS vs. Plasma'; document.getElementById('rIcon').innerText='⚡'; document.getElementById('rDesc').innerHTML='<b>Spacecraft Charging:</b> Induces potentials that cause unwanted torques[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Torques</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='ADCS vs. Radiation'; document.getElementById('rIcon').innerText='☢️'; document.getElementById('rDesc').innerHTML='<b>Total Dose &amp; SEE:</b> Causes sensor degradation and upsets in attitude sensors[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Upsets</td>
+        <td class="no-fx">-</td>
+      </tr>
 
+      <!-- Avionics -->
+      <tr>
+        <td class="rhead">Avionics (C&amp;DH)</td>
+        <td class="no-fx">-</td>
+        <td class="no-fx">-</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Avionics vs. Plasma'; document.getElementById('rIcon').innerText='⚡'; document.getElementById('rDesc').innerHTML='<b>Spacecraft Charging:</b> Electrostatic arcing creates EMI (Electromagnetic Interference)[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">EMI</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Avionics vs. Radiation'; document.getElementById('rIcon').innerText='☢️'; document.getElementById('rDesc').innerHTML='<b>Total Dose &amp; SEE:</b> Causes cumulative degradation, logic upsets, and latchup[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Latchup</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Avionics vs. MMOD'; document.getElementById('rIcon').innerText='☄️'; document.getElementById('rDesc').innerHTML='<b>Hypervelocity Impacts:</b> Impact plasma creates localized EMI[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">EMI</td>
+      </tr>
+
+      <!-- EPS -->
+      <tr>
+        <td class="rhead">Electrical Power</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Power vs. Vacuum'; document.getElementById('rIcon').innerText='🌌'; document.getElementById('rDesc').innerHTML='<b>Solar UV:</b> Causes a change in coverslide transmittance[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Transmittance</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Power vs. Neutral'; document.getElementById('rIcon').innerText='💨'; document.getElementById('rDesc').innerHTML='<b>Atomic Oxygen Sputtering:</b> Changes coverslide transmittance[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Transmittance</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Power vs. Plasma'; document.getElementById('rIcon').innerText='⚡'; document.getElementById('rDesc').innerHTML='<b>Spacecraft Charging:</b> Causes EMI due to arcing and the reattraction of contaminants[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Arcing</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Power vs. Radiation'; document.getElementById('rIcon').innerText='☢️'; document.getElementById('rDesc').innerHTML='<b>Total Dose &amp; SEE:</b> Causes solar cell efficiency drop and electrical noise[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Efficiency Drop</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Power vs. MMOD'; document.getElementById('rIcon').innerText='☄️'; document.getElementById('rDesc').innerHTML='<b>Hypervelocity Impacts:</b> Causes destruction of solar cells[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Destruction</td>
+      </tr>
+
+      <!-- ECLSS -->
+      <tr>
+        <td class="rhead">Life Support (ECLSS)</td>
+        <td class="no-fx">-</td>
+        <td class="no-fx">-</td>
+        <td class="no-fx">-</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='ECLSS vs. Radiation'; document.getElementById('rIcon').innerText='☢️'; document.getElementById('rDesc').innerHTML='<b>Single Event Effects:</b> Causes upsets in critical control electronics[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Upsets</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='ECLSS vs. MMOD'; document.getElementById('rIcon').innerText='☄️'; document.getElementById('rDesc').innerHTML='<b>Hypervelocity Impacts:</b> Threatens catastrophic rupture of pressurized compartments[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Rupture</td>
+      </tr>
+
+      <!-- Propulsion -->
+      <tr>
+        <td class="rhead">Propulsion</td>
+        <td class="no-fx">-</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Propulsion vs. Neutral'; document.getElementById('rIcon').innerText='💨'; document.getElementById('rDesc').innerHTML='<b>Aerodynamic Drag:</b> Requires continuous drag-makeup fuel expenditure[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Drag Makeup</td>
+        <td class="no-fx">-</td>
+        <td class="no-fx">-</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Propulsion vs. MMOD'; document.getElementById('rIcon').innerText='☄️'; document.getElementById('rDesc').innerHTML='<b>Hypervelocity Impacts:</b> Causes catastrophic rupture of fuel tanks[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Tank Rupture</td>
+      </tr>
+
+      <!-- Structures -->
+      <tr>
+        <td class="rhead">Structures</td>
+        <td class="no-fx">-</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Structures vs. Neutral'; document.getElementById('rIcon').innerText='💨'; document.getElementById('rDesc').innerHTML='<b>Atomic Oxygen:</b> Causes changes in external structural coatings[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Coating Attack</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Structures vs. Plasma'; document.getElementById('rIcon').innerText='⚡'; document.getElementById('rDesc').innerHTML='<b>Spacecraft Charging:</b> Electrostatic forces cause the reattraction of contaminants[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Contamination</td>
+        <td class="no-fx">-</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Structures vs. MMOD'; document.getElementById('rIcon').innerText='☄️'; document.getElementById('rDesc').innerHTML='<b>Hypervelocity Impacts:</b> Causes direct structural EMI due to impacts[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">EMI</td>
+      </tr>
+
+      <!-- TT&C -->
+      <tr>
+        <td class="rhead">Telecom (TT&amp;C)</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='TT&amp;C vs. Vacuum'; document.getElementById('rIcon').innerText='🌌'; document.getElementById('rDesc').innerHTML='<b>Contamination:</b> Outgassing causes sensor degradation on antennas[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Degradation</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='TT&amp;C vs. Neutral'; document.getElementById('rIcon').innerText='💨'; document.getElementById('rDesc').innerHTML='<b>Atomic Oxygen &amp; Glow:</b> Changes sensor coatings and introduces sensor noise[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Noise</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='TT&amp;C vs. Plasma'; document.getElementById('rIcon').innerText='⚡'; document.getElementById('rDesc').innerHTML='<b>Spacecraft Charging:</b> Electrostatic arcing creates broadband EMI noise[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">EMI / Arcing</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='TT&amp;C vs. Radiation'; document.getElementById('rIcon').innerText='☢️'; document.getElementById('rDesc').innerHTML='<b>Total Dose:</b> Causes long-term degradation of RF components[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Degradation</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='TT&amp;C vs. MMOD'; document.getElementById('rIcon').innerText='☄️'; document.getElementById('rDesc').innerHTML='<b>Hypervelocity Impacts:</b> Impact plasma creates EMI bursts[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">EMI</td>
+      </tr>
+
+      <!-- Thermal -->
+      <tr>
+        <td class="rhead">Thermal Control</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Thermal vs. Vacuum'; document.getElementById('rIcon').innerText='🌌'; document.getElementById('rDesc').innerHTML='<b>Solar UV &amp; Contamination:</b> Changes the absorptivity-to-emissivity (&alpha;/s) ratio of radiators[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">&alpha;/s Shift</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Thermal vs. Neutral'; document.getElementById('rIcon').innerText='💨'; document.getElementById('rDesc').innerHTML='<b>Atomic Oxygen:</b> Sputtering changes the &alpha;/&epsilon; coating ratio[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">&alpha;/&epsilon; Shift</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Thermal vs. Plasma'; document.getElementById('rIcon').innerText='⚡'; document.getElementById('rDesc').innerHTML='<b>Spacecraft Charging:</b> Reattraction of contaminants alters thermal properties[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">Contamination</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Thermal vs. Radiation'; document.getElementById('rIcon').innerText='☢️'; document.getElementById('rDesc').innerHTML='<b>Total Dose:</b> Darkens thermal control coatings, shifting the &alpha;/s ratio[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">&alpha;/s Shift</td>
+        <td class="has-fx" onclick="document.getElementById('rTitle').innerHTML='Thermal vs. MMOD'; document.getElementById('rIcon').innerText='☄️'; document.getElementById('rDesc').innerHTML='<b>Hypervelocity Impacts:</b> Alters surface &alpha;/s ratio[cite: 2].'; document.querySelectorAll('.fx-tbl td').forEach(c=>c.classList.remove('active-fx')); this.classList.add('active-fx');">&alpha;/s Shift</td>
+      </tr>
+    </table>
+    <p class="source" style="margin-top: 15px; font-size: 1.4vmin;">Source: Tribble, "Space Environment Effects on Spacecraft Subsystems" (Table 1.4)[cite: 2].</p>
+  </div>
+  
+  <div style="height: 100%;">
+    <div id="readoutBox" style="background:var(--tint); border: 2px solid var(--gold); border-radius: 12px; padding: 30px; height: 100%; display: flex; flex-direction: column; justify-content: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.02);">
+      <div id="rIcon" style="font-size: 6vmin; margin-bottom: 10px; text-align:center;">🖱️</div>
+      <h3 id="rTitle" style="color:var(--forest); margin:0 0 15px; font-family:'Cambria',serif; font-size:3.5vmin; line-height: 1.2; text-align:center;">Interactive Matrix</h3>
+      <p id="rDesc" style="font-size:2.3vmin; line-height:1.6; color: var(--ink);">Click any highlighted cell in the matrix to the left to explore exactly how specific space environment hazards degrade, disrupt, or destroy that spacecraft subsystem[cite: 2].</p>
+    </div>
+  </div>
+</div>
+`);
 // 20 MICRO-G
 addSlide('<h1>Micro-Gravity Environment</h1><div class="cols"><div><h3>Convection / Buoyancy doesn\'t work:</h3><ul><li>Effects on heat and mass transport (no natural convection for electronics cooling).</li><li>Effects on combustion and fluid mixing.</li></ul><h3>Surface Tension Dominates:</h3><ul><li>Dictates where fuel settles in tanks (requires ullage motors or diaphragms).</li><li>Dictates how fuel sloshes during maneuvers.</li></ul><p style="margin-top:16px;font-weight:700;color:var(--gold);font-size:16px">(STRUCTURAL DESIGN, PROPULSION, THERMAL)</p></div><div class="img-wrap"><img src="microgravity.jpg" alt="Astronauts in ISS Microgravity"></div></div>');
 
