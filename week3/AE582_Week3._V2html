@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AE 582 — Week 3 · Interactive Slide Deck</title>
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--tintd:#E7EDEF;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;--bg:#F4F7F5;}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;background:#0c1a18;
+     font-family:"Calibri","Segoe UI",system-ui,sans-serif;color:var(--ink)}
+  .slide{position:fixed;inset:0;opacity:0;visibility:hidden;transition:opacity .35s ease;
+     display:flex;align-items:center;justify-content:center;padding:4.5vmin 6vmin;}
+  .slide.active{opacity:1;visibility:visible}
+  .inner{width:min(1180px,94vw);max-height:88vh}
+  /* light content slides */
+  .slide{background:var(--bg)}
+  .kicker{font-size:1.7vmin;letter-spacing:.28em;font-weight:700;color:var(--green);text-transform:uppercase;margin-bottom:1.4vmin}
+  .title{font-family:"Cambria",Georgia,serif;font-weight:700;color:var(--forest);font-size:4.4vmin;line-height:1.12;margin:0 0 1vmin}
+  .subtitle{font-size:2.1vmin;color:var(--mut);margin:.4vmin 0 2.4vmin}
+  .accent{height:.5vmin;width:9vmin;background:var(--green);border-radius:3px;margin:1.4vmin 0 2.2vmin}
+  ul.pts{margin:0;padding-left:0;list-style:none}
+  ul.pts li{position:relative;padding-left:3.4vmin;margin:1.5vmin 0;font-size:2.35vmin;line-height:1.45}
+  ul.pts li::before{content:"";position:absolute;left:.6vmin;top:.9vmin;width:1.3vmin;height:1.3vmin;background:var(--gold);border-radius:50%}
+  ul.pts li b{color:var(--forest)}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:3vmin}
+  .card{background:#fff;border:1px solid var(--line);border-radius:1.4vmin;padding:2.6vmin 2.8vmin;box-shadow:0 1vmin 3vmin rgba(0,0,0,.05)}
+  .card h3{margin:0 0 1.2vmin;font-family:"Cambria",serif;color:var(--green);font-size:2.5vmin}
+  .card.d{background:var(--tintd)} .card.g{background:var(--tint)}
+  .eqbox{background:var(--tint);border-left:.6vmin solid var(--green);border-radius:0 1vmin 1vmin 0;
+     padding:2vmin 2.6vmin;margin:1.8vmin 0;font-family:"Cambria",serif;font-size:2.5vmin;color:var(--forest)}
+  table.tbl{width:100%;border-collapse:collapse;font-size:2vmin}
+  table.tbl th,table.tbl td{border:1px solid var(--line);padding:1.2vmin 1.6vmin;text-align:left;vertical-align:top}
+  table.tbl th{background:var(--forest);color:#fff;font-family:"Cambria",serif}
+  table.tbl tr:nth-child(even) td{background:#fff}
+  table.tbl tr:nth-child(odd) td{background:var(--tint)}
+  .stat{display:flex;gap:2.4vmin;flex-wrap:wrap;margin-top:1.5vmin}
+  .stat .s{flex:1;min-width:22vmin;background:#fff;border:1px solid var(--line);border-top:.7vmin solid var(--green);
+     border-radius:1.2vmin;padding:2.2vmin}
+  .stat .s .n{font-family:"Cambria",serif;font-size:4.2vmin;font-weight:700;color:var(--green);line-height:1}
+  .stat .s .l{font-size:1.9vmin;color:var(--ink);margin-top:.8vmin}
+  .recap{background:var(--tint);border:1px solid var(--green);border-radius:1.4vmin;padding:2.6vmin 3vmin}
+  .recap li{font-size:2.25vmin}
+  .note{background:var(--tint);border-left:.5vmin solid var(--gold);padding:1.6vmin 2.2vmin;border-radius:0 1vmin 1vmin 0;font-size:2vmin;color:var(--ink);margin-top:1.8vmin}
+  /* dark slides (cover + dividers) */
+  .slide.dark{background:var(--petrol);color:#fff}
+  .slide.dark .kicker{color:var(--gold)}
+  .slide.dark .title{color:#fff;font-size:6vmin}
+  .slide.dark .subtitle{color:#cfe0e4;font-size:2.4vmin}
+  .slide.dark .accent{background:var(--gold)}
+  .bignum{font-family:"Cambria",serif;font-size:12vmin;font-weight:700;color:var(--gold);line-height:1}
+  .chips{display:flex;gap:1.4vmin;flex-wrap:wrap;margin-top:2.6vmin}
+  .chips span{background:rgba(255,255,255,.1);border:1px solid rgba(218,201,97,.5);color:#eaf3ee;
+     padding:1vmin 1.8vmin;border-radius:2vmin;font-size:1.9vmin;font-weight:600}
+  /* interactive demo slide */
+  .demoslide .inner{width:min(1240px,96vw)}
+  .demoslide .dhead{display:flex;align-items:baseline;gap:1.4vmin;margin-bottom:1.2vmin}
+  .demoslide .badge{background:var(--green);color:#fff;font-weight:700;font-size:1.6vmin;padding:.7vmin 1.4vmin;border-radius:.8vmin;letter-spacing:.1em}
+  .demoslide .dt{font-family:"Cambria",serif;color:var(--forest);font-size:3vmin;font-weight:700}
+  .demoslide iframe{width:100%;height:74vh;border:1px solid var(--line);border-radius:1.2vmin;box-shadow:0 1vmin 3vmin rgba(0,0,0,.10);background:#fff}
+  /* chrome */
+  .brand{position:fixed;left:2.4vmin;bottom:1.8vmin;font-size:1.5vmin;font-weight:700;letter-spacing:.12em;color:var(--mut);z-index:20}
+  .slide.dark ~ .brand{color:#9fb6bd}
+  .pageno{position:fixed;right:2.6vmin;bottom:1.8vmin;font-size:1.6vmin;color:var(--mut);z-index:20}
+  .nav{position:fixed;bottom:1.4vmin;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:1.2vmin;z-index:30}
+  .nav button{width:4.4vmin;height:4.4vmin;border-radius:50%;border:none;background:var(--green);color:#fff;font-size:2.4vmin;cursor:pointer;line-height:1;box-shadow:0 .5vmin 1.5vmin rgba(0,0,0,.2)}
+  .nav button:hover{background:var(--forest)} .nav button:disabled{opacity:.35;cursor:default}
+  .nav .count{font-size:1.8vmin;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:2vmin;padding:.6vmin 1.6vmin;min-width:9vmin;text-align:center}
+  .progress{position:fixed;top:0;left:0;height:.5vmin;background:var(--gold);width:0;z-index:40;transition:width .35s}
+  .hintbar{position:fixed;top:1.2vmin;right:1.6vmin;font-size:1.4vmin;color:var(--mut);z-index:20;opacity:.7}
+  .steps{margin:.5vmin 0}
+  .steps .s{display:flex;gap:1.3vmin;align-items:center;margin:.6vmin 0;padding:.6vmin 1.3vmin;background:var(--tint);border-left:3px solid var(--green);border-radius:0 9px 9px 0}
+  .steps .s .k{font-family:"Cambria",serif;font-weight:700;color:var(--green);min-width:2.1vmin;font-size:2vmin}
+  .steps .s .m{font-size:1.95vmin;overflow-x:auto}
+  .steps .s .why{color:var(--mut);font-size:1.55vmin;margin-left:auto;white-space:nowrap;font-style:italic}
+  .simwrap{margin:.4vmin 0}
+  .simwrap iframe{width:100%;height:57vh;border:1px solid var(--line);border-radius:12px;display:block;background:#05070f}
+  .ibadge{display:inline-block;background:var(--green);color:#fff;font-weight:700;font-size:1.5vmin;letter-spacing:.4px;padding:.3vmin 1vmin;border-radius:6px;margin-right:1vmin}
+  .lawrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.1vmin;margin-top:1vmin}
+  .lawrow .card{padding:1vmin 1.3vmin;font-size:1.75vmin}
+  .lawrow .card h3{margin:0 0 .3vmin;font-size:1.95vmin}
+  svg.fig{display:block;width:100%;height:auto;max-height:56vh;margin:.5vmin auto}
+  .figcap{font-size:1.7vmin;color:var(--mut);text-align:center;margin-top:.7vmin}
+  .figcap b{color:var(--forest)}
+  .svgt{font-family:"Calibri","Segoe UI",sans-serif;font-size:15px;fill:var(--mut)}
+  .svgt.ink{fill:var(--ink)} .svgt.g{fill:var(--green)} .svgt.f{fill:var(--forest)} .svgt.s{fill:var(--stone)} .svgt.p{fill:var(--petrol)} .svgt.gold{fill:var(--stone)}
+  @media(max-width:820px){.cols{grid-template-columns:1fr}.title{font-size:6vw}ul.pts li{font-size:3.6vw}}
+</style>
+</head>
+<body>
+
+<div class="progress" id="prog"></div>
+<div class="hintbar">← → arrows to navigate · F for fullscreen</div>
+
+<!-- COVER -->
+<section class="slide dark active">
+  <div class="inner">
+    <div class="kicker">King Fahd University of Petroleum &amp; Minerals · AE 582 Satellite Engineering</div>
+    <div style="font-size:7.5vmin;font-family:Cambria,serif;font-weight:700;margin:1vmin 0 .5vmin">WEEK 3</div>
+    <div class="title" style="font-size:5vmin">Celestial mechanics — the two‑body problem</div>
+    <div class="accent"></div>
+    <div class="subtitle"> Lecture 1 — gravitation, the conserved quantities, and the conic‑section orbit. Lecture 2 — energy, orbit geometry, and the problem of time.</div>
+    <div class="chips"><span>Newtonian gravitation</span><span>Two‑body reduction</span><span>Effective potential</span><span>Conic sections</span><span>Vis‑viva &amp; energy</span><span>Kepler's laws</span></div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Course roadmap · celestial mechanics block</div>
+    <div class="title">Weeks 3–5 — orbits, from theory to transfers</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div><ul class="pts">
+        <li><b>Week 3</b> The two‑body problem — 2 lectures &nbsp;<span style="color:var(--green);font-weight:700">◀ this deck</span></li>
+        <li><b>Week 4</b> Describing orbits · perturbations &amp; special orbits</li>
+      </ul></div>
+      <div><ul class="pts">
+        <li><b>Week 5</b> ΔV &amp; orbit transfers · launch &amp; propulsion</li>
+      </ul>
+      <div class="note">This week is the foundation: everything in Weeks 4–5 is either the exact solution derived here or a correction to it. Expand the collapsible derivations in the companion <b>Study Notes</b> for every line of algebra.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LECTURE 1 ============ -->
+<section class="slide dark">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1 of 2</div>
+    <div class="bignum">L1</div>
+    <div class="title">Gravitation &amp; the Keplerian orbit</div>
+    <div class="accent"></div>
+    <div class="subtitle">From Newton's law of gravitation to the conic‑section solution — via two conserved quantities and one change of variable.</div>
+  </div>
+</section>
+
+<!-- GRAVITY OBS -> LAW -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">Gravity and Keplerian orbits — observation to law</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Kepler (empirical, 1609–19)</h3><ul class="pts" style="margin-top:.3vmin"><li>Fit to Tycho Brahe's Mars data — three <b>descriptive</b> laws.</li><li>Ellipses, equal areas, $T^2\propto a^3$ — but no <i>why</i>.</li></ul></div>
+      <div class="card d"><h3>Newton (mechanistic, 1687)</h3><ul class="pts" style="margin-top:.3vmin"><li>One testable hypothesis: $F=\dfrac{Gm_1m_2}{r^2}$.</li><li>With $F=ma$ and calculus, all three of Kepler's laws <b>fall out</b>.</li></ul></div>
+    </div>
+    <div class="note">Kepler <i>described</i> these motions; Newton <i>explained</i> them. We meet Kepler's three laws first, as empirical facts, then build the Newtonian dynamics that reproduces every one of them.</div>
+  </div>
+</section>
+
+<!-- KEPLER EMPIRICAL FOUNDATION -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">The path to the ellipse — observation to law</div>
+    <div class="accent"></div>
+    <div class="cols" style="grid-template-columns:1fr 1fr 1fr; gap:2vmin">
+      
+      <!-- Ptolemaic -->
+      <div class="card d" style="padding:2vmin; text-align:center">
+        <h3 style="font-size:2.2vmin">1. Ptolemaic (Geocentric)</h3>
+        <svg viewBox="0 0 200 200" style="width:100%; max-height:160px; margin:1vmin 0">
+          <circle cx="100" cy="100" r="60" fill="none" stroke="#B9BCC9" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <circle cx="100" cy="100" r="8" fill="#2e5aa8"/> <!-- Earth -->
+          <circle cx="160" cy="100" r="25" fill="none" stroke="#8A6D00" stroke-width="1.5"/> <!-- Epicycle -->
+          <circle cx="160" cy="75" r="5" fill="#003E51"/> <!-- Planet -->
+          <text x="100" y="185" font-size="12" fill="#5C6B64" text-anchor="middle">Earth at center, complex epicycles</text>
+        </svg>
+        <div style="font-size:1.8vmin; text-align:left; color:var(--mut)">Matched naked-eye observations for centuries by stacking circles on circles to explain retrograde motion.</div>
+      </div>
+
+      <!-- Copernican -->
+      <div class="card g" style="padding:2vmin; text-align:center">
+        <h3 style="font-size:2.2vmin">2. Copernican (Heliocentric)</h3>
+        <svg viewBox="0 0 200 200" style="width:100%; max-height:160px; margin:1vmin 0">
+          <circle cx="100" cy="100" r="40" fill="none" stroke="#B9BCC9" stroke-width="1.5"/>
+          <circle cx="100" cy="100" r="70" fill="none" stroke="#00573F" stroke-width="1.5"/>
+          <circle cx="100" cy="100" r="10" fill="#DAC961"/> <!-- Sun -->
+          <circle cx="60" cy="100" r="4" fill="#2e5aa8"/> <!-- Earth -->
+          <circle cx="170" cy="100" r="4" fill="#e85d04"/> <!-- Mars -->
+          <text x="100" y="185" font-size="12" fill="#5C6B64" text-anchor="middle">Sun at center, perfect circles</text>
+        </svg>
+        <div style="font-size:1.8vmin; text-align:left; color:var(--mut)">Elegant, but still relied on uniform circular motion. It failed to perfectly predict planetary positions.</div>
+      </div>
+
+      <!-- Keplerian -->
+      <div class="card" style="padding:2vmin; text-align:center; border-top:4px solid var(--green)">
+        <h3 style="font-size:2.2vmin">3. Keplerian (The Ellipse)</h3>
+        <svg viewBox="0 0 200 200" style="width:100%; max-height:160px; margin:1vmin 0">
+          <!-- Perfect circle reference -->
+          <circle cx="100" cy="100" r="70" fill="none" stroke="#D9DAE4" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <!-- Ellipse -->
+          <ellipse cx="100" cy="100" rx="80" ry="60" fill="none" stroke="#008540" stroke-width="2"/>
+          <circle cx="60" cy="100" r="10" fill="#DAC961"/> <!-- Sun at focus -->
+          <circle cx="180" cy="100" r="4" fill="#e85d04"/> <!-- Mars -->
+          <line x1="170" y1="100" x2="170" y2="52" stroke="#e85d04" stroke-width="1" stroke-dasharray="2 2"/>
+          <text x="100" y="185" font-size="12" fill="#5C6B64" text-anchor="middle">Sun at focus, elliptical orbits</text>
+        </svg>
+        <div style="font-size:1.8vmin; text-align:left; color:var(--mut)">Tycho Brahe's Mars data showed an 8 arc-minute error from a perfect circle. Kepler trusted the data and found the ellipse.</div>
+      </div>
+
+    </div>
+    <div class="note" style="margin-top:2.5vmin">The three laws are purely <b>kinematic</b> — a compact description of <i>what</i> the planets do. They contain no force and no mass; supplying the <i>why</i> was Newton's task.</div>
+  </div>
+</section>
+
+<!-- SLIDE 5: APPARENT MOTION SIMULATION -->
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead">
+      <span class="badge">▶ INTERACTIVE</span>
+      <span class="dt">Apparent retrograde motion — the failure of the circle</span>
+    </div>
+    <div class="simwrap">
+      <iframe title="Retrograde motion simulation" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--mut:#5C6B64;}
+  body{font-family:&quot;Calibri&quot;,sans-serif;background:#05070f;color:#fff;overflow:hidden;margin:0;}
+  .panel{position:absolute;top:15px;left:15px;background:rgba(255,255,255,0.95);color:#12211B;padding:15px;border-radius:12px;width:320px;box-shadow:0 4px 15px rgba(0,0,0,0.3);}
+  h3{margin:0 0 10px;font-family:&quot;Cambria&quot;,serif;font-size:17px;color:var(--forest);}
+  p{font-size:13px;color:var(--mut);margin:0 0 15px;line-height:1.4;}
+  .row{display:flex;justify-content:space-between;margin-bottom:12px;font-size:13px;font-weight:600;}
+  button{width:100%;padding:8px;background:var(--green);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:bold;font-size:13px;}
+  .legend{display:flex;gap:10px;font-size:11px;margin-top:12px;color:var(--mut);font-weight:bold;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h3&gt;Apparent Retrograde Motion&lt;/h3&gt;
+    &lt;p&gt;Watch the line of sight from Earth to Mars. As Earth overtakes Mars, Mars appears to loop backward against the distant stars.&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Speed&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;spd&quot; min=&quot;0.1&quot; max=&quot;3&quot; step=&quot;0.1&quot; value=&quot;1&quot;&gt;&lt;/div&gt;
+    &lt;button id=&quot;btn&quot;&gt;❚❚ Pause&lt;/button&gt;
+    &lt;div class=&quot;legend&quot;&gt;
+      &lt;span&gt;&lt;div class=&quot;dot&quot; style=&quot;background:#f9d71c&quot;&gt;&lt;/div&gt;Venus&lt;/span&gt;
+      &lt;span&gt;&lt;div class=&quot;dot&quot; style=&quot;background:#4a90d9&quot;&gt;&lt;/div&gt;Earth&lt;/span&gt;
+      &lt;span&gt;&lt;div class=&quot;dot&quot; style=&quot;background:#e85d04&quot;&gt;&lt;/div&gt;Mars&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;script&gt;
+  const cv=document.getElementById(&quot;cv&quot;), ctx=cv.getContext(&quot;2d&quot;);
+  let w, h, cx, cy, time=0, playing=true, speed=1, trace=[];
+  function resize() {
+    w=window.innerWidth; h=window.innerHeight;
+    const DPR=Math.min(window.devicePixelRatio||1, 2);
+    cv.width=w*DPR; cv.height=h*DPR;
+    ctx.scale(DPR, DPR); cx=w/2; cy=h/2;
+  }
+  window.addEventListener(&quot;resize&quot;, resize); resize();
+  document.getElementById(&quot;spd&quot;).oninput=e=&gt;speed=+e.target.value;
+  document.getElementById(&quot;btn&quot;).onclick=()=&gt;{ playing=!playing; document.getElementById(&quot;btn&quot;).innerText=playing?&quot;▶ Play&quot;:&quot;❚❚ Pause&quot;; };
+  function draw() {
+    ctx.clearRect(0,0,w,h);
+    const rE=Math.min(w,h)*0.16, rV=rE*0.723, rM=rE*1.524;
+    const wE=0.015, wV=wE*Math.pow(1/0.723, 1.5), wM=wE*Math.pow(1/1.524, 1.5);
+    if(playing) time+=speed;
+    const vX=cx+rV*Math.cos(time*wV+2), vY=cy+rV*Math.sin(time*wV+2);
+    const eX=cx+rE*Math.cos(time*wE), eY=cy+rE*Math.sin(time*wE);
+    const mX=cx+rM*Math.cos(time*wM+0.5), mY=cy+rM*Math.sin(time*wM+0.5);
+    
+    ctx.strokeStyle=&quot;#33414a&quot;; ctx.lineWidth=1;
+    [rV, rE, rM].forEach(r =&gt; { ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7); ctx.stroke(); });
+    
+    ctx.fillStyle=&quot;#DAC961&quot;; ctx.beginPath(); ctx.arc(cx, cy, 10, 0, 7); ctx.fill();
+    ctx.fillStyle=&quot;#f9d71c&quot;; ctx.beginPath(); ctx.arc(vX, vY, 4.5, 0, 7); ctx.fill();
+    ctx.fillStyle=&quot;#4a90d9&quot;; ctx.beginPath(); ctx.arc(eX, eY, 5.5, 0, 7); ctx.fill();
+    ctx.fillStyle=&quot;#e85d04&quot;; ctx.beginPath(); ctx.arc(mX, mY, 5, 0, 7); ctx.fill();
+    
+    const dx=mX-eX, dy=mY-eY, dist=Math.sqrt(dx*dx+dy*dy);
+    const projR=Math.min(w,h)*0.42;
+    const pX=eX+(dx/dist)*(projR+rE), pY=eY+(dy/dist)*(projR+rE);
+    
+    ctx.strokeStyle=&quot;rgba(232, 93, 4, 0.4)&quot;; ctx.lineWidth=1.5; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(eX, eY); ctx.lineTo(pX, pY); ctx.stroke(); ctx.setLineDash([]);
+    
+    ctx.strokeStyle=&quot;#26323b&quot;; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(cx, cy, projR, 0, 7); ctx.stroke();
+    
+    const bgX=cx+(dx/dist)*projR, bgY=cy+(dy/dist)*projR;
+    if (playing &amp;&amp; time%2&lt;speed) { trace.push({x:bgX, y:bgY}); if(trace.length&gt;250) trace.shift(); }
+    
+    if(trace.length&gt;1) {
+      ctx.strokeStyle=&quot;#e85d04&quot;; ctx.lineWidth=2.5; ctx.beginPath();
+      ctx.moveTo(trace[0].x, trace[0].y);
+      for(let i=1; i&lt;trace.length; i++) {
+        const d=Math.sqrt(Math.pow(trace[i].x-trace[i-1].x,2)+Math.pow(trace[i].y-trace[i-1].y,2));
+        if(d&lt;50) ctx.lineTo(trace[i].x, trace[i].y); else ctx.moveTo(trace[i].x, trace[i].y);
+      }
+      ctx.stroke();
+    }
+    ctx.fillStyle=&quot;#fff&quot;; ctx.beginPath(); ctx.arc(bgX, bgY, 4, 0, 7); ctx.fill();
+    requestAnimationFrame(draw);
+  }
+  draw();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe>
+    </div>
+    <div class="lawrow" style="grid-template-columns:1fr 1fr; margin-top:1.5vmin">
+      <div class="card g">
+        <h3>The Observation</h3>
+        Heliocentrism naturally creates the retrograde loop as the faster Earth overtakes Mars. Venus's orbit inside Earth also perfectly explained its phases, disproving Ptolemy.
+      </div>
+      <div class="card d">
+        <h3>Kepler's Realization</h3>
+        While heliocentrism explained the <b>existence</b> of the loop, predicting its exact shape and timing against Tycho Brahe's data revealed an 8 arc-minute error. Circles were fundamentally insufficient—ellipses were the only geometric match.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- KEPLER 1 2 3 INTERACTIVE (slide 6) -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">Kepler's three laws — live</div>
+    <div class="accent"></div>
+    <div style="margin:.3vmin 0 .2vmin"><span class="ibadge">▶ INTERACTIVE</span><span style="color:var(--mut);font-size:1.85vmin">Animated orbit — equal‑area wedges swept in equal time; change $a$ and watch $T^2/a^3$ hold.</span></div>
+    <div class="simwrap"><iframe title="Kepler's three laws" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Kepler&#x27;s three laws — interactive · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:14px 24px 9px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:11px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:23px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:14px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 320px;gap:16px;padding:16px 24px 22px;max-width:1300px;margin:0 auto}
+  @media(max-width:900px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:430px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:12px;left:12px;display:flex;gap:8px;flex-wrap:wrap;pointer-events:none;max-width:92%}
+  .chip{background:rgba(255,255,255,.94);border-radius:9px;padding:5px 10px;min-width:66px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:9.5px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:15px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.const{background:rgba(218,201,97,.96)}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 17px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 11px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:15px;color:var(--forest)}
+  .row{margin:0 0 13px}.row label{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  .actions{display:flex;gap:8px;margin:2px 0 4px}
+  .actions button{flex:1;padding:9px;border-radius:9px;border:none;font-weight:700;cursor:pointer;font-size:13px}
+  #play{background:var(--green);color:#fff}#reset{background:#eef1f0;color:var(--ink)}
+  .presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .presets button{padding:6px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .hint{font-size:11.5px;color:var(--mut);margin-top:11px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:12px 0}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 · WEEK 3 — KEPLER&#x27;S LAWS&lt;/div&gt;
+  &lt;h1&gt;Kepler&#x27;s three laws — one orbit, three truths&lt;/h1&gt;
+  &lt;div class=&quot;eq&quot;&gt;&lt;b&gt;1&lt;/b&gt; ellipse at a focus · &lt;b&gt;2&lt;/b&gt; equal areas in equal time · &lt;b&gt;3&lt;/b&gt; T²/a³ = const&lt;/div&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;a&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oA&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;e&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oE&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;period T&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oT&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip const&quot;&gt;&lt;div class=&quot;l&quot;&gt;T² ⁄ a³&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oK&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;speed v&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oV&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip const&quot;&gt;&lt;div class=&quot;l&quot;&gt;dA ⁄ dt&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oDA&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Controls&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Eccentricity e &lt;span class=&quot;num&quot; id=&quot;eN&quot;&gt;0.40&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;eS&quot; min=&quot;0&quot; max=&quot;0.8&quot; step=&quot;0.01&quot; value=&quot;0.4&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Semi‑major axis a (km) &lt;span class=&quot;num&quot; id=&quot;aN&quot;&gt;15 000&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;aS&quot; min=&quot;8000&quot; max=&quot;30000&quot; step=&quot;250&quot; value=&quot;15000&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;actions&quot;&gt;&lt;button id=&quot;play&quot;&gt;❚❚ Pause&lt;/button&gt;&lt;button id=&quot;reset&quot;&gt;↺ Reset&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;presets&quot;&gt;
+      &lt;button data-e=&quot;0&quot; data-a=&quot;12000&quot;&gt;Circle&lt;/button&gt;
+      &lt;button data-e=&quot;0.09&quot; data-a=&quot;20000&quot;&gt;Mars‑like&lt;/button&gt;
+      &lt;button data-e=&quot;0.7&quot; data-a=&quot;26000&quot;&gt;Comet&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;&lt;b&gt;Law 1:&lt;/b&gt; the body traces an ellipse with the green primary at a focus. &lt;b&gt;Law 2:&lt;/b&gt; the twelve shaded wedges are swept in equal times — equal areas, so wide &amp;amp; fast at perigee, narrow &amp;amp; slow at apogee (watch &lt;i&gt;v&lt;/i&gt; and the constant &lt;i&gt;dA/dt&lt;/i&gt;). &lt;b&gt;Law 3:&lt;/b&gt; change &lt;i&gt;a&lt;/i&gt; and the period &lt;i&gt;T&lt;/i&gt; rescales, yet &lt;i&gt;T²/a³&lt;/i&gt; holds fixed at 4π²/μ.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+const MU=398600.4418, TAU=Math.PI*2, N=12, ANIM=1600;
+const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+let a=15000, e=0.4, M=0, playing=true, last=0, DPR=Math.min(window.devicePixelRatio||1,2), W=10, H=10;
+const $=id=&gt;document.getElementById(id);
+function fit(){const r=cv.getBoundingClientRect();W=Math.max(10,r.width);H=Math.max(10,r.height);
+  cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+function kep(Mv,e){Mv=((Mv%TAU)+TAU)%TAU;let E=e&lt;0.8?Mv:Math.PI;
+  for(let k=0;k&lt;50;k++){const d=(E-e*Math.sin(E)-Mv)/(1-e*Math.cos(E));E-=d;if(Math.abs(d)&lt;1e-12)break;}return E;}
+function pos(E){const b=a*Math.sqrt(1-e*e);return [a*(Math.cos(E)-e), b*Math.sin(E)];}  // focus at origin
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const b=a*Math.sqrt(1-e*e);
+  const sc=Math.min(W/(2*a*1.25), H/(2*b*1.3));
+  const cxc=-a*e;                       // ellipse centre x in focus frame
+  const SX=x=&gt;W/2+(x-cxc)*sc, SY=y=&gt;H/2-y*sc;
+  // equal-time sector boundaries
+  const P=[];for(let k=0;k&lt;=N;k++){P.push(pos(kep(TAU*k/N,e)));}
+  for(let k=0;k&lt;N;k++){ctx.beginPath();ctx.moveTo(SX(0),SY(0));ctx.lineTo(SX(P[k][0]),SY(P[k][1]));ctx.lineTo(SX(P[k+1][0]),SY(P[k+1][1]));ctx.closePath();
+    ctx.fillStyle=(k%2)?&#x27;rgba(218,201,97,0.30)&#x27;:&#x27;rgba(87,217,138,0.22)&#x27;;ctx.fill();
+    ctx.strokeStyle=&#x27;rgba(255,255,255,0.14)&#x27;;ctx.lineWidth=1;ctx.stroke();}
+  // ellipse
+  ctx.strokeStyle=&#x27;#57d98a&#x27;;ctx.lineWidth=2.4;ctx.beginPath();
+  for(let t=0;t&lt;=TAU+0.02;t+=0.02){const p=pos(t);const x=SX(p[0]),y=SY(p[1]);t?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.stroke();
+  // apse line
+  ctx.strokeStyle=&#x27;#33414a&#x27;;ctx.setLineDash([4,5]);ctx.beginPath();ctx.moveTo(SX(a*(1-e)+ (a*0.15)),SY(0));ctx.lineTo(SX(-a*(1+e)-(a*0.15)),SY(0));ctx.stroke();ctx.setLineDash([]);
+  // foci
+  ctx.fillStyle=&#x27;#008540&#x27;;ctx.beginPath();ctx.arc(SX(0),SY(0),Math.max(7,0.02*a*sc),0,TAU);ctx.fill();
+  ctx.strokeStyle=&#x27;#DAC961&#x27;;ctx.lineWidth=2;ctx.beginPath();ctx.arc(SX(-2*a*e),SY(0),5,0,TAU);ctx.stroke();
+  // body + radius
+  const E=kep(M,e), bp=pos(E), r=a*(1-e*Math.cos(E));
+  ctx.strokeStyle=&#x27;rgba(232,238,240,0.7)&#x27;;ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(SX(0),SY(0));ctx.lineTo(SX(bp[0]),SY(bp[1]));ctx.stroke();
+  ctx.fillStyle=&#x27;#ffffff&#x27;;ctx.beginPath();ctx.arc(SX(bp[0]),SY(bp[1]),6,0,TAU);ctx.fill();
+  ctx.fillStyle=&#x27;#7fdcff&#x27;;ctx.beginPath();ctx.arc(SX(bp[0]),SY(bp[1]),6,0,TAU);ctx.globalAlpha=0.4;ctx.fill();ctx.globalAlpha=1;
+  // readouts
+  const T=TAU*Math.sqrt(a*a*a/MU), v=Math.sqrt(MU*(2/r-1/a)), h=Math.sqrt(MU*a*(1-e*e));
+  $(&#x27;oA&#x27;).textContent=Math.round(a).toLocaleString();
+  $(&#x27;oE&#x27;).textContent=e.toFixed(2);
+  $(&#x27;oT&#x27;).textContent=T&gt;7200?(T/3600).toFixed(2)+&#x27; h&#x27;:(T/60).toFixed(1)+&#x27; min&#x27;;
+  $(&#x27;oK&#x27;).textContent=(T*T/(a*a*a)).toExponential(3);
+  $(&#x27;oV&#x27;).textContent=v.toFixed(2)+&#x27; km/s&#x27;;
+  $(&#x27;oDA&#x27;).textContent=(h/2).toExponential(2);
+}
+function loop(ts){
+  if(!last)last=ts;const dt=(ts-last)/1000;last=ts;
+  if(playing){const T=TAU*Math.sqrt(a*a*a/MU);M+=TAU*dt/(T/ANIM);}
+  draw();requestAnimationFrame(loop);
+}
+$(&#x27;eS&#x27;).oninput=ev=&gt;{e=+ev.target.value;$(&#x27;eN&#x27;).textContent=e.toFixed(2);};
+$(&#x27;aS&#x27;).oninput=ev=&gt;{a=+ev.target.value;$(&#x27;aN&#x27;).textContent=Math.round(a).toLocaleString();};
+$(&#x27;play&#x27;).onclick=()=&gt;{playing=!playing;$(&#x27;play&#x27;).textContent=playing?&#x27;❚❚ Pause&#x27;:&#x27;▶ Play&#x27;;};
+$(&#x27;reset&#x27;).onclick=()=&gt;{M=0;};
+document.querySelectorAll(&#x27;.presets button&#x27;).forEach(bn=&gt;bn.onclick=()=&gt;{
+  e=+bn.dataset.e;a=+bn.dataset.a;
+  $(&#x27;eS&#x27;).value=e;$(&#x27;eN&#x27;).textContent=e.toFixed(2);
+  $(&#x27;aS&#x27;).value=a;$(&#x27;aN&#x27;).textContent=Math.round(a).toLocaleString();
+});
+new ResizeObserver(fit).observe(cv);fit();requestAnimationFrame(loop);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></div>
+    <div class="lawrow">
+      <div class="card g"><h3>1 · Ellipse</h3>Each orbit is an ellipse with the primary at <b>one focus</b>; the circle ($e=0$) is where the foci merge.</div>
+      <div class="card"><h3>2 · Equal areas</h3>$\dfrac{dA}{dt}=\dfrac{h}{2}=\text{const}$ — <b>angular‑momentum conservation</b>: fastest at perigee, slowest at apogee.</div>
+      <div class="card d"><h3>3 · Harmonic law</h3>$T^{2}\propto a^{3}$: change $a$ and the period rescales while $T^{2}/a^{3}$ stays fixed at $4\pi^{2}/\mu$.</div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWTON THREE LAWS -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">Newton's three laws of motion</div>
+    <div class="accent"></div>
+    <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="card g"><h3>1 · Inertia</h3>A body keeps its velocity unless a force acts. This <b>defines the inertial frame</b> in which our equations hold — for Earth orbits, the Earth‑Centred Inertial (ECI) frame.</div>
+      <div class="card"><h3>2 · $\mathbf F=\dot{\mathbf p}$</h3>Force equals rate of change of momentum, $=m\mathbf a$ for constant mass. Applied to gravity this <b>is</b> the equation of motion $\ddot{\mathbf r}=-\mu\mathbf r/r^{3}$.</div>
+      <div class="card d"><h3>3 · Action–reaction</h3>The two bodies pull on each other equally and oppositely. This is exactly the symmetry that lets us subtract the two equations and gives $\ddot{\mathbf R}_{\rm cm}=\mathbf 0$.</div>
+    </div>
+    <div class="note">All three enter the two‑body problem: the 1st fixes the frame, the 2nd builds the ODE, the 3rd delivers the reduction and momentum conservation.</div>
+  </div>
+</section>
+
+<!-- NEWTON LAW + SHELL THEOREM -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">Newton's law of gravitation &amp; the shell theorem</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$\mathbf F_{12}=-\frac{Gm_1m_2}{r^{2}}\hat{\mathbf r},\qquad G=6.674\times10^{-11}\ \mathrm{N\,m^2/kg^2}$$</div>
+    <div class="cols">
+      <div class="card g"><h3>The shell theorem</h3>A spherically symmetric body attracts external points as though all its mass sat at its centre. This is what lets us treat the Earth as a <b>point mass</b> — and its failure (the equatorial bulge) is exactly the J₂ perturbation of Week 4.</div>
+      <div class="card d"><h3>Superposition</h3>Gravity adds linearly: the field of a mass distribution is the integral of point‑mass fields. For $N$ bodies the force on each is the vector sum — the $N$‑body problem, which we approximate as a sequence of two‑body arcs (patched conics, Week 5).</div>
+    </div>
+  </div>
+</section>
+
+<!-- UNIVERSAL GRAVITATION / MOON TEST -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">Universal gravitation — the Moon test</div>
+    <div class="accent"></div>
+    <div class="cols" style="grid-template-columns:1fr 1fr">
+      <div class="card g"><h3>Newton's synthesis</h3>The same inverse‑square force that makes an apple fall holds the Moon in orbit — <b>terrestrial and celestial mechanics are one</b>. The falling apple and the falling Moon differ only in distance.</div>
+      <div class="card d"><h3>The quantitative check</h3>If $g\propto1/r^{2}$, the Moon's acceleration should be $g$ reduced by $(R_\oplus/r_{\rm M})^{2}$:</div>
+    </div>
+    <div class="steps">
+      <div class="s"><span class="k">1</span><span class="m">predicted: $\ a=g\Big(\dfrac{R_\oplus}{r_{\rm M}}\Big)^{2}=9.81\Big(\dfrac{6371}{384\,400}\Big)^{2}=2.69\times10^{-3}\ \mathrm{m/s^2}$</span></div>
+      <div class="s"><span class="k">2</span><span class="m">observed: $\ a=\Big(\dfrac{2\pi}{T}\Big)^{2} r_{\rm M}=\Big(\dfrac{2\pi}{27.3\,\text{d}}\Big)^{2}(3.844\times10^{8})=2.72\times10^{-3}\ \mathrm{m/s^2}$</span></div>
+      <div class="s"><span class="k">3</span><span class="m">agreement to ~1% $\Rightarrow$ the inverse‑square law is <b>universal</b></span></div>
+    </div>
+    <div class="note">This single comparison — surface gravity versus the Moon's centripetal acceleration — is the empirical anchor of the whole theory.</div>
+  </div>
+</section>
+
+<!-- GRAVITATIONAL POTENTIAL -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">Gravitational potential &amp; potential energy</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$U(r)=-\frac{GM}{r}=-\frac{\mu}{r},\qquad \mathbf g=-\nabla U=-\frac{\mu}{r^{2}}\hat{\mathbf r}$$</div>
+    <div class="cols">
+      <div class="card"><h3>Sign &amp; reference</h3>Potential is defined zero at infinity and negative everywhere finite — a <b>well</b>. Climbing out (to $U=0$) is exactly escape. Specific potential energy (per unit mass) is $U=-\mu/r$.</div>
+      <div class="card d"><h3>Conservative field</h3>Because $\mathbf g=-\nabla U$, the force does path‑independent work → mechanical energy is conserved (§ next). This is the second symmetry we will exploit.</div>
+    </div>
+    <div class="note">$\mu=GM$ is carried as a single measured constant: $G$ is poorly known, but $\mu_\oplus=398\,600.4418\ \mathrm{km^3/s^2}$ is known to nine figures from tracking.</div>
+  </div>
+</section>
+
+<!-- TWO-BODY IDEALIZATION -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">The two‑body idealisation</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>The model</h3><ul class="pts" style="margin-top:.3vmin"><li>Two point masses attracting only through gravity.</li><li>Everything else (drag, third bodies, oblateness, SRP) is a <b>perturbation</b> — Week 4.</li><li>Exact solution: the conic‑section (Keplerian) orbit.</li></ul></div>
+      <div class="card d"><h3>Six degrees of freedom</h3>The state $(\mathbf R,\mathbf V)$ is six numbers. The two‑body solution replaces them with six <b>orbital elements</b>: five constant, one advancing with time (Week 4).</div>
+    </div>
+    <div class="note">Organising question of the whole block: <b>where is the spacecraft, and how do we move it?</b> Lecture 1 answers the first half in its purest form.</div>
+  </div>
+</section>
+
+<!-- NEWTON -> TWO-BODY EQ -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">Newton's law → the two‑body equation</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$\ddot{\mathbf r}+\frac{\mu}{r^{3}}\,\mathbf r=\mathbf 0,\qquad \mathbf r=\mathbf r_2-\mathbf r_1,\qquad \mu=G(m_1+m_2)$$</div>
+    <div class="cols">
+      <div class="card"><h3>Three coupled ODEs</h3>Nonlinear and second‑order. Rather than integrate blindly, we exploit symmetry to extract constants and reduce to a 1‑D radial problem we can solve in closed form.</div>
+      <div class="card d"><h3>Restricted limit</h3>When $m_1\gg m_2$ the central body is effectively fixed and $\mu\to GM_1$. Excellent even for planets: Jupiter is dwarfed by the Sun by a factor ~1000.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DERIV: REDUCTION -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1 · derivation</div>
+    <div class="title">Deriving the relative equation of motion</div>
+    <div class="accent"></div>
+    <div class="steps">
+      <div class="s"><span class="k">1</span><span class="m">$m_1\ddot{\mathbf r}_1=\dfrac{Gm_1m_2}{r^{3}}\mathbf r,\qquad m_2\ddot{\mathbf r}_2=-\dfrac{Gm_1m_2}{r^{3}}\mathbf r$</span><span class="why">Newton's law on each body</span></div>
+      <div class="s"><span class="k">2</span><span class="m">$\ddot{\mathbf r}=\ddot{\mathbf r}_2-\ddot{\mathbf r}_1=-G(m_1+m_2)\dfrac{\mathbf r}{r^{3}}$</span><span class="why">divide by each mass, subtract</span></div>
+      <div class="s"><span class="k">3</span><span class="m">$\boxed{\ \ddot{\mathbf r}+\dfrac{\mu}{r^{3}}\mathbf r=\mathbf 0\ },\qquad \mu\equiv G(m_1+m_2)$</span></div>
+    </div>
+    <div class="note">Full derivation with the centre‑of‑mass frame in <b>Study Notes §3.2.1</b>.</div>
+  </div>
+</section>
+
+<!-- CM & REDUCED MASS -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">Centre of mass &amp; reduced mass</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$\ddot{\mathbf R}_{\rm cm}=\mathbf 0,\qquad \mu_r=\frac{m_1m_2}{m_1+m_2}$$</div>
+    <div class="cols">
+      <div class="card g"><h3>Barycentre drifts uniformly</h3>Since $m_1\ddot{\mathbf r}_1+m_2\ddot{\mathbf r}_2=\mathbf 0$, the centre of mass has no acceleration — we may work in its inertial frame.</div>
+      <div class="card d"><h3>Equivalent one‑body problem</h3>Relative motion equals that of a particle of mass $\mu_r$ in the fixed potential $-Gm_1m_2/r$. Dividing its energy/momentum by $\mu_r$ gives the <b>specific</b> quantities $\varepsilon,\ \mathbf h$ we use — hence $\mu=G(m_1+m_2)$.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSERVED QUANTITIES (states) -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">Two symmetries, two conserved quantities</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>No torque → angular momentum</h3><div class="eqbox" style="margin:.4vmin 0">$\mathbf h=\mathbf r\times\dot{\mathbf r}=\text{const}$</div>Motion is planar; Kepler's 2nd law $dA/dt=h/2$ follows.</div>
+      <div class="card d"><h3>Conservative → energy</h3><div class="eqbox" style="margin:.4vmin 0">$\varepsilon=\tfrac12 v^{2}-\dfrac{\mu}{r}=\text{const}$</div>Combine the two → 1‑D radial motion.</div>
+    </div>
+    <div class="note">These two constants carry five of the six pieces of information about the orbit; the sixth is the body's position along it.</div>
+  </div>
+</section>
+
+<!-- DERIV: CONSERVATION -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1 · derivation</div>
+    <div class="title">Deriving the two constants</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div><div class="figcap" style="text-align:left;color:var(--forest);font-weight:700;margin-bottom:.4vmin">Angular momentum</div>
+        <div class="steps">
+          <div class="s"><span class="k">1</span><span class="m">$\dot{\mathbf h}=\dot{\mathbf r}\times\dot{\mathbf r}+\mathbf r\times\ddot{\mathbf r}$</span></div>
+          <div class="s"><span class="k">2</span><span class="m">$=\mathbf r\times\!\big(-\tfrac{\mu}{r^{3}}\mathbf r\big)=\mathbf 0$</span></div>
+          <div class="s"><span class="k">3</span><span class="m">$\Rightarrow\ \mathbf h=$ const, planar, $\tfrac{dA}{dt}=\tfrac{h}{2}$</span></div>
+        </div>
+      </div>
+      <div><div class="figcap" style="text-align:left;color:var(--forest);font-weight:700;margin-bottom:.4vmin">Energy</div>
+        <div class="steps">
+          <div class="s"><span class="k">4</span><span class="m">$\dot{\mathbf r}\cdot\ddot{\mathbf r}+\tfrac{\mu}{r^{3}}(\mathbf r\cdot\dot{\mathbf r})=0$</span></div>
+          <div class="s"><span class="k">5</span><span class="m">$\tfrac{d}{dt}\!\big(\tfrac12 v^{2}-\tfrac{\mu}{r}\big)=0$</span><span class="why">$\mathbf r\cdot\dot{\mathbf r}=r\dot r$</span></div>
+          <div class="s"><span class="k">6</span><span class="m">$\Rightarrow\ \varepsilon=\text{const}$</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="note">Full derivation in <b>Study Notes §3.2.2</b>.</div>
+  </div>
+</section>
+
+<!-- EFFECTIVE POTENTIAL (concept) -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">The effective potential</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$\varepsilon=\tfrac12\dot r^{2}+\underbrace{\frac{h^{2}}{2r^{2}}-\frac{\mu}{r}}_{U_{\text{eff}}(r)}$$</div>
+    <div class="cols">
+      <div class="card g"><h3>Centrifugal barrier + well</h3>The $h^2/2r^2$ term is a repulsive barrier (blows up as $r\to0$); $-\mu/r$ is the attractive well. Together they make a well with a hard inner wall.</div>
+      <div class="card d"><h3>Turning points</h3>Where $\dot r=0$, i.e. where the horizontal energy line $\varepsilon$ crosses $U_{\text{eff}}$: two crossings → ellipse, one → hyperbola, tangency at the minimum → circle, $\varepsilon=0$ → parabola.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO: UEFF -->
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Effective potential — slide the energy line, read the turning points</span></div>
+    <iframe title="Effective potential" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Effective potential — interactive · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:460px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:96px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 · WEEK 3 — CELESTIAL MECHANICS&lt;/div&gt;
+  &lt;h1&gt;Effective potential — bound vs. unbound motion&lt;/h1&gt;
+  &lt;div class=&quot;eq&quot;&gt;U&lt;sub&gt;eff&lt;/sub&gt;(r) = &lt;b&gt;h²/2r² − μ/r&lt;/b&gt; · the energy line ε sets the turning points r&lt;sub&gt;min&lt;/sub&gt;, r&lt;sub&gt;max&lt;/sub&gt;&lt;/div&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;Orbit&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oType&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;r min (perigee)&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oRmin&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;r max (apogee)&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oRmax&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Controls&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Angular momentum h &lt;span class=&quot;num&quot; id=&quot;hN&quot;&gt;67k&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;hS&quot; min=&quot;45&quot; max=&quot;95&quot; step=&quot;1&quot; value=&quot;67&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Specific energy ε (km²/s²) &lt;span class=&quot;num&quot; id=&quot;eN&quot;&gt;−5.0&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;eS&quot; min=&quot;-12&quot; max=&quot;6&quot; step=&quot;0.1&quot; value=&quot;-5&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;presets&quot;&gt;
+      &lt;button data-p=&quot;circle&quot;&gt;Circle&lt;/button&gt;
+      &lt;button data-p=&quot;ellipse&quot;&gt;Ellipse&lt;/button&gt;
+      &lt;button data-p=&quot;parabola&quot;&gt;Parabola&lt;/button&gt;
+      &lt;button data-p=&quot;hyperbola&quot;&gt;Hyperbola&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;The violet curve is the effective potential: an angular‑momentum barrier (h²/2r²) plus the gravity well (−μ/r). Slide ε (green line) up and down and watch where it crosses the curve — those crossings are perigee and apogee. Below zero → bound (ellipse); at zero → parabola; above zero → hyperbola; at the minimum → a circle.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+const MU=398600.4418;
+const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+let h=67000, eps=-5.0, DPR=Math.min(window.devicePixelRatio||1,2), W=10,H=10;
+const $=id=&gt;document.getElementById(id);
+function fit(){const r=cv.getBoundingClientRect();W=Math.max(10,r.width);H=Math.max(10,r.height);
+  cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);draw();}
+function Ueff(r){return h*h/(2*r*r)-MU/r;}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const L=58,R=W-16,T=18,B=H-34;
+  ctx.strokeStyle=&#x27;#26323b&#x27;;ctx.lineWidth=1;ctx.strokeRect(L,T,R-L,B-T);
+  const rMin=3000,rMax=60000,uLo=-14,uHi=8;
+  const X=r=&gt;L+(r-rMin)/(rMax-rMin)*(R-L);
+  const Y=u=&gt;B-(u-uLo)/(uHi-uLo)*(B-T);
+  // zero line
+  ctx.strokeStyle=&#x27;#3a4a54&#x27;;ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(L,Y(0));ctx.lineTo(R,Y(0));ctx.stroke();ctx.setLineDash([]);
+  // curve
+  ctx.strokeStyle=&#x27;#b98bff&#x27;;ctx.lineWidth=2.6;ctx.beginPath();let first=true;
+  for(let r=rMin;r&lt;=rMax;r+=100){const y=Y(Ueff(r));if(y&lt;T-60||y&gt;B+60){first=true;continue;}
+    if(first){ctx.moveTo(X(r),y);first=false;}else ctx.lineTo(X(r),y);}
+  ctx.stroke();
+  // energy line
+  ctx.strokeStyle=&#x27;#57d98a&#x27;;ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(L,Y(eps));ctx.lineTo(R,Y(eps));ctx.stroke();
+  // turning points
+  let type=&#x27;&#x27;,rp=NaN,ra=NaN;
+  const rc=h*h/MU, uc=-MU*MU/(2*h*h);
+  if(Math.abs(eps-uc)&lt;0.02){type=&#x27;circle&#x27;;rp=ra=rc;}
+  else if(eps&lt;0){const A=eps,Bb=MU,Cc=-h*h/2,disc=Bb*Bb-4*A*Cc;
+    if(disc&gt;0){const r1=(-Bb+Math.sqrt(disc))/(2*A),r2=(-Bb-Math.sqrt(disc))/(2*A);rp=Math.min(r1,r2);ra=Math.max(r1,r2);type=&#x27;ellipse&#x27;;}else type=&#x27;—&#x27;;}
+  else if(Math.abs(eps)&lt;0.02){type=&#x27;parabola&#x27;;rp=h*h/(2*MU);ra=Infinity;}
+  else{const A=eps,Bb=MU,Cc=-h*h/2,disc=Bb*Bb-4*A*Cc;const r1=(-Bb+Math.sqrt(disc))/(2*A),r2=(-Bb-Math.sqrt(disc))/(2*A);rp=Math.max(r1,r2);ra=Infinity;type=&#x27;hyperbola&#x27;;}
+  ctx.fillStyle=&#x27;#7fdcff&#x27;;
+  [rp,ra].forEach(r=&gt;{if(isFinite(r)&amp;&amp;r&gt;=rMin&amp;&amp;r&lt;=rMax){const x=X(r);
+    ctx.beginPath();ctx.arc(x,Y(eps),4.5,0,7);ctx.fill();
+    ctx.strokeStyle=&#x27;#7fdcff&#x27;;ctx.setLineDash([2,3]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,Y(eps));ctx.lineTo(x,B);ctx.stroke();ctx.setLineDash([]);}});
+  ctx.fillStyle=&#x27;#b98bff&#x27;;if(rc&gt;=rMin&amp;&amp;rc&lt;=rMax){ctx.beginPath();ctx.arc(X(rc),Y(uc),3.5,0,7);ctx.fill();}
+  // labels
+  ctx.fillStyle=&#x27;#8fa0aa&#x27;;ctx.font=&#x27;11px &quot;Calibri&quot;,monospace&#x27;;
+  ctx.fillText(&#x27;r →&#x27;,R-26,B+22);
+  ctx.save();ctx.translate(15,T+(B-T)/2);ctx.rotate(-Math.PI/2);ctx.fillText(&#x27;U_eff(r)&#x27;,0,0);ctx.restore();
+  ctx.fillStyle=&#x27;#57d98a&#x27;;ctx.fillText(&#x27;ε&#x27;,L+4,Y(eps)-5);
+  $(&#x27;oType&#x27;).textContent=type;
+  $(&#x27;oRmin&#x27;).textContent=isFinite(rp)?Math.round(rp).toLocaleString()+&#x27; km&#x27;:&#x27;—&#x27;;
+  $(&#x27;oRmax&#x27;).textContent=isFinite(ra)?Math.round(ra).toLocaleString()+&#x27; km&#x27;:(type===&#x27;hyperbola&#x27;||type===&#x27;parabola&#x27;?&#x27;∞&#x27;:&#x27;—&#x27;);
+}
+$(&#x27;hS&#x27;).oninput=e=&gt;{h=+e.target.value*1000;$(&#x27;hN&#x27;).textContent=e.target.value+&#x27;k&#x27;;draw();};
+$(&#x27;eS&#x27;).oninput=e=&gt;{eps=+e.target.value;$(&#x27;eN&#x27;).textContent=(eps&lt;0?&#x27;−&#x27;:&#x27;&#x27;)+Math.abs(eps).toFixed(1);draw();};
+document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{
+  const uc=-MU*MU/(2*h*h);
+  const p=b.dataset.p;
+  if(p===&#x27;circle&#x27;)eps=uc;
+  else if(p===&#x27;ellipse&#x27;)eps=uc*0.45;
+  else if(p===&#x27;parabola&#x27;)eps=0;
+  else eps=3.5;
+  eps=Math.max(-12,Math.min(6,eps));
+  $(&#x27;eS&#x27;).value=eps.toFixed(1);$(&#x27;eN&#x27;).textContent=(eps&lt;0?&#x27;−&#x27;:&#x27;&#x27;)+Math.abs(eps).toFixed(1);draw();
+});
+new ResizeObserver(fit).observe(cv);fit();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+  </div>
+</section>
+
+<!-- ORBIT EQUATION -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">The orbit equation — every solution is a conic</div>
+    <div class="accent"></div>
+    <div class="cols" style="grid-template-columns:1fr 1fr; align-items:center; gap:4vmin">
+      
+      <!-- Left Column: Math & Table -->
+      <div>
+        <div class="eqbox" style="margin-top:0">$$r=\frac{p}{1+e\cos\nu},\qquad p=\frac{h^{2}}{\mu}$$</div>
+        <table class="tbl" style="margin-top:2vmin">
+          <tr><th>Eccentricity e</th><th>Conic</th><th>Energy ε</th></tr>
+          <tr><td>e = 0</td><td>Circle</td><td>&lt; 0</td></tr>
+          <tr><td>0 &lt; e &lt; 1</td><td>Ellipse</td><td>&lt; 0</td></tr>
+          <tr><td>e = 1</td><td>Parabola</td><td>0</td></tr>
+          <tr><td>e &gt; 1</td><td>Hyperbola</td><td>&gt; 0</td></tr>
+        </table>
+      </div>
+
+      <!-- Right Column: Diagram -->
+      <div>
+        <svg class="fig" viewBox="0 0 400 300" role="img" aria-label="Orbit equation definitions">
+          <!-- Apse line -->
+          <line x1="20" y1="150" x2="380" y2="150" stroke="#B9BCC9" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <!-- Orbit (Ellipse part) -->
+          <path d="M 320 150 A 140 100 0 1 0 40 150 A 140 100 0 0 0 320 150" fill="none" stroke="#00573F" stroke-width="3"/>
+          
+          <!-- True anomaly arc -->
+          <path d="M 310 150 A 30 30 0 0 0 265 124" fill="none" stroke="#003E51" stroke-width="1.5"/>
+          <text class="svgt p" x="294" y="138" font-style="italic" font-weight="700">ν</text>
+          
+          <!-- Radius vector -->
+          <line x1="280" y1="150" x2="225" y2="55" stroke="#8A6D00" stroke-width="2.5"/>
+          <text class="svgt s" x="244" y="104" font-weight="700">r</text>
+          
+          <!-- Semi-latus rectum -->
+          <line x1="280" y1="150" x2="280" y2="78.6" stroke="#003E51" stroke-width="2.5" stroke-dasharray="4 3"/>
+          <text class="svgt p" x="286" y="110" font-weight="700">p</text>
+          
+          <!-- Nodes -->
+          <circle cx="280" cy="150" r="7" fill="#008540"/>
+          <circle cx="320" cy="150" r="5" fill="#DAC961"/>
+          <circle cx="225" cy="55" r="5" fill="#003E51"/>
+          
+          <!-- Labels -->
+          <text class="svgt g" x="280" y="172" text-anchor="middle" font-weight="700">focus</text>
+          <text class="svgt mut" x="348" y="168" text-anchor="middle">perigee</text>
+        </svg>
+        <div class="figcap"><b>r</b>: distance, <b>ν</b>: true anomaly,<br><b>p</b>: semi-latus rectum (radius when ν = 90°).</div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- DERIV: ORBIT EQUATION -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1 · derivation</div>
+    <div class="title">The orbit equation — two routes</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div><div class="figcap" style="text-align:left;color:var(--forest);font-weight:700;margin-bottom:.4vmin">Route A — Binet substitution</div>
+        <div class="steps">
+          <div class="s"><span class="k">1</span><span class="m">$u=\tfrac1r,\ \ \tfrac{d}{dt}=\tfrac{h}{r^{2}}\tfrac{d}{d\nu}$</span></div>
+          <div class="s"><span class="k">2</span><span class="m">$\tfrac{d^{2}u}{d\nu^{2}}+u=\tfrac{\mu}{h^{2}}$</span></div>
+          <div class="s"><span class="k">3</span><span class="m">$r=\dfrac{p}{1+e\cos\nu}$</span></div>
+        </div>
+      </div>
+      <div><div class="figcap" style="text-align:left;color:var(--forest);font-weight:700;margin-bottom:.4vmin">Route B — eccentricity (LRL) vector</div>
+        <div class="steps">
+          <div class="s"><span class="k">1</span><span class="m">$\mathbf e=\dfrac{\dot{\mathbf r}\times\mathbf h}{\mu}-\hat{\mathbf r}$, $\ \dot{\mathbf e}=\mathbf 0$</span></div>
+          <div class="s"><span class="k">2</span><span class="m">$\mathbf r\cdot\mathbf e=\tfrac{h^2}{\mu}-r=p-r$</span></div>
+          <div class="s"><span class="k">3</span><span class="m">$\Rightarrow\ r=\dfrac{p}{1+e\cos\nu}$</span><span class="why">$|\mathbf e|=e$ → perigee</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="note">$2\varepsilon h^{2}/\mu^{2}=e^{2}-1$ links energy to shape. Full derivations in <b>Study Notes §3.2.3</b>.</div>
+  </div>
+</section>
+
+<!-- DEMO: CONIC -->
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Conic‑section explorer — sweep the eccentricity</span></div>
+    <iframe title="Conic sections" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Conic sections — interactive · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:460px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:80px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 · WEEK 3 — CELESTIAL MECHANICS&lt;/div&gt;
+  &lt;h1&gt;Conic sections — one equation, four orbits&lt;/h1&gt;
+  &lt;div class=&quot;eq&quot;&gt;r = &lt;b&gt;p / (1 + e·cos ν)&lt;/b&gt; · eccentricity e alone selects circle, ellipse, parabola or hyperbola&lt;/div&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;Type&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oType&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;perigee r_p&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oRp&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;apogee r_a&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oRa&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;semi‑latus p&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oP&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Controls&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Eccentricity e &lt;span class=&quot;num&quot; id=&quot;eN&quot;&gt;0.40&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;eS&quot; min=&quot;0&quot; max=&quot;1.6&quot; step=&quot;0.01&quot; value=&quot;0.4&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;presets&quot;&gt;
+      &lt;button data-e=&quot;0&quot;&gt;Circle&lt;/button&gt;
+      &lt;button data-e=&quot;0.5&quot;&gt;Ellipse&lt;/button&gt;
+      &lt;button data-e=&quot;1&quot;&gt;Parabola&lt;/button&gt;
+      &lt;button data-e=&quot;1.3&quot;&gt;Hyperbola&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;Perigee radius is fixed at 7 000 km; sweep e and watch the closed circle stretch into an ellipse, open into a parabola at exactly e = 1, and fly apart into a hyperbola beyond. The blue disc at the focus is the central body — note it sits at a &lt;i&gt;focus&lt;/i&gt;, not the centre.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+const RE=6378.137, rp=7000;
+const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+let e=0.4, DPR=Math.min(window.devicePixelRatio||1,2), W=10,H=10;
+const $=id=&gt;document.getElementById(id);
+function fit(){const r=cv.getBoundingClientRect();W=Math.max(10,r.width);H=Math.max(10,r.height);
+  cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);draw();}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const p=rp*(1+e);
+  let pts=[],nuMax=Math.PI*0.999;
+  if(e&gt;=1)nuMax=Math.acos(-1/e)*0.999;
+  for(let nu=-nuMax;nu&lt;=nuMax;nu+=0.01){const r=p/(1+e*Math.cos(nu));pts.push([r*Math.cos(nu),r*Math.sin(nu)]);}
+  let minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9;
+  for(const q of pts){minx=Math.min(minx,q[0]);maxx=Math.max(maxx,q[0]);miny=Math.min(miny,q[1]);maxy=Math.max(maxy,q[1]);}
+  minx=Math.min(minx,-2000);maxx=Math.max(maxx,2000);
+  const cx=(minx+maxx)/2,cy=(miny+maxy)/2,spanx=(maxx-minx)*1.15,spany=(maxy-miny)*1.15;
+  const sc=Math.min(W/spanx,H/spany);
+  const X=x=&gt;W/2+(x-cx)*sc, Y=y=&gt;H/2-(y-cy)*sc;
+  // apse line
+  ctx.strokeStyle=&#x27;#33414a&#x27;;ctx.setLineDash([4,5]);ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(X(minx-3000),Y(0));ctx.lineTo(X(maxx+3000),Y(0));ctx.stroke();ctx.setLineDash([]);
+  // conic
+  ctx.strokeStyle=&#x27;#57d98a&#x27;;ctx.lineWidth=2.6;ctx.beginPath();
+  pts.forEach((q,i)=&gt;{const x=X(q[0]),y=Y(q[1]);i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke();
+  // focus
+  ctx.fillStyle=&#x27;#4a90d9&#x27;;ctx.beginPath();ctx.arc(X(0),Y(0),Math.max(5,RE*sc),0,7);ctx.fill();
+  // perigee marker
+  ctx.fillStyle=&#x27;#DAC961&#x27;;ctx.beginPath();ctx.arc(X(rp),Y(0),4.5,0,7);ctx.fill();
+  ctx.fillStyle=&#x27;#9fb0b8&#x27;;ctx.font=&#x27;11px &quot;Calibri&quot;,monospace&#x27;;ctx.fillText(&#x27;perigee&#x27;,X(rp)-18,Y(0)-9);
+  const type=e===0?&#x27;circle&#x27;:e&lt;1?&#x27;ellipse&#x27;:Math.abs(e-1)&lt;0.02?&#x27;parabola&#x27;:&#x27;hyperbola&#x27;;
+  const ra=e&lt;1?rp*(1+e)/(1-e):Infinity;
+  $(&#x27;oType&#x27;).textContent=type;
+  $(&#x27;oRp&#x27;).textContent=Math.round(rp).toLocaleString()+&#x27; km&#x27;;
+  $(&#x27;oRa&#x27;).textContent=(e&lt;1&amp;&amp;isFinite(ra))?Math.round(ra).toLocaleString()+&#x27; km&#x27;:&#x27;∞&#x27;;
+  $(&#x27;oP&#x27;).textContent=Math.round(p).toLocaleString()+&#x27; km&#x27;;
+}
+$(&#x27;eS&#x27;).oninput=ev=&gt;{e=+ev.target.value;$(&#x27;eN&#x27;).textContent=e.toFixed(2);draw();};
+document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{e=+b.dataset.e;$(&#x27;eS&#x27;).value=e;$(&#x27;eN&#x27;).textContent=e.toFixed(2);draw();});
+new ResizeObserver(fit).observe(cv);fit();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+  </div>
+</section>
+
+<!-- ELLIPSE GEOMETRY -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">Anatomy of the elliptical orbit</div>
+    <div class="accent"></div>
+    <div class="cols" style="grid-template-columns:1.35fr 1fr">
+      <div>
+        <svg class="fig" viewBox="0 0 720 470" role="img" aria-label="Ellipse geometry">
+          <line x1="34" y1="215" x2="706" y2="215" stroke="#B9BCC9" stroke-width="1.5" stroke-dasharray="6 5"/>
+          <line x1="360" y1="6" x2="360" y2="424" stroke="#B9BCC9" stroke-width="1.5" stroke-dasharray="6 5"/>
+          <ellipse cx="360" cy="215" rx="280" ry="200" fill="none" stroke="#00573F" stroke-width="3"/>
+          <line x1="556" y1="72" x2="556" y2="358" stroke="#008540" stroke-width="2.5"/>
+          <line x1="360" y1="215" x2="640" y2="215" stroke="#8A6D00" stroke-width="2.5"/>
+          <line x1="360" y1="215" x2="360" y2="15" stroke="#8A6D00" stroke-width="2.5"/>
+          <line x1="360" y1="215" x2="556" y2="215" stroke="#003E51" stroke-width="4"/>
+          <circle cx="556" cy="215" r="12" fill="#008540"/>
+          <circle cx="164" cy="215" r="6" fill="none" stroke="#DAC961" stroke-width="2.5"/>
+          <circle cx="640" cy="215" r="5" fill="#003E51"/><circle cx="80" cy="215" r="5" fill="#003E51"/>
+          <text class="svgt s" x="494" y="204" text-anchor="middle">a</text>
+          <text class="svgt s" x="374" y="118">b</text>
+          <text class="svgt p" x="452" y="236">c = ae</text>
+          <text class="svgt g" x="566" y="70">p</text><text class="svgt g" x="566" y="200">central body</text>
+          <text class="svgt" x="120" y="200" text-anchor="middle">empty focus</text>
+          <text class="svgt p" x="648" y="240">perigee</text><text class="svgt p" x="72" y="240" text-anchor="middle">apogee</text>
+        </svg>
+        <div class="figcap"><b>a</b> sets size &amp; period; <b>e</b> sets shape. Central body at a <b>focus</b>, not the centre.</div>
+      </div>
+      <div>
+        <div class="eqbox" style="font-size:2.1vmin">$$b=a\sqrt{1-e^2},\ c=ae,\ p=a(1-e^2)$$ $$r_p=a(1-e),\ r_a=a(1+e)$$</div>
+        <div class="card"><h3>Read it off the orbit</h3><ul class="pts" style="margin-top:.3vmin"><li>$e=\dfrac{r_a-r_p}{r_a+r_p}$ from measured apsides.</li><li>$p$ is the radius at $\nu=90^\circ$ ($p=h^2/\mu$).</li></ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HYPERBOLIC & PARABOLIC -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">Hyperbolic &amp; parabolic (escape) orbits</div>
+    <div class="accent"></div>
+    <div class="cols" style="grid-template-columns:1.2fr 1fr">
+      <div>
+        <svg class="fig" viewBox="0 0 640 380" role="img" aria-label="Hyperbola geometry">
+          <line x1="60" y1="190" x2="600" y2="190" stroke="#B9BCC9" stroke-width="1.2" stroke-dasharray="5 5"/>
+          <path d="M 120 40 Q 300 190 120 340" fill="none" stroke="#00573F" stroke-width="3"/>
+          <line x1="300" y1="190" x2="560" y2="60" stroke="#B9BCC9" stroke-width="1.4" stroke-dasharray="4 4"/>
+          <line x1="300" y1="190" x2="560" y2="320" stroke="#B9BCC9" stroke-width="1.4" stroke-dasharray="4 4"/>
+          <circle cx="300" cy="190" r="11" fill="#008540"/>
+          <circle cx="120" cy="190" r="5" fill="#003E51"/>
+          <path d="M 300 190 m -40 0 a 40 40 0 0 1 34 -21" fill="none" stroke="#8A6D00" stroke-width="2"/>
+          <text class="svgt g" x="308" y="184">focus</text>
+          <text class="svgt p" x="70" y="184">perigee</text>
+          <text class="svgt s" x="250" y="150">δ turn</text>
+          <text class="svgt f" x="470" y="70">v∞ asymptote</text>
+        </svg>
+        <div class="figcap">On a hyperbola the body arrives and leaves along <b>asymptotes</b> with residual speed $v_\infty$; the trajectory bends by the turn angle $\delta$.</div>
+      </div>
+      <div>
+        <div class="eqbox" style="font-size:2vmin">$$v_\infty^{2}=\frac{\mu}{|a|}=-\frac{\mu}{a}\quad(a<0)$$ $$e=1+\frac{r_p v_\infty^{2}}{\mu},\quad \sin\frac{\delta}{2}=\frac1e$$</div>
+        <div class="card d"><h3>Parabola = the boundary</h3>$e=1$, $\varepsilon=0$: just enough energy to reach infinity with zero speed. $v=\sqrt{2\mu/r}$ everywhere.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENERGY OF CONICS + C3 -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1</div>
+    <div class="title">Energy of the four conics · $C_3$</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$\varepsilon=-\frac{\mu}{2a},\qquad C_3\equiv v_\infty^{2}=2\varepsilon=-\frac{\mu}{a}\ \ \text{(characteristic energy)}$$</div>
+    <table class="tbl">
+      <tr><th>Conic</th><th>a</th><th>ε</th><th>C₃</th><th>Fate</th></tr>
+      <tr><td>Circle / ellipse</td><td>&gt; 0</td><td>&lt; 0</td><td>&lt; 0</td><td>bound</td></tr>
+      <tr><td>Parabola</td><td>∞</td><td>0</td><td>0</td><td>escape, v→0</td></tr>
+      <tr><td>Hyperbola</td><td>&lt; 0</td><td>&gt; 0</td><td>&gt; 0</td><td>escape with v∞</td></tr>
+    </table>
+    <div class="note">$C_3$ is the currency of launch &amp; interplanetary design (Week 5): a launch vehicle is rated by the $C_3$ it can deliver for a given payload mass.</div>
+  </div>
+</section>
+
+<!-- RECAP L1 -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 1 · recap</div>
+    <div class="title">Lecture 1 — key results</div>
+    <div class="accent"></div>
+    <div class="recap"><ul class="pts">
+      <li>Two‑body reduction: $\ddot{\mathbf r}+\mu\mathbf r/r^3=0$, $\mu=G(m_1+m_2)$.</li>
+      <li>Central + conservative → $\mathbf h$ and $\varepsilon$ conserved → 1‑D motion in $U_{\text{eff}}$.</li>
+      <li>Orbit equation $r=p/(1+e\cos\nu)$ — one equation, four conic families.</li>
+      <li>$e$ (or $\varepsilon$) selects circle/ellipse/parabola/hyperbola; $C_3=-\mu/a$.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ============ LECTURE 2 ============ -->
+<section class="slide dark">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 of 2</div>
+    <div class="bignum">L2</div>
+    <div class="title">Energy, geometry &amp; time</div>
+    <div class="accent"></div>
+    <div class="subtitle">Vis‑viva and the flight‑path angle, the orbit regimes, coordinate frames, and the problem of locating a body in time.</div>
+  </div>
+</section>
+
+<!-- VIS-VIVA -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2</div>
+    <div class="title">Vis‑viva — speed anywhere on any orbit</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$v^{2}=\mu\!\left(\frac{2}{r}-\frac{1}{a}\right),\qquad \varepsilon=-\frac{\mu}{2a}$$</div>
+    <div class="stat">
+      <div class="s"><div class="n">√(μ/r)</div><div class="l">Circular (a = r)</div></div>
+      <div class="s"><div class="n">√(2μ/r)</div><div class="l">Escape (a → ∞)</div></div>
+      <div class="s"><div class="n">√2</div><div class="l">v_esc ⁄ v_circ</div></div>
+    </div>
+    <div class="note">Speed depends only on <b>where</b> ($r$) and <b>which orbit</b> ($a$) — eccentricity never enters the magnitude. The workhorse of every Δv calculation in Week 5.</div>
+  </div>
+</section>
+
+<!-- DERIV: VIS-VIVA -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 · derivation</div>
+    <div class="title">Deriving vis‑viva and $\varepsilon=-\mu/2a$</div>
+    <div class="accent"></div>
+    <div class="steps">
+      <div class="s"><span class="k">1</span><span class="m">at perigee $\mathbf v\perp\mathbf r$: $\ v_p=h/r_p,\ r_p=a(1-e),\ h^2=\mu a(1-e^2)$</span></div>
+      <div class="s"><span class="k">2</span><span class="m">$\varepsilon=\tfrac12\dfrac{h^2}{r_p^2}-\dfrac{\mu}{r_p}=\dfrac{\mu}{a(1-e)}\Big[\tfrac{1+e}{2}-1\Big]=-\dfrac{\mu}{2a}$</span></div>
+      <div class="s"><span class="k">3</span><span class="m">equate to $\tfrac12 v^2-\mu/r$ $\Rightarrow\ \boxed{v^2=\mu(2/r-1/a)}$</span></div>
+    </div>
+    <div class="note">Circular ($a=r$): $v=\sqrt{\mu/r}$. Parabolic ($a\to\infty$): $v=\sqrt{2\mu/r}$. Full derivation in <b>Study Notes §3.2.4</b>.</div>
+  </div>
+</section>
+
+<!-- DEMO: VIS-VIVA -->
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Vis‑viva — speed, period &amp; energy vs. altitude</span></div>
+    <iframe title="Vis-viva explorer" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Vis-viva explorer — interactive · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:460px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:80px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+  .legend{display:flex;gap:14px;font-size:12px;color:var(--mut);margin-top:10px;flex-wrap:wrap}
+  .legend i{width:16px;height:3px;display:inline-block;vertical-align:middle;margin-right:5px;border-radius:2px}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 · WEEK 3 — CELESTIAL MECHANICS&lt;/div&gt;
+  &lt;h1&gt;Vis‑viva — speed, period &amp;amp; energy vs. altitude&lt;/h1&gt;
+  &lt;div class=&quot;eq&quot;&gt;v = &lt;b&gt;√(μ(2/r − 1/a))&lt;/b&gt; · circular &lt;b&gt;√(μ/r)&lt;/b&gt; · escape &lt;b&gt;√(2μ/r)&lt;/b&gt; · energy ε = &lt;b&gt;−μ/2a&lt;/b&gt;&lt;/div&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;altitude&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oZ&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;circular v&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oV&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;period T&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oT&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;escape v&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oVe&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Controls&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Altitude z (km) &lt;span class=&quot;num&quot; id=&quot;zN&quot;&gt;550&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;zS&quot; min=&quot;200&quot; max=&quot;40000&quot; step=&quot;50&quot; value=&quot;550&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;presets&quot;&gt;
+      &lt;button data-z=&quot;400&quot;&gt;LEO 400&lt;/button&gt;
+      &lt;button data-z=&quot;800&quot;&gt;SSO 800&lt;/button&gt;
+      &lt;button data-z=&quot;20200&quot;&gt;GNSS&lt;/button&gt;
+      &lt;button data-z=&quot;35786&quot;&gt;GEO&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;legend&quot;&gt;
+      &lt;span&gt;&lt;i style=&quot;background:#57d98a&quot;&gt;&lt;/i&gt;circular speed&lt;/span&gt;
+      &lt;span&gt;&lt;i style=&quot;background:#DAC961&quot;&gt;&lt;/i&gt;period&lt;/span&gt;
+      &lt;span&gt;&lt;i style=&quot;background:#7fdcff&quot;&gt;&lt;/i&gt;escape speed&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;Higher orbits are &lt;b&gt;slower&lt;/b&gt; yet more energetic (ε = −μ/2a rises toward zero as a grows). Escape speed is always √2 × circular speed at the same radius. GEO is the altitude where the period equals one sidereal day.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+const MU=398600.4418, RE=6378.137, zMax=40000;
+const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+let alt=550, DPR=Math.min(window.devicePixelRatio||1,2), W=10,H=10;
+const $=id=&gt;document.getElementById(id);
+const vc=z=&gt;Math.sqrt(MU/(RE+z));
+const ve=z=&gt;Math.sqrt(2*MU/(RE+z));
+const Tc=z=&gt;2*Math.PI*Math.sqrt(Math.pow(RE+z,3)/MU)/60;
+function fit(){const r=cv.getBoundingClientRect();W=Math.max(10,r.width);H=Math.max(10,r.height);
+  cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);draw();}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const L=48,R=W-52,T=18,B=H-34;
+  ctx.strokeStyle=&#x27;#26323b&#x27;;ctx.lineWidth=1;ctx.strokeRect(L,T,R-L,B-T);
+  const X=z=&gt;L+z/zMax*(R-L);
+  const vMax=12, Yv=val=&gt;B-val/vMax*(B-T);
+  const tMax=1500, Yt=val=&gt;B-Math.min(val,tMax)/tMax*(B-T);
+  // GEO marker
+  ctx.strokeStyle=&#x27;#3a4a54&#x27;;ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(X(35786),T);ctx.lineTo(X(35786),B);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=&#x27;#8fa0aa&#x27;;ctx.font=&#x27;10px &quot;Calibri&quot;,monospace&#x27;;ctx.fillText(&#x27;GEO&#x27;,X(35786)-10,T+11);
+  // escape curve
+  ctx.strokeStyle=&#x27;#7fdcff&#x27;;ctx.setLineDash([5,4]);ctx.lineWidth=2;ctx.beginPath();
+  for(let z=200;z&lt;=zMax;z+=200){const x=X(z),y=Yv(ve(z));z&lt;=200?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();ctx.setLineDash([]);
+  // v curve
+  ctx.strokeStyle=&#x27;#57d98a&#x27;;ctx.lineWidth=2.6;ctx.beginPath();
+  for(let z=200;z&lt;=zMax;z+=200){const x=X(z),y=Yv(vc(z));z&lt;=200?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();
+  // T curve
+  ctx.strokeStyle=&#x27;#DAC961&#x27;;ctx.lineWidth=2.6;ctx.beginPath();
+  for(let z=200;z&lt;=zMax;z+=200){const x=X(z),y=Yt(Tc(z));z&lt;=200?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();
+  // marker
+  ctx.strokeStyle=&#x27;#e8eef0&#x27;;ctx.setLineDash([2,3]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(X(alt),T);ctx.lineTo(X(alt),B);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=&#x27;#57d98a&#x27;;ctx.beginPath();ctx.arc(X(alt),Yv(vc(alt)),4,0,7);ctx.fill();
+  ctx.fillStyle=&#x27;#7fdcff&#x27;;ctx.beginPath();ctx.arc(X(alt),Yv(ve(alt)),4,0,7);ctx.fill();
+  ctx.fillStyle=&#x27;#DAC961&#x27;;ctx.beginPath();ctx.arc(X(alt),Yt(Tc(alt)),4,0,7);ctx.fill();
+  ctx.fillStyle=&#x27;#8fa0aa&#x27;;ctx.fillText(&#x27;altitude →&#x27;,R-64,B+22);
+  ctx.fillStyle=&#x27;#57d98a&#x27;;ctx.fillText(&#x27;v, v_esc (km/s)&#x27;,L+4,T+11);
+  ctx.textAlign=&#x27;right&#x27;;ctx.fillStyle=&#x27;#DAC961&#x27;;ctx.fillText(&#x27;T (min)&#x27;,R-4,T+11);ctx.textAlign=&#x27;left&#x27;;
+  const T2=Tc(alt);
+  $(&#x27;oZ&#x27;).textContent=Math.round(alt).toLocaleString()+&#x27; km&#x27;;
+  $(&#x27;oV&#x27;).textContent=vc(alt).toFixed(2)+&#x27; km/s&#x27;;
+  $(&#x27;oT&#x27;).textContent=T2&gt;120?(T2/60).toFixed(2)+&#x27; h&#x27;:T2.toFixed(1)+&#x27; min&#x27;;
+  $(&#x27;oVe&#x27;).textContent=ve(alt).toFixed(2)+&#x27; km/s&#x27;;
+}
+$(&#x27;zS&#x27;).oninput=e=&gt;{alt=+e.target.value;$(&#x27;zN&#x27;).textContent=Math.round(alt).toLocaleString();draw();};
+document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{alt=+b.dataset.z;$(&#x27;zS&#x27;).value=alt;$(&#x27;zN&#x27;).textContent=Math.round(alt).toLocaleString();draw();});
+new ResizeObserver(fit).observe(cv);fit();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+  </div>
+</section>
+
+<!-- VELOCITY COMPONENTS & FLIGHT-PATH ANGLE -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 · derivation</div>
+    <div class="title">Velocity components &amp; the flight‑path angle</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$v_r=\dot r,\qquad v_\perp=r\dot\nu=\frac{h}{r},\qquad \tan\gamma=\frac{v_r}{v_\perp}=\frac{e\sin\nu}{1+e\cos\nu}$$</div>
+    <div class="steps">
+      <div class="s"><span class="k">1</span><span class="m">differentiate $r=\dfrac{p}{1+e\cos\nu}$: $\ \dot r=\dfrac{re\sin\nu}{1+e\cos\nu}\dot\nu$</span></div>
+      <div class="s"><span class="k">2</span><span class="m">$\tan\gamma=\dot r/(r\dot\nu)=\dfrac{e\sin\nu}{1+e\cos\nu}$</span><span class="why">$\gamma=0$ at perigee/apogee</span></div>
+    </div>
+    <div class="note">$\gamma$ is the angle of the velocity above the local horizontal — zero at the apsides (purely tangential), largest near $\nu=90^\circ$. Needed to build $(\mathbf r,\mathbf v)$ from elements (Week 4).</div>
+  </div>
+</section>
+
+<!-- DEMO: FLIGHT-PATH ANGLE -->
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Flight-path angle kinematics — velocity vector breakdown</span></div>
+    <iframe title="Flight-path angle kinematics" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:12px 24px 8px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header h1{margin:0;font-family:&quot;Cambria&quot;,serif;font-size:22px}
+  header .eq{color:#cfe0e4;font-size:14px;margin-top:2px}
+  main{display:grid;grid-template-columns:1fr 300px;gap:16px;padding:16px;max-width:1100px;margin:0 auto}
+  .stage{background:#05070f;border-radius:12px;overflow:hidden;min-height:400px;position:relative}
+  canvas{display:block;width:100%;height:100%}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
+  .row{margin:0 0 12px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:4px}
+  input[type=range]{width:100%;accent-color:var(--green)}
+  .readouts{position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap}
+  .chip{background:rgba(255,255,255,.94);border-radius:6px;padding:4px 8px;font-size:12px;font-weight:700}
+  .chip span{color:var(--mut);font-weight:400;font-size:10px;text-transform:uppercase;margin-right:4px}
+  .hint{font-size:12px;color:var(--mut);margin-top:16px;line-height:1.4}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;h1&gt;Velocity components &amp; flight-path angle γ&lt;/h1&gt;
+  &lt;div class=&quot;eq&quot;&gt;v splits into radial (v&lt;sub&gt;r&lt;/sub&gt;) and tangential (v&lt;sub&gt;⊥&lt;/sub&gt;) &lt;/div&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;&lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot; style=&quot;color:#fff;background:#57d98a&quot;&gt;&lt;span style=&quot;color:#12211B&quot;&gt;v total&lt;/span&gt;&lt;b id=&quot;oVt&quot;&gt;&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot; style=&quot;color:#fff;background:#4a90d9&quot;&gt;&lt;span style=&quot;color:#12211B&quot;&gt;v_r&lt;/span&gt;&lt;b id=&quot;oVr&quot;&gt;&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot; style=&quot;color:#fff;background:#DAC961&quot;&gt;&lt;span style=&quot;color:#12211B&quot;&gt;v_⊥&lt;/span&gt;&lt;b id=&quot;oVp&quot;&gt;&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;span&gt;γ&lt;/span&gt;&lt;b id=&quot;oG&quot;&gt;&lt;/b&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;True Anomaly ν &lt;span id=&quot;nuN&quot;&gt;45°&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;nuS&quot; min=&quot;0&quot; max=&quot;360&quot; value=&quot;45&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Eccentricity e &lt;span id=&quot;eN&quot;&gt;0.60&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;eS&quot; min=&quot;0&quot; max=&quot;0.85&quot; step=&quot;0.01&quot; value=&quot;0.6&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;Observe how the total velocity vector (green) splits into the local horizontal v&lt;sub&gt;⊥&lt;/sub&gt; (gold) and radial v&lt;sub&gt;r&lt;/sub&gt; (blue). The angle γ between the local horizontal and the velocity vector is exactly zero at perigee (0°) and apogee (180°).&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+let e=0.6, nu=45*Math.PI/180, a=10000, MU=398600;
+let W,H,DPR=Math.min(window.devicePixelRatio||1,2);
+function drawArrow(fx,fy,tx,ty,col,w){
+  ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(fx,fy);ctx.lineTo(tx,ty);ctx.stroke();
+  const a=Math.atan2(ty-fy,tx-fx);ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(tx-10*Math.cos(a-0.5),ty-10*Math.sin(a-0.5));ctx.lineTo(tx-10*Math.cos(a+0.5),ty-10*Math.sin(a+0.5));ctx.fill();
+}
+function fit(){const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);draw();}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const p=a*(1-e*e);
+  const sc=Math.min(W/(a*2.5),H/(a*1.5));
+  const X=x=&gt;W/2+(x+a*e)*sc, Y=y=&gt;H/2-y*sc;
+  
+  // Orbit
+  ctx.strokeStyle=&#x27;#33414a&#x27;;ctx.lineWidth=2;ctx.beginPath();
+  for(let n=0;n&lt;=Math.PI*2.01;n+=0.05){const r=p/(1+e*Math.cos(n));const x=r*Math.cos(n),y=r*Math.sin(n);n?ctx.lineTo(X(x),Y(y)):ctx.moveTo(X(x),Y(y));}ctx.stroke();
+  
+  // Earth
+  ctx.fillStyle=&#x27;#008540&#x27;;ctx.beginPath();ctx.arc(X(0),Y(0),8,0,7);ctx.fill();
+  
+  // Sat
+  const r=p/(1+e*Math.cos(nu)), sx=r*Math.cos(nu), sy=r*Math.sin(nu);
+  ctx.strokeStyle=&#x27;rgba(255,255,255,0.2)&#x27;;ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(X(0),Y(0));ctx.lineTo(X(sx),Y(sy));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=&#x27;#fff&#x27;;ctx.beginPath();ctx.arc(X(sx),Y(sy),5,0,7);ctx.fill();
+  
+  // Vectors
+  const h=Math.sqrt(MU*p), vr=(MU/h)*e*Math.sin(nu), vp=(MU/h)*(1+e*Math.cos(nu));
+  const vScale=30; // visual scaling for arrows
+  const urx=Math.cos(nu), ury=Math.sin(nu);
+  const upx=-Math.sin(nu), upy=Math.cos(nu);
+  
+  const vr_x=urx*vr*vScale, vr_y=ury*vr*vScale;
+  const vp_x=upx*vp*vScale, vp_y=upy*vp*vScale;
+  const vt_x=vr_x+vp_x, vt_y=vr_y+vp_y;
+  
+  drawArrow(X(sx),Y(sy),X(sx)+vr_x,Y(sy)-vr_y,&#x27;#4a90d9&#x27;,2); // radial
+  drawArrow(X(sx),Y(sy),X(sx)+vp_x,Y(sy)-vp_y,&#x27;#DAC961&#x27;,2); // tangential
+  drawArrow(X(sx),Y(sy),X(sx)+vt_x,Y(sy)-vt_y,&#x27;#57d98a&#x27;,3); // total
+  
+  // Readouts
+  const vt=Math.sqrt(vr*vr+vp*vp);
+  const gam=Math.atan2(vr,vp)*180/Math.PI;
+  document.getElementById(&#x27;oVt&#x27;).innerText=vt.toFixed(2)+&#x27; km/s&#x27;;
+  document.getElementById(&#x27;oVr&#x27;).innerText=vr.toFixed(2)+&#x27; km/s&#x27;;
+  document.getElementById(&#x27;oVp&#x27;).innerText=vp.toFixed(2)+&#x27; km/s&#x27;;
+  document.getElementById(&#x27;oG&#x27;).innerText=gam.toFixed(1)+&#x27;°&#x27;;
+}
+document.getElementById(&#x27;nuS&#x27;).oninput=e=&gt;{nu=e.target.value*Math.PI/180; document.getElementById(&#x27;nuN&#x27;).innerText=e.target.value+&#x27;°&#x27;; draw();}
+document.getElementById(&#x27;eS&#x27;).oninput=e=&gt;{window.e=+e.target.value; document.getElementById(&#x27;eN&#x27;).innerText=window.e.toFixed(2); draw();}
+window.onresize=fit; fit();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+  </div>
+</section>
+
+
+<!-- CIRCULAR ORBITS & THE ORBIT ZOO -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2</div>
+    <div class="title">Circular orbits &amp; the altitude ladder</div>
+    <div class="accent"></div>
+    <div class="cols" style="grid-template-columns:1.25fr 1fr">
+      <div>
+        <svg class="fig" viewBox="0 0 560 366" role="img" aria-label="Orbit regimes">
+          <circle cx="40" cy="330" r="52" fill="#2e5aa8"/>
+          <g fill="none" stroke-width="2.4">
+            <path d="M 40 210 A 120 120 0 0 1 160 330" stroke="#008540"/>
+            <path d="M 40 140 A 190 190 0 0 1 230 330" stroke="#008540" opacity="0.7"/>
+            <path d="M 40 92 A 238 238 0 0 1 278 330" stroke="#8A6D00"/>
+            <path d="M 40 40 A 290 290 0 0 1 330 330" stroke="#00573F"/>
+          </g>
+          <path d="M 60 330 C 120 40, 470 20, 500 200" fill="none" stroke="#003E51" stroke-width="2" stroke-dasharray="6 5"/>
+          <circle cx="150" cy="250" r="4.5" fill="#008540"/><circle cx="235" cy="250" r="4.5" fill="#008540"/>
+          <circle cx="330" cy="250" r="4.5" fill="#8A6D00"/><circle cx="497" cy="196" r="4.5" fill="#003E51"/>
+          <text class="svgt g" x="176" y="238">LEO · 7.8 km/s · ~90 min</text>
+          <text class="svgt s" x="176" y="200">MEO · 3.9 km/s · ~12 h</text>
+          <text class="svgt f" x="176" y="160">GEO · 3.07 km/s · 24 h</text>
+          <text class="svgt p" x="300" y="70">HEO / Molniya · e≈0.7</text>
+          <text class="svgt ink" x="16" y="356">Earth</text>
+        </svg>
+        <div class="figcap">Radii not to scale. Higher = larger, more energetic, yet <b>slower</b>.</div>
+      </div>
+      <div>
+        <div class="eqbox" style="font-size:2.1vmin">$$v=\sqrt{\tfrac{\mu}{r}},\quad T=2\pi\sqrt{\tfrac{r^3}{\mu}}$$</div>
+        <div class="card"><h3>Set by altitude alone</h3>For a circle, pick the altitude and both $v$ and $T$ are fixed — no other element enters. GEO is the radius where $T=1$ sidereal day.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEPLER LAWS -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2</div>
+    <div class="title">Kepler's three laws — now derivable</div>
+    <div class="accent"></div>
+    <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="card g"><h3>1 · Ellipses</h3>Orbit is an ellipse with the central body at one <b>focus</b>.</div>
+      <div class="card"><h3>2 · Equal areas</h3>$dA/dt=h/2$ — fast at perigee, slow at apogee.</div>
+      <div class="card d"><h3>3 · Periods</h3>$T\propto a^{3/2}$, independent of $e$.</div>
+    </div>
+    <div class="eqbox">$$T=2\pi\sqrt{\frac{a^{3}}{\mu}},\qquad n=\sqrt{\frac{\mu}{a^{3}}}\ \text{(mean motion)}$$</div>
+  </div>
+</section>
+
+<!-- DERIV: KEPLER 3 -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 · derivation</div>
+    <div class="title">Deriving Kepler's third law</div>
+    <div class="accent"></div>
+    <div class="steps">
+      <div class="s"><span class="k">1</span><span class="m">$\tfrac{dA}{dt}=\tfrac{h}{2}\Rightarrow A=\tfrac{h}{2}T$ over one period</span><span class="why">Kepler 2</span></div>
+      <div class="s"><span class="k">2</span><span class="m">ellipse area $A=\pi a b,\ b=a\sqrt{1-e^2}$</span></div>
+      <div class="s"><span class="k">3</span><span class="m">$h=\sqrt{\mu p}=\sqrt{\mu a(1-e^2)}$</span></div>
+      <div class="s"><span class="k">4</span><span class="m">$\pi a b=\tfrac{h}{2}T\Rightarrow \boxed{T=2\pi\sqrt{a^3/\mu}}$</span><span class="why">$e$ cancels</span></div>
+    </div>
+    <div class="note">Two orbits with the same $a$ share a period regardless of $e$ — the basis of formation flying (Week 5). Full derivation in <b>Study Notes §3.2.5</b>.</div>
+  </div>
+</section>
+
+<!-- HARMONIC LAW / WEIGHING -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2</div>
+    <div class="title">The harmonic law — and weighing worlds</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$T^{2}=\frac{4\pi^{2}}{\mu}\,a^{3}\qquad\Longrightarrow\qquad \mu=\frac{4\pi^{2}a^{3}}{T^{2}},\quad M=\frac{\mu}{G}$$</div>
+    <div class="cols">
+      <div class="card g"><h3>Compare orbits</h3>About one body the ratio $a^{3}/T^{2}$ is fixed, so a single measured orbit calibrates all others — the "harmony" Kepler sought. On a log–log plot, $\log T$ vs $\log a$ is a line of slope $3/2$.</div>
+      <div class="card d"><h3>Weigh the central body</h3>Measure any satellite's $a$ and $T$ and you get $\mu$ — hence the mass. This is how we weigh the Earth, the Sun, Jupiter, and distant stars with planets. <br><b>Check:</b> the Moon ($a=384\,400$ km, $T=27.3$ d) returns $\mu_\oplus\approx3.99\times10^{5}\ \mathrm{km^3/s^2}$.</div>
+    </div>
+  </div>
+</section>
+
+<!-- KEPLER <-> NEWTON EQUIVALENCE -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2</div>
+    <div class="title">From Kepler to Newton — and back</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Kepler ⟹ inverse‑square</h3><ul class="pts" style="margin-top:.3vmin"><li>Equal areas (2nd law) ⟹ the force is <b>central</b> ($\mathbf h$ conserved).</li><li>An ellipse with the force at a <b>focus</b> ⟹ the force $\propto 1/r^{2}$.</li><li>The harmonic law ⟹ the <b>same</b> constant $\mu$ for every orbit.</li></ul></div>
+      <div class="card d"><h3>Inverse‑square ⟹ Kepler</h3>Conversely, $\ddot{\mathbf r}=-\mu\mathbf r/r^{3}$ yields a conic (ellipse when bound), the area law, and $T^{2}\propto a^{3}$ — exactly what we derived this week.</div>
+    </div>
+    <div class="note">This two‑way implication is Newton's triumph: three empirical rules and one force law are the <b>same statement</b>. Prompted by Halley's question "what curve does an inverse‑square force give?", it launched the <i>Principia</i> — and with it, predictive celestial mechanics.</div>
+  </div>
+</section>
+
+<!-- COORDINATE FRAMES -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2</div>
+    <div class="title">Coordinate frames: ECI &amp; perifocal</div>
+    <div class="accent"></div>
+    <div class="cols" style="grid-template-columns:1.1fr 1fr">
+      <div>
+        <svg class="fig" viewBox="0 0 560 360" role="img" aria-label="Coordinate frames">
+          <circle cx="150" cy="200" r="10" fill="#2e5aa8"/>
+          <line x1="150" y1="200" x2="360" y2="200" stroke="#003E51" stroke-width="2"/><polygon points="360,200 350,195 350,205" fill="#003E51"/>
+          <line x1="150" y1="200" x2="150" y2="40" stroke="#003E51" stroke-width="2"/><polygon points="150,40 145,50 155,50" fill="#003E51"/>
+          <text class="svgt p" x="366" y="204">Î (Aries ♈)</text><text class="svgt p" x="126" y="40">K̂ (spin axis)</text>
+          <ellipse cx="300" cy="200" rx="170" ry="95" fill="none" stroke="#00573F" stroke-width="2.5" transform="rotate(-18 300 200)"/>
+          <circle cx="300" cy="200" r="7" fill="#008540"/>
+          <line x1="300" y1="200" x2="452" y2="150" stroke="#8A6D00" stroke-width="2"/><polygon points="452,150 441,150 446,159" fill="#8A6D00"/>
+          <line x1="300" y1="200" x2="352" y2="90" stroke="#8A6D00" stroke-width="2"/>
+          <text class="svgt s" x="456" y="150">P̂ (perigee)</text><text class="svgt s" x="356" y="88">Q̂</text>
+          <text class="svgt f" x="196" y="150">orbit plane</text>
+        </svg>
+        <div class="figcap">ECI (Î,Ĵ,K̂) is inertial, fixed to the stars. Perifocal (P̂,Q̂,Ŵ) is fixed to the orbit, P̂ toward perigee.</div>
+      </div>
+      <div>
+        <div class="card g"><h3>ECI (inertial)</h3>Î → First Point of Aries, K̂ → spin axis. Elements are quoted here so they don't rotate with the Earth.</div>
+        <div class="card d"><h3>Perifocal (PQW)</h3>In‑plane frame with P̂ toward perigee. The natural place to write $\mathbf r,\mathbf v$ — then rotate by $\omega,i,\Omega$ into ECI (Week 4).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERIFOCAL r,v -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2</div>
+    <div class="title">Position &amp; velocity in the perifocal frame</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$\mathbf r=\frac{p}{1+e\cos\nu}\big(\cos\nu\,\hat{\mathbf P}+\sin\nu\,\hat{\mathbf Q}\big)$$ $$\mathbf v=\sqrt{\frac{\mu}{p}}\big[-\sin\nu\,\hat{\mathbf P}+(e+\cos\nu)\,\hat{\mathbf Q}\big]$$</div>
+    <div class="note">Everything in Lecture 1–2 lives in this plane. The full state in ECI is obtained by the rotation $\mathbf r_{\rm ECI}=R_3(-\Omega)R_1(-i)R_3(-\omega)\,\mathbf r_{\rm PQW}$ — assembled in Week 4.</div>
+  </div>
+</section>
+
+<!-- POSITION VS TIME -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2</div>
+    <div class="title">The problem of time — where is it <i>when</i>?</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>What we have</h3>$r(\nu)$ gives the shape, and $\varepsilon,h$ the size — but not <b>when</b> the body is at a given $\nu$. Because $\dot\nu=h/r^2$ varies, $\nu(t)$ is nonlinear.</div>
+      <div class="card d"><h3>What's coming (Week 4)</h3>The <b>anomalies</b> and <b>Kepler's equation</b> $M=E-e\sin E$ solve $\nu(t)$. Mean motion $n=\sqrt{\mu/a^3}$ from Kepler III is the bridge: $M=n(t-t_p)$.</div>
+    </div>
+    <div class="note">This closes the two‑body geometry and opens Week 4's descriptive machinery — the six elements and time‑of‑flight.</div>
+  </div>
+</section>
+
+<!-- WORKED EXAMPLE 1 -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 · worked example</div>
+    <div class="title">Circular‑orbit speed and period</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Given</h3>Circular, altitude $h=500$ km, $R_\oplus=6378$ km. <h3 style="margin-top:1.4vmin">Find</h3>$v$ and $T$.</div>
+      <div class="card d"><h3>Solution</h3>$r=6878$ km<br>$v=\sqrt{\mu/r}=\sqrt{398600/6878}\approx\mathbf{7.61}$ km/s<br>$T=2\pi\sqrt{r^3/\mu}\approx\mathbf{94.6}$ min</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKED EXAMPLE 2 -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 · worked example</div>
+    <div class="title">Energy, a and e from a state vector</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Given</h3>$r=8000$ km, $v=8.5$ km/s, flight‑path angle $\gamma=20^\circ$. <h3 style="margin-top:1.4vmin">Find</h3>$a,\ h,\ e$.</div>
+      <div class="card d"><h3>Solution</h3>
+        $\varepsilon=\tfrac12 v^2-\mu/r=-13.70\Rightarrow a=-\mu/2\varepsilon=\mathbf{14\,547}$ km<br>
+        $h=rv\cos\gamma=63\,889\Rightarrow p=h^2/\mu=10\,240$ km<br>
+        $e=\sqrt{1-p/a}=\mathbf{0.544}$
+      </div>
+    </div>
+    <div class="note">This is the core of the $(\mathbf R,\mathbf V)\to$ elements algorithm completed in Week 4.</div>
+  </div>
+</section>
+
+<!-- WORKED EXAMPLE 3: HYPERBOLIC -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 · worked example</div>
+    <div class="title">A hyperbolic flyby — $v_\infty$ and turn angle</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Given</h3>A probe passes Jupiter ($\mu_J=1.267\times10^{8}\ \mathrm{km^3/s^2}$) at perigee radius $r_p=2R_J=142\,984$ km with $v_\infty=6$ km/s. <h3 style="margin-top:1.2vmin">Find</h3>$e$ and turn angle $\delta$.</div>
+      <div class="card d"><h3>Solution</h3>
+        $e=1+\dfrac{r_p v_\infty^{2}}{\mu_J}=1+\dfrac{142984\cdot36}{1.267\times10^{8}}=\mathbf{1.041}$<br>
+        $\delta=2\sin^{-1}(1/e)=2\sin^{-1}(0.961)=\mathbf{147^\circ}$<br>
+        $a=-\mu_J/v_\infty^2=-3.52\times10^{6}$ km
+      </div>
+    </div>
+    <div class="note">The velocity vector rotates by $147^\circ$ in Jupiter's frame — the free redirection that gravity assist exploits (Week 5).</div>
+  </div>
+</section>
+
+<!-- TLE DEFINITIONS & PARSER -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2</div>
+    <div class="title">Real-World Orbit Data: The Two-Line Element Set (TLE)</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>The Standard Format</h3>A standardized 70-character-per-line format developed by NORAD. It packages the classic 6 Keplerian elements ($i, \Omega, e, \omega, M$, and $n$) into a compact string used universally by tracking systems.</div>
+      <div class="card d"><h3>The Epoch</h3>TLEs encode time in a specific format (Year and Day of Year). When importing TLEs into high-fidelity mission design software like GMAT, this epoch is typically converted to standard references, such as the J2000 epoch.</div>
+    </div>
+    
+    <div class="simwrap" style="margin-top:2vmin"><iframe title="TLE Parser" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--tint:#EAF3EE;--ink:#12211B;--line:#D9DAE4;}
+  body{font-family:&quot;Calibri&quot;,sans-serif;color:var(--ink);background:#05070f;margin:0;padding:20px;display:flex;flex-direction:column;align-items:center}
+  .box{background:#fff;border-radius:12px;padding:20px;width:100%;max-width:800px;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+  h3{margin:0 0 10px;color:var(--forest)}
+  textarea{width:100%;height:60px;font-family:monospace;font-size:13px;padding:10px;border:1px solid var(--line);border-radius:6px;background:#f9f9f9;resize:none}
+  button{margin-top:10px;padding:8px 16px;background:var(--green);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700}
+  .grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:12px;margin-top:16px}
+  .item{background:var(--tint);padding:10px;border-radius:8px;border-left:4px solid var(--green)}
+  .item .l{font-size:11px;color:var(--forest);text-transform:uppercase;font-weight:700;margin-bottom:4px}
+  .item .v{font-family:monospace;font-size:15px;font-weight:bold}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;h3&gt;TLE Parser Widget (Try it with ISS)&lt;/h3&gt;
+    &lt;textarea id=&quot;tle&quot;&gt;1 25544U 98067A   23277.53489110  .00017124  00000+0  30768-3 0  9997
+2 25544  51.6416 308.2838 0005436  66.5204  68.2166 15.50151121418706&lt;/textarea&gt;
+    &lt;button onclick=&quot;parse()&quot;&gt;Decode Elements&lt;/button&gt;
+    &lt;div class=&quot;grid&quot; id=&quot;out&quot;&gt;
+       &lt;!-- Output goes here --&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;script&gt;
+function parse(){
+  const lines=document.getElementById(&#x27;tle&#x27;).value.split(&#x27;\n&#x27;);
+  if(lines.length&lt;2) return;
+  const l1=lines[0], l2=lines[1];
+  const epoch = l1.substring(18,32).trim();
+  const i = l2.substring(8,16).trim();
+  const raan = l2.substring(17,25).trim();
+  const e = &#x27;0.&#x27; + l2.substring(26,33).trim();
+  const argp = l2.substring(34,42).trim();
+  const ma = l2.substring(43,51).trim();
+  const n = l2.substring(52,63).trim();
+  
+  document.getElementById(&#x27;out&#x27;).innerHTML = `
+    &lt;div class=&quot;item&quot;&gt;&lt;div class=&quot;l&quot;&gt;Inclination (i)&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;${i}°&lt;/div&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;div class=&quot;l&quot;&gt;RAAN (Ω)&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;${raan}°&lt;/div&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;div class=&quot;l&quot;&gt;Eccentricity (e)&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;${e}&lt;/div&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;div class=&quot;l&quot;&gt;Arg of Perigee (ω)&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;${argp}°&lt;/div&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;div class=&quot;l&quot;&gt;Mean Anomaly (M)&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;${ma}°&lt;/div&gt;&lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;&lt;div class=&quot;l&quot;&gt;Mean Motion (n)&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;${n} rev/day&lt;/div&gt;&lt;/div&gt;
+  `;
+}
+parse();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe></div>
+  </div>
+</section>
+
+<!-- B-STAR AND DRAG -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2</div>
+    <div class="title">Beyond the Two-Body Problem: The $B^*$ Drag Term</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>The Ballistic Coefficient</h3>A physical measure of a satellite's vulnerability to drag: mass vs. cross-sectional area. Imagine throwing a golf ball (a dense "dart") vs. a piece of paper (a "feather" with large solar arrays). The dart pierces the atmosphere; the feather decays rapidly.</div>
+      <div class="card d"><h3>The $B^*$ (B-star) Term</h3>Found in line 1 of the TLE, $B^*$ is a modified ballistic coefficient. The analytical SGP4 propagator uses this single pseudo-drag term to estimate orbital decay without having to compute local atmospheric density.</div>
+    </div>
+    <div class="note"><b>Analytical vs Numerical:</b> SGP4 uses $B^*$ for fast, lightweight estimation. High-fidelity numerical propagators discard the $B^*$ term entirely; instead, they integrate complex environmental models (like MSISE90) based on real-time solar flux and geomagnetic activity to compute true drag.</div>
+  </div>
+</section>
+
+<!-- WEEK RECAP -->
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · recap</div>
+    <div class="title">Two‑body problem — the whole week</div>
+    <div class="accent"></div>
+    <div class="recap"><ul class="pts">
+      <li>The two‑body equation reduces to 1‑D radial motion in $U_{\text{eff}}$; energy sorts the four conics.</li>
+      <li>Orbit equation $r=p/(1+e\cos\nu)$ from Binet <i>and</i> the LRL vector.</li>
+      <li>Vis‑viva $v^2=\mu(2/r-1/a)$ and $\varepsilon=-\mu/2a$ — speed anywhere, energy from $a$ alone.</li>
+      <li>Hyperbolic orbits: $v_\infty^2=-\mu/a=C_3$, turn angle $\sin(\delta/2)=1/e$.</li>
+      <li>Real-World formats: TLEs package the 6 elements, while the $B^*$ term estimates drag decay.</li>
+      <li>Kepler's three laws derived; frames (ECI, perifocal) and the time problem set up Week 4.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="slide dark">
+  <div class="inner">
+    <div class="kicker">Next — Week 4</div>
+    <div class="title" style="font-size:5vmin">Describing orbits &amp; perturbations</div>
+    <div class="accent"></div>
+    <div class="subtitle">The six elements and the $(\mathbf R,\mathbf V)$ ↔ element algorithm, the anomalies &amp; Kepler's equation, ground tracks — then J₂, precession, atmospheric drag modeling, and special orbits.</div>
+  </div>
+</section>
+
+<div class="brand">KFUPM · AE 582 · WEEK 3</div>
+<div class="pageno" id="pageno"></div>
+<div class="nav">
+  <button id="prev" aria-label="previous">‹</button>
+  <div class="count" id="count">1 / 1</div>
+  <button id="next" aria-label="next">›</button>
+</div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  const prog=document.getElementById('prog'), count=document.getElementById('count'),
+        pageno=document.getElementById('pageno'), brand=document.querySelector('.brand');
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    count.textContent=(i+1)+" / "+slides.length;
+    pageno.textContent=(i+1);
+    prog.style.width=((i)/(slides.length-1)*100)+"%";
+    document.getElementById('prev').disabled=(i===0);
+    document.getElementById('next').disabled=(i===slides.length-1);
+    const dark=slides[i].classList.contains('dark');
+    pageno.style.color=dark?'#9fb6bd':'var(--mut)'; brand.style.color=dark?'#9fb6bd':'var(--mut)';
+  }
+  document.getElementById('next').onclick=()=>show(i+1);
+  document.getElementById('prev').onclick=()=>show(i-1);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){show(i+1);e.preventDefault();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(i-1);e.preventDefault();}
+    else if(e.key==='Home'){show(0);} else if(e.key==='End'){show(slides.length-1);}
+    else if(e.key==='f'||e.key==='F'){ if(!document.fullscreenElement)document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  });
+  let sx=null;
+  document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  document.addEventListener('touchend',e=>{ if(sx===null)return; const dx=e.changedTouches[0].clientX-sx;
+     if(Math.abs(dx)>50)show(i+(dx<0?1:-1)); sx=null;},{passive:true});
+  show(0);
+</script>
+
+</body>
+</html>
