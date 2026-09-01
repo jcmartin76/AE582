@@ -87,7 +87,14 @@
   .figcap b{color:var(--forest)}
   .svgt{font-family:"Calibri","Segoe UI",sans-serif;font-size:15px;fill:var(--mut)}
   .svgt.ink{fill:var(--ink)} .svgt.g{fill:var(--green)} .svgt.f{fill:var(--forest)} .svgt.s{fill:var(--stone)} .svgt.p{fill:var(--petrol)} .svgt.gold{fill:var(--stone)}
+  .missionimg{width:100%;height:auto;max-height:19vh;object-fit:contain;border:1px dashed var(--line);border-radius:8px;background:var(--tint);display:block;min-height:9vh;color:var(--mut);font-size:1.4vmin;text-align:center;line-height:1.4}
   @media(max-width:820px){.cols{grid-template-columns:1fr}.title{font-size:6vw}ul.pts li{font-size:3.6vw}}
+
+  .stepper .s{opacity:0;transform:translateY(12px);align-items:flex-start;transition:opacity .45s ease, transform .45s ease}
+  .stepper .s.shown{opacity:1;transform:none}
+  .stepper .s .sc{display:flex;flex-direction:column;gap:.35vmin}
+  .stepper .s .ex{font-size:1.62vmin;color:var(--mut);line-height:1.42;font-style:normal;font-family:"Calibri","Segoe UI",sans-serif}
+  #stephint{position:fixed;left:50%;transform:translateX(-50%);top:2.2vh;background:var(--forest);color:#fff;font-family:"Calibri",sans-serif;font-size:1.7vmin;font-weight:600;padding:.5vmin 1.5vmin;border-radius:20px;box-shadow:0 3px 12px rgba(0,0,0,.2);z-index:60;display:none}
 </style>
 </head>
 <body>
@@ -565,10 +572,11 @@ new ResizeObserver(fit).observe(cv);fit();requestAnimationFrame(loop);
     <div class="kicker">Week 3 · Lecture 1 · derivation</div>
     <div class="title">Deriving the relative equation of motion</div>
     <div class="accent"></div>
-    <div class="steps">
-      <div class="s"><span class="k">1</span><span class="m">$m_1\ddot{\mathbf r}_1=\dfrac{Gm_1m_2}{r^{3}}\mathbf r,\qquad m_2\ddot{\mathbf r}_2=-\dfrac{Gm_1m_2}{r^{3}}\mathbf r$</span><span class="why">Newton's law on each body</span></div>
-      <div class="s"><span class="k">2</span><span class="m">$\ddot{\mathbf r}=\ddot{\mathbf r}_2-\ddot{\mathbf r}_1=-G(m_1+m_2)\dfrac{\mathbf r}{r^{3}}$</span><span class="why">divide by each mass, subtract</span></div>
-      <div class="s"><span class="k">3</span><span class="m">$\boxed{\ \ddot{\mathbf r}+\dfrac{\mu}{r^{3}}\mathbf r=\mathbf 0\ },\qquad \mu\equiv G(m_1+m_2)$</span></div>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">$m_1\ddot{\mathbf r}_1=\dfrac{Gm_1m_2}{r^{3}}\mathbf r,\qquad m_2\ddot{\mathbf r}_2=-\dfrac{Gm_1m_2}{r^{3}}\mathbf r$</div><div class="ex">Newton's law for each body separately. The forces are equal and opposite (3rd law), directed along the line joining them, $\mathbf r=\mathbf r_2-\mathbf r_1$.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">$\ddot{\mathbf r}_1=\dfrac{Gm_2}{r^{3}}\mathbf r,\qquad \ddot{\mathbf r}_2=-\dfrac{Gm_1}{r^{3}}\mathbf r$</div><div class="ex">Divide each equation by its own mass, giving the acceleration of each body.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">$\ddot{\mathbf r}=\ddot{\mathbf r}_2-\ddot{\mathbf r}_1=-\dfrac{G(m_1+m_2)}{r^{3}}\mathbf r$</div><div class="ex">Subtract: the two single‑body problems collapse into one equation for the relative motion.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">$\boxed{\ \ddot{\mathbf r}+\dfrac{\mu}{r^{3}}\mathbf r=\mathbf 0\ },\qquad \mu\equiv G(m_1+m_2)$</div><div class="ex">Define $\mu$. This one equation <i>is</i> the two‑body problem; for a satellite $m_2\ll m_1$, so $\mu\to GM$.</div></div></div>
     </div>
     <div class="note">Full derivation with the centre‑of‑mass frame in <b>Study Notes §3.2.1</b>.</div>
   </div>
@@ -608,21 +616,12 @@ new ResizeObserver(fit).observe(cv);fit();requestAnimationFrame(loop);
     <div class="kicker">Week 3 · Lecture 1 · derivation</div>
     <div class="title">Deriving the two constants</div>
     <div class="accent"></div>
-    <div class="cols">
-      <div><div class="figcap" style="text-align:left;color:var(--forest);font-weight:700;margin-bottom:.4vmin">Angular momentum</div>
-        <div class="steps">
-          <div class="s"><span class="k">1</span><span class="m">$\dot{\mathbf h}=\dot{\mathbf r}\times\dot{\mathbf r}+\mathbf r\times\ddot{\mathbf r}$</span></div>
-          <div class="s"><span class="k">2</span><span class="m">$=\mathbf r\times\!\big(-\tfrac{\mu}{r^{3}}\mathbf r\big)=\mathbf 0$</span></div>
-          <div class="s"><span class="k">3</span><span class="m">$\Rightarrow\ \mathbf h=$ const, planar, $\tfrac{dA}{dt}=\tfrac{h}{2}$</span></div>
-        </div>
-      </div>
-      <div><div class="figcap" style="text-align:left;color:var(--forest);font-weight:700;margin-bottom:.4vmin">Energy</div>
-        <div class="steps">
-          <div class="s"><span class="k">4</span><span class="m">$\dot{\mathbf r}\cdot\ddot{\mathbf r}+\tfrac{\mu}{r^{3}}(\mathbf r\cdot\dot{\mathbf r})=0$</span></div>
-          <div class="s"><span class="k">5</span><span class="m">$\tfrac{d}{dt}\!\big(\tfrac12 v^{2}-\tfrac{\mu}{r}\big)=0$</span><span class="why">$\mathbf r\cdot\dot{\mathbf r}=r\dot r$</span></div>
-          <div class="s"><span class="k">6</span><span class="m">$\Rightarrow\ \varepsilon=\text{const}$</span></div>
-        </div>
-      </div>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">$\mathbf h\equiv\mathbf r\times\dot{\mathbf r}$</div><div class="ex">Define the specific angular momentum. We show it does not change in time.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">$\dot{\mathbf h}=\dot{\mathbf r}\times\dot{\mathbf r}+\mathbf r\times\ddot{\mathbf r}=\mathbf 0+\mathbf r\times\!\big(-\tfrac{\mu}{r^{3}}\mathbf r\big)=\mathbf 0$</div><div class="ex">Differentiate (product rule). A vector crossed with itself is zero; the force is parallel to $\mathbf r$, so that term vanishes too. Hence $\mathbf h$ is constant → planar motion, and $dA/dt=h/2$ (Kepler II).</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">$\dot{\mathbf r}\cdot\ddot{\mathbf r}+\tfrac{\mu}{r^{3}}(\mathbf r\cdot\dot{\mathbf r})=0$</div><div class="ex">Now energy: take the dot product of the equation of motion with the velocity $\dot{\mathbf r}$.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">$\dfrac{d}{dt}\!\big(\tfrac12 v^{2}\big)-\dfrac{d}{dt}\!\big(\tfrac{\mu}{r}\big)=0$</div><div class="ex">Each term is a perfect time‑derivative. The key identity is $\mathbf r\cdot\dot{\mathbf r}=r\dot r$.</div></div></div>
+      <div class="s"><span class="k">5</span><div class="sc"><div class="m">$\boxed{\ \varepsilon=\tfrac12 v^{2}-\dfrac{\mu}{r}=\text{const}\ }$</div><div class="ex">Integrate: the specific energy (kinetic plus the negative potential well) is conserved.</div></div></div>
     </div>
     <div class="note">Full derivation in <b>Study Notes §3.2.2</b>.</div>
   </div>
@@ -840,25 +839,16 @@ new ResizeObserver(fit).observe(cv);fit();
 <section class="slide">
   <div class="inner">
     <div class="kicker">Week 3 · Lecture 1 · derivation</div>
-    <div class="title">The orbit equation — two routes</div>
+    <div class="title">The orbit equation — the Binet derivation</div>
     <div class="accent"></div>
-    <div class="cols">
-      <div><div class="figcap" style="text-align:left;color:var(--forest);font-weight:700;margin-bottom:.4vmin">Route A — Binet substitution</div>
-        <div class="steps">
-          <div class="s"><span class="k">1</span><span class="m">$u=\tfrac1r,\ \ \tfrac{d}{dt}=\tfrac{h}{r^{2}}\tfrac{d}{d\nu}$</span></div>
-          <div class="s"><span class="k">2</span><span class="m">$\tfrac{d^{2}u}{d\nu^{2}}+u=\tfrac{\mu}{h^{2}}$</span></div>
-          <div class="s"><span class="k">3</span><span class="m">$r=\dfrac{p}{1+e\cos\nu}$</span></div>
-        </div>
-      </div>
-      <div><div class="figcap" style="text-align:left;color:var(--forest);font-weight:700;margin-bottom:.4vmin">Route B — eccentricity (LRL) vector</div>
-        <div class="steps">
-          <div class="s"><span class="k">1</span><span class="m">$\mathbf e=\dfrac{\dot{\mathbf r}\times\mathbf h}{\mu}-\hat{\mathbf r}$, $\ \dot{\mathbf e}=\mathbf 0$</span></div>
-          <div class="s"><span class="k">2</span><span class="m">$\mathbf r\cdot\mathbf e=\tfrac{h^2}{\mu}-r=p-r$</span></div>
-          <div class="s"><span class="k">3</span><span class="m">$\Rightarrow\ r=\dfrac{p}{1+e\cos\nu}$</span><span class="why">$|\mathbf e|=e$ → perigee</span></div>
-        </div>
-      </div>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">$u=\dfrac1r,\qquad \dfrac{d}{dt}=\dfrac{h}{r^{2}}\dfrac{d}{d\nu}=hu^{2}\dfrac{d}{d\nu}$</div><div class="ex">Two substitutions: work with $u=1/r$, and trade time‑derivatives for angle‑derivatives using $h=r^{2}\dot\nu$. We want the shape $r(\nu)$, not $r(t)$.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">$\dot r=-h\dfrac{du}{d\nu},\qquad \ddot r=-h^{2}u^{2}\dfrac{d^{2}u}{d\nu^{2}}$</div><div class="ex">Apply that rule to $r=1/u$: once for $\dot r$ (a $u^{2}$ cancels), again for $\ddot r$.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">$\ddot r-r\dot\nu^{2}=-\dfrac{\mu}{r^{2}}\ \Longrightarrow\ \dfrac{d^{2}u}{d\nu^{2}}+u=\dfrac{\mu}{h^{2}}$</div><div class="ex">Substitute into the radial equation and divide by $-h^{2}u^{2}$: the nonlinear mess becomes a simple harmonic oscillator.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">$u=\dfrac{\mu}{h^{2}}\big(1+e\cos\nu\big)$</div><div class="ex">Solve it — a constant plus a cosine. The integration constant is the eccentricity $e$; measure $\nu$ from perigee.</div></div></div>
+      <div class="s"><span class="k">5</span><div class="sc"><div class="m">$\boxed{\ r=\dfrac{p}{1+e\cos\nu}\ },\qquad p=\dfrac{h^{2}}{\mu}$</div><div class="ex">Invert to $r$: the polar equation of a conic. Every orbit is a circle, ellipse, parabola, or hyperbola.</div></div></div>
     </div>
-    <div class="note">$2\varepsilon h^{2}/\mu^{2}=e^{2}-1$ links energy to shape. Full derivations in <b>Study Notes §3.2.3</b>.</div>
+    <div class="note">A second route — the eccentricity (Laplace–Runge–Lenz) vector — reaches the same result in two lines; see <b>Study Notes §7.2</b>.</div>
   </div>
 </section>
 
@@ -1084,9 +1074,9 @@ new ResizeObserver(fit).observe(cv);fit();
   <div class="inner">
     <div class="kicker">Week 3 · Lecture 2 of 2</div>
     <div class="bignum">L2</div>
-    <div class="title">Energy, geometry &amp; time</div>
+    <div class="title">Energy, orbits &amp; mission design</div>
     <div class="accent"></div>
-    <div class="subtitle">Vis‑viva and the flight‑path angle, the orbit regimes, coordinate frames, and the problem of locating a body in time.</div>
+    <div class="subtitle">Turning the two‑body results into engineering: orbital speed and energy, choosing the right orbit for a mission, coverage and access, orbital lifetime, and keeping station.</div>
   </div>
 </section>
 
@@ -1112,12 +1102,13 @@ new ResizeObserver(fit).observe(cv);fit();
     <div class="kicker">Week 3 · Lecture 2 · derivation</div>
     <div class="title">Deriving vis‑viva and $\varepsilon=-\mu/2a$</div>
     <div class="accent"></div>
-    <div class="steps">
-      <div class="s"><span class="k">1</span><span class="m">at perigee $\mathbf v\perp\mathbf r$: $\ v_p=h/r_p,\ r_p=a(1-e),\ h^2=\mu a(1-e^2)$</span></div>
-      <div class="s"><span class="k">2</span><span class="m">$\varepsilon=\tfrac12\dfrac{h^2}{r_p^2}-\dfrac{\mu}{r_p}=\dfrac{\mu}{a(1-e)}\Big[\tfrac{1+e}{2}-1\Big]=-\dfrac{\mu}{2a}$</span></div>
-      <div class="s"><span class="k">3</span><span class="m">equate to $\tfrac12 v^2-\mu/r$ $\Rightarrow\ \boxed{v^2=\mu(2/r-1/a)}$</span></div>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">at perigee $\mathbf v\perp\mathbf r$: $\quad v_p=\dfrac{h}{r_p}$</div><div class="ex">Evaluate the conserved energy at perigee, where the velocity is purely tangential.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">$\varepsilon=\tfrac12\dfrac{h^{2}}{r_p^{2}}-\dfrac{\mu}{r_p},\quad r_p=a(1-e),\ h^{2}=\mu a(1-e^{2})$</div><div class="ex">Insert the perigee geometry and the angular‑momentum relation.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">$\varepsilon=\dfrac{\mu}{a(1-e)}\Big[\tfrac{1+e}{2}-1\Big]=\boxed{-\dfrac{\mu}{2a}}$</div><div class="ex">The eccentricity cancels — total energy depends on the semi‑major axis <i>alone</i>.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">$\tfrac12 v^{2}-\dfrac{\mu}{r}=-\dfrac{\mu}{2a}\ \Longrightarrow\ \boxed{\ v^{2}=\mu\!\Big(\tfrac{2}{r}-\tfrac{1}{a}\Big)\ }$</div><div class="ex">Equate that constant to the energy at any point → vis‑viva, the speed anywhere on the orbit.</div></div></div>
     </div>
-    <div class="note">Circular ($a=r$): $v=\sqrt{\mu/r}$. Parabolic ($a\to\infty$): $v=\sqrt{2\mu/r}$. Full derivation in <b>Study Notes §3.2.4</b>.</div>
+    <div class="note">Full derivation in <b>Study Notes §3.2.4</b>.</div>
   </div>
 </section>
 
@@ -1258,12 +1249,12 @@ new ResizeObserver(fit).observe(cv);fit();
     <div class="kicker">Week 3 · Lecture 2 · derivation</div>
     <div class="title">Velocity components &amp; the flight‑path angle</div>
     <div class="accent"></div>
-    <div class="eqbox">$$v_r=\dot r,\qquad v_\perp=r\dot\nu=\frac{h}{r},\qquad \tan\gamma=\frac{v_r}{v_\perp}=\frac{e\sin\nu}{1+e\cos\nu}$$</div>
-    <div class="steps">
-      <div class="s"><span class="k">1</span><span class="m">differentiate $r=\dfrac{p}{1+e\cos\nu}$: $\ \dot r=\dfrac{re\sin\nu}{1+e\cos\nu}\dot\nu$</span></div>
-      <div class="s"><span class="k">2</span><span class="m">$\tan\gamma=\dot r/(r\dot\nu)=\dfrac{e\sin\nu}{1+e\cos\nu}$</span><span class="why">$\gamma=0$ at perigee/apogee</span></div>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">$v_r=\dot r,\qquad v_\perp=r\dot\nu=\dfrac{h}{r}$</div><div class="ex">Split the velocity into radial and transverse parts. $\gamma$ is the angle of $\mathbf v$ above the local horizontal (the transverse direction).</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">$\dot r=\dfrac{re\sin\nu}{1+e\cos\nu}\,\dot\nu$</div><div class="ex">Differentiate the orbit equation $r=p/(1+e\cos\nu)$ to get the radial rate.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">$\boxed{\ \tan\gamma=\dfrac{v_r}{v_\perp}=\dfrac{e\sin\nu}{1+e\cos\nu}\ }$</div><div class="ex">Take the ratio. $\gamma=0$ at perigee and apogee — the velocity is purely horizontal there.</div></div></div>
     </div>
-    <div class="note">$\gamma$ is the angle of the velocity above the local horizontal — zero at the apsides (purely tangential), largest near $\nu=90^\circ$. Needed to build $(\mathbf r,\mathbf v)$ from elements (Week 4).</div>
+    <div class="note">Needed to reconstruct a full velocity vector from the orbital elements (Week 4).</div>
   </div>
 </section>
 
@@ -1379,96 +1370,568 @@ window.onresize=fit; fit();
 <!-- CIRCULAR ORBITS & THE ORBIT ZOO -->
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 3 · Lecture 2</div>
-    <div class="title">Circular orbits &amp; the altitude ladder</div>
+    <div class="kicker">Week 3 · Lecture 2 · worked example</div>
+    <div class="title">Circular‑orbit speed and period</div>
     <div class="accent"></div>
-    <div class="cols" style="grid-template-columns:1.25fr 1fr">
-      <div>
-        <svg class="fig" viewBox="0 0 560 366" role="img" aria-label="Orbit regimes">
-          <circle cx="40" cy="330" r="52" fill="#2e5aa8"/>
-          <g fill="none" stroke-width="2.4">
-            <path d="M 40 210 A 120 120 0 0 1 160 330" stroke="#008540"/>
-            <path d="M 40 140 A 190 190 0 0 1 230 330" stroke="#008540" opacity="0.7"/>
-            <path d="M 40 92 A 238 238 0 0 1 278 330" stroke="#8A6D00"/>
-            <path d="M 40 40 A 290 290 0 0 1 330 330" stroke="#00573F"/>
-          </g>
-          <path d="M 60 330 C 120 40, 470 20, 500 200" fill="none" stroke="#003E51" stroke-width="2" stroke-dasharray="6 5"/>
-          <circle cx="150" cy="250" r="4.5" fill="#008540"/><circle cx="235" cy="250" r="4.5" fill="#008540"/>
-          <circle cx="330" cy="250" r="4.5" fill="#8A6D00"/><circle cx="497" cy="196" r="4.5" fill="#003E51"/>
-          <text class="svgt g" x="176" y="238">LEO · 7.8 km/s · ~90 min</text>
-          <text class="svgt s" x="176" y="200">MEO · 3.9 km/s · ~12 h</text>
-          <text class="svgt f" x="176" y="160">GEO · 3.07 km/s · 24 h</text>
-          <text class="svgt p" x="300" y="70">HEO / Molniya · e≈0.7</text>
-          <text class="svgt ink" x="16" y="356">Earth</text>
-        </svg>
-        <div class="figcap">Radii not to scale. Higher = larger, more energetic, yet <b>slower</b>.</div>
-      </div>
-      <div>
-        <div class="eqbox" style="font-size:2.1vmin">$$v=\sqrt{\tfrac{\mu}{r}},\quad T=2\pi\sqrt{\tfrac{r^3}{\mu}}$$</div>
-        <div class="card"><h3>Set by altitude alone</h3>For a circle, pick the altitude and both $v$ and $T$ are fixed — no other element enters. GEO is the radius where $T=1$ sidereal day.</div>
+    <div class="cols" style="grid-template-columns:1fr 1.15fr">
+      <div class="card g"><h3>Given</h3>Circular orbit, altitude $h=500$ km, $R_\oplus=6378$ km. <h3 style="margin-top:1.4vmin">Find</h3>The speed $v$ and period $T$.</div>
+      <div><div class="figcap" style="text-align:left;color:var(--forest);font-weight:700;margin:0 0 .5vmin;font-size:2vmin">Solution &nbsp;<span style="font-weight:400;color:var(--mut);font-size:1.55vmin">— press → to reveal</span></div>
+        <div class="steps stepper">
+          <div class="s"><span class="k">1</span><div class="sc"><div class="m">$r=R_\oplus+h=6878$ km</div><div class="ex">Orbit radius, measured from the Earth's centre.</div></div></div>
+          <div class="s"><span class="k">2</span><div class="sc"><div class="m">$v=\sqrt{\dfrac{\mu}{r}}=\sqrt{\dfrac{398600}{6878}}\approx\mathbf{7.61}$ km/s</div><div class="ex">Circular speed — vis‑viva with $a=r$.</div></div></div>
+          <div class="s"><span class="k">3</span><div class="sc"><div class="m">$T=2\pi\sqrt{\dfrac{r^{3}}{\mu}}\approx\mathbf{94.6}$ min</div><div class="ex">Period from Kepler's third law.</div></div></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- KEPLER LAWS -->
-<section class="slide">
-  <div class="inner">
-    <div class="kicker">Week 3 · Lecture 2</div>
-    <div class="title">Kepler's three laws — now derivable</div>
-    <div class="accent"></div>
-    <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
-      <div class="card g"><h3>1 · Ellipses</h3>Orbit is an ellipse with the central body at one <b>focus</b>.</div>
-      <div class="card"><h3>2 · Equal areas</h3>$dA/dt=h/2$ — fast at perigee, slow at apogee.</div>
-      <div class="card d"><h3>3 · Periods</h3>$T\propto a^{3/2}$, independent of $e$.</div>
-    </div>
-    <div class="eqbox">$$T=2\pi\sqrt{\frac{a^{3}}{\mu}},\qquad n=\sqrt{\frac{\mu}{a^{3}}}\ \text{(mean motion)}$$</div>
-  </div>
-</section>
-
 <!-- DERIV: KEPLER 3 -->
 <section class="slide">
   <div class="inner">
     <div class="kicker">Week 3 · Lecture 2 · derivation</div>
     <div class="title">Deriving Kepler's third law</div>
     <div class="accent"></div>
-    <div class="steps">
-      <div class="s"><span class="k">1</span><span class="m">$\tfrac{dA}{dt}=\tfrac{h}{2}\Rightarrow A=\tfrac{h}{2}T$ over one period</span><span class="why">Kepler 2</span></div>
-      <div class="s"><span class="k">2</span><span class="m">ellipse area $A=\pi a b,\ b=a\sqrt{1-e^2}$</span></div>
-      <div class="s"><span class="k">3</span><span class="m">$h=\sqrt{\mu p}=\sqrt{\mu a(1-e^2)}$</span></div>
-      <div class="s"><span class="k">4</span><span class="m">$\pi a b=\tfrac{h}{2}T\Rightarrow \boxed{T=2\pi\sqrt{a^3/\mu}}$</span><span class="why">$e$ cancels</span></div>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">$\dfrac{dA}{dt}=\dfrac{h}{2}\ \Longrightarrow\ A=\dfrac{h}{2}\,T$</div><div class="ex">Over one period the radius sweeps the whole ellipse; the areal rate is constant (Kepler II).</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">$A=\pi ab,\qquad b=a\sqrt{1-e^{2}}$</div><div class="ex">The area of an ellipse is $\pi a b$.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">$h=\sqrt{\mu p}=\sqrt{\mu a(1-e^{2})}$</div><div class="ex">Express $h$ through the semi‑latus rectum $p=a(1-e^{2})$.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">$\pi ab=\tfrac{h}{2}T\ \Longrightarrow\ \boxed{\ T=2\pi\sqrt{\dfrac{a^{3}}{\mu}}\ }$</div><div class="ex">Substitute and simplify — the eccentricity cancels, so the period depends only on $a$.</div></div></div>
     </div>
-    <div class="note">Two orbits with the same $a$ share a period regardless of $e$ — the basis of formation flying (Week 5). Full derivation in <b>Study Notes §3.2.5</b>.</div>
+    <div class="note">Mean motion $n=\sqrt{\mu/a^{3}}$ — the clock rate for the mean anomaly (Week 4).</div>
   </div>
 </section>
 
 <!-- HARMONIC LAW / WEIGHING -->
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 3 · Lecture 2</div>
-    <div class="title">The harmonic law — and weighing worlds</div>
+    <div class="kicker">Week 3 · Lecture 2 · mission design</div>
+    <div class="title">The same framework, very different orbits</div>
     <div class="accent"></div>
-    <div class="eqbox">$$T^{2}=\frac{4\pi^{2}}{\mu}\,a^{3}\qquad\Longrightarrow\qquad \mu=\frac{4\pi^{2}a^{3}}{T^{2}},\quad M=\frac{\mu}{G}$$</div>
-    <div class="cols">
-      <div class="card g"><h3>Compare orbits</h3>About one body the ratio $a^{3}/T^{2}$ is fixed, so a single measured orbit calibrates all others — the "harmony" Kepler sought. On a log–log plot, $\log T$ vs $\log a$ is a line of slope $3/2$.</div>
-      <div class="card d"><h3>Weigh the central body</h3>Measure any satellite's $a$ and $T$ and you get $\mu$ — hence the mass. This is how we weigh the Earth, the Sun, Jupiter, and distant stars with planets. <br><b>Check:</b> the Moon ($a=384\,400$ km, $T=27.3$ d) returns $\mu_\oplus\approx3.99\times10^{5}\ \mathrm{km^3/s^2}$.</div>
+    <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="card g">
+        <svg viewBox="0 0 220 150" style="width:100%;height:auto;max-height:19vh;display:block;margin:.3vmin auto" role="img" aria-label="PADRE LEO">
+          <circle cx="110" cy="70" r="30" fill="#2e5aa8"/>
+          <circle cx="110" cy="70" r="50" fill="none" stroke="#008540" stroke-width="2.6"/>
+          <circle cx="160" cy="70" r="4.5" fill="#DAC961"/>
+          <text class="svgt ink" x="110" y="140" text-anchor="middle" style="font-size:12px">Low Earth orbit</text>
+        </svg>
+        <h3 style="margin:.4vmin 0 .2vmin">PADRE · LEO</h3>
+        <div style="font-size:1.68vmin;color:var(--ink)">NASA / UC Berkeley 12U CubeSat.<br>≈ 550 km · near‑circular · T ≈ 95 min.<br>Drag‑limited lifetime (slide on decay).</div>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 220 150" style="width:100%;height:auto;max-height:19vh;display:block;margin:.3vmin auto" role="img" aria-label="GOES GEO">
+          <circle cx="110" cy="70" r="15" fill="#2e5aa8"/>
+          <circle cx="110" cy="70" r="62" fill="none" stroke="#8A6D00" stroke-width="2.6"/>
+          <line x1="110" y1="70" x2="172" y2="70" stroke="#5C6B64" stroke-width="1" stroke-dasharray="3 3"/>
+          <circle cx="172" cy="70" r="5" fill="#DAC961"/>
+          <text class="svgt ink" x="110" y="140" text-anchor="middle" style="font-size:12px">Geostationary</text>
+        </svg>
+        <h3 style="margin:.4vmin 0 .2vmin">GOES · GEO</h3>
+        <div style="font-size:1.68vmin;color:var(--ink)">NOAA / NASA weather satellite.<br>35 786 km · e ≈ 0 · i ≈ 0 · T = 24 h.<br>Parked over one longitude.</div>
+      </div>
+      <div class="card d">
+        <svg viewBox="0 0 220 150" style="width:100%;height:auto;max-height:19vh;display:block;margin:.3vmin auto" role="img" aria-label="Ulysses heliocentric polar">
+          <line x1="16" y1="70" x2="204" y2="70" stroke="#B9BCC9" stroke-width="1.2" stroke-dasharray="5 4"/>
+          <ellipse cx="110" cy="70" rx="24" ry="58" fill="none" stroke="#00573F" stroke-width="2.6" transform="rotate(13 110 70)"/>
+          <circle cx="110" cy="70" r="11" fill="#f2c14e"/>
+          <circle cx="123" cy="15" r="4.5" fill="#DAC961"/>
+          <text class="svgt" x="150" y="66" style="font-size:11px">ecliptic</text>
+          <text class="svgt ink" x="110" y="140" text-anchor="middle" style="font-size:12px">Solar‑polar orbit</text>
+        </svg>
+        <h3 style="margin:.4vmin 0 .2vmin">Ulysses · heliocentric</h3>
+        <div style="font-size:1.68vmin;color:var(--ink)">ESA / NASA solar‑polar probe.<br>a ≈ 3.4 AU · e ≈ 0.6 · i ≈ 79°.<br>Reached via a <b>Jupiter gravity assist</b>.</div>
+      </div>
     </div>
+    <div class="note">Same two‑body physics, three regimes — a low Earth orbit, a geostationary orbit, and a Sun‑centred orbit tilted out of the ecliptic. Ulysses is the hyperbolic flyby worked earlier <i>in action</i>: it used Jupiter's gravity to swing over the Sun's poles. Solar Orbiter reaches ≈ 0.28 AU and ≈ 33° solar latitude the same way, via Venus.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 · case studies</div>
+    <div class="title">Requirements drive the orbit</div>
+    <div class="accent"></div>
+    <p style="font-size:2.05vmin;color:var(--ink);margin:.4vmin 0 1vmin">An orbit is not chosen for its own sake — it is <b>reverse‑engineered from the mission's requirements</b>. Read each case study backwards: what must the mission do, and what does that force the orbit to be?</p>
+    <table class="tbl">
+      <tr><th>Mission requirement</th><th>drives →</th><th>Orbital parameter / consequence</th></tr>
+      <tr><td>What &amp; where to observe / serve</td><td>→</td><td>altitude and inclination</td></tr>
+      <tr><td>Continuity &amp; revisit rate</td><td>→</td><td>period; number of satellites</td></tr>
+      <tr><td>Ground access &amp; downlink</td><td>→</td><td>altitude (coverage), inclination</td></tr>
+      <tr><td>Mission duration</td><td>→</td><td>altitude vs. drag; propellant / Δv budget</td></tr>
+      <tr><td>Cost / launch access</td><td>→</td><td>orbit reachability (rideshare, GTO, gravity assist)</td></tr>
+    </table>
+    <div class="note">Three contrasting cases follow — PADRE (LEO), GOES (GEO), and the heliocentric solar probes — and the interactive decay, coverage, and station‑keeping tools let you put numbers on each.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 · case study</div>
+    <div class="title">PADRE — a solar CubeSat in LEO</div>
+    <div class="accent"></div>
+    <div class="cols" style="grid-template-columns:1.55fr 1fr">
+      <div>
+        <table class="tbl">
+          <tr><th>Level</th><th>Requirement</th><th>Orbital information that satisfies it</th></tr>
+          <tr><td>L1</td><td>Measure flare hard‑X‑ray polarization &amp; directivity</td><td>continuous Sun view (Sun‑pointing spinner) from LEO</td></tr>
+          <tr><td>L1</td><td>Two‑point X‑rays with Solar Orbiter/STIX</td><td>any LEO, time‑coordinated — no special geometry</td></tr>
+          <tr><td>L2</td><td>Low‑cost access as a 12U CubeSat</td><td>rideshare LEO, altitude ≈ 500–550 km</td></tr>
+          <tr><td>L2</td><td>Simple, short mission</td><td>near‑circular e≈0; inclination set by the rideshare</td></tr>
+          <tr><td>L2</td><td>Debris compliance</td><td>altitude low enough to reenter &lt; 25 yr</td></tr>
+        </table>
+      </div>
+      <div>
+        <img class="missionimg" src="https://padre.ssl.berkeley.edu/wp-content/uploads/2026/07/ESPADRE-00.00.00-v100_R7_V00_20240425_Half-Deployed_No-background-2-1-scaled-e1785188548457-791x1024.png" alt="[ link NASA image: PADRE 12U CubeSat ]">
+        <div class="figcap">PADRE · 12U CubeSat (NASA / UC Berkeley)</div>
+        <div class="card d" style="margin-top:.6vmin"><h3 style="margin:.1vmin 0 .3vmin">At a glance</h3><div style="font-size:1.6vmin">LEO ≈ 500–550 km · e≈0 · rideshare i · T ≈ 95 min</div></div>
+      </div>
+    </div>
+    <div class="note"><b>How to read it:</b> the L1 <i>science</i> goals fix "a LEO with a clear Sun view"; the L2 <i>programmatic</i> limits (cost, simplicity, debris rules) then pin the altitude, shape and disposal. <b>Consequences</b> — drag‑limited lifetime (decay sim); minute‑long passes (coverage sim); negligible station‑keeping.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 · case study</div>
+    <div class="title">GOES — weather from geostationary orbit</div>
+    <div class="accent"></div>
+    <div class="cols" style="grid-template-columns:1.55fr 1fr">
+      <div>
+        <table class="tbl">
+          <tr><th>Level</th><th>Requirement</th><th>Orbital information that satisfies it</th></tr>
+          <tr><td>L1</td><td>Continuous view of one fixed hemisphere</td><td>geostationary: period = 1 sidereal day → a = 42 164 km</td></tr>
+          <tr><td>L1</td><td>Full‑disk imaging every few minutes</td><td>GEO altitude → ≈ ⅓ of Earth in view</td></tr>
+          <tr><td>L2</td><td>Non‑tracking ground antennas</td><td>i ≈ 0°, e ≈ 0 (satellite fixed in the sky)</td></tr>
+          <tr><td>L2</td><td>≈ 15‑year service life</td><td>propellant for ≈ 51 m/s/yr station‑keeping</td></tr>
+        </table>
+      </div>
+      <div>
+        <img class="missionimg" src="https://www.nasa.gov/wp-content/uploads/2017/01/goes-r20earth20reflection202012.jpg" alt="[ link NASA / NOAA image: GOES satellite ]">
+        <div class="figcap">GOES · geostationary weather satellite (NOAA / NASA)</div>
+        <div class="card d" style="margin-top:.6vmin"><h3 style="margin:.1vmin 0 .3vmin">At a glance</h3><div style="font-size:1.6vmin">GEO 35 786 km · e≈0 · i≈0 · T = 24 h</div></div>
+      </div>
+    </div>
+    <div class="note"><b>How to read it:</b> the L1 continuity requirement forces geostationary (there is no other choice); the L2 ground‑segment and lifetime requirements then fix $i,e$ and the propellant load. <b>Consequences</b> — permanent coverage (coverage sim, GEO); ~51 m/s/yr keeping (station‑keeping sim).</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 · case study</div>
+    <div class="title">Ulysses &amp; Solar Orbiter — leaving the ecliptic</div>
+    <div class="accent"></div>
+    <div class="cols" style="grid-template-columns:1.55fr 1fr">
+      <div>
+        <table class="tbl">
+          <tr><th>Level</th><th>Requirement</th><th>Orbital information that satisfies it</th></tr>
+          <tr><td>L1 · Ulysses</td><td>Observe the Sun's poles</td><td>heliocentric i ≈ 79° to the ecliptic</td></tr>
+          <tr><td>L1 · SolO</td><td>Image the Sun close up</td><td>perihelion ≈ 0.28 AU</td></tr>
+          <tr><td>L2</td><td>Reach high solar latitude affordably</td><td>gravity assist (Jupiter / Venus), not a huge plane‑change Δv</td></tr>
+          <tr><td>L2</td><td>Sustained solar observation</td><td>heliocentric period (Ulysses 6.2 yr · SolO 168 d)</td></tr>
+        </table>
+      </div>
+      <div>
+        <img class="missionimg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKSOkgp411ahWfPCAtTNsO59C3p8l7-lp2PzQFnd7FB2MM-OfdWtOo5Vti&s=10" alt="[ link NASA image: Ulysses spacecraft ]" style="max-height:12vh">
+        <div class="figcap">Ulysses (NASA / ESA)</div>
+        <img class="missionimg" src="https://www.asi.it/wp-content/uploads/2019/03/Solar_Orbiter-e1493369530390.jpg" alt="[ link ESA/NASA image: Solar Orbiter ]" style="max-height:12vh;margin-top:.5vmin">
+        <div class="figcap">Solar Orbiter (ESA / NASA)</div>
+      </div>
+    </div>
+    <div class="note"><b>How to read it:</b> the L1 "leave the ecliptic / get close" requirement <i>cannot</i> be met by launch alone — the plane‑change Δv is prohibitive — so the L2 solution is a <b>gravity assist</b> (the hyperbolic flyby, $\sin(\delta/2)=1/e$). <b>Consequences</b> — no decay; only occasional trajectory‑correction burns; and, as the coverage sim's Ulysses mode shows, comms drop out at every solar conjunction.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 · mission design</div>
+    <div class="title">Orbital lifetime &amp; decay</div>
+    <div class="accent"></div>
+    <div style="margin:.3vmin 0 .2vmin"><span class="ibadge">▶ INTERACTIVE</span><span style="color:var(--mut);font-size:1.8vmin">Drag removes energy, shrinking $a$ (recall $\varepsilon=-\mu/2a$) — slow up high, runaway down low. Try the mission presets.</span></div>
+    <div class="simwrap"><iframe title="Orbital lifetime" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Orbital lifetime · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;--tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:14px 24px 9px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:11px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:23px}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:14px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 320px;gap:16px;padding:16px 24px 22px;max-width:1300px;margin:0 auto}
+  @media(max-width:900px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:430px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:12px;left:12px;display:flex;gap:8px;flex-wrap:wrap;pointer-events:none}
+  .chip{background:rgba(255,255,255,.94);border-radius:9px;padding:5px 10px;min-width:70px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:9.5px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:15px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 17px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 11px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:15px;color:var(--forest)}
+  .row{margin:0 0 12px}.row label{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:6px 9px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:11.5px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .actions{display:flex;gap:8px;margin:8px 0 2px}
+  .actions button{flex:1;padding:9px;border-radius:9px;border:none;font-weight:700;cursor:pointer;font-size:13px}
+  #play{background:var(--green);color:#fff}#reset{background:#eef1f0;color:var(--ink)}
+  .hint{font-size:11.5px;color:var(--mut);margin-top:10px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:11px 0}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 — MISSION DESIGN&lt;/div&gt;
+&lt;h1&gt;Orbital lifetime &amp;amp; decay&lt;/h1&gt;
+&lt;div class=&quot;eq&quot;&gt;drag lowers the orbit: &lt;b&gt;da/dt = −B ρ(h) √(μa)&lt;/b&gt; — the time axis auto‑scales to the full lifetime&lt;/div&gt;&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;&lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;start altitude&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oH0&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;now (t)&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oT&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;altitude now&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oH&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;lifetime&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oL&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;&lt;h2&gt;Mission &amp;amp; orbit&lt;/h2&gt;
+    &lt;div class=&quot;presets&quot;&gt;
+      &lt;button data-h=&quot;550&quot; data-b=&quot;0.012&quot;&gt;PADRE · LEO 550 km&lt;/button&gt;
+      &lt;button data-h=&quot;350&quot; data-b=&quot;0.012&quot;&gt;Very low · 350 km&lt;/button&gt;
+      &lt;button data-h=&quot;800&quot; data-b=&quot;0.012&quot;&gt;SSO · 800 km&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Start altitude (km) &lt;span class=&quot;num&quot; id=&quot;hN&quot;&gt;550&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;hS&quot; min=&quot;200&quot; max=&quot;1000&quot; step=&quot;10&quot; value=&quot;550&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Drag factor B = C&lt;sub&gt;d&lt;/sub&gt;A/m (m²/kg) &lt;span class=&quot;num&quot; id=&quot;bN&quot;&gt;0.012&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;bS&quot; min=&quot;0.004&quot; max=&quot;0.04&quot; step=&quot;0.001&quot; value=&quot;0.012&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;actions&quot;&gt;&lt;button id=&quot;play&quot;&gt;▶ Play&lt;/button&gt;&lt;button id=&quot;reset&quot;&gt;↺ Reset&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;The curve is integrated all the way to reentry, and the time axis auto‑ranges to that lifetime — so even a decades‑long decay shows its final plunge. Bigger/lighter craft (larger $B$) fall faster; the 25‑year disposal line is marked.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+const MU=3.986004418e14, RE=6371e3;
+const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+let h0=550,B=0.012,DPR=Math.min(window.devicePixelRatio||1,2),W=10,H=10;
+let curve=[],life=0,playing=false,tnow=0,last=0;
+const $=id=&gt;document.getElementById(id);
+const DT=[[100,5e-7],[150,2e-9],[200,3e-10],[250,6e-11],[300,2e-11],[350,7e-12],[400,3e-12],[450,1.3e-12],[500,6e-13],[550,3e-13],[600,1.5e-13],[650,8e-14],[700,4e-14],[800,1.5e-14],[900,6e-15],[1000,3e-15],[1200,8e-16]];
+function rho(h){ if(h&lt;=DT[0][0])return DT[0][1];
+  for(let i=0;i&lt;DT.length-1;i++){const a=DT[i],b=DT[i+1]; if(h&lt;=b[0]){const f=(h-a[0])/(b[0]-a[0]);return Math.pow(10,Math.log10(a[1])+f*(Math.log10(b[1])-Math.log10(a[1])));}}
+  return DT[DT.length-1][1]; }
+const YR=365.25*24*3600;
+function simulate(){
+  curve=[[0,h0]]; let a=RE+h0*1e3,t=0,steps=0; const MAXT=2000*YR;
+  while(t&lt;MAXT &amp;&amp; steps&lt;60000){
+    const hkm=(a-RE)/1e3; if(hkm&lt;=120){curve.push([t/YR,120]);break;}
+    const da=-B*rho(hkm)*Math.sqrt(MU*a);              // m/s (negative)
+    let dt=Math.min(Math.max(1500/Math.abs(da),1*24*3600),150*24*3600);
+    a+=da*dt; t+=dt; steps++;
+    if(curve.length&lt;2000) curve.push([t/YR,(a-RE)/1e3]);
+  }
+  const lastH=curve[curve.length-1][1];
+  life=(lastH&lt;=125)? curve[curve.length-1][0] : Infinity;
+  tnow=0;playing=false;$(&#x27;play&#x27;).textContent=&#x27;▶ Play&#x27;;
+}
+function fmtY(y){ if(!isFinite(y))return &#x27;≫ 100 yr&#x27;; if(y&lt;1/12)return (y*365.25).toFixed(0)+&#x27; d&#x27;; if(y&lt;1.5)return (y*12).toFixed(1)+&#x27; mo&#x27;; if(y&lt;100)return y.toFixed(1)+&#x27; yr&#x27;; return Math.round(y)+&#x27; yr&#x27;; }
+function fit(){const r=cv.getBoundingClientRect();W=Math.max(10,r.width);H=Math.max(10,r.height);cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);draw();}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const L=56,R=W-14,T=18,B0=H-32;
+  ctx.strokeStyle=&#x27;#26323b&#x27;;ctx.lineWidth=1;ctx.strokeRect(L,T,R-L,B0-T);
+  const tmax=isFinite(life)? curve[curve.length-1][0]*1.02 : Math.min(curve[curve.length-1][0],80);
+  const hmax=Math.max(h0*1.06,250);
+  const X=t=&gt;L+t/tmax*(R-L), Y=h=&gt;B0-(h/hmax)*(B0-T);
+  ctx.strokeStyle=&#x27;#7a2b1e&#x27;;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(L,Y(120));ctx.lineTo(R,Y(120));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=&#x27;#c06a58&#x27;;ctx.font=&#x27;10px Calibri&#x27;;ctx.fillText(&#x27;reentry ~120 km&#x27;,L+6,Y(120)-4);
+  if(25&lt;tmax){ctx.strokeStyle=&#x27;#33414a&#x27;;ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(X(25),T);ctx.lineTo(X(25),B0);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=&#x27;#8fa0aa&#x27;;ctx.fillText(&#x27;25‑yr rule&#x27;,X(25)+3,T+12);}
+  ctx.strokeStyle=&#x27;#57d98a&#x27;;ctx.lineWidth=2.6;ctx.beginPath();
+  curve.forEach((p,i)=&gt;{const x=X(p[0]),y=Y(p[1]);i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke();
+  let ci=0;for(let i=0;i&lt;curve.length;i++){if(curve[i][0]&lt;=tnow)ci=i;}const cp=curve[ci];
+  ctx.fillStyle=&#x27;#fff&#x27;;ctx.beginPath();ctx.arc(X(cp[0]),Y(cp[1]),5,0,7);ctx.fill();
+  ctx.fillStyle=&#x27;#8fa0aa&#x27;;ctx.font=&#x27;11px Calibri&#x27;;ctx.fillText(&#x27;years \u2192  (auto‑range: 0 – &#x27;+fmtY(tmax)+&#x27;)&#x27;,L+4,B0+21);
+  ctx.save();ctx.translate(15,(T+B0)/2);ctx.rotate(-Math.PI/2);ctx.fillText(&#x27;altitude (km)&#x27;,0,0);ctx.restore();
+  $(&#x27;oH0&#x27;).textContent=Math.round(h0)+&#x27; km&#x27;;$(&#x27;oT&#x27;).textContent=fmtY(tnow);
+  $(&#x27;oH&#x27;).textContent=Math.round(cp[1])+&#x27; km&#x27;;$(&#x27;oL&#x27;).textContent=fmtY(life);
+}
+function loop(ts){if(!last)last=ts;const dt=(ts-last)/1000;last=ts;
+  if(playing){const end=curve[curve.length-1][0];tnow+=dt*end/8; if(tnow&gt;=end){tnow=end;playing=false;$(&#x27;play&#x27;).textContent=&#x27;▶ Replay&#x27;;}}
+  draw();requestAnimationFrame(loop);}
+$(&#x27;hS&#x27;).oninput=e=&gt;{h0=+e.target.value;$(&#x27;hN&#x27;).textContent=h0;simulate();draw();};
+$(&#x27;bS&#x27;).oninput=e=&gt;{B=+e.target.value;$(&#x27;bN&#x27;).textContent=B.toFixed(3);simulate();draw();};
+$(&#x27;play&#x27;).onclick=()=&gt;{if(tnow&gt;=curve[curve.length-1][0])tnow=0;playing=!playing;$(&#x27;play&#x27;).textContent=playing?&#x27;❚❚ Pause&#x27;:&#x27;▶ Play&#x27;;};
+$(&#x27;reset&#x27;).onclick=()=&gt;{tnow=0;playing=false;$(&#x27;play&#x27;).textContent=&#x27;▶ Play&#x27;;draw();};
+document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{h0=+b.dataset.h;B=+b.dataset.b;$(&#x27;hS&#x27;).value=h0;$(&#x27;hN&#x27;).textContent=h0;$(&#x27;bS&#x27;).value=B;$(&#x27;bN&#x27;).textContent=B.toFixed(3);simulate();draw();});
+simulate();new ResizeObserver(fit).observe(cv);fit();requestAnimationFrame(loop);
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+"></iframe></div>
+    <div class="note"><b>PADRE</b> (LEO ≈ 550 km) decays over years and must reenter within 25 years; drop to 350 km and it is weeks. <b>GOES</b> (GEO) feels essentially no drag — its curve is flat. This is exactly what the TLE's $B^{*}$ term encodes.</div>
   </div>
 </section>
 
 <!-- KEPLER <-> NEWTON EQUIVALENCE -->
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 3 · Lecture 2</div>
-    <div class="title">From Kepler to Newton — and back</div>
+    <div class="kicker">Week 3 · Lecture 2 · mission design</div>
+    <div class="title">Coverage &amp; access — when can we see it?</div>
     <div class="accent"></div>
-    <div class="cols">
-      <div class="card g"><h3>Kepler ⟹ inverse‑square</h3><ul class="pts" style="margin-top:.3vmin"><li>Equal areas (2nd law) ⟹ the force is <b>central</b> ($\mathbf h$ conserved).</li><li>An ellipse with the force at a <b>focus</b> ⟹ the force $\propto 1/r^{2}$.</li><li>The harmonic law ⟹ the <b>same</b> constant $\mu$ for every orbit.</li></ul></div>
-      <div class="card d"><h3>Inverse‑square ⟹ Kepler</h3>Conversely, $\ddot{\mathbf r}=-\mu\mathbf r/r^{3}$ yields a conic (ellipse when bound), the area law, and $T^{2}\propto a^{3}$ — exactly what we derived this week.</div>
-    </div>
-    <div class="note">This two‑way implication is Newton's triumph: three empirical rules and one force law are the <b>same statement</b>. Prompted by Halley's question "what curve does an inverse‑square force give?", it launched the <i>Principia</i> — and with it, predictive celestial mechanics.</div>
+    <div style="margin:.3vmin 0 .2vmin"><span class="ibadge">▶ INTERACTIVE</span><span style="color:var(--mut);font-size:1.8vmin">The green cap is the region that can see the satellite above a minimum elevation $\varepsilon$. Compare the mission presets.</span></div>
+    <div class="simwrap"><iframe title="Coverage and access" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Coverage &amp;amp; access · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;--tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:14px 24px 9px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:11px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:23px}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:14px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 320px;gap:16px;padding:16px 24px 22px;max-width:1300px;margin:0 auto}
+  @media(max-width:900px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:430px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:12px;left:12px;display:flex;gap:8px;flex-wrap:wrap;pointer-events:none;max-width:94%}
+  .chip{background:rgba(255,255,255,.94);border-radius:9px;padding:5px 10px;min-width:70px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:9.5px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:15px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.warn .v{color:#c0392b}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 17px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 11px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:15px;color:var(--forest)}
+  .row{margin:0 0 12px}.row label{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:6px 9px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:11.5px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .hint{font-size:11.5px;color:var(--mut);margin-top:11px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:11px 0}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 — MISSION DESIGN&lt;/div&gt;
+&lt;h1&gt;Coverage &amp;amp; access — when can we see it?&lt;/h1&gt;
+&lt;div class=&quot;eq&quot;&gt;Earth orbit: a station sees it above elevation &lt;b&gt;ε&lt;/b&gt; · interplanetary: Earth–probe range, light‑time &amp;amp; &lt;b&gt;solar conjunction&lt;/b&gt;&lt;/div&gt;&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;&lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot; id=&quot;l1&quot;&gt;altitude&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;v1&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot; id=&quot;l2&quot;&gt;coverage λ&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;v2&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot; id=&quot;l3&quot;&gt;Earth in view&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;v3&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot; id=&quot;chip4&quot;&gt;&lt;div class=&quot;l&quot; id=&quot;l4&quot;&gt;max pass&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;v4&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;&lt;h2&gt;Mission &amp;amp; geometry&lt;/h2&gt;
+    &lt;div class=&quot;presets&quot;&gt;
+      &lt;button data-m=&quot;earth&quot; data-h=&quot;550&quot;&gt;PADRE · LEO&lt;/button&gt;
+      &lt;button data-m=&quot;earth&quot; data-h=&quot;20200&quot;&gt;GPS · MEO&lt;/button&gt;
+      &lt;button data-m=&quot;earth&quot; data-h=&quot;35786&quot;&gt;GOES · GEO&lt;/button&gt;
+      &lt;button data-m=&quot;interp&quot;&gt;Ulysses · interplanetary&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;div id=&quot;rowE1&quot; class=&quot;row&quot;&gt;&lt;label&gt;Altitude (km) &lt;span class=&quot;num&quot; id=&quot;hN&quot;&gt;550&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;hS&quot; min=&quot;300&quot; max=&quot;35786&quot; step=&quot;50&quot; value=&quot;550&quot;&gt;&lt;/div&gt;
+    &lt;div id=&quot;rowE2&quot; class=&quot;row&quot;&gt;&lt;label&gt;Min. elevation ε &lt;span class=&quot;num&quot; id=&quot;eN&quot;&gt;5°&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;eS&quot; min=&quot;0&quot; max=&quot;20&quot; step=&quot;1&quot; value=&quot;5&quot;&gt;&lt;/div&gt;
+    &lt;div id=&quot;rowI1&quot; class=&quot;row&quot; style=&quot;display:none&quot;&gt;&lt;label&gt;Ulysses position ν &lt;span class=&quot;num&quot; id=&quot;nN&quot;&gt;40°&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;nS&quot; min=&quot;0&quot; max=&quot;360&quot; step=&quot;2&quot; value=&quot;40&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;hint&quot; id=&quot;hint&quot;&gt;The green cap can see the satellite above ε. A LEO footprint is small and races overhead (minute‑long passes); GEO sees ≈⅓ of Earth, fixed. Switch to &lt;b&gt;Ulysses&lt;/b&gt; to see the interplanetary problem: huge light‑time and a comms &lt;b&gt;blackout&lt;/b&gt; whenever the probe passes behind the Sun.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+const MU=398600.4418, RE=6378.137, D2R=Math.PI/180, R2D=180/Math.PI, AU=1.495978707e8, CMIN=8.3167; // min per AU
+const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+let mode=&#x27;earth&#x27;, h=550, eps=5, nu=40, DPR=Math.min(window.devicePixelRatio||1,2), W=10,H=10;
+const $=id=&gt;document.getElementById(id);
+function fit(){const r=cv.getBoundingClientRect();W=Math.max(10,r.width);H=Math.max(10,r.height);cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);draw();}
+function setMode(m){mode=m;
+  const e=(m===&#x27;earth&#x27;);
+  $(&#x27;rowE1&#x27;).style.display=e?&#x27;block&#x27;:&#x27;none&#x27;;$(&#x27;rowE2&#x27;).style.display=e?&#x27;block&#x27;:&#x27;none&#x27;;$(&#x27;rowI1&#x27;).style.display=e?&#x27;none&#x27;:&#x27;block&#x27;;
+  $(&#x27;l1&#x27;).textContent=e?&#x27;altitude&#x27;:&#x27;Earth–probe&#x27;;$(&#x27;l2&#x27;).textContent=e?&#x27;coverage λ&#x27;:&#x27;one‑way light‑time&#x27;;
+  $(&#x27;l3&#x27;).textContent=e?&#x27;Earth in view&#x27;:&#x27;Sun–Earth–probe&#x27;;$(&#x27;l4&#x27;).textContent=e?&#x27;max pass&#x27;:&#x27;comms&#x27;;
+  draw();
+}
+function drawEarth(){
+  const r=RE+h; const eta=Math.asin((RE/r)*Math.cos(eps*D2R)); const lam=Math.PI/2-eps*D2R-eta;
+  const frac=(1-Math.cos(lam))/2; const n=Math.sqrt(MU/Math.pow(r,3)); const passT=2*lam/n;
+  const cx=W*0.42, cy=H*0.55; const s=Math.min((W*0.5)/(r*1.15),(H*0.9)/(2*RE*1.15));
+  const SX=x=&gt;cx+x*s, SY=y=&gt;cy-y*s;
+  ctx.fillStyle=&#x27;#12324f&#x27;;ctx.beginPath();ctx.arc(SX(0),SY(0),RE*s,0,7);ctx.fill();
+  ctx.strokeStyle=&#x27;#2e5aa8&#x27;;ctx.lineWidth=1.5;ctx.stroke();
+  ctx.strokeStyle=&#x27;#57d98a&#x27;;ctx.lineWidth=4;ctx.beginPath();
+  for(let a=-lam;a&lt;=lam;a+=0.01){const x=RE*Math.cos(a),y=RE*Math.sin(a);const px=SX(x),py=SY(y);(a===-lam)?ctx.moveTo(px,py):ctx.lineTo(px,py);}ctx.stroke();
+  const satx=r; ctx.fillStyle=&#x27;#DAC961&#x27;;ctx.beginPath();ctx.arc(SX(satx),SY(0),5.5,0,7);ctx.fill();
+  ctx.strokeStyle=&#x27;rgba(87,217,138,0.5)&#x27;;ctx.lineWidth=1.4;
+  [[-lam],[lam]].forEach(([a])=&gt;{ctx.beginPath();ctx.moveTo(SX(satx),SY(0));ctx.lineTo(SX(RE*Math.cos(a)),SY(RE*Math.sin(a)));ctx.stroke();});
+  ctx.fillStyle=&#x27;#9fb0b8&#x27;;ctx.font=&#x27;11px Calibri&#x27;;ctx.fillText(&#x27;satellite&#x27;,SX(satx)-18,SY(0)-9);
+  $(&#x27;v1&#x27;).textContent=Math.round(h).toLocaleString()+&#x27; km&#x27;;$(&#x27;v2&#x27;).textContent=(lam*R2D).toFixed(1)+&#x27;\u00b0&#x27;;
+  $(&#x27;v3&#x27;).textContent=(frac*100).toFixed(0)+&#x27;%&#x27;;$(&#x27;chip4&#x27;).className=&#x27;chip&#x27;;$(&#x27;v4&#x27;).textContent= h&gt;3000?&#x27;always&#x27;:(passT/60).toFixed(1)+&#x27; min&#x27;;
+}
+function drawInterp(){
+  const a=3.4,e=0.6,p=a*(1-e*e);                       // AU
+  const r=p/(1+e*Math.cos(nu*D2R)); const px=r*Math.cos(nu*D2R), py=r*Math.sin(nu*D2R);
+  const ex=1, ey=0;                                     // Earth at 1 AU
+  const cxAU=-a*e; const ra=a*(1+e);
+  const s=Math.min(W*0.46/(ra*1.05), H*0.42/(a*Math.sqrt(1-e*e)*1.25));
+  const SX=x=&gt;W*0.46+(x-cxAU)*s, SY=y=&gt;H*0.52-y*s;
+  // orbits
+  ctx.strokeStyle=&#x27;#233&#x27;;ctx.lineWidth=1;ctx.beginPath();ctx.arc(SX(0),SY(0),1*s,0,7);ctx.stroke(); // Earth orbit 1 AU
+  ctx.strokeStyle=&#x27;#3a4a54&#x27;;ctx.lineWidth=1.6;ctx.beginPath();
+  for(let t=0;t&lt;=6.29;t+=0.02){const rr=p/(1+e*Math.cos(t));const x=rr*Math.cos(t),y=rr*Math.sin(t);const sx=SX(x),sy=SY(y);t?ctx.lineTo(sx,sy):ctx.moveTo(sx,sy);}ctx.stroke();
+  // Sun
+  ctx.fillStyle=&#x27;#f2c14e&#x27;;ctx.beginPath();ctx.arc(SX(0),SY(0),9,0,7);ctx.fill();
+  // elongation (angle at Earth between Earth-&gt;Sun and Earth-&gt;probe)
+  const eS=[-ex,-ey], eP=[px-ex,py-ey];
+  const dot=eS[0]*eP[0]+eS[1]*eP[1]; const mag=Math.hypot(eS[0],eS[1])*Math.hypot(eP[0],eP[1]);
+  const elong=Math.acos(Math.max(-1,Math.min(1,dot/mag)))*R2D;
+  const dist=Math.hypot(px-ex,py-ey); const lt=dist*CMIN;
+  const blackout=elong&lt;3;
+  // Earth-probe line
+  ctx.strokeStyle=blackout?&#x27;#c0392b&#x27;:&#x27;#57d98a&#x27;;ctx.setLineDash(blackout?[5,4]:[]);ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(SX(ex),SY(ey));ctx.lineTo(SX(px),SY(py));ctx.stroke();ctx.setLineDash([]);
+  // Earth &amp; probe
+  ctx.fillStyle=&#x27;#2e5aa8&#x27;;ctx.beginPath();ctx.arc(SX(ex),SY(ey),6,0,7);ctx.fill();
+  ctx.fillStyle=&#x27;#DAC961&#x27;;ctx.beginPath();ctx.arc(SX(px),SY(py),5,0,7);ctx.fill();
+  ctx.fillStyle=&#x27;#9fb0b8&#x27;;ctx.font=&#x27;11px Calibri&#x27;;ctx.fillText(&#x27;Earth&#x27;,SX(ex)+7,SY(ey)+4);ctx.fillText(&#x27;Ulysses&#x27;,SX(px)+7,SY(py));ctx.fillText(&#x27;Sun&#x27;,SX(0)+11,SY(0)+4);
+  if(blackout){ctx.fillStyle=&#x27;#c0392b&#x27;;ctx.font=&#x27;bold 14px Calibri&#x27;;ctx.fillText(&#x27;☀ SOLAR CONJUNCTION — comms blackout&#x27;,W*0.5-140,H-16);}
+  $(&#x27;v1&#x27;).textContent=dist.toFixed(2)+&#x27; AU&#x27;;$(&#x27;v2&#x27;).textContent=lt&lt;60?lt.toFixed(0)+&#x27; min&#x27;:(lt/60).toFixed(1)+&#x27; h&#x27;;
+  $(&#x27;v3&#x27;).textContent=elong.toFixed(0)+&#x27;\u00b0&#x27;;$(&#x27;chip4&#x27;).className=blackout?&#x27;chip warn&#x27;:&#x27;chip&#x27;;$(&#x27;v4&#x27;).textContent=blackout?&#x27;BLACKOUT&#x27;:&#x27;OK&#x27;;
+}
+function draw(){ctx.clearRect(0,0,W,H); (mode===&#x27;earth&#x27;)?drawEarth():drawInterp();}
+$(&#x27;hS&#x27;).oninput=e=&gt;{h=+e.target.value;$(&#x27;hN&#x27;).textContent=Math.round(h).toLocaleString();draw();};
+$(&#x27;eS&#x27;).oninput=e=&gt;{eps=+e.target.value;$(&#x27;eN&#x27;).textContent=eps+&#x27;\u00b0&#x27;;draw();};
+$(&#x27;nS&#x27;).oninput=e=&gt;{nu=+e.target.value;$(&#x27;nN&#x27;).textContent=nu+&#x27;\u00b0&#x27;;draw();};
+document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{
+  if(b.dataset.m===&#x27;earth&#x27;){h=+b.dataset.h;$(&#x27;hS&#x27;).value=h;$(&#x27;hN&#x27;).textContent=Math.round(h).toLocaleString();setMode(&#x27;earth&#x27;);}
+  else setMode(&#x27;interp&#x27;);
+});
+setMode(&#x27;earth&#x27;);new ResizeObserver(fit).observe(cv);fit();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+"></iframe></div>
+    <div class="note"><b>PADRE</b> (LEO) has a small footprint that races overhead — passes of only minutes, so contact time and revisit drive the ground‑station count. <b>GOES</b> (GEO) sees ≈ a third of the Earth and stays fixed — permanent coverage of its hemisphere.</div>
   </div>
 </section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 3 · Lecture 2 · mission design</div>
+    <div class="title">Station‑keeping &amp; the Δv budget</div>
+    <div class="accent"></div>
+    <div style="margin:.3vmin 0 .2vmin"><span class="ibadge">▶ INTERACTIVE</span><span style="color:var(--mut);font-size:1.8vmin">Perturbations drift the orbit; each correction is a $\Delta v$ from vis‑viva. Cumulative $\Delta v$ vs. the propellant budget sets the mission's end.</span></div>
+    <div class="simwrap"><iframe title="Station-keeping delta-v budget" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Station-keeping Δv budget · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;--tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:14px 24px 9px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:11px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:23px}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:14px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 320px;gap:16px;padding:16px 24px 22px;max-width:1300px;margin:0 auto}
+  @media(max-width:900px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:430px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:12px;left:12px;display:flex;gap:8px;flex-wrap:wrap;pointer-events:none;max-width:94%}
+  .chip{background:rgba(255,255,255,.94);border-radius:9px;padding:5px 10px;min-width:70px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:9.5px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:15px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 17px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 11px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:15px;color:var(--forest)}
+  .row{margin:0 0 12px}.row label{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:6px 9px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:11.5px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .hint{font-size:11.5px;color:var(--mut);margin-top:11px;line-height:1.5}
+  .legend{display:flex;flex-wrap:wrap;gap:5px 13px;font-size:11px;color:var(--mut);margin-top:9px}
+  .legend span{display:inline-flex;align-items:center;gap:5px}.legend i{width:15px;height:3px;border-radius:2px;display:inline-block}
+  .divider{height:1px;background:var(--line);margin:11px 0}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 — MISSION DESIGN&lt;/div&gt;
+&lt;h1&gt;Station-keeping &amp;amp; the Δv budget&lt;/h1&gt;
+&lt;div class=&quot;eq&quot;&gt;each correction spends Δv; &lt;b&gt;cumulative Δv&lt;/b&gt; rises until it hits the &lt;b&gt;propellant budget&lt;/b&gt; — then the mission ends&lt;/div&gt;&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;&lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;Δv rate&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oR&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;used @ marker&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oU&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;budget&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oB&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;fuel‑limited life&lt;/div&gt;&lt;div class=&quot;v&quot; id=&quot;oE&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;&lt;h2&gt;Mission&lt;/h2&gt;
+    &lt;div class=&quot;presets&quot;&gt;
+      &lt;button data-r=&quot;51&quot; data-b=&quot;800&quot;&gt;GOES · GEO keeping&lt;/button&gt;
+      &lt;button data-r=&quot;8&quot; data-b=&quot;150&quot;&gt;LEO drag make‑up&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Δv per year (m/s) &lt;span class=&quot;num&quot; id=&quot;rN&quot;&gt;51&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;rS&quot; min=&quot;2&quot; max=&quot;80&quot; step=&quot;1&quot; value=&quot;51&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Propellant budget Δv (m/s) &lt;span class=&quot;num&quot; id=&quot;bN&quot;&gt;800&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;bS&quot; min=&quot;100&quot; max=&quot;1500&quot; step=&quot;10&quot; value=&quot;800&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Mission‑year marker &lt;span class=&quot;num&quot; id=&quot;yN&quot;&gt;10&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;yS&quot; min=&quot;1&quot; max=&quot;25&quot; step=&quot;1&quot; value=&quot;10&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;legend&quot;&gt;
+      &lt;span&gt;&lt;i style=&quot;background:#57d98a&quot;&gt;&lt;/i&gt;Δv spent so far&lt;/span&gt;
+      &lt;span&gt;&lt;i style=&quot;background:#DAC961&quot;&gt;&lt;/i&gt;propellant budget&lt;/span&gt;
+      &lt;span&gt;&lt;i style=&quot;background:#c0574a&quot;&gt;&lt;/i&gt;after fuel runs out&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;Read it as a fuel tank emptying: the green line is how much Δv you&#x27;ve spent by a given year (rate × years). When it reaches the gold budget line, the tank is empty — that x‑value is the &lt;b&gt;fuel‑limited lifetime&lt;/b&gt;. Slide the rate up (worse perturbations) or the budget down (less propellant) and the mission ends sooner.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+let rate=51,budget=800,ymark=10,DPR=Math.min(window.devicePixelRatio||1,2),W=10,H=10;
+const $=id=&gt;document.getElementById(id);
+function fit(){const r=cv.getBoundingClientRect();W=Math.max(10,r.width);H=Math.max(10,r.height);cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);draw();}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const L=64,R=W-16,T=30,B=H-36;
+  ctx.fillStyle=&#x27;#cfe0d6&#x27;;ctx.font=&#x27;bold 13px Cambria&#x27;;ctx.fillText(&#x27;Propellant spent vs. mission time&#x27;,L,20);
+  ctx.strokeStyle=&#x27;#26323b&#x27;;ctx.lineWidth=1;ctx.strokeRect(L,T,R-L,B-T);
+  const eol=budget/rate; const tmax=Math.max(eol*1.2,ymark*1.1,5); const vmax=budget*1.18;
+  const X=t=&gt;L+t/tmax*(R-L), Y=v=&gt;B-(v/vmax)*(B-T);
+  // gridlines
+  ctx.strokeStyle=&#x27;#151f26&#x27;;ctx.lineWidth=1;
+  for(let g=1;g&lt;=5;g++){const yy=T+(B-T)*g/6;ctx.beginPath();ctx.moveTo(L,yy);ctx.lineTo(R,yy);ctx.stroke();}
+  // shaded fuel-used area up to marker
+  const tm=Math.min(ymark,eol);
+  ctx.fillStyle=&#x27;rgba(87,217,138,0.16)&#x27;;ctx.beginPath();ctx.moveTo(X(0),Y(0));ctx.lineTo(X(tm),Y(rate*tm));ctx.lineTo(X(tm),Y(0));ctx.closePath();ctx.fill();
+  // budget line
+  ctx.strokeStyle=&#x27;#DAC961&#x27;;ctx.setLineDash([6,4]);ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(L,Y(budget));ctx.lineTo(R,Y(budget));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=&#x27;#DAC961&#x27;;ctx.font=&#x27;11px Calibri&#x27;;ctx.fillText(&#x27;propellant budget = &#x27;+budget+&#x27; m/s&#x27;,L+8,Y(budget)-6);
+  // cumulative dv (green to eol, red beyond)
+  ctx.strokeStyle=&#x27;#57d98a&#x27;;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(X(0),Y(0));ctx.lineTo(X(Math.min(eol,tmax)),Y(Math.min(budget,rate*tmax)));ctx.stroke();
+  if(eol&lt;tmax){ctx.strokeStyle=&#x27;#c0574a&#x27;;ctx.setLineDash([5,4]);ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(X(eol),Y(budget));ctx.lineTo(X(tmax),Y(rate*tmax));ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=&#x27;#c0574a&#x27;;ctx.beginPath();ctx.arc(X(eol),Y(budget),6,0,7);ctx.fill();
+    ctx.font=&#x27;bold 12px Calibri&#x27;;ctx.fillText(&#x27;◀ fuel out: &#x27;+eol.toFixed(1)+&#x27; yr&#x27;,X(eol)+9,Y(budget)+4);}
+  // marker
+  ctx.strokeStyle=&#x27;#e8eef0&#x27;;ctx.setLineDash([2,3]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(X(ymark),T);ctx.lineTo(X(ymark),B);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=&#x27;#fff&#x27;;ctx.beginPath();ctx.arc(X(ymark),Y(Math.min(rate*ymark,budget)),4.5,0,7);ctx.fill();
+  ctx.fillStyle=&#x27;#9fb0b8&#x27;;ctx.fillText(&#x27;year &#x27;+ymark,X(ymark)+5,T+12);
+  // axes labels
+  ctx.fillStyle=&#x27;#8fa0aa&#x27;;ctx.font=&#x27;11px Calibri&#x27;;ctx.fillText(&#x27;mission years \u2192&#x27;,R-96,B+22);
+  ctx.save();ctx.translate(17,(T+B)/2);ctx.rotate(-Math.PI/2);ctx.fillText(&#x27;cumulative \u0394v (m/s)&#x27;,0,0);ctx.restore();
+  $(&#x27;oR&#x27;).textContent=rate+&#x27; m/s·yr&#x27;;$(&#x27;oU&#x27;).textContent=Math.round(Math.min(rate*ymark,budget))+&#x27; m/s&#x27;;
+  $(&#x27;oB&#x27;).textContent=budget+&#x27; m/s&#x27;;$(&#x27;oE&#x27;).textContent=eol.toFixed(1)+&#x27; yr&#x27;;
+}
+$(&#x27;rS&#x27;).oninput=e=&gt;{rate=+e.target.value;$(&#x27;rN&#x27;).textContent=rate;draw();};
+$(&#x27;bS&#x27;).oninput=e=&gt;{budget=+e.target.value;$(&#x27;bN&#x27;).textContent=budget;draw();};
+$(&#x27;yS&#x27;).oninput=e=&gt;{ymark=+e.target.value;$(&#x27;yN&#x27;).textContent=ymark;draw();};
+document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{rate=+b.dataset.r;budget=+b.dataset.b;$(&#x27;rS&#x27;).value=rate;$(&#x27;rN&#x27;).textContent=rate;$(&#x27;bS&#x27;).value=budget;$(&#x27;bN&#x27;).textContent=budget;draw();});
+new ResizeObserver(fit).observe(cv);fit();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+"></iframe></div>
+    <div class="note"><b>GOES</b> (GEO) spends ~51 m/s per year, mostly fighting the luni‑solar pull north–south; a 15‑year slot needs ≳ 750 m/s of propellant reserved just to hold station. When the fuel runs out, the mission ends — the direct link to Week 5's Δv budgeting.</div>
+  </div>
+</section>
+
 
 <!-- COORDINATE FRAMES -->
 <section class="slide">
@@ -1544,12 +2007,14 @@ window.onresize=fit; fit();
     <div class="kicker">Week 3 · Lecture 2 · worked example</div>
     <div class="title">Energy, a and e from a state vector</div>
     <div class="accent"></div>
-    <div class="cols">
+    <div class="cols" style="grid-template-columns:1fr 1.15fr">
       <div class="card g"><h3>Given</h3>$r=8000$ km, $v=8.5$ km/s, flight‑path angle $\gamma=20^\circ$. <h3 style="margin-top:1.4vmin">Find</h3>$a,\ h,\ e$.</div>
-      <div class="card d"><h3>Solution</h3>
-        $\varepsilon=\tfrac12 v^2-\mu/r=-13.70\Rightarrow a=-\mu/2\varepsilon=\mathbf{14\,547}$ km<br>
-        $h=rv\cos\gamma=63\,889\Rightarrow p=h^2/\mu=10\,240$ km<br>
-        $e=\sqrt{1-p/a}=\mathbf{0.544}$
+      <div><div class="figcap" style="text-align:left;color:var(--forest);font-weight:700;margin:0 0 .5vmin;font-size:2vmin">Solution &nbsp;<span style="font-weight:400;color:var(--mut);font-size:1.55vmin">— press → to reveal</span></div>
+        <div class="steps stepper">
+          <div class="s"><span class="k">1</span><div class="sc"><div class="m">$\varepsilon=\tfrac12 v^{2}-\dfrac{\mu}{r}=-13.70\ \Rightarrow\ a=-\dfrac{\mu}{2\varepsilon}=\mathbf{14\,547}$ km</div><div class="ex">Specific energy fixes the semi‑major axis, since $\varepsilon=-\mu/2a$.</div></div></div>
+          <div class="s"><span class="k">2</span><div class="sc"><div class="m">$h=rv\cos\gamma=63\,889\ \Rightarrow\ p=\dfrac{h^{2}}{\mu}=10\,240$ km</div><div class="ex">Angular momentum uses $\cos\gamma$ (only the transverse velocity counts); then the semi‑latus rectum.</div></div></div>
+          <div class="s"><span class="k">3</span><div class="sc"><div class="m">$e=\sqrt{1-\dfrac{p}{a}}=\mathbf{0.544}$</div><div class="ex">Eccentricity from $p$ and $a$ — a bound ellipse.</div></div></div>
+        </div>
       </div>
     </div>
     <div class="note">This is the core of the $(\mathbf R,\mathbf V)\to$ elements algorithm completed in Week 4.</div>
@@ -1562,12 +2027,14 @@ window.onresize=fit; fit();
     <div class="kicker">Week 3 · Lecture 2 · worked example</div>
     <div class="title">A hyperbolic flyby — $v_\infty$ and turn angle</div>
     <div class="accent"></div>
-    <div class="cols">
-      <div class="card g"><h3>Given</h3>A probe passes Jupiter ($\mu_J=1.267\times10^{8}\ \mathrm{km^3/s^2}$) at perigee radius $r_p=2R_J=142\,984$ km with $v_\infty=6$ km/s. <h3 style="margin-top:1.2vmin">Find</h3>$e$ and turn angle $\delta$.</div>
-      <div class="card d"><h3>Solution</h3>
-        $e=1+\dfrac{r_p v_\infty^{2}}{\mu_J}=1+\dfrac{142984\cdot36}{1.267\times10^{8}}=\mathbf{1.041}$<br>
-        $\delta=2\sin^{-1}(1/e)=2\sin^{-1}(0.961)=\mathbf{147^\circ}$<br>
-        $a=-\mu_J/v_\infty^2=-3.52\times10^{6}$ km
+    <div class="cols" style="grid-template-columns:1fr 1.15fr">
+      <div class="card g"><h3>Given</h3>A probe passes Jupiter ($\mu_J=1.267\times10^{8}\ \mathrm{km^3/s^2}$) at perigee radius $r_p=2R_J=142\,984$ km with $v_\infty=6$ km/s. <h3 style="margin-top:1.2vmin">Find</h3>$e$ and the turn angle $\delta$.</div>
+      <div><div class="figcap" style="text-align:left;color:var(--forest);font-weight:700;margin:0 0 .5vmin;font-size:2vmin">Solution &nbsp;<span style="font-weight:400;color:var(--mut);font-size:1.55vmin">— press → to reveal</span></div>
+        <div class="steps stepper">
+          <div class="s"><span class="k">1</span><div class="sc"><div class="m">$e=1+\dfrac{r_p v_\infty^{2}}{\mu_J}=1+\dfrac{142984\cdot 36}{1.267\times10^{8}}=\mathbf{1.041}$</div><div class="ex">Eccentricity from the flyby geometry (excess speed and closest approach).</div></div></div>
+          <div class="s"><span class="k">2</span><div class="sc"><div class="m">$\delta=2\sin^{-1}\!\dfrac{1}{e}=2\sin^{-1}(0.961)=\mathbf{147^\circ}$</div><div class="ex">The turn angle — how far the velocity direction rotates.</div></div></div>
+          <div class="s"><span class="k">3</span><div class="sc"><div class="m">$a=-\dfrac{\mu_J}{v_\infty^{2}}=-3.52\times10^{6}$ km</div><div class="ex">Negative semi‑major axis, as expected for a hyperbola.</div></div></div>
+        </div>
       </div>
     </div>
     <div class="note">The velocity vector rotates by $147^\circ$ in Jupiter's frame — the free redirection that gravity assist exploits (Week 5).</div>
@@ -1689,14 +2156,28 @@ parse();
   <div class="count" id="count">1 / 1</div>
   <button id="next" aria-label="next">›</button>
 </div>
+<div id="stephint"></div>
 <script>
   const slides=[...document.querySelectorAll('.slide')];
   let i=0;
   const prog=document.getElementById('prog'), count=document.getElementById('count'),
-        pageno=document.getElementById('pageno'), brand=document.querySelector('.brand');
+        pageno=document.getElementById('pageno'), brand=document.querySelector('.brand'),
+        stephint=document.getElementById('stephint');
+  const frags=s=>[...s.querySelectorAll('.stepper .s')];
+  function updateHint(){
+    const fr=frags(slides[i]);
+    if(!fr.length){stephint.style.display='none';return;}
+    const shown=fr.filter(x=>x.classList.contains('shown')).length;
+    stephint.style.display='block';
+    stephint.textContent = shown<fr.length ? ('\u25B8  press \u2192  for next step   \u00b7   '+shown+' / '+fr.length)
+                                            : ('\u2713  all steps shown   \u00b7   \u2192  continues');
+  }
   function show(n){
+    const prev=i;
     i=Math.max(0,Math.min(slides.length-1,n));
     slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    const revealAll = i<prev;                 // going back reveals all; forward starts hidden
+    frags(slides[i]).forEach(x=>x.classList.toggle('shown',revealAll));
     count.textContent=(i+1)+" / "+slides.length;
     pageno.textContent=(i+1);
     prog.style.width=((i)/(slides.length-1)*100)+"%";
@@ -1704,19 +2185,32 @@ parse();
     document.getElementById('next').disabled=(i===slides.length-1);
     const dark=slides[i].classList.contains('dark');
     pageno.style.color=dark?'#9fb6bd':'var(--mut)'; brand.style.color=dark?'#9fb6bd':'var(--mut)';
+    updateHint();
   }
-  document.getElementById('next').onclick=()=>show(i+1);
-  document.getElementById('prev').onclick=()=>show(i-1);
+  function advance(){
+    const fr=frags(slides[i]);
+    const hidden=fr.find(x=>!x.classList.contains('shown'));
+    if(hidden){hidden.classList.add('shown');updateHint();return;}
+    show(i+1);
+  }
+  function retreat(){
+    const fr=frags(slides[i]);
+    const shown=fr.filter(x=>x.classList.contains('shown'));
+    if(shown.length){shown[shown.length-1].classList.remove('shown');updateHint();return;}
+    show(i-1);
+  }
+  document.getElementById('next').onclick=advance;
+  document.getElementById('prev').onclick=retreat;
   document.addEventListener('keydown',e=>{
-    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){show(i+1);e.preventDefault();}
-    else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(i-1);e.preventDefault();}
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){advance();e.preventDefault();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){retreat();e.preventDefault();}
     else if(e.key==='Home'){show(0);} else if(e.key==='End'){show(slides.length-1);}
     else if(e.key==='f'||e.key==='F'){ if(!document.fullscreenElement)document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
   });
   let sx=null;
   document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
   document.addEventListener('touchend',e=>{ if(sx===null)return; const dx=e.changedTouches[0].clientX-sx;
-     if(Math.abs(dx)>50)show(i+(dx<0?1:-1)); sx=null;},{passive:true});
+     if(Math.abs(dx)>50){dx<0?advance():retreat();} sx=null;},{passive:true});
   show(0);
 </script>
 
