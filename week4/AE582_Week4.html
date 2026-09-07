@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AE 582 — Week 4 · Interactive Slide Deck</title>
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--tintd:#E7EDEF;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;--bg:#F4F7F5;}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;background:#0c1a18;
+     font-family:"Calibri","Segoe UI",system-ui,sans-serif;color:var(--ink)}
+  .slide{position:fixed;inset:0;opacity:0;visibility:hidden;transition:opacity .35s ease;
+     display:flex;align-items:center;justify-content:center;padding:4.5vmin 6vmin;}
+  .slide.active{opacity:1;visibility:visible}
+  .inner{width:min(1180px,94vw);max-height:88vh}
+  /* light content slides */
+  .slide{background:var(--bg)}
+  .kicker{font-size:1.7vmin;letter-spacing:.28em;font-weight:700;color:var(--green);text-transform:uppercase;margin-bottom:1.4vmin}
+  .title{font-family:"Cambria",Georgia,serif;font-weight:700;color:var(--forest);font-size:4.4vmin;line-height:1.12;margin:0 0 1vmin}
+  .subtitle{font-size:2.1vmin;color:var(--mut);margin:.4vmin 0 2.4vmin}
+  .accent{height:.5vmin;width:9vmin;background:var(--green);border-radius:3px;margin:1.4vmin 0 2.2vmin}
+  ul.pts{margin:0;padding-left:0;list-style:none}
+  ul.pts li{position:relative;padding-left:3.4vmin;margin:1.5vmin 0;font-size:2.35vmin;line-height:1.45}
+  ul.pts li::before{content:"";position:absolute;left:.6vmin;top:.9vmin;width:1.3vmin;height:1.3vmin;background:var(--gold);border-radius:50%}
+  ul.pts li b{color:var(--forest)}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:3vmin}
+  .cols.wide-left{grid-template-columns:1.25fr .85fr}
+  .cols.wide-right{grid-template-columns:.85fr 1.25fr}
+  .stack{display:flex;flex-direction:column;justify-content:center;gap:1vmin}
+  .card{background:#fff;border:1px solid var(--line);border-radius:1.4vmin;padding:2.6vmin 2.8vmin;box-shadow:0 1vmin 3vmin rgba(0,0,0,.05)}
+  .card h3{margin:0 0 1.2vmin;font-family:"Cambria",serif;color:var(--green);font-size:2.5vmin}
+  .card.d{background:var(--tintd)} .card.g{background:var(--tint)}
+  .eqbox{background:var(--tint);border-left:.6vmin solid var(--green);border-radius:0 1vmin 1vmin 0;
+     padding:2vmin 2.6vmin;margin:1.8vmin 0;font-family:"Cambria",serif;font-size:2.5vmin;color:var(--forest)}
+  table.tbl{width:100%;border-collapse:collapse;font-size:2vmin}
+  table.tbl th,table.tbl td{border:1px solid var(--line);padding:1.2vmin 1.6vmin;text-align:left;vertical-align:top}
+  table.tbl th{background:var(--forest);color:#fff;font-family:"Cambria",serif}
+  table.tbl tr:nth-child(even) td{background:#fff}
+  table.tbl tr:nth-child(odd) td{background:var(--tint)}
+  .stat{display:flex;gap:2.4vmin;flex-wrap:wrap;margin-top:1.5vmin}
+  .stat .s{flex:1;min-width:22vmin;background:#fff;border:1px solid var(--line);border-top:.7vmin solid var(--green);
+     border-radius:1.2vmin;padding:2.2vmin}
+  .stat .s .n{font-family:"Cambria",serif;font-size:4.2vmin;font-weight:700;color:var(--green);line-height:1}
+  .stat .s .l{font-size:1.9vmin;color:var(--ink);margin-top:.8vmin}
+  .recap{background:var(--tint);border:1px solid var(--green);border-radius:1.4vmin;padding:2.6vmin 3vmin}
+  .recap li{font-size:2.25vmin}
+  .note{background:var(--tint);border-left:.5vmin solid var(--gold);padding:1.6vmin 2.2vmin;border-radius:0 1vmin 1vmin 0;font-size:2vmin;color:var(--ink);margin-top:1.8vmin}
+  /* dark slides (cover + dividers) */
+  .slide.dark{background:var(--petrol);color:#fff}
+  .slide.dark .kicker{color:var(--gold)}
+  .slide.dark .title{color:#fff;font-size:6vmin}
+  .slide.dark .subtitle{color:#cfe0e4;font-size:2.4vmin}
+  .slide.dark .accent{background:var(--gold)}
+  .bignum{font-family:"Cambria",serif;font-size:12vmin;font-weight:700;color:var(--gold);line-height:1}
+  .chips{display:flex;gap:1.4vmin;flex-wrap:wrap;margin-top:2.6vmin}
+  .chips span{background:rgba(255,255,255,.1);border:1px solid rgba(218,201,97,.5);color:#eaf3ee;
+     padding:1vmin 1.8vmin;border-radius:2vmin;font-size:1.9vmin;font-weight:600}
+  /* interactive demo slide */
+  .demoslide .inner{width:min(1240px,96vw)}
+  .demoslide .dhead{display:flex;align-items:baseline;gap:1.4vmin;margin-bottom:1.2vmin}
+  .demoslide .badge{background:var(--green);color:#fff;font-weight:700;font-size:1.6vmin;padding:.7vmin 1.4vmin;border-radius:.8vmin;letter-spacing:.1em}
+  .demoslide .dt{font-family:"Cambria",serif;color:var(--forest);font-size:3vmin;font-weight:700}
+  .demoslide iframe{width:100%;height:74vh;border:1px solid var(--line);border-radius:1.2vmin;box-shadow:0 1vmin 3vmin rgba(0,0,0,.10);background:#fff}
+  /* chrome */
+  .brand{position:fixed;left:2.4vmin;bottom:1.8vmin;font-size:1.5vmin;font-weight:700;letter-spacing:.12em;color:var(--mut);z-index:20}
+  .slide.dark ~ .brand{color:#9fb6bd}
+  .pageno{position:fixed;right:2.6vmin;bottom:1.8vmin;font-size:1.6vmin;color:var(--mut);z-index:20}
+  .nav{position:fixed;bottom:1.4vmin;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:1.2vmin;z-index:30}
+  .nav button{width:4.4vmin;height:4.4vmin;border-radius:50%;border:none;background:var(--green);color:#fff;font-size:2.4vmin;cursor:pointer;line-height:1;box-shadow:0 .5vmin 1.5vmin rgba(0,0,0,.2)}
+  .nav button:hover{background:var(--forest)} .nav button:disabled{opacity:.35;cursor:default}
+  .nav .count{font-size:1.8vmin;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:2vmin;padding:.6vmin 1.6vmin;min-width:9vmin;text-align:center}
+  .progress{position:fixed;top:0;left:0;height:.5vmin;background:var(--gold);width:0;z-index:40;transition:width .35s}
+  .hintbar{position:fixed;top:1.2vmin;right:1.6vmin;font-size:1.4vmin;color:var(--mut);z-index:20;opacity:.7}
+  .steps{margin:.5vmin 0}
+  .steps .s{display:flex;gap:1.3vmin;align-items:center;margin:.6vmin 0;padding:.6vmin 1.3vmin;background:var(--tint);border-left:3px solid var(--green);border-radius:0 9px 9px 0}
+  .steps .s .k{font-family:"Cambria",serif;font-weight:700;color:var(--green);min-width:2.1vmin;font-size:2vmin}
+  .steps .s .m{font-size:1.95vmin;overflow-x:auto}
+  .steps .s .why{color:var(--mut);font-size:1.55vmin;margin-left:auto;white-space:nowrap;font-style:italic}
+  .simwrap{margin:.4vmin 0}
+  .simwrap iframe{width:100%;height:57vh;border:1px solid var(--line);border-radius:12px;display:block;background:#05070f}
+  .ibadge{display:inline-block;background:var(--green);color:#fff;font-weight:700;font-size:1.5vmin;letter-spacing:.4px;padding:.3vmin 1vmin;border-radius:6px;margin-right:1vmin}
+  .lawrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.1vmin;margin-top:1vmin}
+  .lawrow .card{padding:1vmin 1.3vmin;font-size:1.75vmin}
+  .lawrow .card h3{margin:0 0 .3vmin;font-size:1.95vmin}
+  svg.fig{display:block;width:100%;height:auto;max-height:56vh;margin:.5vmin auto}
+  .figcap{font-size:1.7vmin;color:var(--mut);text-align:center;margin-top:.7vmin}
+  .figcap b{color:var(--forest)}
+  .svgt{font-family:"Calibri","Segoe UI",sans-serif;font-size:15px;fill:var(--mut)}
+  .svgt.ink{fill:var(--ink)} .svgt.g{fill:var(--green)} .svgt.f{fill:var(--forest)} .svgt.s{fill:var(--stone)} .svgt.p{fill:var(--petrol)} .svgt.gold{fill:var(--stone)}
+  .missionimg{width:100%;height:auto;max-height:19vh;object-fit:contain;border:1px dashed var(--line);border-radius:8px;background:var(--tint);display:block;min-height:9vh;color:var(--mut);font-size:1.4vmin;text-align:center;line-height:1.4}
+  @media(max-width:820px){.cols{grid-template-columns:1fr}.title{font-size:6vw}ul.pts li{font-size:3.6vw}}
+
+  .stepper .s{opacity:0;transform:translateY(12px);align-items:flex-start;transition:opacity .45s ease, transform .45s ease}
+  .stepper .s.shown{opacity:1;transform:none}
+  .stepper .s .sc{display:flex;flex-direction:column;gap:.35vmin}
+  .stepper .s .ex{font-size:1.62vmin;color:var(--mut);line-height:1.42;font-style:normal;font-family:"Calibri","Segoe UI",sans-serif}
+  #stephint{position:fixed;left:50%;transform:translateX(-50%);top:2.2vh;background:var(--forest);color:#fff;font-family:"Calibri",sans-serif;font-size:1.7vmin;font-weight:600;padding:.5vmin 1.5vmin;border-radius:20px;box-shadow:0 3px 12px rgba(0,0,0,.2);z-index:60;display:none}
+</style>
+</head>
+<body>
+
+<div class="progress" id="prog"></div>
+<div class="hintbar">← → arrows to navigate · F for fullscreen</div>
+
+
+<section class="slide dark active">
+  <div class="inner">
+    <div class="kicker">King Fahd University of Petroleum &amp; Minerals · AE 582 Satellite Engineering</div>
+    <div style="font-size:7.5vmin;font-family:Cambria,serif;font-weight:700;margin:1vmin 0 .5vmin">WEEK 4</div>
+    <div class="title" style="font-size:5vmin">Perturbations &amp; mission analysis</div>
+    <div class="accent"></div>
+    <div class="subtitle">Lecture 1 — why real orbits drift: the geopotential and J₂, nodal regression &amp; apsidal precession, atmospheric drag and orbital lifetime. Lecture 2 — mission analysis: orbit categories, the orbit‑transfer problem, Hohmann transfers with worked examples, ground‑station visibility, eclipses and launch windows.</div>
+    <div class="chips"><span>Perturbed equation of motion</span><span>Geopotential &amp; J₂</span><span>Nodal regression</span><span>Apsidal precession</span><span>Atmospheric drag</span><span>Mission categories</span><span>Hohmann transfer</span><span>Ground coverage</span><span>Launch windows</span></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Course roadmap · orbits &amp; mission block</div>
+    <div class="title">Weeks 3–5 — from the exact orbit to a real mission</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div><ul class="pts">
+        <li><b>Week 3</b> The two‑body problem — the exact Keplerian orbit, vis‑viva &amp; energy.</li>
+        <li><b>Week 4</b> Perturbations &amp; mission analysis &nbsp;<span style="color:var(--green);font-weight:700">◀ this deck</span></li>
+      </ul></div>
+      <div><ul class="pts">
+        <li><b>Week 5</b> Mission analysis II — GEO station‑keeping, constellations, interplanetary &amp; small‑body missions, low‑thrust.</li>
+      </ul>
+      <div class="note">Week 3 gave us the perfect orbit. Lecture 1 corrects it for the forces the point‑mass model ignores; Lecture 2 opens mission analysis — deciding which orbit a mission needs and what it costs to get there.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Bridge from Week 3</div>
+    <div class="title">The perfect orbit was only the starting point</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$\ddot{\mathbf r}+\frac{\mu}{r^{3}}\,\mathbf r=\mathbf 0\qquad\Longrightarrow\qquad a,e,i,\Omega,\omega\ \text{all constant}$$</div>
+    <div class="cols">
+      <div class="card g"><h3>What Week 3 delivered</h3>A closed conic that never changes shape or orientation. Five elements are frozen; only the position along the orbit ($\nu$) evolves through Kepler's equation.</div>
+      <div class="card d"><h3>What this week adds</h3>Earth is neither a point nor alone. Its bulge, the atmosphere, the Sun and Moon all push on the satellite (L1). Then we ask which orbit a mission actually needs, and the ΔV to reach it (L2).</div>
+    </div>
+    <div class="note">Two viewpoints recur: a perturbation is a nuisance to be modelled — and, for J₂ precession, a resource to be designed around (Sun‑synchronous orbits, TRACERS).</div>
+  </div>
+</section>
+
+<section class="slide dark">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1 of 2</div>
+    <div class="bignum">L1</div>
+    <div class="title">Orbit perturbations</div>
+    <div class="accent"></div>
+    <div class="subtitle">The perturbed equation of motion and osculating elements, the geopotential and J₂, the two secular precessions, atmospheric drag and orbital lifetime.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1</div>
+    <div class="title">The perturbed equation of motion</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$\ddot{\mathbf r}+\frac{\mu}{r^{3}}\,\mathbf r=\mathbf b,\qquad \mathbf b=\mathbf a_{J_2}+\mathbf a_{\text{drag}}+\mathbf a_{\text{Sun}}+\mathbf a_{\text{Moon}}+\mathbf a_{\text{SRP}}+\dots$$</div>
+    <div class="cols">
+      <div class="card g"><h3>Osculating elements</h3>Away from Earth the non‑uniform mass distribution makes the point‑mass force law invalid, and at low altitude the atmosphere adds drag. We keep the Keplerian description but let the "constants" $a,e,i,\Omega,\omega$ change slowly — the <b>osculating elements</b> that instantaneously match the true path.</div>
+      <div class="card d"><h3>Lagrange's planetary equations</h3>The standard way to include perturbations is the <b>method of variation of parameters</b>, giving Lagrange's planetary equations for $\dot a,\dot e,\dot i,\dot\Omega,\dot\omega$. Note the caveat: these forms break down for $e=0$ or $i=0$ and need reformulation (equinoctial elements).</div>
+    </div>
+    <div class="note">We can't solve this in closed form, so we ask how each perturbation moves the elements <i>on average</i> per orbit. The secular (non‑repeating) parts dominate mission design.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1</div>
+    <div class="title">Gravitational potential of the Earth</div>
+    <div class="accent"></div>
+    <div class="eqbox" style="font-size:2.1vmin">$$U(r,\phi,\lambda)=\frac{\mu}{r}\!\left[1-\sum_{n=2}^{\infty}\!\Big(\tfrac{R_E}{r}\Big)^{\!n}\!J_nP_{n0}(\cos\phi)+\sum_{n,m}\!\Big(\tfrac{R_E}{r}\Big)^{\!n}\!(C_{nm}\cos m\lambda+S_{nm}\sin m\lambda)P_{nm}\right]$$</div>
+    <div class="cols wide-right">
+      <div class="stack">
+        <ul class="pts" style="font-size:2.05vmin">
+          <li>The convenient description of Earth's field is a <b>spherical‑harmonic expansion</b>.</li>
+          <li><b>Zonal</b> terms $J_n$ reflect mass distribution independent of longitude; <b>tesseral</b> terms $C_{nm},S_{nm}$ capture longitude variation.</li>
+          <li>$J_2$ is <b>three orders of magnitude larger</b> than every other term — it dominates the gravitational perturbations.</li>
+        </ul>
+      </div>
+      <table class="tbl" style="font-size:1.75vmin">
+        <tr><th>Term</th><th>Value (×10⁻⁶)</th><th>Term</th><th>Value (×10⁻⁶)</th></tr>
+        <tr><td>$J_2$</td><td>1082.6</td><td>$C_{22}$</td><td>1.57</td></tr>
+        <tr><td>$J_3$</td><td>−2.53</td><td>$C_{31}$</td><td>2.19</td></tr>
+        <tr><td>$J_4$</td><td>−1.62</td><td>$S_{22}$</td><td>−0.90</td></tr>
+        <tr><td>$J_5$</td><td>−0.23</td><td>$S_{31}$</td><td>0.27</td></tr>
+        <tr><td>$J_6$</td><td>0.54</td><td>$S_{32}$</td><td>−0.21</td></tr>
+      </table>
+    </div>
+    <div class="note">$P_{nm}$ are (associated) Legendre functions of degree $n$, order $m$; the <b>zonal</b> $P_{n0}=P_n$ is the ordinary Legendre polynomial (latitude only). The sum starts at $n{=}2$ because $n{=}0$ is the point mass (the $\mu/r$ out front) and $n{=}1$ vanishes when the origin is the centre of mass. $\phi$ is geocentric latitude, $\lambda$ longitude. Because $J_2$ dominates, keeping only $n{=}2$ captures essentially all the secular drift — visualize the $J_n$ zones next.</div>
+  </div>
+</section>
+
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Zonal harmonics — visualize the Jₙ shape terms &amp; latitude zones</span></div>
+    <div class="simwrap">
+      <iframe title="zonal demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Zonal harmonics · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:440px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none;max-width:75%}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:92px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.red .v{color:#b3261e}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--petrol);font-weight:600;background:#fff}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--tint);border-left:4px solid var(--green);font-size:13px;line-height:1.45}
+  .verdict b{color:var(--forest)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+  .btnrow{display:flex;gap:8px;margin-top:6px}
+  .btnrow button{flex:1;padding:9px;border:none;border-radius:9px;background:var(--green);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
+  .btnrow button:hover{background:var(--forest)}
+
+  .stage{min-height:500px}
+  .nbtns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .nbtns button{flex:1;min-width:52px;padding:9px 0;border:1px solid var(--line);background:#fff;border-radius:9px;font-weight:700;color:var(--petrol);cursor:pointer}
+  .nbtns button.on{background:var(--green);color:#fff;border-color:var(--green)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM &amp;middot; AE 582 &amp;mdash; GEOPOTENTIAL&lt;/div&gt;&lt;h1&gt;Zonal harmonics J&amp;#8345; &amp;mdash; visualizing the shape terms&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;U = (&amp;#956;/r)[1 &amp;minus; &amp;#931; J&amp;#8345;(R&amp;#8407;/r)&amp;#8319; P&amp;#8345;(sin&amp;#966;)] &amp;middot; zonal = latitude bands only (order m=0)&lt;/div&gt;&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;term&lt;/div&gt;&lt;div class=&quot;v&quot; style=&quot;font-size:15px&quot;&gt;&lt;span id=&quot;rName&quot;&gt;J&amp;#8322;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;J&amp;#8345; value&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;rJ&quot;&gt;1082.6&lt;/span&gt;&amp;times;10&amp;#8315;&amp;#8310;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;zero crossings&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;rZ&quot;&gt;2&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;latitude bands&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;rB&quot;&gt;3&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Choose a zonal term&lt;/h2&gt;
+    &lt;div class=&quot;nbtns&quot; id=&quot;nb&quot;&gt;
+      &lt;button data-n=&quot;2&quot; class=&quot;on&quot;&gt;J&amp;#8322;&lt;/button&gt;&lt;button data-n=&quot;3&quot;&gt;J&amp;#8323;&lt;/button&gt;
+      &lt;button data-n=&quot;4&quot;&gt;J&amp;#8324;&lt;/button&gt;&lt;button data-n=&quot;5&quot;&gt;J&amp;#8325;&lt;/button&gt;&lt;button data-n=&quot;6&quot;&gt;J&amp;#8326;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Exaggeration &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;exV&quot;&gt;18&lt;/span&gt;%&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;ex&quot; min=&quot;4&quot; max=&quot;30&quot; step=&quot;1&quot; value=&quot;18&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;btnrow&quot;&gt;
+      &lt;button id=&quot;mEq&quot;&gt;Equal visibility&lt;/button&gt;
+      &lt;button id=&quot;mTr&quot; style=&quot;background:#7a869a&quot;&gt;True relative size&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;verdict&quot; id=&quot;verdict&quot;&gt;—&lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;Left: a meridional slice — the dashed circle is the mean sphere, the coloured curve the (exaggerated) equipotential, &lt;span style=&quot;color:#ff5a4d&quot;&gt;red = raised&lt;/span&gt;, &lt;span style=&quot;color:#3a86ff&quot;&gt;blue = lowered&lt;/span&gt;. Right: the same pattern as latitude &lt;b&gt;zones&lt;/b&gt;, aligned with the Legendre polynomial P&amp;#8345;(sin&amp;#966;). &quot;True relative size&quot; scales each term by its real J&amp;#8345; — watch everything but J&amp;#8322; almost vanish.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+  const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+  const RAD=180/Math.PI;
+  const JV={2:1082.6,3:-2.53,4:-1.62,5:-0.23,6:0.54};   // x1e-6
+  const NAME={2:&#x27;J₂&#x27;,3:&#x27;J₃&#x27;,4:&#x27;J₄&#x27;,5:&#x27;J₅&#x27;,6:&#x27;J₆&#x27;};
+  const DESC={
+    2:&#x27;&lt;b&gt;Oblateness&lt;/b&gt; — the equatorial bulge. J₂ = (C−A)/MR² and is ~1000× every other term, so it dominates the perturbations.&#x27;,
+    3:&#x27;&lt;b&gt;Pear‑shape&lt;/b&gt; — a north–south asymmetry: one hemisphere is pulled out slightly relative to the other.&#x27;,
+    4:&#x27;A higher‑order &lt;b&gt;flattening correction&lt;/b&gt; to the oblate shape — finer polar/equatorial structure.&#x27;,
+    5:&#x27;Finer &lt;b&gt;north–south banding&lt;/b&gt; — five zero crossings split the globe into six latitude zones.&#x27;,
+    6:&#x27;Even finer latitude banding — the pattern alternates sign across seven zones.&#x27;
+  };
+  let n=2, ex=0.18, mode=&#x27;eq&#x27;;
+  function P(k,x){
+    let p0=1,p1=x; if(k===0)return 1; if(k===1)return x;
+    for(let i=2;i&lt;=k;i++){const p2=((2*i-1)*x*p1-(i-1)*p0)/i; p0=p1; p1=p2;} return p1;
+  }
+  function coef(){
+    const s=-Math.sign(JV[n]);
+    return (mode===&#x27;eq&#x27;)? s : (-JV[n]/JV[2]);
+  }
+  function resize(){const r=cv.getBoundingClientRect();cv.width=r.width*devicePixelRatio;cv.height=r.height*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+  function draw(){
+    const W=cv.getBoundingClientRect().width, H=cv.getBoundingClientRect().height;
+    ctx.fillStyle=&#x27;#05070f&#x27;; ctx.fillRect(0,0,W,H);
+    const c=coef();
+    const cx=W*0.30, cy=H*0.52, R=Math.min(W,H)*0.34;
+    ctx.strokeStyle=&#x27;rgba(159,182,189,.5)&#x27;; ctx.setLineDash([4,5]); ctx.lineWidth=1.4;
+    ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.stroke(); ctx.setLineDash([]);
+    ctx.strokeStyle=&#x27;rgba(159,182,189,.35)&#x27;; ctx.beginPath(); ctx.moveTo(cx,cy-R*1.18); ctx.lineTo(cx,cy+R*1.18); ctx.stroke();
+    ctx.fillStyle=&#x27;#9fb6bd&#x27;; ctx.font=&#x27;12px Calibri&#x27;; ctx.fillText(&#x27;N&#x27;,cx-4,cy-R*1.18-4); ctx.fillText(&#x27;S&#x27;,cx-3,cy+R*1.18+13);
+    for(let side of [1,-1]){
+      let prev=null;
+      for(let lat=-90;lat&lt;=90;lat+=1){
+        const ph=lat/RAD, pn=P(n,Math.sin(ph)), d=c*pn;
+        const rr=R*(1+ex*d);
+        const x=cx+side*rr*Math.cos(ph), y=cy-rr*Math.sin(ph);
+        if(prev){ctx.strokeStyle=(d&gt;=0)?&#x27;#ff5a4d&#x27;:&#x27;#3a86ff&#x27;; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(prev.x,prev.y); ctx.lineTo(x,y); ctx.stroke();}
+        prev={x,y};
+      }
+    }
+    ctx.strokeStyle=&#x27;rgba(218,201,97,.55)&#x27;; ctx.setLineDash([2,3]); ctx.lineWidth=1;
+    let zeros=0;
+    for(let lat=-89;lat&lt;=89;lat+=1){
+      const a=P(n,Math.sin(lat/RAD)), b=P(n,Math.sin((lat+1)/RAD));
+      if(a===0||a*b&lt;0){zeros++; const ph=(lat+0.5)/RAD;
+        ctx.beginPath(); ctx.moveTo(cx-R*1.05*Math.cos(ph),cy-R*1.05*Math.sin(ph));
+        ctx.lineTo(cx+R*1.05*Math.cos(ph),cy-R*1.05*Math.sin(ph)); ctx.stroke();}
+    }
+    ctx.setLineDash([]);
+    ctx.fillStyle=&#x27;#DAC961&#x27;; ctx.font=&#x27;13px Cambria&#x27;; ctx.fillText(&#x27;meridional slice&#x27;,cx-46,cy+R*1.18+30);
+    const topM=H*0.16, plotH=H*0.68, xs=W*0.66, sw=34;
+    const latY=lat=&gt;topM+(90-lat)/180*plotH;
+    for(let py=0;py&lt;plotH;py+=2){
+      const lat=90-(py/plotH)*180; const pn=P(n,Math.sin(lat/RAD)); const d=c*pn;
+      ctx.fillStyle=(d&gt;=0)?&#x27;rgba(255,90,77,.85)&#x27;:&#x27;rgba(58,134,255,.85)&#x27;;
+      ctx.fillRect(xs,topM+py,sw,2);
+    }
+    ctx.strokeStyle=&#x27;rgba(255,255,255,.4)&#x27;; ctx.strokeRect(xs,topM,sw,plotH);
+    ctx.fillStyle=&#x27;#9fb6bd&#x27;; ctx.font=&#x27;11px Calibri&#x27;; ctx.fillText(&#x27;+90°&#x27;,xs-4,topM-6); ctx.fillText(&#x27;−90°&#x27;,xs-6,topM+plotH+14);
+    ctx.fillText(&#x27;zones&#x27;,xs-2,topM+plotH+30);
+    const px0=xs+64, pw=W-30-px0;
+    ctx.strokeStyle=&#x27;rgba(159,182,189,.35)&#x27;; ctx.beginPath(); ctx.moveTo(px0+pw/2,topM); ctx.lineTo(px0+pw/2,topM+plotH); ctx.stroke();
+    ctx.strokeStyle=&#x27;#DAC961&#x27;; ctx.lineWidth=2.2; ctx.beginPath();
+    for(let lat=90;lat&gt;=-90;lat-=1){
+      const pn=P(n,Math.sin(lat/RAD)); const x=px0+pw/2+ (pn/1.05)*(pw/2); const y=latY(lat);
+      (lat===90)?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.fillStyle=&#x27;#cfe0e4&#x27;; ctx.font=&#x27;12px Cambria&#x27;; ctx.fillText(&#x27;Pₙ(sinφ)&#x27;,px0+pw/2-22,topM-6);
+    document.getElementById(&#x27;rName&#x27;).innerHTML=NAME[n];
+    document.getElementById(&#x27;rJ&#x27;).textContent=JV[n];
+    document.getElementById(&#x27;rZ&#x27;).textContent=zeros;
+    document.getElementById(&#x27;rB&#x27;).textContent=zeros+1;
+    document.getElementById(&#x27;verdict&#x27;).innerHTML=DESC[n]+((mode===&#x27;tr&#x27;&amp;&amp;n!==2)?&#x27; &lt;i&gt;At true scale it is ~&#x27;+Math.round(JV[2]/Math.abs(JV[n]))+&#x27;× smaller than J₂.&lt;/i&gt;&#x27;:&#x27;&#x27;);
+  }
+  document.querySelectorAll(&#x27;#nb button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{
+    document.querySelectorAll(&#x27;#nb button&#x27;).forEach(x=&gt;x.classList.remove(&#x27;on&#x27;));
+    b.classList.add(&#x27;on&#x27;); n=+b.dataset.n; draw();
+  });
+  document.getElementById(&#x27;ex&#x27;).oninput=e=&gt;{ex=(+e.target.value)/100;document.getElementById(&#x27;exV&#x27;).textContent=e.target.value;draw();};
+  function setMode(m){mode=m;
+    document.getElementById(&#x27;mEq&#x27;).style.background=(m===&#x27;eq&#x27;)?&#x27;var(--green)&#x27;:&#x27;#7a869a&#x27;;
+    document.getElementById(&#x27;mTr&#x27;).style.background=(m===&#x27;tr&#x27;)?&#x27;var(--green)&#x27;:&#x27;#7a869a&#x27;; draw();}
+  document.getElementById(&#x27;mEq&#x27;).onclick=()=&gt;setMode(&#x27;eq&#x27;);
+  document.getElementById(&#x27;mTr&#x27;).onclick=()=&gt;setMode(&#x27;tr&#x27;);
+  addEventListener(&#x27;resize&#x27;,()=&gt;{resize();draw();}); resize(); setMode(&#x27;eq&#x27;);
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1</div>
+    <div class="title">Disturbing accelerations — who matters where</div>
+    <div class="accent"></div>
+    <table class="tbl">
+      <tr><th>Source</th><th>Accel. at 500 km (m/s²)</th><th>Accel. at GEO (m/s²)</th><th>Note</th></tr>
+      <tr><td>Air drag*</td><td>$6\times10^{-5}\,A/M$</td><td>—</td><td>non‑conservative; LEO only</td></tr>
+      <tr><td>Radiation pressure</td><td>$4.7\times10^{-6}\,A/M$</td><td>$4.7\times10^{-6}\,A/M$</td><td>area/mass dependent</td></tr>
+      <tr><td>Sun (mean)</td><td>$5.6\times10^{-7}$</td><td>$3.5\times10^{-6}$</td><td>grows with altitude</td></tr>
+      <tr><td>Moon (mean)</td><td>$1.2\times10^{-6}$</td><td>$7.3\times10^{-6}$</td><td>dominates N–S at GEO</td></tr>
+      <tr><td>Jupiter (max.)</td><td>$8.5\times10^{-12}$</td><td>$5.2\times10^{-11}$</td><td>negligible</td></tr>
+    </table>
+    <div class="note">*Dependent on solar activity; $A$ is the projected area (perpendicular to motion for drag, to the Sun for radiation). Compare all of these to J₂ (~10⁻² m/s² in LEO): the bulge is in a class of its own near Earth, while third‑body forces take over at GEO.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1 · derivation</div>
+    <div class="title">The two secular rates from J₂</div>
+    <div class="accent"></div>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">$U_{J_2}=\dfrac{\mu J_2 R_E^2}{2r^3}\big(3\sin^2\phi-1\big)$</div><div class="ex">Keep only the $n{=}2$ zonal term of the geopotential — the dominant disturbing potential.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">$\sin\phi=\sin i\,\sin(\omega+\nu)$</div><div class="ex">Write latitude in orbital elements, then average over one revolution to isolate the secular part.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">$\boxed{\ \dot\Omega=-\dfrac{3}{2}\,nJ_2\!\left(\dfrac{R_E}{p}\right)^{\!2}\cos i\ }$</div><div class="ex"><b>Nodal regression.</b> The line of nodes drifts west for prograde orbits ($i<90°$), east for retrograde; zero at the poles.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">$\boxed{\ \dot\omega=\dfrac{3}{4}\,nJ_2\!\left(\dfrac{R_E}{p}\right)^{\!2}\big(5\cos^2 i-1\big)\ }$</div><div class="ex"><b>Apsidal precession.</b> The ellipse rotates in its plane; it vanishes at the critical inclination $63.4°$.</div></div></div>
+    </div>
+    <div class="note">$n=\sqrt{\mu/a^3}$ is the mean motion, $p=a(1-e^2)$ the semi‑latus rectum. Both rates are secular — they accumulate every orbit, which is exactly why they can replace a maneuver. Explore them next.</div>
+  </div>
+</section>
+
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">J₂ precession explorer — slide altitude &amp; inclination, read the drift rates</span></div>
+    <div class="simwrap">
+      <iframe title="j2 demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;J2 precession · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:440px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none;max-width:75%}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:92px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.red .v{color:#b3261e}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--petrol);font-weight:600;background:#fff}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--tint);border-left:4px solid var(--green);font-size:13px;line-height:1.45}
+  .verdict b{color:var(--forest)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+  .btnrow{display:flex;gap:8px;margin-top:6px}
+  .btnrow button{flex:1;padding:9px;border:none;border-radius:9px;background:var(--green);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
+  .btnrow button:hover{background:var(--forest)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 · WEEK 4 — PERTURBATIONS&lt;/div&gt;&lt;h1&gt;J₂ precession explorer&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;&amp;#7691;&amp;#937; = &amp;minus;1.5 n J₂ (R&amp;#8853;/p)&amp;sup2; cos i &amp;nbsp;&amp;middot;&amp;nbsp; &amp;#7691;&amp;#969; = 0.75 n J₂ (R&amp;#8853;/p)&amp;sup2; (5cos&amp;sup2;i &amp;minus; 1)&lt;/div&gt;&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;node rate &amp;#7691;&amp;#937;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;rOm&quot;&gt;—&lt;/span&gt;&amp;deg;/day&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;apsidal &amp;#7691;&amp;#969;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;rW&quot;&gt;—&lt;/span&gt;&amp;deg;/day&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;period&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;rP&quot;&gt;—&lt;/span&gt; min&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;nodal shift/orbit&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;rShift&quot;&gt;—&lt;/span&gt;&amp;deg;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Inputs&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Altitude (circular) &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;hV&quot;&gt;700&lt;/span&gt; km&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;h&quot; min=&quot;300&quot; max=&quot;1500&quot; step=&quot;10&quot; value=&quot;700&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Inclination i &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;iV&quot;&gt;51.6&lt;/span&gt;&amp;deg;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;i&quot; min=&quot;0&quot; max=&quot;120&quot; step=&quot;0.1&quot; value=&quot;51.6&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;presets&quot;&gt;
+      &lt;button data-h=&quot;420&quot; data-i=&quot;51.6&quot;&gt;ISS&lt;/button&gt;
+      &lt;button data-h=&quot;705&quot; data-i=&quot;98.2&quot;&gt;Sun‑sync (Landsat)&lt;/button&gt;
+      &lt;button data-h=&quot;700&quot; data-i=&quot;63.4&quot;&gt;Critical 63.4&amp;deg;&lt;/button&gt;
+      &lt;button data-h=&quot;700&quot; data-i=&quot;90&quot;&gt;Polar&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;verdict&quot; id=&quot;verdict&quot;&gt;—&lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;The green ring is the orbit plane seen from the north pole; the gold marker is the ascending node. Watch it march around the equator as you change $i$. Prograde orbits regress west; retrograde advance east; a polar orbit is frozen.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+  const MU=398600.4418, RE=6378.14, J2=1.08263e-3, GEO=42164.0, RAD=180/Math.PI, DAY=86400;
+  const vc=r=&gt;Math.sqrt(MU/r), vv=(r,a)=&gt;Math.sqrt(MU*(2/r-1/a));
+  const f=(x,d=2)=&gt;isFinite(x)?Number(x).toLocaleString(&#x27;en-US&#x27;,{minimumFractionDigits:d,maximumFractionDigits:d}):&#x27;\u2014&#x27;;
+
+  const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+  const hS=document.getElementById(&#x27;h&#x27;), iS=document.getElementById(&#x27;i&#x27;);
+  let nodeAng=0.4, raf=null, last=0;
+  function rates(){
+    const a=RE+(+hS.value), i=(+iS.value)/RAD, n=Math.sqrt(MU/(a*a*a)), p=a;
+    const fac=1.5*n*J2*(RE/p)*(RE/p);
+    const dOm=-fac*Math.cos(i);                    // rad/s
+    const dw=0.75*n*J2*(RE/p)*(RE/p)*(5*Math.cos(i)*Math.cos(i)-1);
+    const P=2*Math.PI*Math.sqrt(a*a*a/MU)/60;      // min
+    return {a,i,n,dOm,dw,P};
+  }
+  function upd(){
+    const r=rates();
+    document.getElementById(&#x27;hV&#x27;).textContent=+hS.value;
+    document.getElementById(&#x27;iV&#x27;).textContent=f(+iS.value,1);
+    document.getElementById(&#x27;rOm&#x27;).textContent=f(r.dOm*RAD*DAY,3);
+    document.getElementById(&#x27;rW&#x27;).textContent=f(r.dw*RAD*DAY,3);
+    document.getElementById(&#x27;rP&#x27;).textContent=f(r.P,1);
+    document.getElementById(&#x27;rShift&#x27;).textContent=f(r.dOm*RAD*(r.P*60),3);
+    // sun-sync closeness
+    const ss=r.dOm*RAD*DAY;
+    let v;
+    if(Math.abs(ss-0.9856)&lt;0.03) v=&#x27;&lt;b&gt;Sun‑synchronous!&lt;/b&gt; The node keeps pace with Earth around the Sun (0.986&amp;deg;/day) — constant local solar time.&#x27;;
+    else if(Math.abs(r.dw*RAD*DAY)&lt;0.02) v=&#x27;&lt;b&gt;Critical inclination.&lt;/b&gt; Apsidal precession &amp;#7691;&amp;#969; ≈ 0 — the apogee stays put (Molniya/Tundra).&#x27;;
+    else if((+iS.value)&gt;90) v=&#x27;Retrograde orbit: the node &lt;b&gt;advances eastward&lt;/b&gt; (&amp;#7691;&amp;#937; &amp;gt; 0).&#x27;;
+    else if(Math.abs((+iS.value)-90)&lt;0.5) v=&#x27;Polar orbit: cos i ≈ 0, so the node barely moves.&#x27;;
+    else v=&#x27;Prograde orbit: the node &lt;b&gt;regresses westward&lt;/b&gt; (&amp;#7691;&amp;#937; &amp;lt; 0).&#x27;;
+    document.getElementById(&#x27;verdict&#x27;).innerHTML=v;
+  }
+  function resize(){const r=cv.getBoundingClientRect();cv.width=r.width*devicePixelRatio;cv.height=r.height*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+  function draw(ts){
+    if(!last)last=ts; const dt=(ts-last)/1000; last=ts;
+    const r=rates();
+    // animate node at an exaggerated but sign-correct rate (visual only)
+    nodeAng += (r.dOm*RAD*DAY)*dt*0.02;
+    const W=cv.getBoundingClientRect().width, H=cv.getBoundingClientRect().height;
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2, cy=H/2, R=Math.min(W,H)*0.34;
+    // equatorial disk (Earth from N pole)
+    ctx.strokeStyle=&#x27;#1c3a5c&#x27;; ctx.lineWidth=1;
+    for(let k=1;k&lt;=3;k++){ctx.beginPath();ctx.arc(cx,cy,R*k/3,0,7);ctx.stroke();}
+    const eg=ctx.createRadialGradient(cx-6,cy-6,3,cx,cy,R*0.34);
+    eg.addColorStop(0,&#x27;#2e6fb0&#x27;); eg.addColorStop(1,&#x27;#0a2340&#x27;);
+    ctx.fillStyle=eg; ctx.beginPath(); ctx.arc(cx,cy,R*0.34,0,7); ctx.fill();
+    // orbit plane projected: an ellipse whose orientation = node angle, squash = cos(i-ish)
+    const inc=(+iS.value)/RAD;
+    const squash=Math.max(0.12,Math.abs(Math.cos(inc))*0.5+0.28);
+    ctx.save(); ctx.translate(cx,cy); ctx.rotate(nodeAng);
+    ctx.strokeStyle=&#x27;#00c46a&#x27;; ctx.lineWidth=2.4;
+    ctx.beginPath(); ctx.ellipse(0,0,R,R*squash,0,0,7); ctx.stroke();
+    // line of nodes
+    ctx.strokeStyle=&#x27;rgba(218,201,97,.6)&#x27;; ctx.setLineDash([5,5]); ctx.lineWidth=1.4;
+    ctx.beginPath(); ctx.moveTo(-R,0); ctx.lineTo(R,0); ctx.stroke(); ctx.setLineDash([]);
+    // ascending node marker
+    ctx.fillStyle=&#x27;#DAC961&#x27;; ctx.beginPath(); ctx.arc(R,0,6,0,7); ctx.fill();
+    ctx.fillStyle=&#x27;#fff&#x27;; ctx.font=&#x27;12px Calibri&#x27;; ctx.fillText(&#x27;☊ node&#x27;,R-8,-10);
+    ctx.restore();
+    // fixed reference sun direction
+    ctx.fillStyle=&#x27;#DAC961&#x27;; ctx.beginPath(); ctx.arc(cx+R*1.15,cy,7,0,7); ctx.fill();
+    ctx.fillStyle=&#x27;#9fb6bd&#x27;; ctx.font=&#x27;11px Calibri&#x27;; ctx.fillText(&#x27;to Sun (fixed)&#x27;,cx+R*0.9,cy-12);
+    raf=requestAnimationFrame(draw);
+  }
+  hS.oninput=upd; iS.oninput=upd;
+  document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{hS.value=b.dataset.h;iS.value=b.dataset.i;upd();});
+  addEventListener(&#x27;resize&#x27;,resize); resize(); upd(); raf=requestAnimationFrame(draw);
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1</div>
+    <div class="title">Regression of the line of nodes</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Why the plane rotates</h3>The equatorial bulge exerts a torque on the orbit's angular‑momentum vector. As the satellite crosses toward the equator it feels an extra pull; averaged over an orbit this makes the whole orbit <b>plane</b> rotate about Earth's spin axis — the ascending node slides along the equator.</div>
+      <div class="card d"><h3>Direction &amp; size</h3>For a prograde orbit ($i<90°$) the node moves <b>west</b> (regression); retrograde orbits advance east. The rate grows for low, low‑inclination orbits and is largest near the equator, zero at $i=90°$. Typical LEO: a few degrees per day.</div>
+    </div>
+    <div class="eqbox">$$\overline{\Omega}=\Omega_0-\frac{3}{2}\,\frac{J_2R_E^2}{p^2}\,\bar n\,t\,\cos i$$</div>
+    <div class="note">This looks like a pure cost — but choose $i$ so the node keeps pace with Earth's motion around the Sun and it becomes the most useful orbit in remote sensing.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1 · special orbits</div>
+    <div class="title">Turning drift into design — Sun‑synchronous orbits</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$\dot\Omega=+0.9856^{\circ}/\text{day}=\frac{360^{\circ}}{365.25\ \text{day}}\quad\Longrightarrow\quad \cos i=-\frac{\dot\Omega\,p^2}{1.5\,nJ_2R_E^2}$$</div>
+    <div class="cols">
+      <div class="card g"><h3>Lock the plane to the Sun</h3>Choose $i$ so the node drifts exactly one turn per year, matching Earth's motion around the Sun. The orbit plane then keeps a <b>fixed angle to the sunline</b> — every pass over a given latitude happens at the same local solar time.</div>
+      <div class="card d"><h3>The workhorse orbit</h3>Constant lighting is priceless for imaging and climate sensors (Landsat, Sentinel, most weather sats). It needs a slightly retrograde inclination, typically $i\approx96°\text{–}99°$ in LEO — the minus sign forces $i>90°$.</div>
+    </div>
+    <div class="note">The next slide makes "locked" concrete: watch the local time at the node hold constant for a Sun‑sync orbit and drift for a fixed one.</div>
+  </div>
+</section>
+
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Sun‑synchronous designer — solve for the inclination that Sun‑locks the plane</span></div>
+    <div class="simwrap">
+      <iframe title="sunsync demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Sun-sync designer · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:440px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none;max-width:75%}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:92px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.red .v{color:#b3261e}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--petrol);font-weight:600;background:#fff}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--tint);border-left:4px solid var(--green);font-size:13px;line-height:1.45}
+  .verdict b{color:var(--forest)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+  .btnrow{display:flex;gap:8px;margin-top:6px}
+  .btnrow button{flex:1;padding:9px;border:none;border-radius:9px;background:var(--green);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
+  .btnrow button:hover{background:var(--forest)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM &amp;middot; AE 582 &amp;mdash; SPECIAL ORBITS&lt;/div&gt;&lt;h1&gt;Sun&amp;#8209;synchronous orbit &amp;mdash; why the plane stays locked&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;node rate matched to Earth&amp;#8217;s orbit: &amp;#7691;&amp;#937; = +0.9856&amp;deg;/day &amp;#8658; local time at the node never drifts&lt;/div&gt;&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;local time @ node&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;ltan&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;required i&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;rI&quot;&gt;—&lt;/span&gt;&amp;deg;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;month&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;mon&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Design &amp;amp; compare&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Altitude (circular) &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;hV&quot;&gt;705&lt;/span&gt; km&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;h&quot; min=&quot;300&quot; max=&quot;1500&quot; step=&quot;5&quot; value=&quot;705&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;btnrow&quot;&gt;
+      &lt;button id=&quot;mSS&quot;&gt;Sun&amp;#8209;sync (tracks Sun)&lt;/button&gt;
+      &lt;button id=&quot;mFX&quot; style=&quot;background:#7a869a&quot;&gt;Fixed plane (i=51.6&amp;deg;)&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;presets&quot; style=&quot;margin-top:10px&quot;&gt;
+      &lt;button data-h=&quot;705&quot;&gt;Landsat (705)&lt;/button&gt;
+      &lt;button data-h=&quot;786&quot;&gt;Sentinel&amp;#8209;2 (786)&lt;/button&gt;
+      &lt;button data-h=&quot;600&quot;&gt;CubeSat (600)&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;verdict&quot; id=&quot;verdict&quot;&gt;—&lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;Top&amp;#8209;down view of the orbit plane (green line = line of nodes) around Earth, with the Sun direction sweeping once per year. &lt;b&gt;Sun&amp;#8209;sync:&lt;/b&gt; the node precesses to hold a constant angle to the Sun, so the gold &amp;#8220;local time&amp;#8221; clock never moves. &lt;b&gt;Fixed plane:&lt;/b&gt; the node stays inertially still, the Sun sweeps past it, and the local time drifts through all 24 h &amp;mdash; useless for consistent lighting.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+  const MU=398600.4418, RE=6378.14, J2=1.08263e-3, GEO=42164.0, RAD=180/Math.PI, DAY=86400;
+  const vc=r=&gt;Math.sqrt(MU/r), vv=(r,a)=&gt;Math.sqrt(MU*(2/r-1/a));
+  const f=(x,d=2)=&gt;isFinite(x)?Number(x).toLocaleString(&#x27;en-US&#x27;,{minimumFractionDigits:d,maximumFractionDigits:d}):&#x27;\u2014&#x27;;
+
+  const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+  const hS=document.getElementById(&#x27;h&#x27;);
+  const MONTHS=[&#x27;Jan&#x27;,&#x27;Feb&#x27;,&#x27;Mar&#x27;,&#x27;Apr&#x27;,&#x27;May&#x27;,&#x27;Jun&#x27;,&#x27;Jul&#x27;,&#x27;Aug&#x27;,&#x27;Sep&#x27;,&#x27;Oct&#x27;,&#x27;Nov&#x27;,&#x27;Dec&#x27;];
+  let mode=&#x27;ss&#x27;, year=0, raf=null, last=0;
+  function reqIncl(){
+    const a=RE+(+hS.value), n=Math.sqrt(MU/(a*a*a)), p=a;
+    const req=0.9856/RAD/DAY, fac=1.5*n*J2*(RE/p)*(RE/p);
+    const cosi=-req/fac; return (Math.abs(cosi)&lt;=1)?Math.acos(cosi)*RAD:NaN;
+  }
+  function hhmm(hours){hours=((hours%24)+24)%24; const h=Math.floor(hours); const m=Math.floor((hours-h)*60); return (h&lt;10?&#x27;0&#x27;:&#x27;&#x27;)+h+&#x27;:&#x27;+(m&lt;10?&#x27;0&#x27;:&#x27;&#x27;)+m;}
+  function resize(){const r=cv.getBoundingClientRect();cv.width=r.width*devicePixelRatio;cv.height=r.height*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+  function setMode(m){mode=m;
+    document.getElementById(&#x27;mSS&#x27;).style.background=(m===&#x27;ss&#x27;)?&#x27;var(--green)&#x27;:&#x27;#7a869a&#x27;;
+    document.getElementById(&#x27;mFX&#x27;).style.background=(m===&#x27;fx&#x27;)?&#x27;var(--green)&#x27;:&#x27;#7a869a&#x27;;
+  }
+  function draw(ts){
+    if(!last)last=ts; const dt=(ts-last)/1000; last=ts; year+=dt*0.12; if(year&gt;1)year-=1;
+    const W=cv.getBoundingClientRect().width, H=cv.getBoundingClientRect().height;
+    ctx.clearRect(0,0,W,H);
+    const cx=W*0.46, cy=H/2, R=Math.min(W,H)*0.30;
+    const sunAng=year*2*Math.PI;                 // Sun direction sweeps once per year
+    // fixed node offset chosen so LTAN starts at 10:30 for sun-sync
+    const off=(10.5-6)/24*2*Math.PI;             // constant angle sun-&gt;node for sun-sync
+    const nodeAng = (mode===&#x27;ss&#x27;) ? sunAng+off : off;   // fixed: node inertially still
+    // faint equatorial rings
+    ctx.strokeStyle=&#x27;#14304c&#x27;; ctx.lineWidth=1;
+    for(let k=1;k&lt;=3;k++){ctx.beginPath();ctx.arc(cx,cy,R*k/3,0,7);ctx.stroke();}
+    // Earth
+    const eg=ctx.createRadialGradient(cx-6,cy-6,3,cx,cy,R*0.20); eg.addColorStop(0,&#x27;#2e6fb0&#x27;); eg.addColorStop(1,&#x27;#0a2340&#x27;);
+    ctx.fillStyle=eg; ctx.beginPath(); ctx.arc(cx,cy,R*0.20,0,7); ctx.fill();
+    // Sun direction (arrow + glyph at rim)
+    const sx=cx+Math.cos(sunAng)*R*1.25, sy=cy+Math.sin(sunAng)*R*1.25;
+    ctx.strokeStyle=&#x27;rgba(218,201,97,.5)&#x27;; ctx.setLineDash([4,5]); ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(sx,sy); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=&#x27;#DAC961&#x27;; ctx.beginPath(); ctx.arc(sx,sy,11,0,7); ctx.fill();
+    ctx.fillStyle=&#x27;#9fb6bd&#x27;; ctx.font=&#x27;12px Calibri&#x27;; ctx.fillText(&#x27;Sun&#x27;,sx-9,sy-16);
+    // wedge between sun-line and node-line (shows constant vs changing angle)
+    ctx.fillStyle=&#x27;rgba(0,196,106,.14)&#x27;;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,R*0.62, sunAng, nodeAng, false); ctx.closePath(); ctx.fill();
+    // orbit line of nodes (green line through Earth) + ascending node marker
+    ctx.strokeStyle=&#x27;#00c46a&#x27;; ctx.lineWidth=2.6;
+    ctx.beginPath(); ctx.moveTo(cx-Math.cos(nodeAng)*R, cy-Math.sin(nodeAng)*R);
+    ctx.lineTo(cx+Math.cos(nodeAng)*R, cy+Math.sin(nodeAng)*R); ctx.stroke();
+    const nx=cx+Math.cos(nodeAng)*R, ny=cy+Math.sin(nodeAng)*R;
+    ctx.fillStyle=&#x27;#00c46a&#x27;; ctx.beginPath(); ctx.arc(nx,ny,6,0,7); ctx.fill();
+    ctx.fillStyle=&#x27;#bfeecf&#x27;; ctx.font=&#x27;12px Calibri&#x27;; ctx.fillText(&#x27;asc. node&#x27;,nx+6,ny-6);
+    // LTAN: angle from sun to node -&gt; hours
+    let rel=((nodeAng-sunAng)%(2*Math.PI)); if(rel&lt;0)rel+=2*Math.PI;
+    const ltan=6+rel/(2*Math.PI)*24;
+    document.getElementById(&#x27;ltan&#x27;).textContent=hhmm(ltan);
+    document.getElementById(&#x27;mon&#x27;).textContent=MONTHS[Math.floor(year*12)%12];
+    const inc=reqIncl();
+    document.getElementById(&#x27;rI&#x27;).textContent=isNaN(inc)?&#x27;n/a&#x27;:f(inc,2);
+    document.getElementById(&#x27;verdict&#x27;).innerHTML = (mode===&#x27;ss&#x27;)
+      ? &#x27;Fly at &lt;b&gt;i=&#x27;+(isNaN(inc)?&#x27;n/a&#x27;:f(inc,2)+&#x27;&amp;deg;&#x27;)+&#x27;&lt;/b&gt;. The node tracks the Sun &amp;mdash; the local time at the node holds at &lt;b&gt;&#x27;+hhmm(ltan)+&#x27;&lt;/b&gt; all year. &lt;b&gt;Locked.&lt;/b&gt;&#x27;
+      : &#x27;A fixed &#x27;+ &#x27;51.6&amp;deg; plane does not precess with the Sun: the local time at the node &lt;b&gt;drifts&lt;/b&gt; through the whole day over a year &amp;mdash; lighting is never repeatable.&#x27;;
+    raf=requestAnimationFrame(draw);
+  }
+  hS.oninput=()=&gt;{document.getElementById(&#x27;hV&#x27;).textContent=+hS.value;};
+  document.getElementById(&#x27;mSS&#x27;).onclick=()=&gt;setMode(&#x27;ss&#x27;);
+  document.getElementById(&#x27;mFX&#x27;).onclick=()=&gt;setMode(&#x27;fx&#x27;);
+  document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{hS.value=b.dataset.h;document.getElementById(&#x27;hV&#x27;).textContent=b.dataset.h;});
+  addEventListener(&#x27;resize&#x27;,resize); resize(); setMode(&#x27;ss&#x27;); raf=requestAnimationFrame(draw);
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1 · special orbits</div>
+    <div class="title">Precession of the line of apsides &amp; Molniya orbits</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>The apsides rotate within the plane</h3>As the spacecraft crosses the equator it "sees" the extra pull of the bulge, which rotates the <b>line of apsides</b> (the perigee–apogee line) <i>inside</i> the orbit plane. Unlike a plane change this is an in‑plane rotation: perigee slowly marches around the orbit at the rate $\dot\omega$ from the J₂ derivation.</div>
+      <div class="card d"><h3>Freeze it at the critical inclination</h3>Set $5\cos^2 i-1=0\Rightarrow i=63.4°$ (or $116.6°$). Then $\dot\omega=0$ and the apogee stops drifting. Choose any other inclination and the apogee slowly migrates between hemispheres — over a year it would spend part of its time over the wrong one, ruining a fixed‑apogee mission.</div>
+    </div>
+    <div class="eqbox">$$i_{\text{crit}}=\arccos\!\sqrt{\tfrac15}=63.435^{\circ}\qquad\Rightarrow\qquad \dot\omega=0$$</div>
+    <div class="cols" style="margin-top:1.4vmin">
+      <div class="card"><h3>Molniya &amp; Tundra</h3>A highly eccentric $i=63.4°$ orbit parks apogee over the far north for hours per pass. This is how the USSR gave high‑latitude regions the coverage a geostationary belt over the equator physically cannot reach.</div>
+      <div class="card d"><h3>Who else uses it</h3>Tundra orbits (24 h period, same inclination) serve regional broadcast; GPS sits in a nearby inclination band. The critical inclination is a genuine design constant, not a curiosity.</div>
+    </div>
+    <div class="note">Nodal regression rotates the plane (out of plane); apsidal precession rotates the ellipse (in plane). J₂ drives both — and both can be turned from nuisance into design tool.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1 · special orbits</div>
+    <div class="title">Molniya orbits — engineering the apogee dwell</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>The design recipe</h3><ul class="pts" style="margin-top:.3vmin;font-size:1.9vmin">
+        <li>Inclination $i=63.4°$ → $\dot\omega=0$: the apogee is <b>frozen</b> (L1).</li>
+        <li>Argument of perigee $\omega=270°$ → apogee sits at the orbit's <b>northernmost</b> point.</li>
+        <li>High eccentricity $e\approx0.74$ (600 km perigee, ~39 750 km apogee).</li>
+        <li>Period ~<b>12 h</b> → the ground track repeats, with two apogee loops per day.</li>
+      </ul></div>
+      <div class="card d"><h3>Why the U.S.S.R. built them</h3>A geostationary belt sits over the equator and barely clears the horizon from high latitudes, so it cannot serve the far north. By Kepler's 2nd law a Molniya satellite <b>crawls near apogee</b>, spending ~8 of its ~12 h hanging over northern latitudes. Three satellites phased 8 h apart give continuous high‑latitude coverage — communications, and later early‑warning.</div>
+    </div>
+    <div class="note">"Molniya" means <i>lightning</i>. Tundra orbits use the same $63.4°$ inclination at a 24‑h period. See the ground track dwell over the U.S.S.R. on the next slide.</div>
+  </div>
+</section>
+
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Molniya orbit — the ground track dwelling over the U.S.S.R.</span></div>
+    <div class="simwrap">
+      <iframe title="molniya demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Molniya · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:440px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none;max-width:75%}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:92px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.red .v{color:#b3261e}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--petrol);font-weight:600;background:#fff}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--tint);border-left:4px solid var(--green);font-size:13px;line-height:1.45}
+  .verdict b{color:var(--forest)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+  .btnrow{display:flex;gap:8px;margin-top:6px}
+  .btnrow button{flex:1;padding:9px;border:none;border-radius:9px;background:var(--green);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
+  .btnrow button:hover{background:var(--forest)}
+
+  .stage{min-height:500px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM &amp;middot; AE 582 &amp;mdash; SPECIAL ORBITS&lt;/div&gt;&lt;h1&gt;Molniya orbit &amp;mdash; apogee dwell over the far north&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;e&amp;#8776;0.74 &amp;middot; i=63.4&amp;deg; (critical) &amp;middot; &amp;#969;=270&amp;deg; &amp;middot; T&amp;#8776;12 h &amp;middot; the satellite crawls over the U.S.S.R. near apogee (Kepler II)&lt;/div&gt;&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;apogee alt&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;39&amp;#8239;750 km&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;perigee alt&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;600 km&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;period&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;11.97 h&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;dwell / orbit&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;~8 h&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;What to watch&lt;/h2&gt;
+    &lt;ul style=&quot;margin:0 0 10px 16px;padding:0;font-size:13px;line-height:1.5;color:var(--ink)&quot;&gt;
+      &lt;li&gt;The ground track (gold) makes &lt;b&gt;two apogee loops per day&lt;/b&gt; — one hangs over the &lt;b&gt;U.S.S.R.&lt;/b&gt;, the other over North America.&lt;/li&gt;
+      &lt;li&gt;By Kepler&#x27;s 2nd law the satellite &lt;b&gt;crawls near apogee&lt;/b&gt;: it spends ~8 of its ~12 h over the northern loop.&lt;/li&gt;
+      &lt;li&gt;The inset shows the eccentric orbit edge‑on — apogee at the top (north), perigee skimming the south.&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class=&quot;btnrow&quot;&gt;&lt;button id=&quot;tog&quot;&gt;&amp;#10073;&amp;#10073; Pause&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;verdict&quot; id=&quot;verdict&quot;&gt;Three Molniya satellites, phased 8 h apart, give a high‑latitude region the continuous coverage a single equatorial GEO satellite cannot.&lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;A geostationary belt sits over the equator, so it grazes the horizon from high latitudes. Freezing apogee over the north with the $i=63.4°$ critical inclination (so $\dot\omega=0$) was the U.S.S.R.&#x27;s answer — hence the name &lt;i&gt;Molniya&lt;/i&gt; (&quot;lightning&quot;).&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+  const MU=398600.4418, RE=6378.14, J2=1.08263e-3, GEO=42164.0, RAD=180/Math.PI, DAY=86400;
+  const vc=r=&gt;Math.sqrt(MU/r), vv=(r,a)=&gt;Math.sqrt(MU*(2/r-1/a));
+  const f=(x,d=2)=&gt;isFinite(x)?Number(x).toLocaleString(&#x27;en-US&#x27;,{minimumFractionDigits:d,maximumFractionDigits:d}):&#x27;\u2014&#x27;;
+
+  const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+  const A=26553, E=0.737, INC=63.4/RAD, W_ARG=270/RAD;
+  const Tp=2*Math.PI*Math.sqrt(A*A*A/MU);           // period s
+  const nMean=2*Math.PI/Tp, wE=2*Math.PI/86164;      // Earth sidereal rate rad/s
+  const OM0=95/RAD;                                   // RAAN chosen to place apogee ~95E
+  let simT=0, playing=true, raf=null, last=0;
+  // --- simplified continents [lon,lat] ---
+  const NA=[[-168,65],[-160,71],[-140,70],[-125,70],[-95,72],[-80,73],[-60,60],[-55,52],[-65,45],[-72,41],[-81,25],[-97,18],[-105,22],[-117,32],[-125,40],[-125,48],[-135,58],[-150,59],[-165,60]];
+  const GR=[[-45,60],[-30,61],[-18,70],[-30,82],[-52,80],[-58,70]];
+  const SA=[[-80,8],[-60,10],[-50,0],[-40,-8],[-38,-18],[-48,-25],[-58,-35],[-66,-45],[-73,-52],[-73,-40],[-70,-20],[-78,-5]];
+  const AF=[[-16,15],[-10,32],[10,34],[32,32],[43,12],[52,10],[48,-2],[40,-15],[35,-25],[25,-34],[18,-34],[12,-18],[8,4],[-8,5]];
+  const AU=[[113,-22],[130,-12],[142,-11],[150,-25],[153,-32],[140,-38],[128,-32],[115,-34]];
+  const EUR=[[-10,36],[0,43],[3,50],[-5,58],[8,62],[30,70],[10,55],[20,48],[28,40],[18,38]];
+  const USSR=[[22,55],[30,52],[40,49],[50,46],[58,42],[62,40],[76,40],[82,46],[92,50],[120,50],[135,48],[150,54],[165,62],[178,66],[178,73],[120,78],[80,74],[55,70],[38,68],[28,62],[22,57]];
+  let mx,my,mw,mh;
+  const MX=lon=&gt;mx+(lon+180)/360*mw, MY=lat=&gt;my+(90-lat)/180*mh;
+  function poly(pts,fill,stroke){ctx.beginPath();pts.forEach((p,k)=&gt;{const x=MX(p[0]),y=MY(p[1]);k?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke();}}
+  // --- Kepler propagation -&gt; ground track lat/lon ---
+  function subpoint(t){
+    let M=nMean*t; M=M%(2*Math.PI);
+    let Ea=M; for(let k=0;k&lt;8;k++) Ea=Ea-(Ea-E*Math.sin(Ea)-M)/(1-E*Math.cos(Ea));
+    const nu=2*Math.atan2(Math.sqrt(1+E)*Math.sin(Ea/2),Math.sqrt(1-E)*Math.cos(Ea/2));
+    const u=W_ARG+nu;
+    const lat=Math.asin(Math.sin(INC)*Math.sin(u))*RAD;
+    let lon=(OM0+Math.atan2(Math.cos(INC)*Math.sin(u),Math.cos(u))-wE*t)*RAD;
+    lon=((lon+180)%360+360)%360-180;
+    return {lat,lon,nu};
+  }
+  function resize(){const r=cv.getBoundingClientRect();cv.width=r.width*devicePixelRatio;cv.height=r.height*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+  function drawMap(){
+    const W=cv.getBoundingClientRect().width, H=cv.getBoundingClientRect().height;
+    mx=0;my=0;mw=W;mh=H;
+    ctx.fillStyle=&#x27;#0b2036&#x27;; ctx.fillRect(0,0,W,H);                 // ocean
+    // graticule
+    ctx.strokeStyle=&#x27;rgba(120,150,180,.14)&#x27;; ctx.lineWidth=1;
+    for(let lon=-150;lon&lt;=150;lon+=30){ctx.beginPath();ctx.moveTo(MX(lon),0);ctx.lineTo(MX(lon),H);ctx.stroke();}
+    for(let lat=-60;lat&lt;=60;lat+=30){ctx.beginPath();ctx.moveTo(0,MY(lat));ctx.lineTo(W,MY(lat));ctx.stroke();}
+    ctx.strokeStyle=&#x27;rgba(120,150,180,.28)&#x27;; ctx.beginPath();ctx.moveTo(0,MY(0));ctx.lineTo(W,MY(0));ctx.stroke(); // equator
+    // continents (faint)
+    const land=&#x27;#22405c&#x27;, ln=&#x27;rgba(150,175,200,.25)&#x27;;
+    [NA,GR,SA,AF,AU,EUR].forEach(c=&gt;poly(c,land,ln));
+    // USSR highlight
+    poly(USSR,&#x27;rgba(0,133,64,.55)&#x27;,&#x27;#00c46a&#x27;);
+    ctx.fillStyle=&#x27;#dff5e8&#x27;; ctx.font=&#x27;bold 15px Calibri&#x27;; ctx.fillText(&#x27;U.S.S.R.&#x27;,MX(78),MY(63));
+  }
+  function drawTrack(){
+    // full 2-orbit track
+    ctx.strokeStyle=&#x27;rgba(218,201,97,.9)&#x27;; ctx.lineWidth=2.2; ctx.beginPath();
+    let started=false, prevx=0;
+    for(let t=0;t&lt;=2*Tp;t+=Tp/240){
+      const s=subpoint(t); const x=MX(s.lon), y=MY(s.lat);
+      if(started &amp;&amp; Math.abs(x-prevx)&gt;mw*0.5){ctx.stroke();ctx.beginPath();started=false;}
+      started?ctx.lineTo(x,y):ctx.moveTo(x,y); started=true; prevx=x;
+    }
+    ctx.stroke();
+  }
+  function drawInset(nu){
+    const W=cv.getBoundingClientRect().width;
+    const bx=W-186, by=14, bw=172, bh=190;
+    ctx.fillStyle=&#x27;rgba(5,7,15,.82)&#x27;; ctx.strokeStyle=&#x27;rgba(218,201,97,.5)&#x27;; ctx.lineWidth=1;
+    ctx.fillRect(bx,by,bw,bh); ctx.strokeRect(bx,by,bw,bh);
+    ctx.fillStyle=&#x27;#9fb6bd&#x27;; ctx.font=&#x27;10px Calibri&#x27;; ctx.fillText(&#x27;orbit (edge-on) · apogee = north&#x27;,bx+8,by+15);
+    const ecx=bx+bw/2, ecy=by+bh/2+8, sc=(bh-46)/(2*A*(1)); // scale so apogee fits
+    const scl=(bh/2-18)/(A*(1+E));
+    // ellipse: perifocal rotated so apogee up. center offset
+    ctx.strokeStyle=&#x27;#3fd0c0&#x27;; ctx.lineWidth=1.8; ctx.beginPath();
+    for(let th=0;th&lt;=2*Math.PI+0.05;th+=0.1){
+      const r=A*(1-E*E)/(1+E*Math.cos(th));
+      const X=-r*Math.sin(th), Y=r*Math.cos(th);           // apogee(th=pi) -&gt; Y=-r (up)
+      const px=ecx+X*scl, py=ecy+Y*scl; th?ctx.lineTo(px,py):ctx.moveTo(px,py);
+    }
+    ctx.stroke();
+    // Earth at focus (origin)
+    ctx.fillStyle=&#x27;#2e6fb0&#x27;; ctx.beginPath(); ctx.arc(ecx,ecy,6,0,7); ctx.fill();
+    // satellite
+    const r=A*(1-E*E)/(1+E*Math.cos(nu));
+    const sx=ecx+(-r*Math.sin(nu))*scl, sy=ecy+(r*Math.cos(nu))*scl;
+    ctx.fillStyle=&#x27;#fff&#x27;; ctx.beginPath(); ctx.arc(sx,sy,4,0,7); ctx.fill();
+    ctx.fillStyle=&#x27;#DAC961&#x27;; ctx.font=&#x27;9px Calibri&#x27;; ctx.fillText(&#x27;N&#x27;,ecx-3,ecy-(A*(1+E))*scl-2);
+  }
+  function frame(ts){
+    if(!last)last=ts; const dt=(ts-last)/1000; last=ts;
+    if(playing) simT+=dt*(Tp/12);                     // ~12 s per orbit
+    if(simT&gt;2*Tp) simT-=2*Tp;
+    drawMap(); drawTrack();
+    const s=subpoint(simT);
+    // satellite on map
+    const x=MX(s.lon), y=MY(s.lat);
+    ctx.fillStyle=&#x27;#fff&#x27;; ctx.beginPath(); ctx.arc(x,y,6,0,7); ctx.fill();
+    ctx.fillStyle=&#x27;#ff5a4d&#x27;; ctx.beginPath(); ctx.arc(x,y,3.4,0,7); ctx.fill();
+    drawInset(s.nu);
+    raf=requestAnimationFrame(frame);
+  }
+  document.getElementById(&#x27;tog&#x27;).onclick=()=&gt;{playing=!playing;document.getElementById(&#x27;tog&#x27;).innerHTML=playing?&#x27;&amp;#10073;&amp;#10073; Pause&#x27;:&#x27;&amp;#9654; Play&#x27;;};
+  addEventListener(&#x27;resize&#x27;,resize); resize(); raf=requestAnimationFrame(frame);
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1 · non‑conservative</div>
+    <div class="title">Atmospheric drag</div>
+    <div class="accent"></div>
+    <div class="eqbox">$$\mathbf F_D=\tfrac12\,\rho\,S C_D\,V_r^{2}\left(\frac{-\mathbf V_r}{|V_r|}\right),\qquad \frac{\Delta\tau}{\tau}\approx-3\pi\rho r\,(SC_D/M)$$</div>
+    <div class="cols">
+      <div class="card g"><h3>Strongest at perigee</h3>For LEO spacecraft drag cannot be ignored. From the drag equation it is largest at perigee, where both density and speed peak. To first order that acts like an impulsive retro‑burn at perigee, lowering the semi‑major axis; in a circular orbit drag acts continuously and the change of period over one revolution is the formula above.</div>
+      <div class="card d"><h3>Contraction, then re‑entry</h3>Drag removes energy ($\varepsilon=-\mu/2a$), so $a$ and $e$ shrink — the orbit contracts and circularises, then decays. Because Earth's atmosphere co‑rotates, the drag force also has an out‑of‑plane component, so it slowly changes inclination too. King‑Hele gives the radial/transverse/normal ($S,T,W$) components for a rotating atmosphere.</div>
+    </div>
+    <div class="note">$V_r$ is velocity relative to the (rotating) atmosphere, $SC_D/M$ the ballistic coefficient, $\rho$ the local density. Solar activity swells $\rho$ and can shorten lifetimes dramatically.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1 · non‑conservative</div>
+    <div class="title">Orbital lifetime</div>
+    <div class="accent"></div>
+    <div class="eqbox" style="font-size:2.0vmin">$$\tau\sim\frac{e_0^{2}}{2B}\left(1-\frac{11}{6}e_0+\frac{29}{16}e_0^{2}+\frac{7}{8}\frac{H}{a_0}\right),\qquad B\sim\sqrt{\Big(\tfrac{\mu}{a_0^3}\Big)}\,\tfrac{SC_D}{M}\rho_{p0}a_0e_0\,I_1\!\Big(\tfrac{a_0e_0}{H}\Big)e^{-e_0(1+a_0/H)}$$</div>
+    <div class="cols">
+      <div class="card g"><h3>From injection to re‑entry</h3>Lifetime is the time from orbit injection until aerodynamic drag brings the vehicle back in. Here $e_0,a_0$ are the values when control ceases, $H$ the scale height near perigee, $\rho_{p0}$ the density there, and $I_1$ a modified Bessel function. The expression neglects atmospheric rotation.</div>
+      <div class="card d"><h3>Why it matters</h3>Decay is slow high up (years at 600 km) but runs away low down (days near 300 km) because density rises exponentially. Uncontrolled re‑entries — Skylab over Australia, Cosmos 954B over Canada — show the hazard, and modern LEO design must plan a controlled de‑orbit or a &lt;25‑year decay.</div>
+    </div>
+    <div class="note">We modelled decay interactively in the Week 3 lifetime demo; here it is one perturbation among several, and the input to end‑of‑life planning we return to in Lecture 2.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1</div>
+    <div class="title">Third‑body &amp; solar radiation pressure</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Sun &amp; Moon (third body)</h3>Negligible in LEO but <b>dominant at GEO</b>, where they tilt the orbit plane ~0.85°/yr. This is why geostationary satellites spend most of their station‑keeping fuel on <b>north–south</b> (inclination) control — a theme we return to in Week 5.</div>
+      <div class="card d"><h3>Solar radiation pressure</h3>Photons carry momentum ($\approx4.6\ \mu$Pa at 1 AU). For high area‑to‑mass craft it grows eccentricity and must be modelled — or harnessed, as in solar sails. Below ~0.005 m²/kg it is minor; above ~0.01 m²/kg it is significant.</div>
+    </div>
+    <div class="note">Both are mostly periodic near Earth, but their long‑period terms matter for precise, long‑lived missions. For most LEO work: model J₂ + drag, treat these as corrections.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1 · case study</div>
+    <div class="title">Precession as a free maneuver — TRACERS</div>
+    <div class="accent"></div>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">The science fixes a Sun‑synchronous plane at a specific local time</div><div class="ex">TRACERS samples the northern magnetic cusp, which is best crossed from a Sun‑synchronous orbit at a <b>10:30 (or 02:30) local time of descending node (LTDN)</b> — the plane's orientation to the Sun is a hard requirement.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">Flying rideshare delivers the <b>wrong</b> local time — 06:00 LTDN</div><div class="ex">As a secondary payload (launched with PUNCH), TRACERS is dropped into whatever Sun‑sync plane the primary needs: a 06:00 LTDN orbit, several hours of local time away from the science orbit.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">Rotating the plane directly is impossible</div><div class="ex">A 4.5‑hour LTDN shift is a ~67° rotation of the orbit plane (a RAAN change). At LEO speed, $\Delta V=2v\sin(\Delta\Omega/2)$ would need several km/s — far more propellant than a SMEX‑class spacecraft carries.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">Instead: <b>raise the altitude</b> a little, keeping the inclination</div><div class="ex">A small in‑plane burn lifts the orbit (to ~610 km) while holding the ~590 km inclination. At the higher altitude the orbit is no longer perfectly Sun‑synchronous, so $\dot\Omega$ no longer matches the Sun and the plane <b>drifts in local time</b>.</div></div></div>
+      <div class="s"><span class="k">5</span><div class="sc"><div class="m">Let it drift ~1 year, then drop back down</div><div class="ex">After about a year the LTDN has walked to the science value; lowering the altitude re‑establishes Sun‑synchronism at the new local time. Time — not propellant — bought the plane change.</div></div></div>
+    </div>
+    <div class="note">This is the hinge of the week: the same $\dot\Omega$ we derived as a nuisance in L1 becomes the maneuver. The next slide puts numbers to it.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 1 · case study</div>
+    <div class="title">TRACERS — the mission &amp; the numbers</div>
+    <div class="accent"></div>
+    <div class="cols wide-left">
+      <div class="stack">
+        <div class="card g" style="padding:1.6vmin 2vmin"><h3>The drift logic</h3>
+          <div class="eqbox" style="margin:.4vmin 0;font-size:1.85vmin">$$\dot\Omega=-\tfrac{3}{2}nJ_2\Big(\tfrac{R_E}{p}\Big)^{2}\cos i$$</div>
+          Raising $a$ lowers $n$ and raises $p$, so $|\dot\Omega|$ drops below the $0.9856°/$day the Sun needs. The plane slips in local time at the <b>difference</b> rate; integrate it over ~1 year to cover the LTDN gap, then restore $a$ to re‑lock. A small in‑plane $\Delta V$ replaces a multi‑km/s plane change.</div>
+      </div>
+      <div class="card d"><h3>Mission facts</h3><table class="tbl" style="font-size:1.7vmin">
+        <tr><td>Two satellites</td><td>same SSO, 10–120 s apart</td></tr>
+        <tr><td>Science</td><td>cusp magnetic reconnection</td></tr>
+        <tr><td>Class / lead</td><td>NASA SMEX · Univ. of Iowa</td></tr>
+        <tr><td>Launch</td><td>Falcon, Vandenberg (rideshare w/ PUNCH)</td></tr>
+        <tr><td>Science orbit</td><td>~590 km, 10:30 LTDN SSO</td></tr>
+        <tr><td>Inclination</td><td>~97.75°</td></tr>
+        <tr><td>Speed / period</td><td>7.563 km/s · 96.6 min</td></tr>
+      </table></div>
+    </div>
+    <div class="note">The lesson generalises: whenever a mission can trade <b>time for propellant</b>, let a perturbation do the work. The same altitude‑drift trick repositions repeating‑ground‑track and responsive‑imaging satellites (Lecture 2).</div>
+  </div>
+</section>
+
+<section class="slide dark">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 of 2</div>
+    <div class="bignum">L2</div>
+    <div class="title">Mission analysis</div>
+    <div class="accent"></div>
+    <div class="subtitle">Which orbit does a mission need, and what does it cost to get there? Orbit categories, the transfer problem, the Hohmann transfer with worked examples, ground‑station visibility, eclipses and launch windows.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2</div>
+    <div class="title">Mission analysis — orbit categories</div>
+    <div class="accent"></div>
+    <div class="cols wide-left">
+      <div class="stack">
+        <ul class="pts" style="font-size:2.05vmin">
+          <li>Mission design happens in the <b>feasibility study</b> and strongly shapes the spacecraft.</li>
+          <li>It is an <b>iterative process</b>: spacecraft constraints and mission goals trade against each other.</li>
+          <li>After pre‑launch and launch, <b>orbit transfer</b> is the next key event — moving the vehicle from its injection orbit to the mission orbit.</li>
+        </ul>
+      </div>
+      <div class="card g"><h3>Missions sort by orbit</h3><ol style="margin:.4vmin 0 0 3vmin;font-size:2vmin;line-height:1.7">
+        <li>Low Earth orbit (LEO)</li>
+        <li>Medium Earth orbit (MEO)</li>
+        <li>Geostationary (GEO)</li>
+        <li>Highly elliptical (HEO)</li>
+        <li>Non‑geocentric (Lagrange, interplanetary)</li>
+      </ol></div>
+    </div>
+    <div class="note">Transfer carries an <i>a‑priori</i> uncertainty (the launch vehicle's performance envelope) and an <i>a‑posteriori</i> one (trajectory measurement errors) — both must be budgeted.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · foundations</div>
+    <div class="title">Altitude sets speed and period</div>
+    <div class="accent"></div>
+    <div class="cols wide-right">
+      <div class="stack">
+        <div class="eqbox" style="font-size:2.0vmin">$$v=\sqrt{\frac{\mu}{R_E+z}},\qquad T=\frac{2\pi}{\sqrt{\mu}}\,(R_E+z)^{3/2}$$</div>
+        <ul class="pts" style="font-size:1.95vmin">
+          <li>Higher orbits are <b>slower</b> but take <b>longer</b> — the two curves move in opposite directions.</li>
+          <li>Across LEO (0–2000 km): speed falls ~7.9 → 6.9 km/s while period grows ~85 → 127 min.</li>
+          <li>This trade underlies every mission‑orbit choice: coverage, revisit time, launch cost.</li>
+        </ul>
+      </div>
+      <svg class="fig" viewBox="0 0 920 300" xmlns="http://www.w3.org/2000/svg">
+        <!-- axes -->
+        <line x1="70" y1="45" x2="70" y2="255" stroke="#B9BCC9"/><line x1="70" y1="255" x2="430" y2="255" stroke="#B9BCC9"/>
+        <line x1="520" y1="45" x2="520" y2="255" stroke="#B9BCC9"/><line x1="520" y1="255" x2="880" y2="255" stroke="#B9BCC9"/>
+        <polyline points="70,62 92,75 115,88 138,101 160,113 182,125 205,136 228,148 250,159 272,169 295,180 318,190 340,200 362,210 385,220 408,229 430,238" fill="none" stroke="#008540" stroke-width="2.6"/>
+        <polyline points="520,236 542,226 565,215 588,204 610,194 632,183 655,172 678,161 700,150 722,138 745,127 768,115 790,104 812,92 835,80 858,69 880,57" fill="none" stroke="#003E51" stroke-width="2.6"/>
+        <text class="svgt g" x="150" y="35" style="font-weight:700">v (km/s)</text>
+        <text class="svgt p" x="600" y="35" style="font-weight:700">T (min)</text>
+        <text class="svgt" x="210" y="285">altitude z (km)</text>
+        <text class="svgt" x="660" y="285">altitude z (km)</text>
+        <text class="svgt" x="40" y="66">8</text><text class="svgt" x="36" y="240">6.8</text>
+        <text class="svgt" x="492" y="240">80</text><text class="svgt" x="488" y="62">130</text>
+        <text class="svgt" x="62" y="270">0</text><text class="svgt" x="410" y="270">2000</text>
+        <text class="svgt" x="512" y="270">0</text><text class="svgt" x="860" y="270">2000</text>
+      </svg>
+    </div>
+    <div class="note">Setting $e=0$ in the orbit equation gives $r=h^2/\mu$ and these two relations directly (course, Fig. 2.14). They are the vis‑viva result of Week 3, restated as the mission‑analysis "menu" of circular orbits.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2</div>
+    <div class="title">Mission analysis — propellant drives everything</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Transfers and pointing cost fuel</h3>Transferring between orbits needs propellant, and planners size it from the initial and target orbits. Observatories that must re‑point continuously (sky surveys) also spend propellant: reaction wheels slew the spacecraft, and thrusters periodically <b>dump the wheels' angular momentum</b>.</h3></div>
+      <div class="card d"><h3>Fuel is the mission clock</h3>A contingency plan covers unscheduled pointing, but careful budgeting is critical — <b>many missions end when fuel runs out</b>, not when hardware fails.</div>
+    </div>
+    <div class="note">Other observatory constraints when deriving a mission profile: minimum Sun/telescope angle, Earth‑limb/telescope angle, passage through the South Atlantic Anomaly, and the thermal balance of the spacecraft and its sensors.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2</div>
+    <div class="title">Mission analysis — end of life &amp; design drivers</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Disposal is part of the design</h3>End of life is a real mission phase. For <b>GEO</b>, longitude slots are scarce, so residual propellant boosts the satellite to a higher <b>graveyard</b> orbit. For <b>LEO</b>, the plan is a controlled re‑entry or a drop to a short‑lifetime disposal orbit (recall the lifetime formula from L1).</div>
+      <div class="card d"><h3>Objectives → design drivers</h3>Analysing the mission objectives produces the <b>design drivers</b> — the handful of requirements (orbit, coverage, power, pointing, lifetime) that dictate the overall vehicle configuration. Everything downstream serves them.</div>
+    </div>
+    <div class="note">The rest of this lecture works the three questions mission analysis must answer: how to <b>reach</b> the orbit (transfers), how much of the Earth it <b>sees</b> (coverage), and <b>when</b> we can launch (windows).</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · orbit transfer</div>
+    <div class="title">The Keplerian orbit‑transfer problem</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>One maneuver, or two?</h3>To move between two orbits with a <b>single</b> burn, the initial and final orbits must <b>intersect</b> at the burn point. If they don't — e.g. two non‑touching circular orbits — you need at least <b>two</b> maneuvers.</div>
+      <div class="card d"><h3>The Hohmann transfer</h3>The Hohmann transfer uses two burns to move between coplanar circular orbits via an ellipse tangent to both. It is the <b>minimum‑energy two‑maneuver transfer</b>, optimal for radius ratios $r_2/r_1<11.8$.</div>
+    </div>
+    <div class="eqbox">$$a_t=\frac{r_1+r_2}{2}\qquad\text{transfer ellipse: perigee at }r_1,\ \text{apogee at }r_2$$</div>
+    <div class="note">Every step below is just vis‑viva (Week 3) evaluated on the circle and on the transfer ellipse — the same recipe used for launch injection, GTO, and planetary departure.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · derivation</div>
+    <div class="title">Hohmann transfer — the equations</div>
+    <div class="accent"></div>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">$v_c=\sqrt{\mu/r_1}\qquad v_p^{2}=2\mu\!\left(\dfrac{1}{r_1}-\dfrac{1}{r_1+r_2}\right)$</div><div class="ex">Circular speed on the inner orbit, and the perigee speed on the transfer ellipse.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">$\Delta V_1=\sqrt{\dfrac{\mu}{r_1}}\left(\sqrt{\dfrac{2r_2}{r_1+r_2}}-1\right)$</div><div class="ex">First burn at perigee: speed up from the circle onto the transfer ellipse.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">$\Delta V_2=\sqrt{\dfrac{\mu}{r_2}}\left(1-\sqrt{\dfrac{2r_1}{r_1+r_2}}\right)$</div><div class="ex">Second burn at apogee: circularise onto the outer orbit.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">$T_t=\dfrac{1}{2}\cdot 2\pi\sqrt{\dfrac{a_t^{3}}{\mu}}=\pi\sqrt{\dfrac{(r_1+r_2)^3}{8\mu}}$</div><div class="ex">Transfer time is half the ellipse period. Total cost $\Delta V=\Delta V_1+\Delta V_2$. Verify it live next.</div></div></div>
+    </div>
+    <div class="note">Table 5.1 (course) tabulates Hohmann departures from a 300 km LEO to the planets — e.g. Mars $\Delta V\approx3.59$ km/s over 0.71 yr, Jupiter $\approx6.30$ km/s over 2.73 yr.</div>
+  </div>
+</section>
+
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Hohmann transfer — set two orbits, run the two‑burn transfer</span></div>
+    <div class="simwrap">
+      <iframe title="hohmann demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Hohmann · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:440px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none;max-width:75%}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:92px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.red .v{color:#b3261e}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--petrol);font-weight:600;background:#fff}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--tint);border-left:4px solid var(--green);font-size:13px;line-height:1.45}
+  .verdict b{color:var(--forest)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+  .btnrow{display:flex;gap:8px;margin-top:6px}
+  .btnrow button{flex:1;padding:9px;border:none;border-radius:9px;background:var(--green);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
+  .btnrow button:hover{background:var(--forest)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 - WEEK 4 - TRANSFERS&lt;/div&gt;&lt;h1&gt;Hohmann transfer calculator&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;a&lt;sub&gt;t&lt;/sub&gt; = (r&amp;#8321;+r&amp;#8322;)/2 &amp;nbsp;&amp;middot;&amp;nbsp; &amp;#916;V from vis&amp;#8209;viva at r&amp;#8321; and r&amp;#8322;&lt;/div&gt;&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;&amp;#916;V&amp;#8321; (perigee)&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;d1&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;&amp;#916;V&amp;#8322; (apogee)&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;d2&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;total &amp;#916;V&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;dt&quot;&gt;—&lt;/span&gt; km/s&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;transfer time&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;tt&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Orbits&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Initial altitude &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;h1V&quot;&gt;400&lt;/span&gt; km&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;h1&quot; min=&quot;200&quot; max=&quot;20000&quot; step=&quot;50&quot; value=&quot;400&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Final altitude &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;h2V&quot;&gt;35786&lt;/span&gt; km&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;h2&quot; min=&quot;200&quot; max=&quot;40000&quot; step=&quot;50&quot; value=&quot;35786&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;presets&quot;&gt;
+      &lt;button data-a=&quot;400&quot; data-b=&quot;35786&quot;&gt;LEO &amp;rarr; GEO&lt;/button&gt;
+      &lt;button data-a=&quot;400&quot; data-b=&quot;800&quot;&gt;400 &amp;rarr; 800&lt;/button&gt;
+      &lt;button data-a=&quot;400&quot; data-b=&quot;20200&quot;&gt;&amp;rarr; GPS (MEO)&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;btnrow&quot;&gt;&lt;button id=&quot;run&quot;&gt;&amp;#9654; Run transfer&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;verdict&quot; id=&quot;verdict&quot;&gt;—&lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;Blue = start orbit, teal = target, gold dashed = transfer ellipse. The burn is tangential at both ends. Note how $\Delta V_2$ shrinks for very high targets — apogee is slow.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+  const MU=398600.4418, RE=6378.14, J2=1.08263e-3, GEO=42164.0, RAD=180/Math.PI, DAY=86400;
+  const vc=r=&gt;Math.sqrt(MU/r), vv=(r,a)=&gt;Math.sqrt(MU*(2/r-1/a));
+  const f=(x,d=2)=&gt;isFinite(x)?Number(x).toLocaleString(&#x27;en-US&#x27;,{minimumFractionDigits:d,maximumFractionDigits:d}):&#x27;\u2014&#x27;;
+
+  const h1=document.getElementById(&#x27;h1&#x27;), h2=document.getElementById(&#x27;h2&#x27;);
+  const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+  let t=0, playing=false, raf=null;
+  function calc(){
+    const r1=RE+(+h1.value), r2=RE+(+h2.value), at=(r1+r2)/2;
+    const dv1=Math.abs(vv(r1,at)-vc(r1)), dv2=Math.abs(vc(r2)-vv(r2,at));
+    const tt=Math.PI*Math.sqrt(at*at*at/MU);
+    return {r1,r2,at,dv1,dv2,tt};
+  }
+  function fmtT(s){const h=s/3600; return h&lt;1?f(s/60,0)+&#x27; min&#x27;:f(h,2)+&#x27; h&#x27;;}
+  function nums(){
+    const d=calc();
+    document.getElementById(&#x27;h1V&#x27;).textContent=+h1.value;
+    document.getElementById(&#x27;h2V&#x27;).textContent=+h2.value;
+    document.getElementById(&#x27;d1&#x27;).textContent=f(d.dv1,3);
+    document.getElementById(&#x27;d2&#x27;).textContent=f(d.dv2,3);
+    document.getElementById(&#x27;dt&#x27;).textContent=f(d.dv1+d.dv2,3);
+    document.getElementById(&#x27;tt&#x27;).textContent=fmtT(d.tt);
+    document.getElementById(&#x27;verdict&#x27;).innerHTML=&#x27;Total budget &lt;b&gt;&#x27;+f(d.dv1+d.dv2,3)+&#x27; km/s&lt;/b&gt; over &#x27;+fmtT(d.tt)+&#x27;. Radius ratio r&amp;#8322;/r&amp;#8321; = &lt;b&gt;&#x27;+f(d.r2/d.r1,2)+&#x27;&lt;/b&gt;&#x27;+(d.r2/d.r1&gt;11.94?&#x27; &amp;mdash; above 11.94, a bi‑elliptic transfer could beat this.&#x27;:&#x27; &amp;mdash; Hohmann is optimal here.&#x27;);
+  }
+  function resize(){const r=cv.getBoundingClientRect();cv.width=r.width*devicePixelRatio;cv.height=r.height*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+  function draw(frac){
+    const d=calc(), W=cv.getBoundingClientRect().width, H=cv.getBoundingClientRect().height;
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2, cy=H/2, outer=Math.max(d.r1,d.r2), scale=Math.min(W,H)*0.40/outer;
+    const dir=d.r1&lt;=d.r2?1:-1;
+    ctx.lineWidth=2;
+    ctx.strokeStyle=dir&gt;0?&#x27;#3a86ff&#x27;:&#x27;#3fd0c0&#x27;; ctx.beginPath(); ctx.arc(cx,cy,d.r1*scale,0,7); ctx.stroke();
+    ctx.strokeStyle=dir&gt;0?&#x27;#3fd0c0&#x27;:&#x27;#3a86ff&#x27;; ctx.beginPath(); ctx.arc(cx,cy,d.r2*scale,0,7); ctx.stroke();
+    const a=d.at, e=Math.abs(d.r2-d.r1)/(d.r1+d.r2), b=a*Math.sqrt(1-e*e), foc=a*e;
+    ctx.strokeStyle=&#x27;#DAC961&#x27;; ctx.setLineDash([6,5]); ctx.lineWidth=2.2;
+    ctx.beginPath(); ctx.ellipse(cx-dir*foc*scale,cy,a*scale,b*scale,0,0,7); ctx.stroke(); ctx.setLineDash([]);
+    const eg=ctx.createRadialGradient(cx-4,cy-4,2,cx,cy,15); eg.addColorStop(0,&#x27;#2e6fb0&#x27;); eg.addColorStop(1,&#x27;#0a2340&#x27;);
+    ctx.fillStyle=eg; ctx.beginPath(); ctx.arc(cx,cy,12,0,7); ctx.fill();
+    // burn markers
+    ctx.fillStyle=&#x27;#ff5a4d&#x27;;
+    ctx.beginPath(); ctx.arc(cx+dir*d.r1*scale,cy,5,0,7); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx-dir*d.r2*scale,cy,5,0,7); ctx.fill();
+    // spacecraft
+    let sx,sy;
+    if(frac&lt;0.12){const th=dir&gt;0?0:Math.PI; sx=cx+d.r1*scale*Math.cos(th); sy=cy;}
+    else if(frac&lt;0.88){const tt=(frac-0.12)/0.76; const nu=dir&gt;0?Math.PI*tt:Math.PI+Math.PI*tt;
+      const rr=a*(1-e*e)/(1+e*Math.cos(nu)); sx=cx+rr*scale*Math.cos(nu); sy=cy-rr*scale*Math.sin(nu);}
+    else {const tt=(frac-0.88)/0.12; const th0=dir&gt;0?Math.PI:0; const th=th0-1.4*tt;
+      sx=cx+d.r2*scale*Math.cos(th); sy=cy-d.r2*scale*Math.sin(th);}
+    ctx.fillStyle=&#x27;#fff&#x27;; ctx.beginPath(); ctx.arc(sx,sy,6,0,7); ctx.fill();
+    ctx.fillStyle=&#x27;#DAC961&#x27;; ctx.beginPath(); ctx.arc(sx,sy,3.4,0,7); ctx.fill();
+  }
+  function loop(){ if(!playing)return; t+=0.006; if(t&gt;=1){t=1;playing=false;document.getElementById(&#x27;run&#x27;).innerHTML=&#x27;&amp;#8635; Replay&#x27;;}
+    draw(t); if(playing) raf=requestAnimationFrame(loop); }
+  document.getElementById(&#x27;run&#x27;).onclick=()=&gt;{if(raf)cancelAnimationFrame(raf);t=0;playing=true;document.getElementById(&#x27;run&#x27;).innerHTML=&#x27;&amp;#9679; Running&#x27;;loop();};
+  h1.oninput=()=&gt;{nums(); if(!playing)draw(1);}; h2.oninput=()=&gt;{nums(); if(!playing)draw(1);};
+  document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{h1.value=b.dataset.a;h2.value=b.dataset.b;nums();draw(1);});
+  addEventListener(&#x27;resize&#x27;,()=&gt;{resize();draw(playing?t:1);}); resize(); nums(); draw(1);
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · worked example</div>
+    <div class="title">Example — 7000 km to 20 000 km circular</div>
+    <div class="accent"></div>
+    <div class="cols wide-right">
+      <div class="steps stepper">
+        <div class="s"><span class="k">1</span><div class="sc"><div class="m">$r_1=7000,\ r_2=20000\ \text{km},\ a_t=13500$</div><div class="ex">Transfer ellipse is the average of the two radii.</div></div></div>
+        <div class="s"><span class="k">2</span><div class="sc"><div class="m">$\Delta V_1=9.184-7.546=1.638\ \text{km/s}$</div><div class="ex">Perigee burn (red, right): circle → transfer ellipse.</div></div></div>
+        <div class="s"><span class="k">3</span><div class="sc"><div class="m">$\Delta V_2=4.464-3.215=1.249\ \text{km/s}$</div><div class="ex">Apogee burn (red, left): circularise at $r_2$.</div></div></div>
+        <div class="s"><span class="k">4</span><div class="sc"><div class="m">$\Delta V=2.89\ \text{km/s},\ T_t\approx2.17\ \text{h}$</div><div class="ex">Total budget and half‑ellipse transfer time.</div></div></div>
+      </div>
+      <svg class="fig" viewBox="0 0 560 330" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="224.0" cy="165.0" r="46.2" fill="none" stroke="#3a86ff" stroke-width="2.4"/>
+  <circle cx="224.0" cy="165.0" r="132.0" fill="none" stroke="#3fd0c0" stroke-width="2.4"/>
+  <ellipse cx="181.1" cy="165.0" rx="89.1" ry="78.1" fill="none" stroke="#DAC961" stroke-width="2.2" stroke-dasharray="6 5"/>
+  <circle cx="224.0" cy="165.0" r="9" fill="#2e6fb0"/>
+  <circle cx="270.2" cy="165.0" r="5.5" fill="#ff5a4d"/>
+  <circle cx="92.0" cy="165.0" r="5.5" fill="#ff5a4d"/>
+  <path id="tp" d="M 270.2,165.0 A 89.1,78.1 0 0 1 92.0,165.0" fill="none" stroke="none"/>
+  <g><circle r="6" fill="#fff"/><circle r="3.2" fill="#DAC961"/>
+     <animateMotion dur="5s" repeatCount="indefinite"><mpath href="#tp"/></animateMotion></g>
+  <text class="svgt" x="278" y="169" style="fill:#b3261e;font-weight:700">ΔV₁</text>
+  <text class="svgt" x="88" y="153" style="fill:#b3261e;font-weight:700;text-anchor:end">ΔV₂</text>
+  <text class="svgt g" x="192" y="227">① 7000 km</text>
+  <text class="svgt" x="98" y="313" style="fill:#12786e">③ 20000 km</text>
+  <text class="svgt s" x="181" y="79" style="text-anchor:middle">② transfer ellipse</text>
+</svg>
+    </div>
+    <div class="note">The dot coasts the transfer ellipse (gold) from the perigee burn to the apogee burn — the two impulsive stages of every Hohmann transfer.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · worked example 6.1</div>
+    <div class="title">Example 6.1 — transfer &amp; propellant budget</div>
+    <div class="accent"></div>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">Orbit 1: $480\times800$ km &rarr; $r_p=6858,\ r_a=7178$; $h_1=52\,876\ \text{km}^2/\text{s}$</div><div class="ex">A 2000‑kg spacecraft starts in this orbit. Use $h=\sqrt{2\mu\,r_ar_p/(r_a+r_p)}$ for each orbit's angular momentum.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">Orbit 2 (transfer): $480\times16000$ km &rarr; $h_2=64\,690\ \text{km}^2/\text{s}$</div><div class="ex">The transfer ellipse shares perigee with orbit 1 and reaches apogee at 16 000 km altitude.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">At perigee $A$: $v_{A1}=7.710,\ v_{A2}=9.433\Rightarrow \Delta V_A=1.7225\ \text{km/s}$</div><div class="ex">Speeds are $h/r_A$ on each orbit; the perigee burn is their difference.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">At apogee $B$: $v_{B2}=2.890,\ v_{B3}=4.220\Rightarrow \Delta V_B=1.3297\ \text{km/s}$</div><div class="ex">Apogee kick to the circular orbit 3 ($h_3=94\,445$). Total $\Delta V=3.0522$ km/s.</div></div></div>
+      <div class="s"><span class="k">5</span><div class="sc"><div class="m">$\dfrac{\Delta m}{m}=1-e^{-\Delta V/I_{sp}g_0}=0.6456\Rightarrow m_{\text{prop}}=1291\ \text{kg}$</div><div class="ex">With $I_{sp}=300$ s the transfer burns ~65% of the 2000‑kg spacecraft as propellant — a vivid reminder that ΔV is expensive.</div></div></div>
+    </div>
+    <div class="note">The rocket equation ($\Delta m/m=1-e^{-\Delta V/I_{sp}g_0}$) links the ΔV budget to hardware; we return to it in Week 5's propulsion material.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · worked example 6.1 · stages</div>
+    <div class="title">Example 6.1 — the transfer, stage by stage</div>
+    <div class="accent"></div>
+    <div class="cols wide-right">
+      <div class="stack">
+        <div class="steps">
+          <div class="s"><span class="k">A</span><div class="m"><b>Perigee burn</b> $\Delta V_A=1.7225$ km/s — orbit&nbsp;1 (480×800) onto the transfer ellipse.</div></div>
+          <div class="s"><span class="k">·</span><div class="m"><b>Coast</b> half the transfer ellipse out to apogee at 16 000 km.</div></div>
+          <div class="s"><span class="k">B</span><div class="m"><b>Apogee kick</b> $\Delta V_B=1.3297$ km/s — circularise onto orbit&nbsp;3.</div></div>
+          <div class="s"><span class="k">Σ</span><div class="m">$\Delta V=3.052$ km/s → $m_{\text{prop}}=1291$ kg of the 2000‑kg spacecraft ($I_{sp}=300$ s).</div></div>
+        </div>
+      </div>
+      <svg class="fig" viewBox="0 0 560 330" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="224.0" cy="165.0" r="40.5" fill="none" stroke="#3a86ff" stroke-width="2.4"/>
+  <circle cx="224.0" cy="165.0" r="132.0" fill="none" stroke="#3fd0c0" stroke-width="2.4"/>
+  <ellipse cx="178.2" cy="165.0" rx="86.2" ry="73.1" fill="none" stroke="#DAC961" stroke-width="2.2" stroke-dasharray="6 5"/>
+  <circle cx="224.0" cy="165.0" r="9" fill="#2e6fb0"/>
+  <circle cx="264.5" cy="165.0" r="5.5" fill="#ff5a4d"/>
+  <circle cx="92.0" cy="165.0" r="5.5" fill="#ff5a4d"/>
+  <path id="tp" d="M 264.5,165.0 A 86.2,73.1 0 0 1 92.0,165.0" fill="none" stroke="none"/>
+  <g><circle r="6" fill="#fff"/><circle r="3.2" fill="#DAC961"/>
+     <animateMotion dur="5s" repeatCount="indefinite"><mpath href="#tp"/></animateMotion></g>
+  <text class="svgt" x="272" y="169" style="fill:#b3261e;font-weight:700">ΔV_A</text>
+  <text class="svgt" x="88" y="153" style="fill:#b3261e;font-weight:700;text-anchor:end">ΔV_B</text>
+  <text class="svgt g" x="196" y="221">① 480×800</text>
+  <text class="svgt" x="98" y="313" style="fill:#12786e">③ 16000 km</text>
+  <text class="svgt s" x="178" y="84" style="text-anchor:middle">② transfer</text>
+</svg>
+    </div>
+    <div class="note">This is the course's Fig. 6.3 brought to life: the red points are the two burns, the gold ellipse the transfer, and the moving dot the spacecraft coasting between them.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · application</div>
+    <div class="title">Hohmann transfers to the planets</div>
+    <div class="accent"></div>
+    <table class="tbl">
+      <tr><th>Planet</th><th>Transfer SMA (AU)</th><th>Transfer time (yr)</th><th>ΔV, Earth departure (km/s)</th></tr>
+      <tr><td>Mercury</td><td>0.694</td><td>0.289</td><td>5.55</td></tr>
+      <tr><td>Venus</td><td>0.862</td><td>0.400</td><td>3.48</td></tr>
+      <tr><td>Mars</td><td>1.262</td><td>0.709</td><td>3.59</td></tr>
+      <tr><td>Jupiter</td><td>3.101</td><td>2.731</td><td>6.30</td></tr>
+      <tr><td>Saturn</td><td>5.269</td><td>6.049</td><td>7.28</td></tr>
+      <tr><td>Neptune</td><td>15.531</td><td>30.605</td><td>8.25</td></tr>
+    </table>
+    <div class="note">Values are for the Earth‑departure phase only, from an assumed 300 km circular parking orbit (course Table 5.1). Transfer time is half the transfer‑ellipse period; arrival ΔV depends on the destination's insertion orbit. The long trip times are why gravity assists and low‑thrust (Week 5) matter for the outer planets.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · real mission</div>
+    <div class="title">Mission profile example — Artemis I</div>
+    <div class="accent"></div>
+    <div class="cols wide-left">
+      <div class="stack">
+        <ul class="pts" style="font-size:1.9vmin">
+          <li>First uncrewed flight test of <b>Orion</b> + <b>SLS</b>, from Kennedy.</li>
+          <li>Stages: launch → parking orbit → <b>TLI</b> outbound → outbound powered flyby → distant lunar orbit → <b>TEI</b> return → re‑entry.</li>
+          <li>Each named burn is a transfer of the kind we just derived; the animation traces the translunar coast and return.</li>
+        </ul>
+        <div class="note" style="margin-top:.6vmin">1.3 M miles · 26–42 days · re‑entry Mach 32 · 13 CubeSats deployed.</div>
+      </div>
+      <svg class="fig" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg">
+  <!-- Earth + LEO -->
+  <circle cx="96" cy="160.0" r="16" fill="#2e6fb0"/>
+  <circle cx="96" cy="160.0" r="30" fill="none" stroke="#3a86ff" stroke-width="1.6" stroke-dasharray="3 4"/>
+  <!-- apogee-raise ellipse -->
+  <ellipse cx="151" cy="160.0" rx="70" ry="34" fill="none" stroke="#DAC961" stroke-width="1.8" stroke-dasharray="5 5"/>
+  <!-- Moon -->
+  <circle cx="464" cy="160.0" r="11" fill="#9fb0bd"/>
+  <circle cx="464" cy="160.0" r="26" fill="none" stroke="#6b7b88" stroke-width="1.2" stroke-dasharray="3 4"/>
+  <!-- translunar + free-return path -->
+  <path id="tl" d="M 126,160.0 C 276,20.0 344,40.0 460,136.0
+      C 498,154.0 498,166.0 460,184.0
+      C 344,280.0 276,300.0 126,160.0" fill="none" stroke="#3fd0c0" stroke-width="2.4"/>
+  <g><circle r="6" fill="#fff"/><circle r="3.2" fill="#ff5a4d"/>
+     <animateMotion dur="7s" repeatCount="indefinite"><mpath href="#tl"/></animateMotion></g>
+  <text class="svgt g" x="78" y="212.0">LEO · PRM</text>
+  <text class="svgt s" x="166" y="120.0" style="text-anchor:middle">apogee raise</text>
+  <text class="svgt" x="250.0" y="64.0" style="fill:#12786e">TLI &rarr; outbound</text>
+  <text class="svgt" x="458" y="126.0" style="text-anchor:middle;fill:#12211b">lunar flyby</text>
+  <text class="svgt" x="270.0" y="264.0" style="fill:#12786e">free-return</text>
+</svg>
+    </div>
+    <div class="note">The point for mission analysis: a deep‑space mission is a chain of impulsive transfers strung together by coast arcs — the toolkit of this lecture, applied end to end.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · real mission</div>
+    <div class="title">Mission profile example — Artemis II</div>
+    <div class="accent"></div>
+    <div class="cols wide-left">
+      <div class="stack">
+        <div class="steps">
+          <div class="s"><span class="k">1</span><div class="m"><b>Launch</b> &amp; enter Earth orbit — ICPS <b>Perigee Raise Maneuver</b> into a 100×1545 nmi orbit.</div></div>
+          <div class="s"><span class="k">2</span><div class="m"><b>Apogee Raise</b> to a high Earth orbit; ICPS separation and Orion systems checkout.</div></div>
+          <div class="s"><span class="k">3</span><div class="m"><b>Orion TLI</b> by the main engine → 4‑day outbound with correction burns.</div></div>
+          <div class="s"><span class="k">4</span><div class="m"><b>Lunar flyby</b> (~4000 nmi) → 4‑day trans‑Earth return → CM/SM separation → entry &amp; landing.</div></div>
+        </div>
+      </div>
+      <div class="card g"><h3>Insertion &amp; crew</h3><table class="tbl" style="font-size:1.75vmin">
+        <tr><td>Vehicle</td><td>SLS Block 1 + ICPS</td></tr>
+        <tr><td>Insertion orbit</td><td>15×1200 nmi (27.8×2222 km)</td></tr>
+        <tr><td>Inclination</td><td>28.5°</td></tr>
+        <tr><td>Crew / duration</td><td>4 / ~10 days</td></tr>
+      </table>
+      <div class="note" style="margin-top:1vmin">A crewed <b>hybrid free‑return</b> trajectory — chosen so that if the TLI or later burns fail, lunar gravity swings Orion back to Earth without a large burn. Trajectory <i>design</i>, not just ΔV, buys safety.</div></div>
+    </div>
+    <div class="note">The perigee‑raise / apogee‑raise pair is a Hohmann‑type staircase; the 28.5° insertion inclination reflects the launch‑site latitude (Cape Canaveral) — the same plane‑cost logic from L1.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · coverage</div>
+    <div class="title">Ground coverage — the footprint</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Viewing angle → coverage circle</h3>At height $h$ the payload's viewing angle is $2\alpha$ — the field of view of an imager or the beamwidth of an antenna. It projects a coverage circle on the ground of geocentric semi‑angle $\phi$ and diameter $D=2\phi R_E$.</div>
+      <div class="card d"><h3>Edge‑of‑coverage geometry</h3>At the edge, elevation $\varepsilon$ and slant range $\rho$ follow from the same triangle as visibility: $\varepsilon=\tfrac{\pi}{2}-\phi-\alpha$ and $\rho=R_E\,\dfrac{\sin\phi}{\sin(\pi/2-\varepsilon-\phi)}$.</div>
+    </div>
+    <div class="eqbox">$$D=2\phi R_E,\qquad \phi=-\varepsilon+\cos^{-1}\!\Big(\tfrac{R_E}{R_E+h}\cos\varepsilon\Big)$$</div>
+    <div class="note">Coverage is the <b>performance</b> side of the constellation trade: one satellite sees a cap of diameter $D$; global or continuous coverage needs many, phased in planes — which is where constellations come in.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · coverage</div>
+    <div class="title">Ground‑station visibility</div>
+    <div class="accent"></div>
+    <div class="cols wide-right">
+      <div class="stack">
+        <ul class="pts" style="font-size:2.0vmin">
+          <li>A satellite is visible from any point inside a circle centred on the sub‑satellite point; the circle grows with altitude.</li>
+          <li>Signals near the horizon are weakened by the atmosphere, so useful coverage is limited to elevations above ~<b>5°</b>.</li>
+          <li>$\phi$ is the geocentric half‑angle of visibility; $s$ the slant range; $\varepsilon$ the elevation.</li>
+        </ul>
+        <div class="eqbox" style="font-size:1.95vmin">$$\phi=-\varepsilon+\cos^{-1}\!\Big(\tfrac{R_E}{R_E+h}\cos\varepsilon\Big),\quad s=(R_E+h)\tfrac{\sin\phi}{\cos\varepsilon}$$</div>
+      </div>
+      <div class="card d"><h3>Pass duration</h3><div class="eqbox" style="margin:.3vmin 0;font-size:1.9vmin">$\tau=2\phi/\omega_{ES}$</div>$\omega_{ES}^2=\omega_E^2+\omega^2-2\omega_E\omega\cos i$ is the satellite's angular rate relative to Earth. For LEO, using $\omega\approx631(R_E+h)^{-3/2}$ rad/s is within ~5–10%. A 500 km satellite is above 5° for ~9.2 min and above 10° for ~7.4 min on an overhead pass — most passes are shorter.</div>
+    </div>
+    <div class="note">Explore how altitude and the elevation mask reshape the footprint and pass time on the next slide.</div>
+  </div>
+</section>
+
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Ground‑station visibility — coverage footprint &amp; pass duration vs. altitude</span></div>
+    <div class="simwrap">
+      <iframe title="visibility demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Ground visibility · AE 582&lt;/title&gt;
+&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:440px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none;max-width:75%}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:92px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.red .v{color:#b3261e}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--petrol);font-weight:600;background:#fff}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--tint);border-left:4px solid var(--green);font-size:13px;line-height:1.45}
+  .verdict b{color:var(--forest)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+  .btnrow{display:flex;gap:8px;margin-top:6px}
+  .btnrow button{flex:1;padding:9px;border:none;border-radius:9px;background:var(--green);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
+  .btnrow button:hover{background:var(--forest)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM &amp;middot; AE 582 &amp;mdash; MISSION ANALYSIS&lt;/div&gt;&lt;h1&gt;Ground&amp;#8209;station visibility &amp;amp; coverage&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;&amp;#966; = &amp;minus;&amp;#949; + cos&amp;#8315;&amp;#185;(R&amp;#8407;/(R&amp;#8407;+h) cos&amp;#949;) &amp;middot; s = (R&amp;#8407;+h) sin&amp;#966;/cos&amp;#949; &amp;middot; &amp;#964; = 2&amp;#966;/&amp;#969;&lt;/div&gt;&lt;/header&gt;
+&lt;main&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;readouts&quot;&gt;
+      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;half&amp;#8209;angle &amp;#966;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;phi&quot;&gt;—&lt;/span&gt;&amp;deg;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;slant range s&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;s&quot;&gt;—&lt;/span&gt; km&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;coverage D&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;D&quot;&gt;—&lt;/span&gt; km&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;max pass&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;tau&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Inputs&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Altitude h &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;hV&quot;&gt;500&lt;/span&gt; km&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;h&quot; min=&quot;200&quot; max=&quot;36000&quot; step=&quot;50&quot; value=&quot;500&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Elevation mask &amp;#949; &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;eV&quot;&gt;5&lt;/span&gt;&amp;deg;&lt;/span&gt;&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;e&quot; min=&quot;0&quot; max=&quot;30&quot; step=&quot;1&quot; value=&quot;5&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;presets&quot;&gt;
+      &lt;button data-h=&quot;500&quot;&gt;LEO 500&lt;/button&gt;
+      &lt;button data-h=&quot;800&quot;&gt;SSO 800&lt;/button&gt;
+      &lt;button data-h=&quot;20200&quot;&gt;GPS MEO&lt;/button&gt;
+      &lt;button data-h=&quot;35786&quot;&gt;GEO&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;verdict&quot; id=&quot;verdict&quot;&gt;—&lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;The gold cap is the region of Earth that can see the satellite above the elevation mask. Raising the mask (to dodge horizon atmosphere) shrinks the cap; raising altitude enlarges it. Pass duration uses &amp;#969;&amp;#8776;631(R&amp;#8407;+h)&amp;#8315;&amp;#179;&amp;#8322; rad/s.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+  const MU=398600.4418, RE=6378.14, J2=1.08263e-3, GEO=42164.0, RAD=180/Math.PI, DAY=86400;
+  const vc=r=&gt;Math.sqrt(MU/r), vv=(r,a)=&gt;Math.sqrt(MU*(2/r-1/a));
+  const f=(x,d=2)=&gt;isFinite(x)?Number(x).toLocaleString(&#x27;en-US&#x27;,{minimumFractionDigits:d,maximumFractionDigits:d}):&#x27;\u2014&#x27;;
+
+  const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
+  const hS=document.getElementById(&#x27;h&#x27;), eS=document.getElementById(&#x27;e&#x27;);
+  function calc(){
+    const h=+hS.value, eps=(+eS.value)/RAD, rs=RE+h;
+    const phi=-eps+Math.acos(RE/rs*Math.cos(eps));      // rad
+    const s=rs*Math.sin(phi)/Math.cos(eps);
+    const D=2*phi*RE;
+    const w=631*Math.pow(rs,-1.5);                       // rad/s (approx omega)
+    const tau=2*phi/w;                                   // s
+    return {h,eps,rs,phi,s,D,tau};
+  }
+  function fmtT(s){const m=s/60; return m&lt;90?f(m,1)+&#x27; min&#x27;:f(m/60,2)+&#x27; h&#x27;;}
+  function resize(){const r=cv.getBoundingClientRect();cv.width=r.width*devicePixelRatio;cv.height=r.height*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+  function upd(){
+    const d=calc();
+    document.getElementById(&#x27;hV&#x27;).textContent=+hS.value;
+    document.getElementById(&#x27;eV&#x27;).textContent=+eS.value;
+    document.getElementById(&#x27;phi&#x27;).textContent=f(d.phi*RAD,2);
+    document.getElementById(&#x27;s&#x27;).textContent=f(d.s,0);
+    document.getElementById(&#x27;D&#x27;).textContent=f(d.D,0);
+    document.getElementById(&#x27;tau&#x27;).textContent=fmtT(d.tau);
+    document.getElementById(&#x27;verdict&#x27;).innerHTML=&#x27;At &#x27;+(+hS.value)+&#x27; km with a &#x27;+(+eS.value)+&#x27;&amp;deg; mask, the footprint spans &lt;b&gt;&#x27;+f(d.D,0)+&#x27; km&lt;/b&gt; and an overhead pass lasts up to &lt;b&gt;&#x27;+fmtT(d.tau)+&#x27;&lt;/b&gt;.&#x27;;
+    // draw side view
+    const W=cv.getBoundingClientRect().width, H=cv.getBoundingClientRect().height;
+    ctx.clearRect(0,0,W,H);
+    const cx=W*0.34, cy=H*0.54, Rpx=Math.min(W,H)*0.30;
+    const scale=Rpx/RE;
+    // Earth
+    const eg=ctx.createRadialGradient(cx-10,cy-10,5,cx,cy,Rpx); eg.addColorStop(0,&#x27;#2e6fb0&#x27;); eg.addColorStop(1,&#x27;#0a2340&#x27;);
+    ctx.fillStyle=eg; ctx.beginPath(); ctx.arc(cx,cy,Rpx,0,7); ctx.fill();
+    // sub-satellite direction = +x. satellite position
+    const rsp=Math.min(d.rs*scale, Math.max(W,H));       // clamp for GEO
+    const satS=Math.min(d.rs*scale, W*0.60);
+    const sx=cx+satS, sy=cy;
+    // coverage cap edges at +/- phi on Earth&#x27;s surface
+    const phi=d.phi;
+    // draw cap arc (gold) from -phi..+phi around the +x axis (sub-sat point at angle 0)
+    ctx.strokeStyle=&#x27;#DAC961&#x27;; ctx.lineWidth=4;
+    ctx.beginPath(); ctx.arc(cx,cy,Rpx,-phi,phi); ctx.stroke();
+    // cap edge points
+    const e1x=cx+Math.cos(phi)*Rpx, e1y=cy-Math.sin(phi)*Rpx;
+    const e2x=cx+Math.cos(phi)*Rpx, e2y=cy+Math.sin(phi)*Rpx;
+    // sub-satellite point
+    const subx=cx+Rpx, suby=cy;
+    ctx.fillStyle=&#x27;#DAC961&#x27;; ctx.beginPath(); ctx.arc(subx,suby,4,0,7); ctx.fill();
+    // satellite
+    ctx.fillStyle=&#x27;#fff&#x27;; ctx.beginPath(); ctx.arc(sx,sy,7,0,7); ctx.fill();
+    ctx.fillStyle=&#x27;#00c46a&#x27;; ctx.beginPath(); ctx.arc(sx,sy,4,0,7); ctx.fill();
+    ctx.fillStyle=&#x27;#cfe0e4&#x27;; ctx.font=&#x27;12px Calibri&#x27;; ctx.fillText(&#x27;satellite&#x27;,sx-18,sy-12);
+    // slant range lines to cap edges
+    ctx.strokeStyle=&#x27;rgba(255,255,255,.55)&#x27;; ctx.lineWidth=1.4;
+    ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(e1x,e1y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(e2x,e2y); ctx.stroke();
+    // radius lines to edges
+    ctx.strokeStyle=&#x27;rgba(218,201,97,.35)&#x27;; ctx.setLineDash([3,4]);
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(e1x,e1y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(e2x,e2y); ctx.stroke();
+    ctx.setLineDash([]);
+    // phi label
+    ctx.fillStyle=&#x27;#DAC961&#x27;; ctx.font=&#x27;13px Cambria&#x27;; ctx.fillText(&#x27;φ=&#x27;+f(d.phi*RAD,1)+&#x27;°&#x27;,cx+Rpx*0.30,cy-6);
+  }
+  hS.oninput=upd; eS.oninput=upd;
+  document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{hS.value=b.dataset.h;upd();});
+  addEventListener(&#x27;resize&#x27;,()=&gt;{resize();upd();}); resize(); upd();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · coverage</div>
+    <div class="title">Repeating ground tracks &amp; Earth‑synchronous orbits</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Why tracks drift, then repeat</h3>With the orbit fixed in inertial space and Earth turning underneath, successive passes cross the equator further west. The longitude shift per orbit has two parts: Earth's rotation during one nodal period, plus J₂ nodal regression.</div>
+      <div class="card d"><h3>The repeat condition</h3>An <b>Earth‑synchronous</b> (repeating‑track) orbit closes its pattern when $n|\Delta\phi|=m\,2\pi$ — after $n$ orbits the track has slipped a whole number $m$ of turns and lands back on itself. Remote‑sensing satellites use this to revisit the same sites.</div>
+    </div>
+    <div class="eqbox" style="font-size:1.95vmin">$$\Delta\phi_1=-2\pi\frac{\tau}{\tau_E},\qquad \Delta\phi_2=-\frac{3\pi J_2R_E^2\cos i}{a^2(1-e^2)^2},\qquad \Delta\phi=\Delta\phi_1+\Delta\phi_2$$</div>
+    <div class="note">Sun‑synchronous orbits (L1) are the special case where the <i>plane</i> keeps pace with the Sun (~1°/day east); combined with a repeating track they give constant‑lighting, repeat‑revisit imaging — Landsat's design.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · constellations</div>
+    <div class="title">Satellite constellations — coverage vs cost</div>
+    <div class="accent"></div>
+    <div class="cols wide-left">
+      <div class="stack">
+        <ul class="pts" style="font-size:1.95vmin">
+          <li>A key mission‑design decision: one satellite, or a constellation? Coverage is a measure of <b>performance</b>; the number of spacecraft is a measure of <b>cost</b>.</li>
+          <li>Constellations improve coverage and reliability — they <b>degrade gracefully</b> when one satellite fails.</li>
+          <li><b>Degree of coverage:</b> comms usually need just one satellite in view; GNSS needs <b>four at once</b> (three position components + the clock offset).</li>
+        </ul>
+      </div>
+      <div class="card d"><h3>The GNSS systems</h3><table class="tbl" style="font-size:1.8vmin">
+        <tr><th>System</th><th>Satellites</th></tr>
+        <tr><td>GPS (nominal 24)</td><td>31</td></tr>
+        <tr><td>GLONASS</td><td>24</td></tr>
+        <tr><td>Galileo</td><td>30</td></tr>
+        <tr><td>BeiDou</td><td>44</td></tr>
+      </table>
+      <div class="note" style="margin-top:1vmin">GPS: 24 in 6 planes at ~20 200 km, 55°, giving global coverage.</div></div>
+    </div>
+    <div class="note">"Streets of coverage" analysis handles overlapping single/double/triple coverage bands; the goal is continuous coverage of the required region with the fewest spacecraft.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · constellations</div>
+    <div class="title">Constellation geometries — Walker &amp; star patterns</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Walker Delta pattern</h3>Written $i\!:\!t/p/f$ — total sats $t$ in $p$ equally‑spaced planes, phasing integer $f$ ($0\le f\le p{-}1$). Each plane holds $s=t/p$ sats evenly spaced in true anomaly. A satellite at its node is phased by $f\cdot\text{PU}$ past the node of the next plane, where the Pattern Unit is $\text{PU}=360^{\circ}/t$.<div class="eqbox" style="margin:.6vmin 0 0;font-size:1.85vmin">e.g. $55^{\circ}\!:\!25/5/1\Rightarrow \text{PU}=14.4^{\circ}$</div></div>
+      <div class="card d"><h3>Star (polar) pattern</h3>$n$ near‑polar planes with satellites evenly distributed. Adjacent co‑rotating planes are synchronised; the two counter‑rotating "seam" planes are not, which shapes coverage and nodal spacing. Used for global polar coverage (e.g. some comms systems).</div>
+    </div>
+    <div class="note"><b>Design reality:</b> it is cheap to move a satellite <i>within</i> a plane (a small in‑plane phasing burn) but expensive to move it <i>between</i> planes (a plane change) — the L1 plane‑cost result. So constellations are launched plane‑by‑plane, and performance jumps at launches of 1, p, 2p… satellites. There are no universal rules — each design balances coverage, cost and performance.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · power &amp; thermal</div>
+    <div class="title">Eclipse periods</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Why it sizes the spacecraft</h3>If solar arrays are the primary power source backed by batteries, the <b>eclipse duration</b> sets the battery size and the array's recharge margin. Computing the eclipse for a given orbit on any day of the year is a core mission‑analysis task.</div>
+      <div class="card d"><h3>The geometry</h3>Treat Earth's shadow as a cylinder and Earth as a sphere. The satellite is eclipsed when the angle $\beta$ between the satellite direction and the anti‑Sun direction falls below a threshold set by $\sin\beta=R_E/r$. The Earth–Sun vector rotates through the year, so eclipse fraction varies seasonally.</div>
+    </div>
+    <div class="eqbox" style="font-size:1.95vmin">$$\boldsymbol\rho=-\mathbf r_{\text{sun}},\qquad \beta=\sin^{-1}(R_E/r),\qquad \cos^{-1}(\boldsymbol\rho\cdot\mathbf r_{\text{sat}})\le\beta\ \Rightarrow\ \text{eclipse}$$</div>
+    <div class="note">In practice: estimate the Sun's ecliptic longitude for the day, sweep true anomaly to find shadow entry/exit, then convert those anomalies to a duration via Kepler's equation. Sun‑synchronous orbits can be chosen to minimise or even avoid eclipse.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · Lecture 2 · timing</div>
+    <div class="title">Launch windows</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div><ul class="pts" style="font-size:1.95vmin">
+        <li><b>Launch window:</b> the limited interval when a launch can meet the mission, set by dynamical and system constraints — the launch site must rotate through the target orbit plane.</li>
+        <li><b>Sun‑sync LEO:</b> the node must align at a set angle to the Sun — a few minutes twice a day, often once a day after azimuth limits.</li>
+        <li><b>Rendezvous:</b> geometric <i>and</i> temporal constraints; precise timing minimises phasing propellant.</li>
+      </ul></div>
+      <div><ul class="pts" style="font-size:1.95vmin">
+        <li><b>GEO:</b> system constraints (power, thermal, sun‑blinding) give two daily opportunities, around midday and midnight.</li>
+        <li><b>Interplanetary (Mars):</b> planetary alignment sets the window — the synodic period recurs every <b>~780 days</b> with a ~two‑week window; Earth's rotation narrows each daily opening to 30–60 min.</li>
+        <li>Mars must travel from $M_{\text{depart}}$ to $M_{\text{arrival}}$ while the spacecraft flies half the transfer (~259 days).</li>
+      </ul></div>
+    </div>
+    <div class="note">Launch windows tie the whole lecture together: the orbit you chose (L2), its plane precession (L1), coverage and eclipse all constrain <i>when</i> you can actually go.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 4 · summary</div>
+    <div class="title">The whole week on one page</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Lecture 1 — perturbations</h3><ul class="pts" style="margin-top:.3vmin;font-size:1.9vmin">
+        <li>$\ddot{\mathbf r}+\tfrac{\mu}{r^3}\mathbf r=\mathbf b$; osculating elements, J₂ dominates.</li>
+        <li>$\dot\Omega=-\tfrac32 nJ_2(R_E/p)^2\cos i$ → Sun‑sync at $0.9856°/$d.</li>
+        <li>$\dot\omega=\tfrac34 nJ_2(R_E/p)^2(5\cos^2 i-1)$ → frozen at $63.4°$ (Molniya).</li>
+        <li>Drag contracts &amp; circularises → lifetime, re‑entry.</li>
+      </ul></div>
+      <div class="card d"><h3>Lecture 2 — mission analysis</h3><ul class="pts" style="margin-top:.3vmin;font-size:1.9vmin">
+        <li>Orbit categories &amp; the transfer problem; propellant is the mission clock.</li>
+        <li>Hohmann: $a_t=(r_1+r_2)/2$; worked LEO→GEO‑class examples.</li>
+        <li>Coverage: $\phi$, slant range, pass duration.</li>
+        <li>Eclipses size power; launch windows set the timing.</li>
+      </ul></div>
+    </div>
+    <div class="recap" style="margin-top:1.6vmin"><b>One line:</b> a real orbit drifts under perturbations you can model or exploit; mission analysis then picks the orbit a mission needs and prices — in ΔV, coverage, power and timing — the cost of using it.</div>
+  </div>
+</section>
+
+<section class="slide dark">
+  <div class="inner">
+    <div class="kicker">Next — Week 5</div>
+    <div class="title" style="font-size:5vmin">Mission analysis II &amp; propulsion</div>
+    <div class="accent"></div>
+    <div class="subtitle">Continuing mission analysis into specific regimes: GEO — the GTO, apogee‑boost insertion and east–west / north–south station‑keeping; interplanetary transfers by patched conics with the Jupiter worked example and gravity assists; small‑body and low‑thrust missions — plus the rocket equation that pays every ΔV bill in this lecture.</div>
+  </div>
+</section>
+
+<div class="brand">KFUPM · AE 582 · WEEK 4</div>
+<div class="pageno" id="pageno"></div>
+<div class="nav">
+  <button id="prev" aria-label="previous">‹</button>
+  <div class="count" id="count">1 / 1</div>
+  <button id="next" aria-label="next">›</button>
+</div>
+<div id="stephint"></div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  const prog=document.getElementById('prog'), count=document.getElementById('count'),
+        pageno=document.getElementById('pageno'), brand=document.querySelector('.brand'),
+        stephint=document.getElementById('stephint');
+  const frags=s=>[...s.querySelectorAll('.stepper .s')];
+  function updateHint(){
+    const fr=frags(slides[i]);
+    if(!fr.length){stephint.style.display='none';return;}
+    const shown=fr.filter(x=>x.classList.contains('shown')).length;
+    stephint.style.display='block';
+    stephint.textContent = shown<fr.length ? ('\u25B8  press \u2192  for next step   \u00b7   '+shown+' / '+fr.length)
+                                            : ('\u2713  all steps shown   \u00b7   \u2192  continues');
+  }
+  function show(n){
+    const prev=i;
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    const revealAll = i<prev;                 // going back reveals all; forward starts hidden
+    frags(slides[i]).forEach(x=>x.classList.toggle('shown',revealAll));
+    count.textContent=(i+1)+" / "+slides.length;
+    pageno.textContent=(i+1);
+    prog.style.width=((i)/(slides.length-1)*100)+"%";
+    document.getElementById('prev').disabled=(i===0);
+    document.getElementById('next').disabled=(i===slides.length-1);
+    const dark=slides[i].classList.contains('dark');
+    pageno.style.color=dark?'#9fb6bd':'var(--mut)'; brand.style.color=dark?'#9fb6bd':'var(--mut)';
+    updateHint();
+  }
+  function advance(){
+    const fr=frags(slides[i]);
+    const hidden=fr.find(x=>!x.classList.contains('shown'));
+    if(hidden){hidden.classList.add('shown');updateHint();return;}
+    show(i+1);
+  }
+  function retreat(){
+    const fr=frags(slides[i]);
+    const shown=fr.filter(x=>x.classList.contains('shown'));
+    if(shown.length){shown[shown.length-1].classList.remove('shown');updateHint();return;}
+    show(i-1);
+  }
+  document.getElementById('next').onclick=advance;
+  document.getElementById('prev').onclick=retreat;
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){advance();e.preventDefault();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){retreat();e.preventDefault();}
+    else if(e.key==='Home'){show(0);} else if(e.key==='End'){show(slides.length-1);}
+    else if(e.key==='f'||e.key==='F'){ if(!document.fullscreenElement)document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  });
+  let sx=null;
+  document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  document.addEventListener('touchend',e=>{ if(sx===null)return; const dx=e.changedTouches[0].clientX-sx;
+     if(Math.abs(dx)>50){dx<0?advance():retreat();} sx=null;},{passive:true});
+  show(0);
+</script>
+
+</body>
+</html>
