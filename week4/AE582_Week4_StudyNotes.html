@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AE 582 — Week 4 Study Notes · Perturbations & Mission Analysis</title>
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},svg:{fontCache:'global'}};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root{
+    --green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+    --ink:#16221d;--mut:#5a6b63;--line:#dcdee6;--tint:#eef4f1;--paper:#fbfcfb;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#e9edeb;color:var(--ink);
+    font-family:"Cambria","Georgia",serif;line-height:1.62;font-size:17px}
+  .wrap{max-width:860px;margin:0 auto;background:var(--paper);
+    box-shadow:0 2px 24px rgba(0,0,0,.10);padding:0 0 80px}
+  /* cover / masthead */
+  .mast{background:var(--petrol);color:#fff;padding:40px 54px 34px;border-bottom:5px solid var(--gold)}
+  .mast .k{font-family:"Calibri",system-ui,sans-serif;letter-spacing:2px;font-size:12.5px;color:var(--gold);font-weight:700;text-transform:uppercase}
+  .mast h1{margin:.35em 0 .15em;font-size:34px;line-height:1.12}
+  .mast .sub{color:#cfe0e4;font-style:italic;font-size:17px;max-width:62ch}
+  .mast .meta{font-family:"Calibri",sans-serif;font-style:normal;color:#a9c2c8;font-size:13px;margin-top:14px}
+  .body{padding:14px 54px 0}
+  /* toc */
+  .toc{background:var(--tint);border:1px solid var(--line);border-radius:10px;padding:18px 24px;margin:26px 0 8px}
+  .toc h2{margin:.1em 0 .5em;font-size:18px;color:var(--forest)}
+  .toc ol{margin:0;padding-left:22px;columns:2;column-gap:36px;font-family:"Calibri",sans-serif;font-size:14.5px}
+  .toc a{color:var(--petrol);text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  .toc .part{font-weight:700;color:var(--green);break-after:avoid}
+  /* headings */
+  h2.part{font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--green);
+    font-family:"Calibri",sans-serif;margin:46px 0 0;border-top:2px solid var(--gold);padding-top:10px}
+  h3{font-size:23px;color:var(--forest);margin:1.2em 0 .3em;line-height:1.2}
+  h4{font-size:18px;color:var(--petrol);margin:1.3em 0 .2em;font-family:"Calibri",sans-serif}
+  p{margin:.55em 0}
+  .lead{color:var(--mut);font-size:16px;margin-top:.2em}
+  a.anchor{color:inherit;text-decoration:none}
+  strong{color:var(--forest)}
+  /* callout boxes */
+  .box{border-radius:10px;padding:14px 20px;margin:16px 0;border:1px solid var(--line)}
+  .derive{background:#f6faf7;border-left:4px solid var(--green)}
+  .example{background:#fffdf4;border-left:4px solid var(--gold)}
+  .key{background:var(--tint);border-left:4px solid var(--petrol)}
+  .warn{background:#fbf4f2;border-left:4px solid #b3502e}
+  .box .lab{font-family:"Calibri",sans-serif;font-weight:700;font-size:12px;letter-spacing:1.3px;
+    text-transform:uppercase;color:var(--stone);margin-bottom:4px}
+  .derive .lab{color:var(--green)} .key .lab{color:var(--petrol)} .warn .lab{color:#b3502e}
+  .box p{margin:.4em 0}
+  ol.steps{counter-reset:st;list-style:none;padding-left:0;margin:.4em 0}
+  ol.steps>li{position:relative;padding:6px 0 6px 40px;border-bottom:1px dashed var(--line)}
+  ol.steps>li:last-child{border-bottom:none}
+  ol.steps>li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:6px;
+    width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;font-family:"Calibri",sans-serif;
+    font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+  /* tables */
+  table{border-collapse:collapse;width:100%;margin:16px 0;font-size:15px;font-family:"Calibri",sans-serif}
+  th,td{border:1px solid var(--line);padding:7px 11px;text-align:left}
+  th{background:var(--petrol);color:#fff;font-weight:600}
+  tr:nth-child(even) td{background:#f6f7f9}
+  .num{font-variant-numeric:tabular-nums}
+  /* misc */
+  .eqn{overflow-x:auto;padding:2px 0}
+  .tag{display:inline-block;background:var(--tint);border:1px solid var(--line);border-radius:20px;
+    padding:2px 10px;font-family:"Calibri",sans-serif;font-size:12.5px;color:var(--petrol);margin:2px 3px 2px 0}
+  hr{border:none;border-top:1px solid var(--line);margin:34px 0}
+  .qbox{background:#f6faf7;border:1px solid var(--line);border-radius:10px;padding:8px 24px;margin:16px 0}
+  .qbox ol{padding-left:20px}
+  .qbox li{margin:.5em 0}
+  footer{font-family:"Calibri",sans-serif;color:var(--mut);font-size:13px;padding:30px 54px 0;border-top:1px solid var(--line);margin-top:40px}
+  @media print{
+    body{background:#fff;font-size:11.5pt}
+    .wrap{box-shadow:none;max-width:none}
+    .mast{padding:24px 0}
+    .body,.mast,footer{padding-left:0;padding-right:0}
+    h3{page-break-after:avoid} .box,table,.example,.derive{page-break-inside:avoid}
+    .toc{page-break-after:always}
+    a{color:inherit;text-decoration:none}
+  }
+  @media(max-width:640px){.body,.mast{padding-left:22px;padding-right:22px}.toc ol{columns:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="mast">
+  <div class="k">King Fahd University of Petroleum &amp; Minerals · AE 582 Satellite Engineering</div>
+  <h1>Week 4 — Study Notes</h1>
+  <div class="sub">Perturbations &amp; mission analysis: the companion reading for the Week 4 slide deck. Every derivation, worked example, and result, in one place.</div>
+  <div class="meta">Lecture 1 — Orbit perturbations &nbsp;·&nbsp; Lecture 2 — Mission analysis &nbsp;·&nbsp; read alongside the interactive deck</div>
+</div>
+
+<div class="body">
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li class="part">Part I — Perturbations</li>
+    <li><a href="#p-eom">Ideal orbit → real orbit</a></li>
+    <li><a href="#p-geo">The geopotential &amp; zonal harmonics</a></li>
+    <li><a href="#p-zonal">What each $J_n$ looks like</a></li>
+    <li><a href="#p-tax">Disturbing accelerations</a></li>
+    <li><a href="#p-rates">The two secular rates from $J_2$</a></li>
+    <li><a href="#p-node">Nodal regression</a></li>
+    <li><a href="#p-sso">Sun-synchronous orbits</a></li>
+    <li><a href="#p-aps">Apsidal precession &amp; critical inclination</a></li>
+    <li><a href="#p-mol">Molniya orbits</a></li>
+    <li><a href="#p-drag">Atmospheric drag</a></li>
+    <li><a href="#p-life">Orbital lifetime</a></li>
+    <li><a href="#p-3b">Third-body &amp; SRP</a></li>
+    <li><a href="#p-tracers">Case study: TRACERS</a></li>
+    <li class="part">Part II — Mission Analysis</li>
+    <li><a href="#m-what">What mission analysis is</a></li>
+    <li><a href="#m-life">Lifecycle &amp; iteration</a></li>
+    <li><a href="#m-req">Requirements flow-down</a></li>
+    <li><a href="#m-drivers">Design drivers</a></li>
+    <li><a href="#m-conops">Concept of Operations</a></li>
+    <li><a href="#m-why">Why it&rsquo;s done</a></li>
+    <li><a href="#m-proc">The process</a></li>
+    <li><a href="#m-budg">The budgets</a></li>
+    <li><a href="#m-fom">Figures of merit</a></li>
+    <li><a href="#m-marg">Margins &amp; reserves</a></li>
+    <li><a href="#m-trade">Trade studies</a></li>
+    <li><a href="#m-a1">Case: Artemis I</a></li>
+    <li><a href="#m-a2">Case: Artemis II</a></li>
+    <li><a href="#m-ds">Case: the Death Star</a></li>
+    <li class="part">Reference</li>
+    <li><a href="#ref-eq">Key equations</a></li>
+    <li><a href="#ref-q">Self-check questions</a></li>
+  </ol>
+</div>
+
+<h2 class="part">Part I — Orbit Perturbations</h2>
+
+<h3 id="p-eom"><a class="anchor" href="#p-eom">1 · From the ideal orbit to the real one</a></h3>
+<p>Week 3 solved the two-body problem and produced a closed conic whose five elements $a,e,i,\Omega,\omega$ are constant; only the position along the orbit (true anomaly $\nu$) advances, through Kepler's equation. That result assumed Earth is a <em>point mass</em> and the satellite feels nothing else. Neither is true. Away from a point mass the gravitational force law is only approximate, and at low altitude the atmosphere adds drag. We keep the Keplerian description but allow the "constants" to change slowly — the <strong>osculating elements</strong>, which at every instant match the true position and velocity to a Keplerian orbit.</p>
+<div class="eqn">$$\ddot{\mathbf r}+\frac{\mu}{r^{3}}\,\mathbf r=\mathbf b,\qquad \mathbf b=\mathbf a_{J_2}+\mathbf a_{\text{drag}}+\mathbf a_{\text{Sun}}+\mathbf a_{\text{Moon}}+\mathbf a_{\text{SRP}}+\cdots$$</div>
+<p>The standard way to propagate the elements under $\mathbf b$ is the <strong>method of variation of parameters</strong>, which yields <strong>Lagrange's planetary equations</strong> for $\dot a,\dot e,\dot i,\dot\Omega,\dot\omega,\dot\theta$ (or their Gaussian form when the disturbing force is given as radial/transverse/normal components $S,T,W$). Each perturbing acceleration is tiny — parts per thousand of $\mu/r^2$ or less — but it acts every orbit, so its <strong>secular</strong> (non-repeating) part accumulates without bound. Those secular drifts dominate mission design.</p>
+<div class="box warn"><div class="lab">Watch out</div><p>The classical Lagrange forms contain $1/e$ and $1/\sin i$ and therefore break down for circular ($e=0$) or equatorial ($i=0$) orbits. Those cases are handled with a reformulation in <em>equinoctial</em> elements — same physics, no singularity.</p></div>
+
+<h3 id="p-geo"><a class="anchor" href="#p-geo">2 · The gravitational potential of the Earth</a></h3>
+<p>The convenient description of Earth's real gravity field is a <strong>spherical-harmonic expansion</strong> of the potential:</p>
+<div class="eqn">$$U(r,\phi,\lambda)=\frac{\mu}{r}\left[1-\sum_{n=2}^{\infty}\Big(\tfrac{R_E}{r}\Big)^{n}J_nP_{n0}(\sin\phi)+\sum_{n=2}^{\infty}\sum_{m=1}^{n}\Big(\tfrac{R_E}{r}\Big)^{n}\big(C_{nm}\cos m\lambda+S_{nm}\sin m\lambda\big)P_{nm}(\sin\phi)\right]$$</div>
+<p>Here $\phi$ is geocentric latitude, $\lambda$ longitude, and $P_{nm}$ the associated Legendre functions of degree $n$, order $m$. The first sum uses order $m=0$; since $P_{n0}=P_n$ is the ordinary Legendre polynomial, which depends on latitude only, these are the <strong>zonal</strong> terms with coefficients $J_n$. The double sum ($m\ge1$) carries the longitude dependence — the <strong>tesseral</strong> and sectoral terms with coefficients $C_{nm},S_{nm}$.</p>
+<div class="box key"><div class="lab">Why the sum starts at $n=2$</div>
+<p>The expansion is a multipole series of the mass distribution. <strong>$n=0$</strong> (monopole) is proportional to the total mass — it is exactly the $\mu/r$ pulled out front (the "1" in the bracket). <strong>$n=1$</strong> (dipole) is proportional to $\int\mathbf r'\,dm$, which <em>defines</em> the centre of mass, so it vanishes identically when the origin is the COM (the universal convention). Hence the first term that describes the body's actual <em>shape</em> is <strong>$n=2$</strong> — the quadrupole, $J_2$.</p></div>
+<p>The magnitudes of the low-order coefficients (×10⁻⁶):</p>
+<table>
+<tr><th>Zonal</th><th>Value</th><th>Tesseral</th><th>Value</th></tr>
+<tr><td>$J_2$</td><td class="num">1082.6</td><td>$C_{22}$</td><td class="num">1.57</td></tr>
+<tr><td>$J_3$</td><td class="num">−2.53</td><td>$C_{31}$</td><td class="num">2.19</td></tr>
+<tr><td>$J_4$</td><td class="num">−1.62</td><td>$S_{22}$</td><td class="num">−0.90</td></tr>
+<tr><td>$J_5$</td><td class="num">−0.23</td><td>$S_{31}$</td><td class="num">0.27</td></tr>
+<tr><td>$J_6$</td><td class="num">0.54</td><td>$S_{32}$</td><td class="num">−0.21</td></tr>
+</table>
+<p><strong>$J_2$ is three orders of magnitude larger than every other term.</strong> It has a clean physical meaning in terms of the moments of inertia, $J_2=(C-A)/MR_E^2$, where $C$ is the polar and $A$ the equatorial moment of inertia. Earth's spin flattens it ($C>A$, the equatorial radius exceeds the polar by ~21 km), so $J_2>0$. Because $J_2$ dominates, keeping only $n=2$ captures essentially all of the secular perturbation.</p>
+
+<h3 id="p-zonal"><a class="anchor" href="#p-zonal">3 · What each zonal term looks like</a></h3>
+<p>A zonal term $J_nP_n(\sin\phi)$ splits the globe into latitude <strong>zones</strong> of alternating sign. The Legendre polynomial $P_n$ has exactly $n$ zeros in $(-1,1)$, so it produces $n$ zero-crossing latitudes and $n+1$ bands. The first few, with $x=\sin\phi$:</p>
+<div class="eqn">$$P_2=\tfrac12(3x^2-1),\quad P_3=\tfrac12(5x^3-3x),\quad P_4=\tfrac18(35x^4-30x^2+3),\ \dots$$</div>
+<ul>
+<li><strong>$J_2$</strong> — the pole-vs-equator pattern: an <strong>oblate</strong> equipotential (equatorial bulge, polar flattening). 2 zeros near $\pm35°$, 3 bands.</li>
+<li><strong>$J_3$</strong> — a north–south asymmetry: the classic slight <strong>pear-shape</strong>. 3 zeros (one at the equator), 4 bands.</li>
+<li><strong>$J_4,J_5,J_6,\dots$</strong> — progressively finer latitude banding ($n+1$ zones), each a smaller correction.</li>
+</ul>
+<p>The interactive "zonal harmonics" panel in the deck lets you switch between $J_2$–$J_6$ and toggle <em>true relative size</em>, where every term but $J_2$ nearly flattens out — a direct visual of the ~1000× dominance.</p>
+
+<h3 id="p-tax"><a class="anchor" href="#p-tax">4 · The disturbing accelerations</a></h3>
+<p>Ranking the perturbations by size tells you which to model. In LEO, $J_2$ (~$10^{-2}\ \mathrm{m/s^2}$) towers over everything; at GEO, third-body forces take over.</p>
+<table>
+<tr><th>Source</th><th>at 500 km (m/s²)</th><th>at GEO (m/s²)</th><th>Character</th></tr>
+<tr><td>Air drag*</td><td class="num">$6\times10^{-5}\,A/M$</td><td>—</td><td>non-conservative, LEO only</td></tr>
+<tr><td>Radiation pressure</td><td class="num">$4.7\times10^{-6}\,A/M$</td><td class="num">$4.7\times10^{-6}\,A/M$</td><td>area/mass dependent</td></tr>
+<tr><td>Sun (mean)</td><td class="num">$5.6\times10^{-7}$</td><td class="num">$3.5\times10^{-6}$</td><td>grows with altitude</td></tr>
+<tr><td>Moon (mean)</td><td class="num">$1.2\times10^{-6}$</td><td class="num">$7.3\times10^{-6}$</td><td>dominates N–S at GEO</td></tr>
+<tr><td>Jupiter (max.)</td><td class="num">$8.5\times10^{-12}$</td><td class="num">$5.2\times10^{-11}$</td><td>negligible</td></tr>
+</table>
+<p class="lead">*Depends on solar activity. $A$ is the projected area — perpendicular to motion for drag, to the Sun for radiation pressure.</p>
+
+<h3 id="p-rates"><a class="anchor" href="#p-rates">5 · The two secular rates from $J_2$</a></h3>
+<div class="box derive"><div class="lab">Derivation</div>
+<ol class="steps">
+<li>Keep only the $n=2$ zonal term of the disturbing potential:
+<div class="eqn">$$U_{J_2}=\frac{\mu J_2 R_E^{2}}{2r^{3}}\big(3\sin^2\phi-1\big).$$</div></li>
+<li>Write latitude in orbital elements, $\sin\phi=\sin i\,\sin(\omega+\nu)$, and average over one revolution to isolate the secular part (the fast angle $\nu$ averages out).</li>
+<li>Insert into Lagrange's planetary equations. The node and argument-of-perigee rates come out as:
+<div class="eqn">$$\boxed{\ \dot\Omega=-\frac{3}{2}\,nJ_2\Big(\frac{R_E}{p}\Big)^{2}\cos i\ }\qquad\boxed{\ \dot\omega=\frac{3}{4}\,nJ_2\Big(\frac{R_E}{p}\Big)^{2}\big(5\cos^2 i-1\big)\ }$$</div></li>
+</ol>
+<p style="margin-top:8px">with mean motion $n=\sqrt{\mu/a^3}$ and semi-latus rectum $p=a(1-e^2)$. The other three elements ($a,e,i$) have no secular change under $J_2$ — only periodic wobble.</p></div>
+<p>These two rates are the whole story of $J_2$: the orbit plane rotates (nodal regression, $\dot\Omega$) and the ellipse rotates within its plane (apsidal precession, $\dot\omega$). Both are exploited below.</p>
+
+<h3 id="p-node"><a class="anchor" href="#p-node">6 · Regression of the line of nodes</a></h3>
+<p>The equatorial bulge exerts a torque on the orbit's angular-momentum vector; averaged over an orbit this rotates the whole orbit <strong>plane</strong> about Earth's spin axis, sliding the ascending node along the equator. For a prograde orbit ($i<90°$, $\cos i>0$) the node moves <strong>west</strong> (regression); retrograde orbits advance east; a polar orbit ($i=90°$) is frozen. Typical LEO rates are a few degrees per day.</p>
+<div class="eqn">$$\overline{\Omega}=\Omega_0-\frac{3}{2}\,\frac{J_2R_E^{2}}{p^{2}}\,\bar n\,t\,\cos i$$</div>
+<p>Read as a nuisance this is a plane drift to be corrected. Read as a resource it is the mechanism behind the single most useful orbit in remote sensing — next.</p>
+
+<h3 id="p-sso"><a class="anchor" href="#p-sso">7 · Sun-synchronous orbits</a></h3>
+<p>Choose the inclination so the node precesses at exactly the rate Earth orbits the Sun, $\dot\Omega=+360°/365.25\ \text{day}=+0.9856°/\text{day}$. The orbit plane then holds a <strong>fixed angle to the Sun-line</strong>: every crossing of a given latitude happens at the same local solar time — constant lighting, the workhorse condition for imaging and climate sensors.</p>
+<div class="box derive"><div class="lab">The inclination condition</div>
+<p>Set $\dot\Omega$ equal to the required rate and solve for $i$:</p>
+<div class="eqn">$$\cos i=-\frac{\dot\Omega_{\text{req}}\,p^{2}}{\tfrac32\,nJ_2R_E^{2}}.$$</div>
+<p>The minus sign forces $\cos i<0$, i.e. $i>90°$: a Sun-synchronous orbit is slightly <strong>retrograde</strong>, typically $i\approx96°$–$99°$ in LEO.</p></div>
+<div class="box example"><div class="lab">Worked — Sun-sync at 705 km</div>
+<p>For a circular orbit at $h=705$ km, $a=p=R_E+705=7083$ km. Then $n=\sqrt{\mu/a^3}$, and evaluating the condition gives $i\approx\mathbf{98.2°}$ — the Landsat-class inclination. Above roughly 1700 km no real inclination can precess fast enough, and Sun-synchronism becomes impossible.</p></div>
+<p>"Locked" is best understood as the <strong>local time of the ascending/descending node holding constant</strong>. The deck's Sun-sync demo shows this directly: in Sun-sync mode the node tracks the Sun and the local-time clock never moves; for a fixed (non-Sun-sync) plane the Sun sweeps past and the local time drifts through the whole day over a year.</p>
+
+<h3 id="p-aps"><a class="anchor" href="#p-aps">8 · Apsidal precession &amp; the critical inclination</a></h3>
+<p>As the spacecraft crosses the equator it "sees" the extra pull of the bulge, which rotates the <strong>line of apsides</strong> (the perigee–apogee line) <em>within</em> the orbit plane at the rate $\dot\omega$ derived above. Unlike a plane change this is an in-plane rotation. Setting $\dot\omega=0$ requires</p>
+<div class="eqn">$$5\cos^2 i-1=0\ \Longrightarrow\ i_{\text{crit}}=\arccos\!\sqrt{\tfrac15}=63.435^{\circ}\ \ (\text{or } 116.565^{\circ}).$$</div>
+<p>At the <strong>critical inclination</strong> the apsides stop rotating, so apogee stays put over a chosen hemisphere. At any other inclination the apogee slowly migrates between hemispheres — over a year it would spend part of its time over the wrong one, defeating a fixed-apogee mission.</p>
+
+<h3 id="p-mol"><a class="anchor" href="#p-mol">9 · Molniya orbits</a></h3>
+<p>The Molniya orbit is the critical inclination put to work. Its design recipe:</p>
+<table>
+<tr><th>Parameter</th><th>Value</th><th>Purpose</th></tr>
+<tr><td>Inclination $i$</td><td class="num">63.4°</td><td>freezes apogee ($\dot\omega=0$)</td></tr>
+<tr><td>Argument of perigee $\omega$</td><td class="num">270°</td><td>puts apogee at the northernmost point</td></tr>
+<tr><td>Eccentricity $e$</td><td class="num">≈0.74</td><td>600 km perigee, ~39 750 km apogee</td></tr>
+<tr><td>Period $T$</td><td class="num">≈12 h</td><td>repeating ground track, two apogee loops/day</td></tr>
+</table>
+<p>A geostationary belt sits over the equator and barely clears the horizon from high latitudes, so it cannot serve the far north. By Kepler's second law a Molniya satellite <strong>crawls near apogee</strong>, spending about <strong>8 of its ~12 h</strong> hanging over northern latitudes. Three satellites phased 8 h apart therefore give continuous high-latitude coverage — the U.S.S.R.'s answer for communications and early-warning (Russian <em>molniya</em> = "lightning"). Tundra orbits use the same $63.4°$ inclination at a 24-h period. In the deck's Molniya demo the computed ground track shows the characteristic double loop, with one apogee dwell centred over the U.S.S.R. (~63°N, 95°E) and the other over North America.</p>
+
+<h3 id="p-drag"><a class="anchor" href="#p-drag">10 · Atmospheric drag</a></h3>
+<p>For low-orbiting spacecraft drag cannot be ignored. It is a non-conservative force opposing the velocity relative to the (co-rotating) atmosphere:</p>
+<div class="eqn">$$\mathbf F_D=\tfrac12\,\rho\,S C_D\,V_r^{2}\left(\frac{-\mathbf V_r}{|V_r|}\right),\qquad \rho(h)\approx\rho_0\,e^{-(h-h_0)/H}.$$</div>
+<p>Drag is <strong>largest at perigee</strong>, where density and speed both peak; to first order that acts like a small retro-burn at perigee, trimming apogee and lowering the semi-major axis. In a circular orbit drag acts continuously, and the fractional change of period per revolution is</p>
+<div class="eqn">$$\frac{\Delta\tau}{\tau}\approx-3\pi\rho r\,(SC_D/M).$$</div>
+<p>Because drag removes energy ($\varepsilon=-\mu/2a$), $a$ and $e$ shrink: the orbit <strong>contracts and circularises</strong>, then decays and re-enters. Since the atmosphere co-rotates, the drag force also has a small out-of-plane component, so it slowly changes inclination too. King-Hele's expressions give the radial/transverse/normal ($S,T,W$) components for a rotating atmosphere. $SC_D/M$ is the ballistic coefficient; solar activity swells $\rho$ and can shorten lifetimes dramatically.</p>
+
+<h3 id="p-life"><a class="anchor" href="#p-life">11 · Orbital lifetime</a></h3>
+<p>Lifetime is the time from injection until drag brings the vehicle back. A standard estimate (King-Hele):</p>
+<div class="eqn">$$\tau\sim\frac{e_0^{2}}{2B}\left(1-\frac{11}{6}e_0+\frac{29}{16}e_0^{2}+\frac{7}{8}\frac{H}{a_0}\right),\quad B\sim\sqrt{\tfrac{\mu}{a_0^3}}\,\tfrac{SC_D}{M}\rho_{p0}a_0e_0\,I_1\!\Big(\tfrac{a_0e_0}{H}\Big)e^{-e_0(1+a_0/H)},$$</div>
+<p>where $e_0,a_0$ are the values when control ceases, $H$ the scale height near perigee, $\rho_{p0}$ the perigee density, and $I_1$ a modified Bessel function (the expression neglects atmospheric rotation). Decay is slow high up (years at 600 km) but runs away low down (days near 300 km) because density rises exponentially. Uncontrolled re-entries — Skylab over Australia, Cosmos 954B over Canada — illustrate the hazard, and modern LEO design must plan a controlled de-orbit or a &lt;25-year decay.</p>
+
+<h3 id="p-3b"><a class="anchor" href="#p-3b">12 · Third-body &amp; solar radiation pressure</a></h3>
+<p><strong>Sun and Moon</strong> are negligible in LEO but dominant at GEO, where they tilt the orbit plane ~0.85°/yr — which is why geostationary satellites spend most of their station-keeping fuel on north–south (inclination) control (Week 5). <strong>Solar radiation pressure</strong> (~4.6 μPa at 1 AU) grows eccentricity for high area-to-mass craft: below ~0.005 m²/kg it is minor, above ~0.01 m²/kg it is significant (and for solar sails it is the propulsion). Both are mostly periodic near Earth; for most LEO work, model $J_2$ + drag and treat these as corrections.</p>
+
+<h3 id="p-tracers"><a class="anchor" href="#p-tracers">13 · Case study — TRACERS: precession as a free maneuver</a></h3>
+<p>TRACERS (Tandem Reconnection and Cusp Electrodynamics Reconnaissance Satellites) is a NASA Small Explorer of two identically instrumented satellites flying in the same Sun-synchronous orbit, 10–120 s apart, to study magnetic reconnection at Earth's northern cusp. It shows how a perturbation replaces an impossible burn.</p>
+<ol class="steps">
+<li><strong>The science fixes the plane.</strong> The northern cusp is best sampled from a Sun-synchronous orbit at a specific local time of descending node — a <strong>10:30 (or 02:30) LTDN</strong>, ~590 km, $i\approx97.75°$.</li>
+<li><strong>Rideshare delivers the wrong local time.</strong> Launched as a secondary payload (with PUNCH, on a Falcon from Vandenberg), TRACERS is dropped into a <strong>06:00 LTDN</strong> Sun-sync plane — several hours of local time away.</li>
+<li><strong>Rotating the plane directly is impossible.</strong> A 4.5-hour LTDN shift is a ~67° rotation of the plane (a RAAN change); at LEO speed, $\Delta V=2v\sin(\Delta\Omega/2)$ would need several km/s — far more than a SMEX spacecraft carries.</li>
+<li><strong>Instead: raise the altitude a little.</strong> A small in-plane burn lifts the orbit to ~610 km while <em>keeping the inclination</em>. At the higher altitude the orbit is no longer perfectly Sun-synchronous, so $\dot\Omega$ no longer matches the Sun and the plane <strong>drifts in local time</strong>.</li>
+<li><strong>Let it drift ~1 year, then drop back.</strong> After about a year the LTDN has walked to the science value; lowering the altitude re-establishes Sun-synchronism at the new local time. Time — not propellant — bought the plane change.</li>
+</ol>
+<div class="box key"><div class="lab">The transferable lesson</div>
+<p>Whenever a mission can trade <strong>time for propellant</strong>, let a perturbation do the work. Because $\dot\Omega$ depends on $a$ (through $n$ and $p$), simply changing altitude detunes the Sun-sync match and drifts the plane at the difference rate; integrate over a year to cover the gap, then restore altitude to re-lock. The same altitude-drift trick repositions repeating-ground-track and responsive-imaging satellites (Part II).</p></div>
+
+<h2 class="part">Part II — Mission Analysis</h2>
+
+<p class="lead">Where Lecture 1 corrected the orbit, Lecture 2 asks the engineering question one level up: <em>which</em> mission should we fly, and <em>how</em>? Mission analysis is a judgement discipline, so it is taught here as a method and then developed live on real missions. Orbital dynamics is used as an input to the budgets — never re-derived.</p>
+
+<h3 id="m-what"><a class="anchor" href="#m-what">14 · What mission analysis is</a></h3>
+<p>Mission analysis is the feasibility-level reasoning that turns mission <strong>objectives</strong> (and constraints — cost cap, schedule, available launchers, technology readiness, environment) into one or more <strong>feasible, costed concepts</strong>, the <strong>requirements</strong> they imply, and the <strong>design drivers</strong> that will dictate the vehicle. It is <em>not</em> detailed design; it is the thinking that decides the concept while everything is still cheap to change.</p>
+<div class="box key"><div class="lab">The through-line</div><p>Every mission in this course is read through one thread: <strong>objectives → drivers → concept → budgets → trade → baseline.</strong> Learn the thread and you can analyse a mission you have never seen.</p></div>
+
+<h3 id="m-life"><a class="anchor" href="#m-life">15 · Where it lives — and why it is iterative</a></h3>
+<p>Mission analysis is Pre-Phase A / Phase A work, long before the design is frozen. Concept, spacecraft design and cost form a <strong>loop</strong>: change one and the others move. You circle the loop until the concept <strong>closes</strong> — feasible, affordable and internally consistent. The economic reason to do it early is that most life-cycle cost is <em>committed</em> in these first phases even though little has yet been <em>spent</em>; this is the one window where you can change the outcome for the price of an engineer's time.</p>
+
+<h3 id="m-req"><a class="anchor" href="#m-req">16 · Requirements flow down to a few drivers</a></h3>
+<p>Mission analysis converts objectives into <strong>traceable requirements</strong>: mission objectives → mission requirements → system and functional requirements → design. Of the hundreds that result, a handful — the <strong>design drivers</strong> — dominate the configuration. Good practice is to trace every requirement <em>back</em> to an objective and <em>forward</em> to what it drives; a requirement that traces to nothing is a candidate for deletion.</p>
+
+<h3 id="m-drivers"><a class="anchor" href="#m-drivers">17 · Design drivers</a></h3>
+<p>A design driver is one of the few requirements that, once set, forces most of the vehicle. Typical drivers and what they cascade into: <em>required orbit</em> → launch vehicle, injection/transfer ΔV, radiation dose; <em>coverage/revisit</em> → constellation size and geometry; <em>lifetime</em> → propellant, redundancy, shielding, disposal; <em>pointing/agility</em> → attitude control and structure; <em>power &amp; eclipse</em> → array area and battery; <em>data rate/latency</em> → comms band, antenna, ground network. The art is spotting <em>which</em> driver actually governs your mission and designing the trade around it.</p>
+
+<h3 id="m-conops"><a class="anchor" href="#m-conops">18 · The Concept of Operations (ConOps)</a></h3>
+<p>The ConOps — or Design Reference Mission — is the day-in-the-life storyline across every phase: launch and ascent, commissioning (LEOP), nominal operations, extended operations, and disposal (end of life). It is what turns objectives into <strong>sizing</strong>: power drawn per eclipse, data generated and downlinked per pass, ΔV per maneuver, and the propellant reserved for disposal. Without a ConOps you cannot size a spacecraft; with it, every budget has a number.</p>
+
+<h3 id="m-why"><a class="anchor" href="#m-why">19 · Why it is done</a></h3>
+<p>Good mission analysis surfaces the design drivers early, kills infeasible concepts before they cost money, makes the performance/cost/risk/schedule trade explicit and defensible, and produces requirements traceable to objectives. Read the failure modes the other way and each traces to a missed driver:</p>
+<table>
+<tr><th>Good mission analysis…</th><th>…prevents this failure</th></tr>
+<tr><td>Surfaces the design drivers early</td><td>Chasing the wrong requirement → over/under-design</td></tr>
+<tr><td>Sizes the ΔV / propellant budget</td><td>Fuel-starved end of life; can't reach the orbit</td></tr>
+<tr><td>Checks coverage &amp; timeline budgets</td><td>Coverage gaps or missed launch windows found late</td></tr>
+<tr><td>Makes the trade explicit</td><td>An indefensible concept that never "closes"</td></tr>
+</table>
+
+<h3 id="m-proc"><a class="anchor" href="#m-proc">20 · The process</a></h3>
+<p>The method is a loop: <strong>capture objectives → generate candidate architectures → analyse each against the budgets → trade on figures of merit → select a baseline and its drivers → iterate.</strong> The feedback matters as much as the boxes; the first baseline is rarely the last. You tighten objectives, prune architectures and re-run the budgets until a concept closes.</p>
+
+<h3 id="m-budg"><a class="anchor" href="#m-budg">21 · The budgets — where orbital dynamics is used</a></h3>
+<p>Each candidate architecture is checked against a set of budgets. Mission analysis <em>assembles</em> orbital-dynamics results (and other disciplines) into a mission-level picture; it does not re-derive them.</p>
+<table>
+<tr><th>Budget</th><th>What sets it</th><th>Input from Orbital Dynamics</th></tr>
+<tr><td>Coverage / revisit</td><td>orbit + constellation geometry</td><td>ground-track, footprint</td></tr>
+<tr><td>ΔV / propellant</td><td>injection, transfers, station-keeping, disposal</td><td>vis-viva, Hohmann, J₂, drag</td></tr>
+<tr><td>Power / eclipse</td><td>orbit &amp; season</td><td>eclipse fraction from geometry</td></tr>
+<tr><td>Link / visibility</td><td>altitude, elevation mask, ground sites</td><td>slant range, pass duration</td></tr>
+<tr><td>Lifetime</td><td>altitude, ballistic coeff., solar activity</td><td>drag-decay model (Lecture 1)</td></tr>
+<tr><td>Timeline / window</td><td>plane alignment, planetary geometry</td><td>nodal precession, synodic period</td></tr>
+<tr><td>Mass</td><td>everything above → propellant + dry mass</td><td>rocket equation</td></tr>
+</table>
+<p>A concept closes only when <strong>all</strong> budgets are satisfied at once — the mission-analysis balancing act.</p>
+
+<h3 id="m-fom"><a class="anchor" href="#m-fom">22 · Figures of merit &amp; utility</a></h3>
+<p>An architecture is judged on <strong>competing</strong> figures of merit — performance, cost, risk, schedule — which rarely peak together. There is no single scalar "goodness", so mission analysis assigns <strong>weights</strong> reflecting the mission's priorities and combines the scores into a weighted <strong>utility</strong>, $U=\sum_i w_i s_i$. That utility is what the trade study ranks.</p>
+
+<h3 id="m-marg"><a class="anchor" href="#m-marg">23 · Margins &amp; reserves</a></h3>
+<p>Mission analysis never sizes to the exact number. Every budget carries <strong>margin</strong> — typically ~5–10% on ΔV, plus mass, power and link reserves — to absorb launch dispersion, atmospheric drag, component aging and the unknowns of early design. A concept that closes only with <em>zero</em> margin has not really closed.</p>
+
+<h3 id="m-trade"><a class="anchor" href="#m-trade">24 · Trade studies</a></h3>
+<div class="box derive"><div class="lab">The trade study</div>
+<ol class="steps">
+<li><strong>Enumerate architectures</strong> — orbit, single-vs-constellation, launch &amp; transfer strategy, operations, disposal.</li>
+<li><strong>Score on figures of merit × weights</strong> — rate each 1–5, then weight by how much the mission values it.</li>
+<li><strong>Rank &amp; pick the baseline</strong> — the weighted winner is the baseline; the reasons it won <em>are</em> its design drivers.</li>
+<li><strong>Test sensitivity</strong> — do the weights change the winner? A robust baseline wins across a range of priorities; a fragile one needs a second look.</li>
+</ol></div>
+<p>There is no single "correct" architecture — only the best fit to the weighted objectives.</p>
+
+<h3 id="m-a1"><a class="anchor" href="#m-a1">25 · Case study — Artemis I: did the analysis pay off?</a></h3>
+<p><strong>Objective.</strong> An uncrewed, integrated flight test of SLS + Orion beyond LEO. <strong>Driver.</strong> The one thing no LEO flight can rehearse is re-entry from a lunar return: Orion meets the atmosphere at ~11 km/s versus ~7.8 km/s from LEO, so the energy to dissipate is ~2× and peak heating (~v³) ~2.8× — the <strong>thermal-protection system (heat shield)</strong> is the design driver, and the whole flight exists largely to validate it.</p>
+<div class="box example"><div class="lab">The result (2022)</div>
+<p>The heat shield <strong>worked</strong> — re-entry at ~2,760 °C, and NASA later confirmed that had crew been aboard they would have been safe (the cabin held in the mid-70s °F). <strong>But</strong> post-flight inspection found <strong>unexpected char loss at 100+ locations</strong>: the Avcoat ablator cracked and shed more than the models predicted. A roughly two-year investigation traced the cause to Avcoat <strong>permeability</strong> — during the skip-guidance entry, gases generated inside the ablator could not vent, so pressure built up and fractured the char layer.</p></div>
+<div class="box key"><div class="lab">Why it vindicated the analysis</div><p>Because mission analysis made the TPS the <em>driving test objective</em> and flew it <strong>uncrewed first</strong>, NASA caught a crew-critical issue the models had missed — and fixed it with a <strong>trajectory change</strong> (a steeper, shorter re-entry for Artemis II that limits time in the damaging thermal regime), <em>not</em> a costly heat-shield rebuild. The test flight earned its keep.</p></div>
+
+<h3 id="m-a2"><a class="anchor" href="#m-a2">26 · Case study — Artemis II: the safety-driven design delivered</a></h3>
+<p><strong>Objective.</strong> The first crewed flight beyond LEO since 1972. <strong>Driver.</strong> With crew aboard, <strong>safety / abort coverage</strong> outranks cost and performance. The dominant question becomes "how does the crew get home if a burn fails?", and the answer is bought with <em>geometry, not propellant</em>: a <strong>free-return trajectory</strong> aimed so that lunar gravity slings Orion back onto an Earth-intercept path with no rescue burn. Launch-site latitude (Cape Canaveral, ~28.5°) fixes the reachable plane.</p>
+<div class="box example"><div class="lab">The result (April 1–11, 2026)</div>
+<p>Artemis II flew: commander Reid Wiseman, pilot Victor Glover, and mission specialists Christina Koch and Jeremy Hansen (CSA) looped the Moon on a free-return and returned safely, reaching <strong>252,756 miles</strong> from Earth — a new human distance record. The mission-analysis calls all delivered: the free-return needed only minor corrections; Orion's initial perigee was deliberately left <strong>suborbital</strong> as a safe-abort measure until a burn raised it; and re-entry was flown <strong>steeper</strong> — the Artemis I lesson — to protect the heat shield.</p></div>
+<p>Same hardware family as Artemis I, yet mission analysis chose a different architecture because the <em>driver</em> changed — test-validation (TPS) versus crew safety (free-return). The method is the same; the winning figure of merit is not.</p>
+
+<h3 id="m-ds"><a class="anchor" href="#m-ds">27 · Case study — the Death Star (in-class exercise)</a></h3>
+<p>A capstone where the class decides the architecture from the objectives. <strong>Objectives:</strong> project decisive power across the galaxy, destroy a planet, rule through fear — while surviving a rebellion on a finite budget and schedule. Decomposing these gives firepower, reach, a visible deterrent and survivability, and a central <strong>tension</strong>: firepower and fear pull toward one overwhelming station (a monolith), while survivability, cost and schedule pull toward a distributed force.</p>
+<p><strong>Orbit selection is a decision too.</strong> To destroy a planet the station must enter orbit around the target; the objective (destroy + intimidate) pushes toward a <em>low</em> orbit — close and overwhelming — exactly as coverage drives GNSS to MEO. But the low orbit that best serves the objective is also the one that most <strong>exposes the single point of failure</strong>.</p>
+<div class="box key"><div class="lab">The lesson</div><p>Run the trade and each priority yields a different baseline (firepower → the Death Star; reach/survivability → a fleet; cost → a ground weapon). The Empire weighted firepower &amp; fear, so the monolith is the correct baseline <em>for those weights</em> — but its survivability score is the lowest, a single point of failure that a two-metre exhaust port turned into catastrophe. <strong>Weight the hardest/riskiest element, not the flashiest capability</strong> — the same discipline behind Artemis II's free-return.</p></div>
+
+<h2 class="part">Reference</h2>
+
+<h3 id="ref-eq"><a class="anchor" href="#ref-eq">Key equations &amp; relations</a></h3>
+<p><em>Lecture 1 — perturbations:</em></p>
+<table>
+<tr><th>Quantity</th><th>Equation</th></tr>
+<tr><td>Perturbed EOM</td><td>$\ddot{\mathbf r}+\mu\mathbf r/r^3=\mathbf b$</td></tr>
+<tr><td>$J_2$ disturbing potential</td><td>$U_{J_2}=\tfrac{\mu J_2R_E^2}{2r^3}(3\sin^2\phi-1)$</td></tr>
+<tr><td>Nodal regression</td><td>$\dot\Omega=-\tfrac32 nJ_2(R_E/p)^2\cos i$</td></tr>
+<tr><td>Apsidal precession</td><td>$\dot\omega=\tfrac34 nJ_2(R_E/p)^2(5\cos^2 i-1)$</td></tr>
+<tr><td>Sun-sync condition</td><td>$\dot\Omega=+0.9856°/\text{day}$</td></tr>
+<tr><td>Critical inclination</td><td>$i=\arccos\sqrt{1/5}=63.4°$</td></tr>
+<tr><td>Drag / lifetime</td><td>$\Delta\tau/\tau\approx-3\pi\rho r(SC_D/M)$</td></tr>
+</table>
+<p><em>Lecture 2 — mission analysis (relations used as budget inputs / method):</em></p>
+<table>
+<tr><th>Quantity</th><th>Relation</th></tr>
+<tr><td>Vis-viva (ΔV budgets)</td><td>$v^2=\mu(2/r-1/a)$</td></tr>
+<tr><td>Rocket equation (mass budget)</td><td>$\Delta m/m=1-e^{-\Delta V/I_{sp}g_0}$</td></tr>
+<tr><td>Weighted utility (trade)</td><td>$U=\sum_i w_i\,s_i$</td></tr>
+<tr><td>Margin (every budget)</td><td>allocation $=$ estimate $\times(1+\text{margin})$, ΔV margin $\sim5$–$10\%$</td></tr>
+<tr><td>Requirements</td><td>objectives $\to$ requirements $\to$ <b>design drivers</b> (traceable both ways)</td></tr>
+</table>
+<p><span class="tag">$\mu=398\,600\ \text{km}^3/\text{s}^2$</span><span class="tag">$R_E=6378\ \text{km}$</span><span class="tag">$J_2=1.0826\times10^{-3}$</span><span class="tag">$g_0=9.807\ \text{m/s}^2$</span></p>
+
+<h3 id="ref-q"><a class="anchor" href="#ref-q">Self-check questions</a></h3>
+<div class="qbox">
+<ol>
+<li>Why does the zonal sum start at $n=2$, and what does each of $J_0,J_1,J_2$ physically represent?</li>
+<li>An orbit has $i=45°$ at 700 km. Is the node regressing east or west, and roughly how fast? What changes at $i=90°$ and at $i=135°$?</li>
+<li>Derive the Sun-synchronous inclination condition and explain why $i>90°$.</li>
+<li>Why is $63.4°$ special? Sketch the ground track and apogee behaviour of a Molniya orbit and explain the ~8 h dwell using Kepler's second law.</li>
+<li>Explain how atmospheric drag contracts and circularises an orbit, and why lifetime falls so steeply with decreasing altitude.</li>
+<li>Distinguish a <em>mission requirement</em> from a <em>design driver</em>, and give one example of each for an Earth-imaging mission.</li>
+<li>What is a Concept of Operations, and why can you not size a spacecraft without one? Name two budgets it sets.</li>
+<li>Why does mission analysis always carry margin? Give a typical ΔV margin, and explain what it means for a concept "to close".</li>
+<li>Two architectures score differently across performance, cost, risk and schedule. Explain how the weights determine the baseline, and what a sensitivity check tells you.</li>
+<li>Artemis I: explain how making the heat shield the <em>driving test objective</em> paid off, and why the fix for Artemis II was a trajectory change rather than a heat-shield rebuild.</li>
+<li>State the shared mission-analysis lesson of Artemis II's free-return and the Death Star's exhaust port, in terms of weighting risk/safety versus capability.</li>
+</ol>
+</div>
+
+</div><!-- /body -->
+
+<footer>
+  AE 582 Satellite Engineering · Week 4 Study Notes — Perturbations &amp; Mission Analysis. Companion to the interactive slide deck. Constants: $\mu=398\,600\ \text{km}^3/\text{s}^2$, $R_E=6378\ \text{km}$, $J_2=1.0826\times10^{-3}$. Lecture 2 case facts (Artemis I &amp; II) verified against NASA sources, Sept 2026.
+</footer>
+
+</div><!-- /wrap -->
+</body>
+</html>

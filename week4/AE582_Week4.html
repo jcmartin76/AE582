@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AE 582 — Week 4 · Interactive Slide Deck</title>
+<title>AE 582 — Week 4 · Perturbations & Mission Analysis</title>
 <script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},svg:{fontCache:'global'}};</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>
@@ -18,12 +18,12 @@
   .inner{width:min(1180px,94vw);max-height:88vh}
   /* light content slides */
   .slide{background:var(--bg)}
-  .kicker{font-size:1.7vmin;letter-spacing:.28em;font-weight:700;color:var(--green);text-transform:uppercase;margin-bottom:1.4vmin}
+  .kicker{font-size:1.9vmin;letter-spacing:.28em;font-weight:700;color:var(--green);text-transform:uppercase;margin-bottom:1.4vmin}
   .title{font-family:"Cambria",Georgia,serif;font-weight:700;color:var(--forest);font-size:4.4vmin;line-height:1.12;margin:0 0 1vmin}
-  .subtitle{font-size:2.1vmin;color:var(--mut);margin:.4vmin 0 2.4vmin}
+  .subtitle{font-size:2.35vmin;color:var(--mut);margin:.4vmin 0 2.4vmin}
   .accent{height:.5vmin;width:9vmin;background:var(--green);border-radius:3px;margin:1.4vmin 0 2.2vmin}
   ul.pts{margin:0;padding-left:0;list-style:none}
-  ul.pts li{position:relative;padding-left:3.4vmin;margin:1.5vmin 0;font-size:2.35vmin;line-height:1.45}
+  ul.pts li{position:relative;padding-left:3.4vmin;margin:1.5vmin 0;font-size:2.55vmin;line-height:1.45}
   ul.pts li::before{content:"";position:absolute;left:.6vmin;top:.9vmin;width:1.3vmin;height:1.3vmin;background:var(--gold);border-radius:50%}
   ul.pts li b{color:var(--forest)}
   .cols{display:grid;grid-template-columns:1fr 1fr;gap:3vmin}
@@ -35,7 +35,7 @@
   .card.d{background:var(--tintd)} .card.g{background:var(--tint)}
   .eqbox{background:var(--tint);border-left:.6vmin solid var(--green);border-radius:0 1vmin 1vmin 0;
      padding:2vmin 2.6vmin;margin:1.8vmin 0;font-family:"Cambria",serif;font-size:2.5vmin;color:var(--forest)}
-  table.tbl{width:100%;border-collapse:collapse;font-size:2vmin}
+  table.tbl{width:100%;border-collapse:collapse;font-size:2.2vmin}
   table.tbl th,table.tbl td{border:1px solid var(--line);padding:1.2vmin 1.6vmin;text-align:left;vertical-align:top}
   table.tbl th{background:var(--forest);color:#fff;font-family:"Cambria",serif}
   table.tbl tr:nth-child(even) td{background:#fff}
@@ -46,13 +46,27 @@
   .stat .s .n{font-family:"Cambria",serif;font-size:4.2vmin;font-weight:700;color:var(--green);line-height:1}
   .stat .s .l{font-size:1.9vmin;color:var(--ink);margin-top:.8vmin}
   .recap{background:var(--tint);border:1px solid var(--green);border-radius:1.4vmin;padding:2.6vmin 3vmin}
-  .recap li{font-size:2.25vmin}
-  .note{background:var(--tint);border-left:.5vmin solid var(--gold);padding:1.6vmin 2.2vmin;border-radius:0 1vmin 1vmin 0;font-size:2vmin;color:var(--ink);margin-top:1.8vmin}
+  .recap li{font-size:2.4vmin}
+  .note{background:var(--tint);border-left:.5vmin solid var(--gold);padding:1.6vmin 2.2vmin;border-radius:0 1vmin 1vmin 0;font-size:2.25vmin;color:var(--ink);margin-top:1.8vmin}
+  .subtitle-sm{font-family:"Calibri","Segoe UI",sans-serif;font-size:2.1vmin;color:var(--mut);font-style:italic;margin:-.5vmin 0 .7vmin}
+  .illus-split{display:grid;grid-template-columns:33% 1fr;gap:3vmin;align-items:center;min-height:50vh;margin-top:.4vmin}
+  .illus-split>.illus{display:flex;align-items:center;justify-content:center}
+  .illus-split>.illus svg{width:100%;height:auto;max-height:60vh}
+  .illus-split>.content{align-self:center}
+  .illus-split .cols{gap:2.4vmin}
+  .illus-split .steps .s{margin:.2vmin 0}
+  .slide.dark .subtitle-sm{color:#9fb6bd}
+  .illus-split>.illus{align-self:stretch}
+  .photo{position:relative;width:100%;height:100%;min-height:44vh;border-radius:1.4vmin;overflow:hidden;box-shadow:0 1vmin 3vmin rgba(0,0,0,.14);background:#eef2f0}
+  .photo .fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:1.5vmin}
+  .photo .fb svg{width:100%;height:100%}
+  .photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .illus-split + .note, .illus-split + .recap{margin-top:1.4vmin}
   /* dark slides (cover + dividers) */
   .slide.dark{background:var(--petrol);color:#fff}
   .slide.dark .kicker{color:var(--gold)}
   .slide.dark .title{color:#fff;font-size:6vmin}
-  .slide.dark .subtitle{color:#cfe0e4;font-size:2.4vmin}
+  .slide.dark .subtitle{color:#cfe0e4;font-size:2.6vmin}
   .slide.dark .accent{background:var(--gold)}
   .bignum{font-family:"Cambria",serif;font-size:12vmin;font-weight:700;color:var(--gold);line-height:1}
   .chips{display:flex;gap:1.4vmin;flex-wrap:wrap;margin-top:2.6vmin}
@@ -60,7 +74,7 @@
      padding:1vmin 1.8vmin;border-radius:2vmin;font-size:1.9vmin;font-weight:600}
   /* interactive demo slide */
   .demoslide .inner{width:min(1240px,96vw)}
-  .demoslide .dhead{display:flex;align-items:baseline;gap:1.4vmin;margin-bottom:1.2vmin}
+  .demoslide .dhead{display:flex;align-items:baseline;gap:1.4vmin;margin-bottom:.6vmin}
   .demoslide .badge{background:var(--green);color:#fff;font-weight:700;font-size:1.6vmin;padding:.7vmin 1.4vmin;border-radius:.8vmin;letter-spacing:.1em}
   .demoslide .dt{font-family:"Cambria",serif;color:var(--forest);font-size:3vmin;font-weight:700}
   .demoslide iframe{width:100%;height:74vh;border:1px solid var(--line);border-radius:1.2vmin;box-shadow:0 1vmin 3vmin rgba(0,0,0,.10);background:#fff}
@@ -76,11 +90,18 @@
   .hintbar{position:fixed;top:1.2vmin;right:1.6vmin;font-size:1.4vmin;color:var(--mut);z-index:20;opacity:.7}
   .steps{margin:.5vmin 0}
   .steps .s{display:flex;gap:1.3vmin;align-items:center;margin:.6vmin 0;padding:.6vmin 1.3vmin;background:var(--tint);border-left:3px solid var(--green);border-radius:0 9px 9px 0}
-  .steps .s .k{font-family:"Cambria",serif;font-weight:700;color:var(--green);min-width:2.1vmin;font-size:2vmin}
-  .steps .s .m{font-size:1.95vmin;overflow-x:auto}
+  .steps .s .k{font-family:"Cambria",serif;font-weight:700;color:var(--green);min-width:2.3vmin;font-size:2.3vmin}
+  .steps .s .m{font-size:2.3vmin;overflow-x:auto}
   .steps .s .why{color:var(--mut);font-size:1.55vmin;margin-left:auto;white-space:nowrap;font-style:italic}
   .simwrap{margin:.4vmin 0}
-  .simwrap iframe{width:100%;height:57vh;border:1px solid var(--line);border-radius:12px;display:block;background:#05070f}
+  .simwrap iframe{width:100%;height:70vh;border:1px solid var(--line);border-radius:12px;display:block;background:#05070f}
+  .stagebar{display:flex;gap:.4vmin;align-items:center;flex-wrap:wrap;margin:-.3vmin 0 1.7vmin}
+  .stagebar .st{font-family:"Calibri","Segoe UI",sans-serif;font-size:1.32vmin;font-weight:700;letter-spacing:.02em;padding:.45vmin 1.15vmin;border-radius:2vmin;background:#e6ebe8;color:#93a29a;white-space:nowrap}
+  .stagebar .st.done{background:#d3e4d9;color:#4a6b58}
+  .stagebar .st.on{background:var(--green);color:#fff;box-shadow:0 1px 4px rgba(0,133,64,.35)}
+  .stagebar .sep{color:#c2cbc6;font-size:1.15vmin}
+  .demoslide .stagebar{margin:.2vmin 0 .7vmin}
+  .slide.dark .stagebar .st{background:#12303c;color:#7fa0ab}
   .ibadge{display:inline-block;background:var(--green);color:#fff;font-weight:700;font-size:1.5vmin;letter-spacing:.4px;padding:.3vmin 1vmin;border-radius:6px;margin-right:1vmin}
   .lawrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.1vmin;margin-top:1vmin}
   .lawrow .card{padding:1vmin 1.3vmin;font-size:1.75vmin}
@@ -96,7 +117,7 @@
   .stepper .s{opacity:0;transform:translateY(12px);align-items:flex-start;transition:opacity .45s ease, transform .45s ease}
   .stepper .s.shown{opacity:1;transform:none}
   .stepper .s .sc{display:flex;flex-direction:column;gap:.35vmin}
-  .stepper .s .ex{font-size:1.62vmin;color:var(--mut);line-height:1.42;font-style:normal;font-family:"Calibri","Segoe UI",sans-serif}
+  .stepper .s .ex{font-size:2.25vmin;color:#233a30;line-height:1.5;font-style:normal;font-family:"Calibri","Segoe UI",sans-serif}
   #stephint{position:fixed;left:50%;transform:translateX(-50%);top:2.2vh;background:var(--forest);color:#fff;font-family:"Calibri",sans-serif;font-size:1.7vmin;font-weight:600;padding:.5vmin 1.5vmin;border-radius:20px;box-shadow:0 3px 12px rgba(0,0,0,.2);z-index:60;display:none}
 </style>
 </head>
@@ -109,43 +130,24 @@
 <section class="slide dark active">
   <div class="inner">
     <div class="kicker">King Fahd University of Petroleum &amp; Minerals · AE 582 Satellite Engineering</div>
-    <div style="font-size:7.5vmin;font-family:Cambria,serif;font-weight:700;margin:1vmin 0 .5vmin">WEEK 4</div>
+    <div style="font-size:7.4vmin;font-family:Cambria,serif;font-weight:700;margin:1vmin 0 .4vmin">WEEK 4</div>
     <div class="title" style="font-size:5vmin">Perturbations &amp; mission analysis</div>
     <div class="accent"></div>
-    <div class="subtitle">Lecture 1 — why real orbits drift: the geopotential and J₂, nodal regression &amp; apsidal precession, atmospheric drag and orbital lifetime. Lecture 2 — mission analysis: orbit categories, the orbit‑transfer problem, Hohmann transfers with worked examples, ground‑station visibility, eclipses and launch windows.</div>
-    <div class="chips"><span>Perturbed equation of motion</span><span>Geopotential &amp; J₂</span><span>Nodal regression</span><span>Apsidal precession</span><span>Atmospheric drag</span><span>Mission categories</span><span>Hohmann transfer</span><span>Ground coverage</span><span>Launch windows</span></div>
+    <div class="subtitle"><b>Lecture 1 — Perturbations:</b> why real orbits drift — the geopotential and J₂, nodal regression &amp; apsidal precession, drag and orbital lifetime, and the special orbits they enable. &nbsp; <b>Lecture 2 — Mission analysis:</b> turning objectives into a costed concept and its design drivers, developed live on Artemis I &amp; II and a Death Star exercise.</div>
+    <div class="chips"><span>Geopotential &amp; J₂</span><span>Precession</span><span>Drag &amp; lifetime</span><span>Sun‑sync · Molniya</span><span>What / Why / How</span><span>Design drivers</span><span>Budgets, margins &amp; trades</span><span>Artemis I &amp; II</span><span>Death Star</span></div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Course roadmap · orbits &amp; mission block</div>
-    <div class="title">Weeks 3–5 — from the exact orbit to a real mission</div>
+    <div class="kicker">This week · two lectures</div>
+    <div class="title">Perturbations, then mission analysis</div>
     <div class="accent"></div>
     <div class="cols">
-      <div><ul class="pts">
-        <li><b>Week 3</b> The two‑body problem — the exact Keplerian orbit, vis‑viva &amp; energy.</li>
-        <li><b>Week 4</b> Perturbations &amp; mission analysis &nbsp;<span style="color:var(--green);font-weight:700">◀ this deck</span></li>
-      </ul></div>
-      <div><ul class="pts">
-        <li><b>Week 5</b> Mission analysis II — GEO station‑keeping, constellations, interplanetary &amp; small‑body missions, low‑thrust.</li>
-      </ul>
-      <div class="note">Week 3 gave us the perfect orbit. Lecture 1 corrects it for the forces the point‑mass model ignores; Lecture 2 opens mission analysis — deciding which orbit a mission needs and what it costs to get there.</div></div>
+      <div class="card d"><h3>Lecture 1 — Perturbations</h3>The real orbit isn't the ideal one. We correct the Keplerian orbit (a Week‑3 prerequisite) for the forces the point‑mass model ignores: Earth's oblateness (J₂), the two secular precessions, atmospheric drag and lifetime — and turn those drifts into design tools (Sun‑synchronous, Molniya).</div>
+      <div class="card g"><h3>Lecture 2 — Mission analysis</h3>The engineering discipline that decides <b>which</b> mission to fly and <b>how</b>, before hardware is committed: objectives → drivers → concept → budgets → trade → baseline, developed live on Artemis I &amp; II and a Death Star in‑class exercise.</div>
     </div>
-  </div>
-</section>
-
-<section class="slide">
-  <div class="inner">
-    <div class="kicker">Bridge from Week 3</div>
-    <div class="title">The perfect orbit was only the starting point</div>
-    <div class="accent"></div>
-    <div class="eqbox">$$\ddot{\mathbf r}+\frac{\mu}{r^{3}}\,\mathbf r=\mathbf 0\qquad\Longrightarrow\qquad a,e,i,\Omega,\omega\ \text{all constant}$$</div>
-    <div class="cols">
-      <div class="card g"><h3>What Week 3 delivered</h3>A closed conic that never changes shape or orientation. Five elements are frozen; only the position along the orbit ($\nu$) evolves through Kepler's equation.</div>
-      <div class="card d"><h3>What this week adds</h3>Earth is neither a point nor alone. Its bulge, the atmosphere, the Sun and Moon all push on the satellite (L1). Then we ask which orbit a mission actually needs, and the ΔV to reach it (L2).</div>
-    </div>
-    <div class="note">Two viewpoints recur: a perturbation is a nuisance to be modelled — and, for J₂ precession, a resource to be designed around (Sun‑synchronous orbits, TRACERS).</div>
+    <div class="note"><b>Prerequisite:</b> orbital dynamics (vis‑viva, transfers, coverage geometry) — used as input, not re‑derived. <b>Next week:</b> the mission regimes — constellations, interplanetary, GEO station‑keeping, small‑body &amp; low‑thrust.</div>
   </div>
 </section>
 
@@ -203,8 +205,7 @@
 <section class="slide demoslide">
   <div class="inner">
     <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Zonal harmonics — visualize the Jₙ shape terms &amp; latitude zones</span></div>
-    <div class="simwrap">
-      <iframe title="zonal demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+    <div class="simwrap"><iframe title="demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
 &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Zonal harmonics · AE 582&lt;/title&gt;
 &lt;style&gt;
   :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
@@ -361,8 +362,7 @@
   document.getElementById(&#x27;mEq&#x27;).onclick=()=&gt;setMode(&#x27;eq&#x27;);
   document.getElementById(&#x27;mTr&#x27;).onclick=()=&gt;setMode(&#x27;tr&#x27;);
   addEventListener(&#x27;resize&#x27;,()=&gt;{resize();draw();}); resize(); setMode(&#x27;eq&#x27;);
-&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
-    </div>
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
   </div>
 </section>
 
@@ -401,8 +401,7 @@
 <section class="slide demoslide">
   <div class="inner">
     <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">J₂ precession explorer — slide altitude &amp; inclination, read the drift rates</span></div>
-    <div class="simwrap">
-      <iframe title="j2 demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+    <div class="simwrap"><iframe title="demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
 &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;J2 precession · AE 582&lt;/title&gt;
 &lt;style&gt;
   :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
@@ -538,8 +537,7 @@
   hS.oninput=upd; iS.oninput=upd;
   document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{hS.value=b.dataset.h;iS.value=b.dataset.i;upd();});
   addEventListener(&#x27;resize&#x27;,resize); resize(); upd(); raf=requestAnimationFrame(draw);
-&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
-    </div>
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
   </div>
 </section>
 
@@ -574,8 +572,7 @@
 <section class="slide demoslide">
   <div class="inner">
     <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Sun‑synchronous designer — solve for the inclination that Sun‑locks the plane</span></div>
-    <div class="simwrap">
-      <iframe title="sunsync demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+    <div class="simwrap"><iframe title="demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
 &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Sun-sync designer · AE 582&lt;/title&gt;
 &lt;style&gt;
   :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
@@ -709,8 +706,7 @@
   document.getElementById(&#x27;mFX&#x27;).onclick=()=&gt;setMode(&#x27;fx&#x27;);
   document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{hS.value=b.dataset.h;document.getElementById(&#x27;hV&#x27;).textContent=b.dataset.h;});
   addEventListener(&#x27;resize&#x27;,resize); resize(); setMode(&#x27;ss&#x27;); raf=requestAnimationFrame(draw);
-&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
-    </div>
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
   </div>
 </section>
 
@@ -753,8 +749,7 @@
 <section class="slide demoslide">
   <div class="inner">
     <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Molniya orbit — the ground track dwelling over the U.S.S.R.</span></div>
-    <div class="simwrap">
-      <iframe title="molniya demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+    <div class="simwrap"><iframe title="demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
 &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Molniya · AE 582&lt;/title&gt;
 &lt;style&gt;
   :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
@@ -917,8 +912,7 @@
   }
   document.getElementById(&#x27;tog&#x27;).onclick=()=&gt;{playing=!playing;document.getElementById(&#x27;tog&#x27;).innerHTML=playing?&#x27;&amp;#10073;&amp;#10073; Pause&#x27;:&#x27;&amp;#9654; Play&#x27;;};
   addEventListener(&#x27;resize&#x27;,resize); resize(); raf=requestAnimationFrame(frame);
-&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
-    </div>
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
   </div>
 </section>
 
@@ -1010,467 +1004,697 @@
     <div class="bignum">L2</div>
     <div class="title">Mission analysis</div>
     <div class="accent"></div>
-    <div class="subtitle">Which orbit does a mission need, and what does it cost to get there? Orbit categories, the transfer problem, the Hohmann transfer with worked examples, ground‑station visibility, eclipses and launch windows.</div>
+    <div class="subtitle">The engineering discipline that turns objectives into a feasible, costed concept and its design drivers — objectives → drivers → concept → budgets → trade → baseline, developed live on Artemis I &amp; II and a Death Star exercise. Orbital dynamics is used as input, not re‑derived.</div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2</div>
-    <div class="title">Mission analysis — orbit categories</div>
+    <div class="kicker">What it is</div>
+    <div class="title">Objectives in — concept &amp; drivers out</div>
     <div class="accent"></div>
-    <div class="cols wide-left">
-      <div class="stack">
-        <ul class="pts" style="font-size:2.05vmin">
-          <li>Mission design happens in the <b>feasibility study</b> and strongly shapes the spacecraft.</li>
-          <li>It is an <b>iterative process</b>: spacecraft constraints and mission goals trade against each other.</li>
-          <li>After pre‑launch and launch, <b>orbit transfer</b> is the next key event — moving the vehicle from its injection orbit to the mission orbit.</li>
-        </ul>
-      </div>
-      <div class="card g"><h3>Missions sort by orbit</h3><ol style="margin:.4vmin 0 0 3vmin;font-size:2vmin;line-height:1.7">
-        <li>Low Earth orbit (LEO)</li>
-        <li>Medium Earth orbit (MEO)</li>
-        <li>Geostationary (GEO)</li>
-        <li>Highly elliptical (HEO)</li>
-        <li>Non‑geocentric (Lagrange, interplanetary)</li>
-      </ol></div>
-    </div>
-    <div class="note">Transfer carries an <i>a‑priori</i> uncertainty (the launch vehicle's performance envelope) and an <i>a‑posteriori</i> one (trajectory measurement errors) — both must be budgeted.</div>
+
+<svg class="fig" viewBox="0 0 960 300" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#00573F"/></marker></defs>
+<g font-family="Calibri,sans-serif">
+<rect x="20" y="70" width="250" height="160" rx="12" fill="#eef4f1" stroke="#cfd2db"/>
+<text x="145" y="98" text-anchor="middle" font-size="13" font-weight="700" fill="#8A6D00">INPUTS</text>
+<text x="145" y="128" text-anchor="middle" font-size="14" fill="#12211b">Mission objectives</text>
+<text x="145" y="152" text-anchor="middle" font-size="12.5" fill="#5a6b63">Constraints:</text>
+<text x="145" y="172" text-anchor="middle" font-size="12.5" fill="#5a6b63">cost cap · schedule</text>
+<text x="145" y="190" text-anchor="middle" font-size="12.5" fill="#5a6b63">launchers · tech readiness</text>
+<text x="145" y="208" text-anchor="middle" font-size="12.5" fill="#5a6b63">orbital environment</text>
+<rect x="360" y="110" width="240" height="80" rx="12" fill="#00573F"/>
+<text x="480" y="145" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">MISSION</text>
+<text x="480" y="168" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">ANALYSIS</text>
+<rect x="690" y="60" width="250" height="72" rx="12" fill="#f4faf6" stroke="#008540"/>
+<text x="815" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#00573F">OUTPUT 1</text>
+<text x="815" y="112" text-anchor="middle" font-size="14" fill="#12211b">Feasible, costed concept(s)</text>
+<rect x="690" y="168" width="250" height="72" rx="12" fill="#fffdf4" stroke="#DAC961"/>
+<text x="815" y="196" text-anchor="middle" font-size="13" font-weight="700" fill="#8A6D00">OUTPUT 2</text>
+<text x="815" y="220" text-anchor="middle" font-size="14" fill="#12211b">Design drivers &amp; requirements</text>
+<line x1="270" y1="150" x2="356" y2="150" stroke="#00573F" stroke-width="2.5" marker-end="url(#a1)"/>
+<line x1="600" y1="140" x2="686" y2="100" stroke="#00573F" stroke-width="2.5" marker-end="url(#a1)"/>
+<line x1="600" y1="160" x2="686" y2="200" stroke="#00573F" stroke-width="2.5" marker-end="url(#a1)"/>
+</g></svg>
+    <div class="note">Mission analysis is <b>not detailed design</b>. It is the feasibility‑level reasoning that takes objectives and constraints and returns a concept plus the few requirements — the <b>design drivers</b> — that dictate the vehicle.</div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · foundations</div>
-    <div class="title">Altitude sets speed and period</div>
+    <div class="kicker">What it is · when it happens</div>
+    <div class="title">Early in the lifecycle — and iterative</div>
     <div class="accent"></div>
-    <div class="cols wide-right">
-      <div class="stack">
-        <div class="eqbox" style="font-size:2.0vmin">$$v=\sqrt{\frac{\mu}{R_E+z}},\qquad T=\frac{2\pi}{\sqrt{\mu}}\,(R_E+z)^{3/2}$$</div>
-        <ul class="pts" style="font-size:1.95vmin">
-          <li>Higher orbits are <b>slower</b> but take <b>longer</b> — the two curves move in opposite directions.</li>
-          <li>Across LEO (0–2000 km): speed falls ~7.9 → 6.9 km/s while period grows ~85 → 127 min.</li>
-          <li>This trade underlies every mission‑orbit choice: coverage, revisit time, launch cost.</li>
-        </ul>
-      </div>
-      <svg class="fig" viewBox="0 0 920 300" xmlns="http://www.w3.org/2000/svg">
-        <!-- axes -->
-        <line x1="70" y1="45" x2="70" y2="255" stroke="#B9BCC9"/><line x1="70" y1="255" x2="430" y2="255" stroke="#B9BCC9"/>
-        <line x1="520" y1="45" x2="520" y2="255" stroke="#B9BCC9"/><line x1="520" y1="255" x2="880" y2="255" stroke="#B9BCC9"/>
-        <polyline points="70,62 92,75 115,88 138,101 160,113 182,125 205,136 228,148 250,159 272,169 295,180 318,190 340,200 362,210 385,220 408,229 430,238" fill="none" stroke="#008540" stroke-width="2.6"/>
-        <polyline points="520,236 542,226 565,215 588,204 610,194 632,183 655,172 678,161 700,150 722,138 745,127 768,115 790,104 812,92 835,80 858,69 880,57" fill="none" stroke="#003E51" stroke-width="2.6"/>
-        <text class="svgt g" x="150" y="35" style="font-weight:700">v (km/s)</text>
-        <text class="svgt p" x="600" y="35" style="font-weight:700">T (min)</text>
-        <text class="svgt" x="210" y="285">altitude z (km)</text>
-        <text class="svgt" x="660" y="285">altitude z (km)</text>
-        <text class="svgt" x="40" y="66">8</text><text class="svgt" x="36" y="240">6.8</text>
-        <text class="svgt" x="492" y="240">80</text><text class="svgt" x="488" y="62">130</text>
-        <text class="svgt" x="62" y="270">0</text><text class="svgt" x="410" y="270">2000</text>
-        <text class="svgt" x="512" y="270">0</text><text class="svgt" x="860" y="270">2000</text>
-      </svg>
-    </div>
-    <div class="note">Setting $e=0$ in the orbit equation gives $r=h^2/\mu$ and these two relations directly (course, Fig. 2.14). They are the vis‑viva result of Week 3, restated as the mission‑analysis "menu" of circular orbits.</div>
+    <svg viewBox="0 0 960 92" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:12vh">
+<g font-family="Calibri,sans-serif" font-size="15">
+<rect x="20" y="14" width="150" height="46" fill="#DAC961"/><rect x="170" y="14" width="120" height="46" fill="#e7c96a"/>
+<rect x="290" y="14" width="150" height="46" fill="#dfe3e1"/><rect x="440" y="14" width="150" height="46" fill="#dfe3e1"/>
+<rect x="590" y="14" width="150" height="46" fill="#dfe3e1"/><rect x="740" y="14" width="200" height="46" fill="#dfe3e1"/>
+<text x="95" y="42" text-anchor="middle" font-weight="700" fill="#12211b">Pre‑A</text>
+<text x="230" y="42" text-anchor="middle" font-weight="700" fill="#12211b">A</text>
+<text x="365" y="42" text-anchor="middle" fill="#5a6b63">B</text><text x="515" y="42" text-anchor="middle" fill="#5a6b63">C</text>
+<text x="665" y="42" text-anchor="middle" fill="#5a6b63">D</text><text x="840" y="42" text-anchor="middle" fill="#5a6b63">E — operations</text>
+<text x="155" y="84" text-anchor="middle" font-size="14" font-weight="700" fill="#8A6D00">◄ mission analysis lives here ►</text>
+</g></svg>
+    <div style="display:flex;justify-content:center;margin:.5vmin 0"><div style="width:46%;max-width:520px"><svg viewBox="0 0 440 330" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="lp" markerWidth="10" markerHeight="10" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#DAC961"/></marker></defs>
+<circle cx="220" cy="165" r="112" fill="none" stroke="#e3e7e5" stroke-width="10"/>
+<!-- clockwise arrows along the ring -->
+<path d="M 258,63 A 112,112 0 0 1 325,178" fill="none" stroke="#DAC961" stroke-width="6" marker-end="url(#lp)"/>
+<path d="M 300,247 A 112,112 0 0 1 140,247" fill="none" stroke="#DAC961" stroke-width="6" marker-end="url(#lp)"/>
+<path d="M 115,178 A 112,112 0 0 1 182,63" fill="none" stroke="#DAC961" stroke-width="6" marker-end="url(#lp)"/>
+<g font-family="Calibri,sans-serif" font-weight="700" text-anchor="middle">
+<rect x="145" y="35" width="150" height="46" rx="12" fill="#00573F"/><text x="220" y="63" font-size="17" fill="#fff">mission concept</text>
+<rect x="40" y="205" width="158" height="46" rx="12" fill="#008540"/><text x="119" y="233" font-size="16" fill="#fff">spacecraft design</text>
+<rect x="262" y="205" width="120" height="46" rx="12" fill="#1c7a5a"/><text x="322" y="233" font-size="17" fill="#fff">cost</text>
+<text x="220" y="160" font-size="18" fill="#003E51" font-style="italic">iterate</text>
+<text x="220" y="184" font-size="13" fill="#5a6b63" font-weight="400" font-style="italic">until it closes</text>
+</g></svg></div></div>
+    <div class="note">Done in Pre‑Phase A / Phase A, long before the design is frozen. Mission concept, spacecraft design and cost form a <b>loop</b> — change one and the others move — and you circle it until the concept <b>closes</b>.</div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2</div>
-    <div class="title">Mission analysis — propellant drives everything</div>
+    <div class="kicker">What it is · from objectives to requirements</div>
+    <div class="title">Requirements flow down to a few drivers</div>
     <div class="accent"></div>
-    <div class="cols">
-      <div class="card g"><h3>Transfers and pointing cost fuel</h3>Transferring between orbits needs propellant, and planners size it from the initial and target orbits. Observatories that must re‑point continuously (sky surveys) also spend propellant: reaction wheels slew the spacecraft, and thrusters periodically <b>dump the wheels' angular momentum</b>.</h3></div>
-      <div class="card d"><h3>Fuel is the mission clock</h3>A contingency plan covers unscheduled pointing, but careful budgeting is critical — <b>many missions end when fuel runs out</b>, not when hardware fails.</div>
-    </div>
-    <div class="note">Other observatory constraints when deriving a mission profile: minimum Sun/telescope angle, Earth‑limb/telescope angle, passage through the South Atlantic Anomaly, and the thermal balance of the spacecraft and its sensors.</div>
+<div style="display:flex;justify-content:center;margin:1vmin 0"><div style="width:52%;max-width:560px"><svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg">
+<g font-family="Calibri,sans-serif" font-weight="700" text-anchor="middle">
+<polygon points="30,20 430,20 398,74 62,74" fill="#003E51"/><text x="230" y="52" font-size="16" fill="#fff">Mission objectives</text>
+<polygon points="62,80 398,80 366,134 94,134" fill="#00573F"/><text x="230" y="112" font-size="15" fill="#fff">Mission requirements</text>
+<polygon points="94,140 366,140 334,194 126,194" fill="#1c7a5a"/><text x="230" y="172" font-size="14" fill="#fff">System &amp; functional requirements</text>
+<polygon points="126,200 334,200 298,262 162,262" fill="#DAC961"/><text x="230" y="236" font-size="15" fill="#12211b">DESIGN DRIVERS</text>
+<text x="230" y="252" font-size="11" fill="#3a3a20" font-weight="400">the few that dictate the design</text>
+</g></svg></div></div>
+    <div class="note">Mission analysis turns objectives into <b>traceable requirements</b>. Of the hundreds that result, a handful — the <b>design drivers</b> — dictate the configuration. Trace every requirement back to an objective and forward to what it drives.</div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2</div>
-    <div class="title">Mission analysis — end of life &amp; design drivers</div>
+    <div class="kicker">What it is · the key idea</div>
+    <div class="title">A design driver cascades through the whole vehicle</div>
     <div class="accent"></div>
-    <div class="cols">
-      <div class="card g"><h3>Disposal is part of the design</h3>End of life is a real mission phase. For <b>GEO</b>, longitude slots are scarce, so residual propellant boosts the satellite to a higher <b>graveyard</b> orbit. For <b>LEO</b>, the plan is a controlled re‑entry or a drop to a short‑lifetime disposal orbit (recall the lifetime formula from L1).</div>
-      <div class="card d"><h3>Objectives → design drivers</h3>Analysing the mission objectives produces the <b>design drivers</b> — the handful of requirements (orbit, coverage, power, pointing, lifetime) that dictate the overall vehicle configuration. Everything downstream serves them.</div>
-    </div>
-    <div class="note">The rest of this lecture works the three questions mission analysis must answer: how to <b>reach</b> the orbit (transfers), how much of the Earth it <b>sees</b> (coverage), and <b>when</b> we can launch (windows).</div>
+
+<svg class="fig" viewBox="0 0 960 290" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a3" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#003E51"/></marker></defs>
+<g font-family="Calibri,sans-serif" font-size="13" text-anchor="middle">
+<rect x="360" y="24" width="240" height="52" rx="10" fill="#DAC961"/>
+<text x="480" y="46" font-weight="700" fill="#12211b">DESIGN DRIVER</text>
+<text x="480" y="65" font-weight="700" fill="#12211b">Coverage / revisit</text>
+<rect x="30"  y="180" width="200" height="70" rx="10" fill="#eef4f1" stroke="#003E51"/><text x="130" y="208" fill="#12211b">Constellation:</text><text x="130" y="226" fill="#5a6b63" font-size="12">number of sats &amp; planes</text>
+<rect x="270" y="180" width="200" height="70" rx="10" fill="#eef4f1" stroke="#003E51"/><text x="370" y="208" fill="#12211b">Launch:</text><text x="370" y="226" fill="#5a6b63" font-size="12">vehicle &amp; number of flights</text>
+<rect x="510" y="180" width="200" height="70" rx="10" fill="#eef4f1" stroke="#003E51"/><text x="610" y="208" fill="#12211b">Operations:</text><text x="610" y="226" fill="#5a6b63" font-size="12">ground network, ΔV budget</text>
+<rect x="750" y="180" width="200" height="70" rx="10" fill="#eef4f1" stroke="#003E51"/><text x="850" y="208" fill="#12211b">Spacecraft:</text><text x="850" y="226" fill="#5a6b63" font-size="12">payload aperture, power</text>
+<path d="M 470 78 L 150 176" stroke="#003E51" stroke-width="1.8" marker-end="url(#a3)"/>
+<path d="M 480 78 L 380 176" stroke="#003E51" stroke-width="1.8" marker-end="url(#a3)"/>
+<path d="M 490 78 L 600 176" stroke="#003E51" stroke-width="1.8" marker-end="url(#a3)"/>
+<path d="M 510 78 L 835 176" stroke="#003E51" stroke-width="1.8" marker-end="url(#a3)"/>
+</g></svg>
+    <div class="note">A <b>design driver</b> is one of the few requirements that, once set, forces most of the configuration. Here "coverage/revisit" cascades into constellation size, launch, operations and spacecraft. Every mission has its own driver — the skill is finding it early.</div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · orbit transfer</div>
-    <div class="title">The Keplerian orbit‑transfer problem</div>
+    <div class="kicker">What it is · the concept of operations</div>
+    <div class="title">The Concept of Operations — the mission's story</div>
     <div class="accent"></div>
-    <div class="cols">
-      <div class="card g"><h3>One maneuver, or two?</h3>To move between two orbits with a <b>single</b> burn, the initial and final orbits must <b>intersect</b> at the burn point. If they don't — e.g. two non‑touching circular orbits — you need at least <b>two</b> maneuvers.</div>
-      <div class="card d"><h3>The Hohmann transfer</h3>The Hohmann transfer uses two burns to move between coplanar circular orbits via an ellipse tangent to both. It is the <b>minimum‑energy two‑maneuver transfer</b>, optimal for radius ratios $r_2/r_1<11.8$.</div>
-    </div>
-    <div class="eqbox">$$a_t=\frac{r_1+r_2}{2}\qquad\text{transfer ellipse: perigee at }r_1,\ \text{apogee at }r_2$$</div>
-    <div class="note">Every step below is just vis‑viva (Week 3) evaluated on the circle and on the transfer ellipse — the same recipe used for launch injection, GTO, and planetary departure.</div>
+<div style="display:flex;justify-content:center;margin:1vmin 0"><div style="width:82%;max-width:900px"><svg viewBox="0 0 960 170" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="cn" markerWidth="10" markerHeight="10" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8A6D00"/></marker></defs>
+<g font-family="Calibri,sans-serif" font-size="14" font-weight="700" text-anchor="middle">
+<rect x="14"  y="50" width="150" height="60" rx="8" fill="#003E51"/><text x="89"  y="78" fill="#fff">Launch &amp;</text><text x="89" y="96" fill="#fff">ascent</text>
+<rect x="182" y="50" width="170" height="60" rx="8" fill="#00573F"/><text x="267" y="78" fill="#fff">Commissioning</text><text x="267" y="96" fill="#fff">(LEOP)</text>
+<rect x="370" y="50" width="230" height="60" rx="8" fill="#1c7a5a"/><text x="485" y="84" fill="#fff">Nominal operations</text>
+<rect x="618" y="50" width="150" height="60" rx="8" fill="#2a8a68"/><text x="693" y="84" fill="#fff">Extended ops</text>
+<rect x="786" y="50" width="160" height="60" rx="8" fill="#DAC961"/><text x="866" y="78" fill="#12211b">Disposal</text><text x="866" y="96" fill="#12211b">(end of life)</text>
+</g>
+<g stroke="#8A6D00" stroke-width="2">
+<line x1="164" y1="80" x2="180" y2="80" marker-end="url(#cn)"/><line x1="352" y1="80" x2="368" y2="80" marker-end="url(#cn)"/>
+<line x1="600" y1="80" x2="616" y2="80" marker-end="url(#cn)"/><line x1="768" y1="80" x2="784" y2="80" marker-end="url(#cn)"/></g>
+</svg></div></div>
+    <div class="note">A <b>ConOps</b> (or Design Reference Mission) is the day‑in‑the‑life storyline across every phase. It is what turns objectives into <b>sizing</b>: power per eclipse, data per pass, ΔV per maneuver, propellant for disposal.</div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · derivation</div>
-    <div class="title">Hohmann transfer — the equations</div>
+    <div class="kicker">Why it's done</div>
+    <div class="title">Most of the cost is committed before it is spent</div>
     <div class="accent"></div>
-    <div class="steps stepper">
-      <div class="s"><span class="k">1</span><div class="sc"><div class="m">$v_c=\sqrt{\mu/r_1}\qquad v_p^{2}=2\mu\!\left(\dfrac{1}{r_1}-\dfrac{1}{r_1+r_2}\right)$</div><div class="ex">Circular speed on the inner orbit, and the perigee speed on the transfer ellipse.</div></div></div>
-      <div class="s"><span class="k">2</span><div class="sc"><div class="m">$\Delta V_1=\sqrt{\dfrac{\mu}{r_1}}\left(\sqrt{\dfrac{2r_2}{r_1+r_2}}-1\right)$</div><div class="ex">First burn at perigee: speed up from the circle onto the transfer ellipse.</div></div></div>
-      <div class="s"><span class="k">3</span><div class="sc"><div class="m">$\Delta V_2=\sqrt{\dfrac{\mu}{r_2}}\left(1-\sqrt{\dfrac{2r_1}{r_1+r_2}}\right)$</div><div class="ex">Second burn at apogee: circularise onto the outer orbit.</div></div></div>
-      <div class="s"><span class="k">4</span><div class="sc"><div class="m">$T_t=\dfrac{1}{2}\cdot 2\pi\sqrt{\dfrac{a_t^{3}}{\mu}}=\pi\sqrt{\dfrac{(r_1+r_2)^3}{8\mu}}$</div><div class="ex">Transfer time is half the ellipse period. Total cost $\Delta V=\Delta V_1+\Delta V_2$. Verify it live next.</div></div></div>
-    </div>
-    <div class="note">Table 5.1 (course) tabulates Hohmann departures from a 300 km LEO to the planets — e.g. Mars $\Delta V\approx3.59$ km/s over 0.71 yr, Jupiter $\approx6.30$ km/s over 2.73 yr.</div>
-  </div>
-</section>
-
-<section class="slide demoslide">
-  <div class="inner">
-    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Hohmann transfer — set two orbits, run the two‑burn transfer</span></div>
-    <div class="simwrap">
-      <iframe title="hohmann demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Hohmann · AE 582&lt;/title&gt;
-&lt;style&gt;
-  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
-        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
-  *{box-sizing:border-box}html,body{margin:0;height:100%}
-  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
-  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
-  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
-  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
-  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
-  header .eq b{color:#fff;font-style:normal}
-  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
-  @media(max-width:920px){main{grid-template-columns:1fr}}
-  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:440px}
-  canvas{display:block;width:100%;height:100%}
-  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none;max-width:75%}
-  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:92px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
-  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
-  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.red .v{color:#b3261e}
-  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
-  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
-  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
-  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
-  input[type=range]{width:100%;accent-color:var(--green);height:22px}
-  select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--petrol);font-weight:600;background:#fff}
-  .presets{display:flex;flex-wrap:wrap;gap:6px}
-  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
-  .presets button:hover{background:var(--tint)}
-  .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--tint);border-left:4px solid var(--green);font-size:13px;line-height:1.45}
-  .verdict b{color:var(--forest)}
-  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
-  .divider{height:1px;background:var(--line);margin:14px 0}
-  .btnrow{display:flex;gap:8px;margin-top:6px}
-  .btnrow button{flex:1;padding:9px;border:none;border-radius:9px;background:var(--green);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
-  .btnrow button:hover{background:var(--forest)}
-&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
-&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM · AE 582 - WEEK 4 - TRANSFERS&lt;/div&gt;&lt;h1&gt;Hohmann transfer calculator&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;a&lt;sub&gt;t&lt;/sub&gt; = (r&amp;#8321;+r&amp;#8322;)/2 &amp;nbsp;&amp;middot;&amp;nbsp; &amp;#916;V from vis&amp;#8209;viva at r&amp;#8321; and r&amp;#8322;&lt;/div&gt;&lt;/header&gt;
-&lt;main&gt;
-  &lt;div class=&quot;stage&quot;&gt;
-    &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
-    &lt;div class=&quot;readouts&quot;&gt;
-      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;&amp;#916;V&amp;#8321; (perigee)&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;d1&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
-      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;&amp;#916;V&amp;#8322; (apogee)&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;d2&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
-      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;total &amp;#916;V&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;dt&quot;&gt;—&lt;/span&gt; km/s&lt;/div&gt;&lt;/div&gt;
-      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;transfer time&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;tt&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;panel&quot;&gt;
-    &lt;h2&gt;Orbits&lt;/h2&gt;
-    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Initial altitude &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;h1V&quot;&gt;400&lt;/span&gt; km&lt;/span&gt;&lt;/label&gt;
-      &lt;input type=&quot;range&quot; id=&quot;h1&quot; min=&quot;200&quot; max=&quot;20000&quot; step=&quot;50&quot; value=&quot;400&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Final altitude &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;h2V&quot;&gt;35786&lt;/span&gt; km&lt;/span&gt;&lt;/label&gt;
-      &lt;input type=&quot;range&quot; id=&quot;h2&quot; min=&quot;200&quot; max=&quot;40000&quot; step=&quot;50&quot; value=&quot;35786&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;presets&quot;&gt;
-      &lt;button data-a=&quot;400&quot; data-b=&quot;35786&quot;&gt;LEO &amp;rarr; GEO&lt;/button&gt;
-      &lt;button data-a=&quot;400&quot; data-b=&quot;800&quot;&gt;400 &amp;rarr; 800&lt;/button&gt;
-      &lt;button data-a=&quot;400&quot; data-b=&quot;20200&quot;&gt;&amp;rarr; GPS (MEO)&lt;/button&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;btnrow&quot;&gt;&lt;button id=&quot;run&quot;&gt;&amp;#9654; Run transfer&lt;/button&gt;&lt;/div&gt;
-    &lt;div class=&quot;verdict&quot; id=&quot;verdict&quot;&gt;—&lt;/div&gt;
-    &lt;div class=&quot;hint&quot;&gt;Blue = start orbit, teal = target, gold dashed = transfer ellipse. The burn is tangential at both ends. Note how $\Delta V_2$ shrinks for very high targets — apogee is slow.&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/main&gt;
-&lt;script&gt;
-  const MU=398600.4418, RE=6378.14, J2=1.08263e-3, GEO=42164.0, RAD=180/Math.PI, DAY=86400;
-  const vc=r=&gt;Math.sqrt(MU/r), vv=(r,a)=&gt;Math.sqrt(MU*(2/r-1/a));
-  const f=(x,d=2)=&gt;isFinite(x)?Number(x).toLocaleString(&#x27;en-US&#x27;,{minimumFractionDigits:d,maximumFractionDigits:d}):&#x27;\u2014&#x27;;
-
-  const h1=document.getElementById(&#x27;h1&#x27;), h2=document.getElementById(&#x27;h2&#x27;);
-  const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
-  let t=0, playing=false, raf=null;
-  function calc(){
-    const r1=RE+(+h1.value), r2=RE+(+h2.value), at=(r1+r2)/2;
-    const dv1=Math.abs(vv(r1,at)-vc(r1)), dv2=Math.abs(vc(r2)-vv(r2,at));
-    const tt=Math.PI*Math.sqrt(at*at*at/MU);
-    return {r1,r2,at,dv1,dv2,tt};
-  }
-  function fmtT(s){const h=s/3600; return h&lt;1?f(s/60,0)+&#x27; min&#x27;:f(h,2)+&#x27; h&#x27;;}
-  function nums(){
-    const d=calc();
-    document.getElementById(&#x27;h1V&#x27;).textContent=+h1.value;
-    document.getElementById(&#x27;h2V&#x27;).textContent=+h2.value;
-    document.getElementById(&#x27;d1&#x27;).textContent=f(d.dv1,3);
-    document.getElementById(&#x27;d2&#x27;).textContent=f(d.dv2,3);
-    document.getElementById(&#x27;dt&#x27;).textContent=f(d.dv1+d.dv2,3);
-    document.getElementById(&#x27;tt&#x27;).textContent=fmtT(d.tt);
-    document.getElementById(&#x27;verdict&#x27;).innerHTML=&#x27;Total budget &lt;b&gt;&#x27;+f(d.dv1+d.dv2,3)+&#x27; km/s&lt;/b&gt; over &#x27;+fmtT(d.tt)+&#x27;. Radius ratio r&amp;#8322;/r&amp;#8321; = &lt;b&gt;&#x27;+f(d.r2/d.r1,2)+&#x27;&lt;/b&gt;&#x27;+(d.r2/d.r1&gt;11.94?&#x27; &amp;mdash; above 11.94, a bi‑elliptic transfer could beat this.&#x27;:&#x27; &amp;mdash; Hohmann is optimal here.&#x27;);
-  }
-  function resize(){const r=cv.getBoundingClientRect();cv.width=r.width*devicePixelRatio;cv.height=r.height*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
-  function draw(frac){
-    const d=calc(), W=cv.getBoundingClientRect().width, H=cv.getBoundingClientRect().height;
-    ctx.clearRect(0,0,W,H);
-    const cx=W/2, cy=H/2, outer=Math.max(d.r1,d.r2), scale=Math.min(W,H)*0.40/outer;
-    const dir=d.r1&lt;=d.r2?1:-1;
-    ctx.lineWidth=2;
-    ctx.strokeStyle=dir&gt;0?&#x27;#3a86ff&#x27;:&#x27;#3fd0c0&#x27;; ctx.beginPath(); ctx.arc(cx,cy,d.r1*scale,0,7); ctx.stroke();
-    ctx.strokeStyle=dir&gt;0?&#x27;#3fd0c0&#x27;:&#x27;#3a86ff&#x27;; ctx.beginPath(); ctx.arc(cx,cy,d.r2*scale,0,7); ctx.stroke();
-    const a=d.at, e=Math.abs(d.r2-d.r1)/(d.r1+d.r2), b=a*Math.sqrt(1-e*e), foc=a*e;
-    ctx.strokeStyle=&#x27;#DAC961&#x27;; ctx.setLineDash([6,5]); ctx.lineWidth=2.2;
-    ctx.beginPath(); ctx.ellipse(cx-dir*foc*scale,cy,a*scale,b*scale,0,0,7); ctx.stroke(); ctx.setLineDash([]);
-    const eg=ctx.createRadialGradient(cx-4,cy-4,2,cx,cy,15); eg.addColorStop(0,&#x27;#2e6fb0&#x27;); eg.addColorStop(1,&#x27;#0a2340&#x27;);
-    ctx.fillStyle=eg; ctx.beginPath(); ctx.arc(cx,cy,12,0,7); ctx.fill();
-    // burn markers
-    ctx.fillStyle=&#x27;#ff5a4d&#x27;;
-    ctx.beginPath(); ctx.arc(cx+dir*d.r1*scale,cy,5,0,7); ctx.fill();
-    ctx.beginPath(); ctx.arc(cx-dir*d.r2*scale,cy,5,0,7); ctx.fill();
-    // spacecraft
-    let sx,sy;
-    if(frac&lt;0.12){const th=dir&gt;0?0:Math.PI; sx=cx+d.r1*scale*Math.cos(th); sy=cy;}
-    else if(frac&lt;0.88){const tt=(frac-0.12)/0.76; const nu=dir&gt;0?Math.PI*tt:Math.PI+Math.PI*tt;
-      const rr=a*(1-e*e)/(1+e*Math.cos(nu)); sx=cx+rr*scale*Math.cos(nu); sy=cy-rr*scale*Math.sin(nu);}
-    else {const tt=(frac-0.88)/0.12; const th0=dir&gt;0?Math.PI:0; const th=th0-1.4*tt;
-      sx=cx+d.r2*scale*Math.cos(th); sy=cy-d.r2*scale*Math.sin(th);}
-    ctx.fillStyle=&#x27;#fff&#x27;; ctx.beginPath(); ctx.arc(sx,sy,6,0,7); ctx.fill();
-    ctx.fillStyle=&#x27;#DAC961&#x27;; ctx.beginPath(); ctx.arc(sx,sy,3.4,0,7); ctx.fill();
-  }
-  function loop(){ if(!playing)return; t+=0.006; if(t&gt;=1){t=1;playing=false;document.getElementById(&#x27;run&#x27;).innerHTML=&#x27;&amp;#8635; Replay&#x27;;}
-    draw(t); if(playing) raf=requestAnimationFrame(loop); }
-  document.getElementById(&#x27;run&#x27;).onclick=()=&gt;{if(raf)cancelAnimationFrame(raf);t=0;playing=true;document.getElementById(&#x27;run&#x27;).innerHTML=&#x27;&amp;#9679; Running&#x27;;loop();};
-  h1.oninput=()=&gt;{nums(); if(!playing)draw(1);}; h2.oninput=()=&gt;{nums(); if(!playing)draw(1);};
-  document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{h1.value=b.dataset.a;h2.value=b.dataset.b;nums();draw(1);});
-  addEventListener(&#x27;resize&#x27;,()=&gt;{resize();draw(playing?t:1);}); resize(); nums(); draw(1);
-&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
-    </div>
+    <svg class="fig" viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
+      <line x1="70" y1="40" x2="70" y2="250" stroke="#B9BCC9"/><line x1="70" y1="250" x2="850" y2="250" stroke="#B9BCC9"/>
+      <polyline points="80,218 220,145 360,92 500,61 640,46 790,40" fill="none" stroke="#003E51" stroke-width="3.4"/>
+      <polyline points="80,248 220,240 360,218 500,156 640,82 790,40" fill="none" stroke="#008540" stroke-width="3.4" stroke-dasharray="7 5"/>
+      <text class="svgt p" x="150" y="118" style="font-weight:700">cost committed</text>
+      <text class="svgt g" x="560" y="150" style="font-weight:700">cost spent</text>
+      <text class="svgt" x="60" y="255" style="text-anchor:end">0</text><text class="svgt" x="52" y="45" style="text-anchor:end">100%</text>
+      <text class="svgt" x="80" y="268">Pre‑A</text><text class="svgt" x="205" y="268">A</text><text class="svgt" x="350" y="268">B</text><text class="svgt" x="490" y="268">C</text><text class="svgt" x="630" y="268">D</text><text class="svgt" x="775" y="268">E</text>
+      <text class="svgt" x="360" y="290" style="text-anchor:middle">lifecycle phase</text>
+    </svg>
+    <div class="note">By the end of Phase A the concept has <b>locked in ~70–80% of life‑cycle cost</b>, though little is spent yet. Mission analysis is the one window where you can still change the outcome for the price of an engineer's time.</div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · worked example</div>
-    <div class="title">Example — 7000 km to 20 000 km circular</div>
+    <div class="kicker">Why it's done</div>
+    <div class="title">Every failure of skipping it traces back to a missed driver</div>
     <div class="accent"></div>
-    <div class="cols wide-right">
-      <div class="steps stepper">
-        <div class="s"><span class="k">1</span><div class="sc"><div class="m">$r_1=7000,\ r_2=20000\ \text{km},\ a_t=13500$</div><div class="ex">Transfer ellipse is the average of the two radii.</div></div></div>
-        <div class="s"><span class="k">2</span><div class="sc"><div class="m">$\Delta V_1=9.184-7.546=1.638\ \text{km/s}$</div><div class="ex">Perigee burn (red, right): circle → transfer ellipse.</div></div></div>
-        <div class="s"><span class="k">3</span><div class="sc"><div class="m">$\Delta V_2=4.464-3.215=1.249\ \text{km/s}$</div><div class="ex">Apogee burn (red, left): circularise at $r_2$.</div></div></div>
-        <div class="s"><span class="k">4</span><div class="sc"><div class="m">$\Delta V=2.89\ \text{km/s},\ T_t\approx2.17\ \text{h}$</div><div class="ex">Total budget and half‑ellipse transfer time.</div></div></div>
-      </div>
-      <svg class="fig" viewBox="0 0 560 330" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="224.0" cy="165.0" r="46.2" fill="none" stroke="#3a86ff" stroke-width="2.4"/>
-  <circle cx="224.0" cy="165.0" r="132.0" fill="none" stroke="#3fd0c0" stroke-width="2.4"/>
-  <ellipse cx="181.1" cy="165.0" rx="89.1" ry="78.1" fill="none" stroke="#DAC961" stroke-width="2.2" stroke-dasharray="6 5"/>
-  <circle cx="224.0" cy="165.0" r="9" fill="#2e6fb0"/>
-  <circle cx="270.2" cy="165.0" r="5.5" fill="#ff5a4d"/>
-  <circle cx="92.0" cy="165.0" r="5.5" fill="#ff5a4d"/>
-  <path id="tp" d="M 270.2,165.0 A 89.1,78.1 0 0 1 92.0,165.0" fill="none" stroke="none"/>
-  <g><circle r="6" fill="#fff"/><circle r="3.2" fill="#DAC961"/>
-     <animateMotion dur="5s" repeatCount="indefinite"><mpath href="#tp"/></animateMotion></g>
-  <text class="svgt" x="278" y="169" style="fill:#b3261e;font-weight:700">ΔV₁</text>
-  <text class="svgt" x="88" y="153" style="fill:#b3261e;font-weight:700;text-anchor:end">ΔV₂</text>
-  <text class="svgt g" x="192" y="227">① 7000 km</text>
-  <text class="svgt" x="98" y="313" style="fill:#12786e">③ 20000 km</text>
-  <text class="svgt s" x="181" y="79" style="text-anchor:middle">② transfer ellipse</text>
-</svg>
-    </div>
-    <div class="note">The dot coasts the transfer ellipse (gold) from the perigee burn to the apogee burn — the two impulsive stages of every Hohmann transfer.</div>
-  </div>
-</section>
-
-<section class="slide">
-  <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · worked example 6.1</div>
-    <div class="title">Example 6.1 — transfer &amp; propellant budget</div>
-    <div class="accent"></div>
-    <div class="steps stepper">
-      <div class="s"><span class="k">1</span><div class="sc"><div class="m">Orbit 1: $480\times800$ km &rarr; $r_p=6858,\ r_a=7178$; $h_1=52\,876\ \text{km}^2/\text{s}$</div><div class="ex">A 2000‑kg spacecraft starts in this orbit. Use $h=\sqrt{2\mu\,r_ar_p/(r_a+r_p)}$ for each orbit's angular momentum.</div></div></div>
-      <div class="s"><span class="k">2</span><div class="sc"><div class="m">Orbit 2 (transfer): $480\times16000$ km &rarr; $h_2=64\,690\ \text{km}^2/\text{s}$</div><div class="ex">The transfer ellipse shares perigee with orbit 1 and reaches apogee at 16 000 km altitude.</div></div></div>
-      <div class="s"><span class="k">3</span><div class="sc"><div class="m">At perigee $A$: $v_{A1}=7.710,\ v_{A2}=9.433\Rightarrow \Delta V_A=1.7225\ \text{km/s}$</div><div class="ex">Speeds are $h/r_A$ on each orbit; the perigee burn is their difference.</div></div></div>
-      <div class="s"><span class="k">4</span><div class="sc"><div class="m">At apogee $B$: $v_{B2}=2.890,\ v_{B3}=4.220\Rightarrow \Delta V_B=1.3297\ \text{km/s}$</div><div class="ex">Apogee kick to the circular orbit 3 ($h_3=94\,445$). Total $\Delta V=3.0522$ km/s.</div></div></div>
-      <div class="s"><span class="k">5</span><div class="sc"><div class="m">$\dfrac{\Delta m}{m}=1-e^{-\Delta V/I_{sp}g_0}=0.6456\Rightarrow m_{\text{prop}}=1291\ \text{kg}$</div><div class="ex">With $I_{sp}=300$ s the transfer burns ~65% of the 2000‑kg spacecraft as propellant — a vivid reminder that ΔV is expensive.</div></div></div>
-    </div>
-    <div class="note">The rocket equation ($\Delta m/m=1-e^{-\Delta V/I_{sp}g_0}$) links the ΔV budget to hardware; we return to it in Week 5's propulsion material.</div>
-  </div>
-</section>
-
-<section class="slide">
-  <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · worked example 6.1 · stages</div>
-    <div class="title">Example 6.1 — the transfer, stage by stage</div>
-    <div class="accent"></div>
-    <div class="cols wide-right">
-      <div class="stack">
-        <div class="steps">
-          <div class="s"><span class="k">A</span><div class="m"><b>Perigee burn</b> $\Delta V_A=1.7225$ km/s — orbit&nbsp;1 (480×800) onto the transfer ellipse.</div></div>
-          <div class="s"><span class="k">·</span><div class="m"><b>Coast</b> half the transfer ellipse out to apogee at 16 000 km.</div></div>
-          <div class="s"><span class="k">B</span><div class="m"><b>Apogee kick</b> $\Delta V_B=1.3297$ km/s — circularise onto orbit&nbsp;3.</div></div>
-          <div class="s"><span class="k">Σ</span><div class="m">$\Delta V=3.052$ km/s → $m_{\text{prop}}=1291$ kg of the 2000‑kg spacecraft ($I_{sp}=300$ s).</div></div>
-        </div>
-      </div>
-      <svg class="fig" viewBox="0 0 560 330" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="224.0" cy="165.0" r="40.5" fill="none" stroke="#3a86ff" stroke-width="2.4"/>
-  <circle cx="224.0" cy="165.0" r="132.0" fill="none" stroke="#3fd0c0" stroke-width="2.4"/>
-  <ellipse cx="178.2" cy="165.0" rx="86.2" ry="73.1" fill="none" stroke="#DAC961" stroke-width="2.2" stroke-dasharray="6 5"/>
-  <circle cx="224.0" cy="165.0" r="9" fill="#2e6fb0"/>
-  <circle cx="264.5" cy="165.0" r="5.5" fill="#ff5a4d"/>
-  <circle cx="92.0" cy="165.0" r="5.5" fill="#ff5a4d"/>
-  <path id="tp" d="M 264.5,165.0 A 86.2,73.1 0 0 1 92.0,165.0" fill="none" stroke="none"/>
-  <g><circle r="6" fill="#fff"/><circle r="3.2" fill="#DAC961"/>
-     <animateMotion dur="5s" repeatCount="indefinite"><mpath href="#tp"/></animateMotion></g>
-  <text class="svgt" x="272" y="169" style="fill:#b3261e;font-weight:700">ΔV_A</text>
-  <text class="svgt" x="88" y="153" style="fill:#b3261e;font-weight:700;text-anchor:end">ΔV_B</text>
-  <text class="svgt g" x="196" y="221">① 480×800</text>
-  <text class="svgt" x="98" y="313" style="fill:#12786e">③ 16000 km</text>
-  <text class="svgt s" x="178" y="84" style="text-anchor:middle">② transfer</text>
-</svg>
-    </div>
-    <div class="note">This is the course's Fig. 6.3 brought to life: the red points are the two burns, the gold ellipse the transfer, and the moving dot the spacecraft coasting between them.</div>
-  </div>
-</section>
-
-<section class="slide">
-  <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · application</div>
-    <div class="title">Hohmann transfers to the planets</div>
-    <div class="accent"></div>
-    <table class="tbl">
-      <tr><th>Planet</th><th>Transfer SMA (AU)</th><th>Transfer time (yr)</th><th>ΔV, Earth departure (km/s)</th></tr>
-      <tr><td>Mercury</td><td>0.694</td><td>0.289</td><td>5.55</td></tr>
-      <tr><td>Venus</td><td>0.862</td><td>0.400</td><td>3.48</td></tr>
-      <tr><td>Mars</td><td>1.262</td><td>0.709</td><td>3.59</td></tr>
-      <tr><td>Jupiter</td><td>3.101</td><td>2.731</td><td>6.30</td></tr>
-      <tr><td>Saturn</td><td>5.269</td><td>6.049</td><td>7.28</td></tr>
-      <tr><td>Neptune</td><td>15.531</td><td>30.605</td><td>8.25</td></tr>
+    <table class="tbl" style="font-size:2.15vmin">
+      <tr><th>Good mission analysis…</th><th>…prevents this failure mode</th></tr>
+      <tr><td>Surfaces the design drivers early</td><td>Chasing the wrong requirement → over/under‑design</td></tr>
+      <tr><td>Sizes the ΔV / propellant budget</td><td>Fuel‑starved end of life; can't reach the orbit</td></tr>
+      <tr><td>Checks coverage &amp; timeline budgets</td><td>Coverage gaps or missed launch windows found late</td></tr>
+      <tr><td>Makes the perf/cost/risk/schedule trade explicit</td><td>An indefensible concept that never "closes"</td></tr>
     </table>
-    <div class="note">Values are for the Earth‑departure phase only, from an assumed 300 km circular parking orbit (course Table 5.1). Transfer time is half the transfer‑ellipse period; arrival ΔV depends on the destination's insertion orbit. The long trip times are why gravity assists and low‑thrust (Week 5) matter for the outer planets.</div>
+    <div class="note">Read the table right‑to‑left: every classic program failure is a driver that mission analysis should have caught on the left — cheaply, on paper.</div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · real mission</div>
-    <div class="title">Mission profile example — Artemis I</div>
+    <div class="kicker">How it's done · the loop</div>
+    <div class="title">The mission-analysis process</div>
     <div class="accent"></div>
-    <div class="cols wide-left">
-      <div class="stack">
-        <ul class="pts" style="font-size:1.9vmin">
-          <li>First uncrewed flight test of <b>Orion</b> + <b>SLS</b>, from Kennedy.</li>
-          <li>Stages: launch → parking orbit → <b>TLI</b> outbound → outbound powered flyby → distant lunar orbit → <b>TEI</b> return → re‑entry.</li>
-          <li>Each named burn is a transfer of the kind we just derived; the animation traces the translunar coast and return.</li>
-        </ul>
-        <div class="note" style="margin-top:.6vmin">1.3 M miles · 26–42 days · re‑entry Mach 32 · 13 CubeSats deployed.</div>
-      </div>
-      <svg class="fig" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg">
-  <!-- Earth + LEO -->
-  <circle cx="96" cy="160.0" r="16" fill="#2e6fb0"/>
-  <circle cx="96" cy="160.0" r="30" fill="none" stroke="#3a86ff" stroke-width="1.6" stroke-dasharray="3 4"/>
-  <!-- apogee-raise ellipse -->
-  <ellipse cx="151" cy="160.0" rx="70" ry="34" fill="none" stroke="#DAC961" stroke-width="1.8" stroke-dasharray="5 5"/>
-  <!-- Moon -->
-  <circle cx="464" cy="160.0" r="11" fill="#9fb0bd"/>
-  <circle cx="464" cy="160.0" r="26" fill="none" stroke="#6b7b88" stroke-width="1.2" stroke-dasharray="3 4"/>
-  <!-- translunar + free-return path -->
-  <path id="tl" d="M 126,160.0 C 276,20.0 344,40.0 460,136.0
-      C 498,154.0 498,166.0 460,184.0
-      C 344,280.0 276,300.0 126,160.0" fill="none" stroke="#3fd0c0" stroke-width="2.4"/>
-  <g><circle r="6" fill="#fff"/><circle r="3.2" fill="#ff5a4d"/>
-     <animateMotion dur="7s" repeatCount="indefinite"><mpath href="#tl"/></animateMotion></g>
-  <text class="svgt g" x="78" y="212.0">LEO · PRM</text>
-  <text class="svgt s" x="166" y="120.0" style="text-anchor:middle">apogee raise</text>
-  <text class="svgt" x="250.0" y="64.0" style="fill:#12786e">TLI &rarr; outbound</text>
-  <text class="svgt" x="458" y="126.0" style="text-anchor:middle;fill:#12211b">lunar flyby</text>
-  <text class="svgt" x="270.0" y="264.0" style="fill:#12786e">free-return</text>
-</svg>
-    </div>
-    <div class="note">The point for mission analysis: a deep‑space mission is a chain of impulsive transfers strung together by coast arcs — the toolkit of this lecture, applied end to end.</div>
+    <svg class="fig" viewBox="0 0 960 250" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#00573F"/></marker></defs>
+      <g font-family="Calibri,sans-serif" font-size="13" text-anchor="middle">
+      <rect x="10"  y="70" width="150" height="52" rx="8" fill="#00573F"/><text x="85"  y="94" fill="#fff">Capture</text><text x="85" y="110" fill="#fff">objectives</text>
+      <rect x="196" y="70" width="160" height="52" rx="8" fill="#0e6a4c"/><text x="276" y="94" fill="#fff">Generate</text><text x="276" y="110" fill="#fff">architectures</text>
+      <rect x="392" y="70" width="160" height="52" rx="8" fill="#1c7a5a"/><text x="472" y="94" fill="#fff">Analyse vs</text><text x="472" y="110" fill="#fff">budgets</text>
+      <rect x="588" y="70" width="150" height="52" rx="8" fill="#2a8a68"/><text x="663" y="94" fill="#fff">Trade</text><text x="663" y="110" fill="#fff">(figures of merit)</text>
+      <rect x="774" y="70" width="176" height="52" rx="8" fill="#DAC961"/><text x="862" y="94" fill="#12211b">Baseline</text><text x="862" y="110" fill="#12211b">+ drivers</text>
+      <line x1="160" y1="96" x2="192" y2="96" stroke="#00573F" stroke-width="2" marker-end="url(#ar)"/>
+      <line x1="356" y1="96" x2="388" y2="96" stroke="#00573F" stroke-width="2" marker-end="url(#ar)"/>
+      <line x1="552" y1="96" x2="584" y2="96" stroke="#00573F" stroke-width="2" marker-end="url(#ar)"/>
+      <line x1="738" y1="96" x2="770" y2="96" stroke="#00573F" stroke-width="2" marker-end="url(#ar)"/>
+      <path d="M 862 122 C 862 190, 276 190, 276 126" fill="none" stroke="#b3502e" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#ar)"/>
+      <text x="569" y="182" fill="#b3502e" font-style="italic">iterate — refine architectures &amp; re‑analyse until the concept closes</text>
+      </g>
+    </svg>
+    <div class="note">The feedback loop matters as much as the boxes. The first baseline is rarely the last: tighten objectives, prune architectures, re‑run budgets, repeat.</div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · real mission</div>
-    <div class="title">Mission profile example — Artemis II</div>
+    <div class="kicker">How it's done · the budgets</div>
+    <div class="title">The budgets — this is where orbital dynamics is used</div>
     <div class="accent"></div>
-    <div class="cols wide-left">
-      <div class="stack">
-        <div class="steps">
-          <div class="s"><span class="k">1</span><div class="m"><b>Launch</b> &amp; enter Earth orbit — ICPS <b>Perigee Raise Maneuver</b> into a 100×1545 nmi orbit.</div></div>
-          <div class="s"><span class="k">2</span><div class="m"><b>Apogee Raise</b> to a high Earth orbit; ICPS separation and Orion systems checkout.</div></div>
-          <div class="s"><span class="k">3</span><div class="m"><b>Orion TLI</b> by the main engine → 4‑day outbound with correction burns.</div></div>
-          <div class="s"><span class="k">4</span><div class="m"><b>Lunar flyby</b> (~4000 nmi) → 4‑day trans‑Earth return → CM/SM separation → entry &amp; landing.</div></div>
-        </div>
-      </div>
-      <div class="card g"><h3>Insertion &amp; crew</h3><table class="tbl" style="font-size:1.75vmin">
-        <tr><td>Vehicle</td><td>SLS Block 1 + ICPS</td></tr>
-        <tr><td>Insertion orbit</td><td>15×1200 nmi (27.8×2222 km)</td></tr>
-        <tr><td>Inclination</td><td>28.5°</td></tr>
-        <tr><td>Crew / duration</td><td>4 / ~10 days</td></tr>
-      </table>
-      <div class="note" style="margin-top:1vmin">A crewed <b>hybrid free‑return</b> trajectory — chosen so that if the TLI or later burns fail, lunar gravity swings Orion back to Earth without a large burn. Trajectory <i>design</i>, not just ΔV, buys safety.</div></div>
-    </div>
-    <div class="note">The perigee‑raise / apogee‑raise pair is a Hohmann‑type staircase; the 28.5° insertion inclination reflects the launch‑site latitude (Cape Canaveral) — the same plane‑cost logic from L1.</div>
+    <table class="tbl" style="font-size:2.05vmin">
+      <tr><th>Budget</th><th>What sets it</th><th>Input from Orbital Dynamics</th></tr>
+      <tr><td>Coverage / revisit</td><td>orbit + constellation geometry</td><td>ground‑track, footprint, streets of coverage</td></tr>
+      <tr><td>ΔV / propellant</td><td>injection, transfers, station‑keeping, disposal</td><td>vis‑viva, Hohmann/plane‑change, J₂, drag</td></tr>
+      <tr><td>Power / eclipse</td><td>orbit &amp; season</td><td>eclipse fraction from geometry</td></tr>
+      <tr><td>Link / visibility</td><td>altitude, elevation mask, ground sites</td><td>slant range, pass duration</td></tr>
+      <tr><td>Lifetime</td><td>altitude, ballistic coeff., solar activity</td><td>atmospheric‑drag decay model</td></tr>
+      <tr><td>Timeline / window</td><td>plane alignment, planetary geometry</td><td>nodal precession, synodic period</td></tr>
+      <tr><td>Mass</td><td>everything above → propellant + dry mass</td><td>rocket equation</td></tr>
+    </table>
+    <div class="note">A concept <b>closes</b> only when all budgets are satisfied at once. Mission analysis assembles the orbital‑dynamics results into this mission‑level balance — it does not re‑derive them.</div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · coverage</div>
-    <div class="title">Ground coverage — the footprint</div>
+    <div class="kicker">How it's done · measuring &ldquo;good&rdquo;</div>
+    <div class="title">Figures of merit — there is no single number</div>
     <div class="accent"></div>
-    <div class="cols">
-      <div class="card g"><h3>Viewing angle → coverage circle</h3>At height $h$ the payload's viewing angle is $2\alpha$ — the field of view of an imager or the beamwidth of an antenna. It projects a coverage circle on the ground of geocentric semi‑angle $\phi$ and diameter $D=2\phi R_E$.</div>
-      <div class="card d"><h3>Edge‑of‑coverage geometry</h3>At the edge, elevation $\varepsilon$ and slant range $\rho$ follow from the same triangle as visibility: $\varepsilon=\tfrac{\pi}{2}-\phi-\alpha$ and $\rho=R_E\,\dfrac{\sin\phi}{\sin(\pi/2-\varepsilon-\phi)}$.</div>
-    </div>
-    <div class="eqbox">$$D=2\phi R_E,\qquad \phi=-\varepsilon+\cos^{-1}\!\Big(\tfrac{R_E}{R_E+h}\cos\varepsilon\Big)$$</div>
-    <div class="note">Coverage is the <b>performance</b> side of the constellation trade: one satellite sees a cap of diameter $D$; global or continuous coverage needs many, phased in planes — which is where constellations come in.</div>
+<div style="display:flex;justify-content:center;margin:1vmin 0"><div style="width:44%;max-width:420px"><svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+<g stroke="#c7cdd2" fill="none" stroke-width="1">
+<circle cx="200" cy="185" r="40"/><circle cx="200" cy="185" r="80"/><circle cx="200" cy="185" r="120"/></g>
+<g stroke="#b7bec0" stroke-width="1">
+<line x1="200" y1="185" x2="200" y2="65"/><line x1="200" y1="185" x2="320" y2="185"/>
+<line x1="200" y1="185" x2="200" y2="305"/><line x1="200" y1="185" x2="80" y2="185"/></g>
+<polygon points="200,65 248,185 200,257 128,185" fill="rgba(0,133,64,.28)" stroke="#00573F" stroke-width="2.5"/>
+<g font-family="Calibri,sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#003E51">
+<text x="200" y="55">Performance</text><text x="320" y="190" text-anchor="start" dx="6">Cost</text>
+<text x="200" y="325">Schedule</text><text x="80" y="190" text-anchor="end" dx="-6">Risk</text></g>
+</svg></div></div>
+    <div class="note">Architectures are judged on <b>competing</b> figures of merit — performance, cost, risk, schedule — which rarely peak together. Mission analysis <b>weights</b> them to the mission's priorities; the weighted utility is what the trade study ranks.</div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · coverage</div>
-    <div class="title">Ground‑station visibility</div>
+    <div class="kicker">How it's done · margins &amp; reserves</div>
+    <div class="title">Never size to the exact number — carry margin</div>
     <div class="accent"></div>
-    <div class="cols wide-right">
-      <div class="stack">
-        <ul class="pts" style="font-size:2.0vmin">
-          <li>A satellite is visible from any point inside a circle centred on the sub‑satellite point; the circle grows with altitude.</li>
-          <li>Signals near the horizon are weakened by the atmosphere, so useful coverage is limited to elevations above ~<b>5°</b>.</li>
-          <li>$\phi$ is the geocentric half‑angle of visibility; $s$ the slant range; $\varepsilon$ the elevation.</li>
-        </ul>
-        <div class="eqbox" style="font-size:1.95vmin">$$\phi=-\varepsilon+\cos^{-1}\!\Big(\tfrac{R_E}{R_E+h}\cos\varepsilon\Big),\quad s=(R_E+h)\tfrac{\sin\phi}{\cos\varepsilon}$$</div>
-      </div>
-      <div class="card d"><h3>Pass duration</h3><div class="eqbox" style="margin:.3vmin 0;font-size:1.9vmin">$\tau=2\phi/\omega_{ES}$</div>$\omega_{ES}^2=\omega_E^2+\omega^2-2\omega_E\omega\cos i$ is the satellite's angular rate relative to Earth. For LEO, using $\omega\approx631(R_E+h)^{-3/2}$ rad/s is within ~5–10%. A 500 km satellite is above 5° for ~9.2 min and above 10° for ~7.4 min on an overhead pass — most passes are shorter.</div>
+<div style="display:flex;justify-content:center;margin:1vmin 0"><div style="width:56%;max-width:560px"><svg viewBox="0 0 470 300" xmlns="http://www.w3.org/2000/svg">
+<defs><pattern id="hatch" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+<line x1="0" y1="0" x2="0" y2="7" stroke="#DAC961" stroke-width="4"/></pattern></defs>
+<g font-family="Calibri,sans-serif" font-size="14" font-weight="700">
+<text x="12" y="52" fill="#003E51">ΔV</text><rect x="90" y="34" width="270" height="30" rx="4" fill="#00573F"/><rect x="360" y="34" width="70" height="30" rx="4" fill="url(#hatch)"/>
+<text x="12" y="112" fill="#003E51">Mass</text><rect x="90" y="94" width="250" height="30" rx="4" fill="#00573F"/><rect x="340" y="94" width="90" height="30" rx="4" fill="url(#hatch)"/>
+<text x="12" y="172" fill="#003E51">Power</text><rect x="90" y="154" width="290" height="30" rx="4" fill="#00573F"/><rect x="380" y="154" width="50" height="30" rx="4" fill="url(#hatch)"/>
+<text x="12" y="232" fill="#003E51">Link</text><rect x="90" y="214" width="235" height="30" rx="4" fill="#00573F"/><rect x="325" y="214" width="105" height="30" rx="4" fill="url(#hatch)"/>
+</g>
+<g font-family="Calibri,sans-serif" font-size="12.5" text-anchor="middle">
+<text x="225" y="284" fill="#00573F" font-weight="700">required</text><text x="225" y="284" fill="#00573F"> </text>
+<rect x="300" y="274" width="14" height="12" fill="url(#hatch)"/><text x="360" y="284" fill="#8A6D00" font-weight="700">margin</text></g>
+</svg></div></div>
+    <div class="note">Every budget carries <b>margin</b> — typically ~5–10% on ΔV, plus mass, power and link reserves — to absorb launch dispersion, drag, aging and the unknowns of early design. A concept that closes only with <b>zero margin</b> hasn't really closed.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">How it's done · the decision</div>
+    <div class="title">The trade study</div>
+    <div class="subtitle-sm">turning candidates into a baseline</div>
+    <div class="accent"></div>
+    <div class="illus-split">
+      <div class="illus"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<!-- fulcrum -->
+<path d="M 200,120 L 175,250 L 225,250 Z" fill="#003E51"/>
+<rect x="120" y="248" width="160" height="12" rx="4" fill="#003E51"/>
+<!-- beam (tilted) -->
+<g transform="rotate(-9 200 120)">
+<rect x="70" y="114" width="260" height="10" rx="5" fill="#00573F"/>
+<circle cx="200" cy="119" r="9" fill="#DAC961"/>
+<!-- pans -->
+<line x1="90" y1="119" x2="90" y2="160" stroke="#8A6D00" stroke-width="2"/>
+<line x1="310" y1="119" x2="310" y2="150" stroke="#8A6D00" stroke-width="2"/>
+<path d="M 62,160 A 28,20 0 0 0 118,160 Z" fill="#3fd0c0"/>
+<path d="M 282,150 A 28,20 0 0 0 338,150 Z" fill="#9bb0a6"/>
+</g>
+<g font-family="Calibri,sans-serif" font-size="12" font-weight="700" text-anchor="middle">
+<text x="70" y="205" fill="#00573F">performance</text><text x="330" y="196" fill="#5a6b63">cost · risk</text></g>
+<text x="200" y="300" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#00573F">weight the objectives → the baseline tips out</text>
+</svg></div>
+      <div class="content"><div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">Enumerate architectures</div><div class="ex">Orbit, single‑vs‑constellation, launch &amp; transfer strategy, operations, disposal.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">Score on figures of merit × weights</div><div class="ex">Performance, cost, risk, schedule — each rated 1–5, then weighted by how much the mission values it.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">Rank &amp; pick the baseline</div><div class="ex">The weighted winner is the baseline; the reasons it won <b>are</b> its design drivers.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">Test sensitivity</div><div class="ex">Do the weights change the winner? A robust baseline wins across priorities; a fragile one needs another look.</div></div></div>
+    </div></div>
     </div>
-    <div class="note">Explore how altitude and the elevation mask reshape the footprint and pass time on the next slide.</div>
+    <div class="note">There is no single "correct" architecture — only the best fit to the weighted objectives. Try it live next.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Mission analysis in action</div>
+    <div class="title">Three worked missions — one reading</div>
+    <div class="accent"></div>
+<svg class="fig" viewBox="0 0 980 130" xmlns="http://www.w3.org/2000/svg"><polygon points="8,42 144,42 166,75 144,108 8,108 30,75" fill="#003E51"/><text x="87" y="80" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff">Objectives</text><polygon points="168,42 304,42 326,75 304,108 168,108 190,75" fill="#0e5a44"/><text x="247" y="80" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff">Drivers</text><polygon points="328,42 464,42 486,75 464,108 328,108 350,75" fill="#1c6f4f"/><text x="407" y="80" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff">Concept</text><polygon points="488,42 624,42 646,75 624,108 488,108 510,75" fill="#2a8460"/><text x="567" y="80" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff">Budgets</text><polygon points="648,42 784,42 806,75 784,108 648,108 670,75" fill="#4f9a5a"/><text x="727" y="80" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff">Trade</text><polygon points="808,42 944,42 966,75 944,108 808,108 830,75" fill="#DAC961"/><text x="887" y="80" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b">Baseline</text></svg>
+    <div class="note">For each mission we build the analysis together — <b>objective → driver → concept → budgets → trade → outcome</b>. Watch which budget ends up <i>driving</i> each one; that judgement is the whole skill.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Case 1 · Artemis I</div>
+    <div class="title">Artemis I</div>
+    <div class="subtitle-sm">The objective, and the question we must answer</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.4">Baseline</text></svg>
+    <div class="illus-split">
+      <div class="illus"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<!-- moon -->
+<circle cx="330" cy="60" r="34" fill="#c7cdd2"/><circle cx="322" cy="52" r="7" fill="#aeb5bb"/><circle cx="340" cy="72" r="5" fill="#aeb5bb"/>
+<!-- trajectory -->
+<path d="M 300,90 C 210,150 170,150 150,210" fill="none" stroke="#9fb6bd" stroke-width="2.5" stroke-dasharray="6 6"/>
+<!-- Earth limb -->
+<path d="M -40,360 A 260,260 0 0 1 440,360 Z" fill="#123a5c"/>
+<path d="M -40,360 A 260,260 0 0 1 440,360" fill="none" stroke="#2e6fb0" stroke-width="4"/>
+<!-- reentry heat lines -->
+<g stroke="#ff5a4d" stroke-width="4" stroke-linecap="round" opacity=".85">
+<path d="M 118,250 q 26,10 52,0"/><path d="M 108,268 q 34,12 68,0"/><path d="M 100,286 q 42,14 84,0"/></g>
+<!-- capsule -->
+<g transform="translate(142,232) rotate(20)">
+<path d="M -26,10 L 26,10 L 16,-24 L -16,-24 Z" fill="#e7ebee" stroke="#9aa6ad" stroke-width="1.5"/>
+<path d="M -30,12 Q 0,30 30,12 L 26,10 L -26,10 Z" fill="#ff5a4d"/>
+<ellipse cx="0" cy="11" rx="30" ry="7" fill="#DAC961" opacity=".55"/></g>
+<text x="200" y="318" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#DAC961">re‑entry at ~11 km/s → the heat‑shield driver</text>
+</svg></div>
+      <div class="content"><div class="cols">
+      <div class="card g"><h3>Objective</h3>An <b>uncrewed, integrated flight test</b> of the SLS launch vehicle and the Orion crew vehicle, operating <b>beyond low Earth orbit</b> for the first time.</div>
+      <div class="card d"><h3>The mission-analysis question</h3>What flight <b>profile</b> proves the system is ready to carry a crew — and what single requirement will that profile <b>drive</b> hardest? Let's reason to it.</div>
+    </div></div>
+    </div>
+    <div class="note">We're not handed a trajectory. Mission analysis has to <i>derive</i> one from the objective. Next: from objective to driver.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Case 1 · Artemis I · developing the driver</div>
+    <div class="title">Artemis I</div>
+    <div class="subtitle-sm">From "test it beyond LEO" to the heat shield</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.4">Baseline</text></svg>
+    <div class="illus-split">
+      <div class="illus"><div class="photo"><div class="fb"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<!-- moon -->
+<circle cx="330" cy="60" r="34" fill="#c7cdd2"/><circle cx="322" cy="52" r="7" fill="#aeb5bb"/><circle cx="340" cy="72" r="5" fill="#aeb5bb"/>
+<!-- trajectory -->
+<path d="M 300,90 C 210,150 170,150 150,210" fill="none" stroke="#9fb6bd" stroke-width="2.5" stroke-dasharray="6 6"/>
+<!-- Earth limb -->
+<path d="M -40,360 A 260,260 0 0 1 440,360 Z" fill="#123a5c"/>
+<path d="M -40,360 A 260,260 0 0 1 440,360" fill="none" stroke="#2e6fb0" stroke-width="4"/>
+<!-- reentry heat lines -->
+<g stroke="#ff5a4d" stroke-width="4" stroke-linecap="round" opacity=".85">
+<path d="M 118,250 q 26,10 52,0"/><path d="M 108,268 q 34,12 68,0"/><path d="M 100,286 q 42,14 84,0"/></g>
+<!-- capsule -->
+<g transform="translate(142,232) rotate(20)">
+<path d="M -26,10 L 26,10 L 16,-24 L -16,-24 Z" fill="#e7ebee" stroke="#9aa6ad" stroke-width="1.5"/>
+<path d="M -30,12 Q 0,30 30,12 L 26,10 L -26,10 Z" fill="#ff5a4d"/>
+<ellipse cx="0" cy="11" rx="30" ry="7" fill="#DAC961" opacity=".55"/></g>
+<text x="200" y="318" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#DAC961">re‑entry at ~11 km/s → the heat‑shield driver</text>
+</svg></div><img src="https://www.nasa.gov/wp-content/uploads/2024/12/jsc2024e078233.jpg" alt="" onerror="this.remove()"></div></div>
+      <div class="content"><div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">List what the test must exercise</div><div class="ex">Ascent, trans‑lunar injection, deep‑space navigation &amp; comms, power/thermal for weeks — and, uniquely, <b>re‑entry from a lunar return</b>.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">Compare re‑entry speeds</div><div class="ex">Returning from the Moon, Orion meets the atmosphere at <b>~11 km/s</b>, versus <b>~7.8 km/s</b> from LEO. That difference is the crux.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">Turn speed into heat load (the budget)</div><div class="ex">Energy scales as v²: (11/7.8)² ≈ <b>2×</b> the energy to dissipate. Peak heating scales even more steeply (~v³): ≈ <b>2.8×</b>. The thermal‑protection system sees conditions no LEO return ever produces.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">Name the driver</div><div class="ex">→ The <b>TPS (heat shield) is the design driver</b>. The whole flight exists largely to validate it at true lunar‑return conditions before a crew rides behind it.</div></div></div>
+    </div></div>
+    </div>
+    <div class="note">The move to internalise: an <i>objective</i> ("test beyond LEO") became a <i>number</i> (11 km/s) became a <i>driver</i> (TPS). No orbit was re‑derived — we spent the speed as a budget input.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Case 1 · Artemis I · concept, budgets &amp; lesson</div>
+    <div class="title">Artemis I</div>
+    <div class="subtitle-sm">The profile the driver demands</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.4">Baseline</text></svg>
+    <div class="illus-split">
+      <div class="illus"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<!-- moon -->
+<circle cx="330" cy="60" r="34" fill="#c7cdd2"/><circle cx="322" cy="52" r="7" fill="#aeb5bb"/><circle cx="340" cy="72" r="5" fill="#aeb5bb"/>
+<!-- trajectory -->
+<path d="M 300,90 C 210,150 170,150 150,210" fill="none" stroke="#9fb6bd" stroke-width="2.5" stroke-dasharray="6 6"/>
+<!-- Earth limb -->
+<path d="M -40,360 A 260,260 0 0 1 440,360 Z" fill="#123a5c"/>
+<path d="M -40,360 A 260,260 0 0 1 440,360" fill="none" stroke="#2e6fb0" stroke-width="4"/>
+<!-- reentry heat lines -->
+<g stroke="#ff5a4d" stroke-width="4" stroke-linecap="round" opacity=".85">
+<path d="M 118,250 q 26,10 52,0"/><path d="M 108,268 q 34,12 68,0"/><path d="M 100,286 q 42,14 84,0"/></g>
+<!-- capsule -->
+<g transform="translate(142,232) rotate(20)">
+<path d="M -26,10 L 26,10 L 16,-24 L -16,-24 Z" fill="#e7ebee" stroke="#9aa6ad" stroke-width="1.5"/>
+<path d="M -30,12 Q 0,30 30,12 L 26,10 L -26,10 Z" fill="#ff5a4d"/>
+<ellipse cx="0" cy="11" rx="30" ry="7" fill="#DAC961" opacity=".55"/></g>
+<text x="200" y="318" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#DAC961">re‑entry at ~11 km/s → the heat‑shield driver</text>
+</svg></div>
+      <div class="content"><div class="cols">
+      <div><ul class="pts" style="font-size:2.2vmin">
+        <li><b>Concept (reference mission):</b> TLI → distant retrograde lunar orbit → trans‑Earth injection → high‑speed re‑entry.</li>
+        <li><b>Budgets that follow:</b> ~26–42 day duration → consumables, power, thermal cycling; re‑entry ~11 km/s ≈ <b>Mach 32</b> → the TPS budget; ~1.3 M miles of deep‑space comms &amp; nav.</li>
+      </ul></div>
+      <div><ul class="pts" style="font-size:2.2vmin">
+        <li><b>Secondary objectives:</b> 13 CubeSats flown as rideshare — extra return for the same launch.</li>
+        <li><b>The lesson:</b> the objective generated the architecture, and the architecture's hardest budget (TPS) <i>is</i> the driver. Analysis, not intuition, put the heat shield at the centre.</li>
+      </ul></div>
+    </div></div>
+    </div>
+    <div class="note">The whole chain closed with one number doing the driving. Now watch what happens when we put people on board.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Case 1 · Artemis I · the result</div>
+    <div class="title">Artemis I</div>
+    <div class="subtitle-sm">Did the analysis pay off?</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="1">Baseline</text></svg>
+    <div class="illus-split">
+      <div class="illus"><div class="photo"><div class="fb"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<!-- moon -->
+<circle cx="330" cy="60" r="34" fill="#c7cdd2"/><circle cx="322" cy="52" r="7" fill="#aeb5bb"/><circle cx="340" cy="72" r="5" fill="#aeb5bb"/>
+<!-- trajectory -->
+<path d="M 300,90 C 210,150 170,150 150,210" fill="none" stroke="#9fb6bd" stroke-width="2.5" stroke-dasharray="6 6"/>
+<!-- Earth limb -->
+<path d="M -40,360 A 260,260 0 0 1 440,360 Z" fill="#123a5c"/>
+<path d="M -40,360 A 260,260 0 0 1 440,360" fill="none" stroke="#2e6fb0" stroke-width="4"/>
+<!-- reentry heat lines -->
+<g stroke="#ff5a4d" stroke-width="4" stroke-linecap="round" opacity=".85">
+<path d="M 118,250 q 26,10 52,0"/><path d="M 108,268 q 34,12 68,0"/><path d="M 100,286 q 42,14 84,0"/></g>
+<!-- capsule -->
+<g transform="translate(142,232) rotate(20)">
+<path d="M -26,10 L 26,10 L 16,-24 L -16,-24 Z" fill="#e7ebee" stroke="#9aa6ad" stroke-width="1.5"/>
+<path d="M -30,12 Q 0,30 30,12 L 26,10 L -26,10 Z" fill="#ff5a4d"/>
+<ellipse cx="0" cy="11" rx="30" ry="7" fill="#DAC961" opacity=".55"/></g>
+<text x="200" y="318" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#DAC961">re‑entry at ~11 km/s → the heat‑shield driver</text>
+</svg></div><img src="https://www.nasa.gov/wp-content/uploads/2024/12/ksc-20240203-em1-cm-320-0-0001-1.jpeg" alt="" onerror="this.remove()"></div></div>
+      <div class="content"><div class="cols">
+      <div class="card g"><h3>The test flew the driver</h3>Artemis I (uncrewed, 2022) flew the heat shield at true lunar‑return conditions — re‑entry at ~11 km/s, ~2,760 °C. It <b>worked</b>: NASA later confirmed that had crew been aboard, <b>they would have been safe</b> (the cabin held in the mid‑70s °F).</div>
+      <div class="card d"><h3>…and it caught what the models missed</h3>Post‑flight inspection found <b>unexpected char loss at 100+ locations</b> — the Avcoat ablator cracked and shed more than predicted. A ~2‑year investigation traced it to Avcoat <b>permeability</b> trapping gases during the skip‑entry.</div>
+    </div></div>
+    </div>
+    <div class="note"><b>The payoff:</b> because mission analysis flew the <i>driving risk</i> uncrewed first, NASA caught a crew‑critical issue — and fixed it with a <b>trajectory change</b> (a steeper, shorter re‑entry on Artemis II), not a costly heat‑shield rebuild. The test flight earned its keep.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Case 2 · Artemis II</div>
+    <div class="title">Artemis II</div>
+    <div class="subtitle-sm">Add a crew — and the driving figure of merit changes</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.4">Baseline</text></svg>
+    <div class="illus-split">
+      <div class="illus"><div class="photo"><div class="fb"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a2" markerWidth="10" markerHeight="10" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#3fd0c0"/></marker></defs>
+<!-- Earth & Moon -->
+<circle cx="110" cy="170" r="40" fill="#2e6fb0"/><circle cx="98" cy="158" r="10" fill="#5a93c9"/>
+<circle cx="320" cy="150" r="24" fill="#c7cdd2"/>
+<!-- free-return loop -->
+<path d="M 130,150 C 250,60 300,70 336,138 C 352,168 348,168 336,168 C 300,236 250,244 130,192 C 118,187 118,155 130,150 Z"
+      fill="none" stroke="#3fd0c0" stroke-width="4" marker-end="url(#a2)"/>
+<!-- capsule dot -->
+<circle cx="238" cy="86" r="7" fill="#fff" stroke="#00573F" stroke-width="2"/>
+<text x="200" y="300" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#00573F">lunar gravity returns the crew — no rescue burn</text>
+</svg></div><img src="https://www.nasa.gov/wp-content/uploads/2026/04/nhq202604010230.jpg" alt="" onerror="this.remove()"></div></div>
+      <div class="content"><div class="cols">
+      <div class="card g"><h3>Objective</h3>The <b>first crewed</b> flight beyond LEO — a lunar fly‑by demonstrating the crewed system.</div>
+      <div class="card d"><h3>What changes</h3>Humans on board make <b>crew safety</b> the dominant figure of merit. The analysis must guarantee a safe <b>return even if a burn fails</b> — reframing the whole trade around aborts.</div>
+    </div></div>
+    </div>
+    <div class="note">Same lens, new priority. Let's develop how "guarantee a way home" turns into a specific trajectory choice.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Case 2 · Artemis II · developing the driver</div>
+    <div class="title">Artemis II</div>
+    <div class="subtitle-sm">From "keep the crew safe" to a free-return trajectory</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.4">Baseline</text></svg>
+    <div class="illus-split">
+      <div class="illus"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a2" markerWidth="10" markerHeight="10" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#3fd0c0"/></marker></defs>
+<!-- Earth & Moon -->
+<circle cx="110" cy="170" r="40" fill="#2e6fb0"/><circle cx="98" cy="158" r="10" fill="#5a93c9"/>
+<circle cx="320" cy="150" r="24" fill="#c7cdd2"/>
+<!-- free-return loop -->
+<path d="M 130,150 C 250,60 300,70 336,138 C 352,168 348,168 336,168 C 300,236 250,244 130,192 C 118,187 118,155 130,150 Z"
+      fill="none" stroke="#3fd0c0" stroke-width="4" marker-end="url(#a2)"/>
+<!-- capsule dot -->
+<circle cx="238" cy="86" r="7" fill="#fff" stroke="#00573F" stroke-width="2"/>
+<text x="200" y="300" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#00573F">lunar gravity returns the crew — no rescue burn</text>
+</svg></div>
+      <div class="content"><div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">Set the dominant figure of merit</div><div class="ex">With crew, <b>safety / abort coverage</b> outranks cost and performance. Every option is scored first on "how does the crew get home if X fails?"</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">Pose the failure question</div><div class="ex">If the trans‑lunar burn under‑performs, or a later burn fails, a powered return may be impossible. We need a path that returns the crew <b>without</b> a large burn.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">Use geometry instead of propellant</div><div class="ex">A <b>free‑return</b> trajectory is aimed so lunar gravity itself slings Orion back onto an Earth‑intercept path — the Moon does the work, no rescue burn required.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">Reconcile with the fly‑by geometry</div><div class="ex">A pure free‑return constrains lunar arrival. A <b>hybrid free‑return</b> keeps the protection through the critical early phase while allowing the desired geometry.</div></div></div>
+      <div class="s"><span class="k">5</span><div class="sc"><div class="m">Add the hard constraint</div><div class="ex">Launch‑site latitude (Cape Canaveral, ~28.5°) fixes the reachable orbital <b>plane</b> — a driver the analysis designs around, not against.</div></div></div>
+    </div></div>
+    </div>
+    <div class="note">The key idea: when safety drives, you buy it with <i>trajectory design</i>, not with more ΔV. Geometry is cheaper — and more reliable — than a rescue engine.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Case 2 · Artemis II · the trade &amp; lesson</div>
+    <div class="title">Artemis II</div>
+    <div class="subtitle-sm">A concept chosen for safety, not for ΔV</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.4">Baseline</text></svg>
+    <div class="illus-split">
+      <div class="illus"><div class="photo"><div class="fb"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a2" markerWidth="10" markerHeight="10" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#3fd0c0"/></marker></defs>
+<!-- Earth & Moon -->
+<circle cx="110" cy="170" r="40" fill="#2e6fb0"/><circle cx="98" cy="158" r="10" fill="#5a93c9"/>
+<circle cx="320" cy="150" r="24" fill="#c7cdd2"/>
+<!-- free-return loop -->
+<path d="M 130,150 C 250,60 300,70 336,138 C 352,168 348,168 336,168 C 300,236 250,244 130,192 C 118,187 118,155 130,150 Z"
+      fill="none" stroke="#3fd0c0" stroke-width="4" marker-end="url(#a2)"/>
+<!-- capsule dot -->
+<circle cx="238" cy="86" r="7" fill="#fff" stroke="#00573F" stroke-width="2"/>
+<text x="200" y="300" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#00573F">lunar gravity returns the crew — no rescue burn</text>
+</svg></div><img src="https://images-assets.nasa.gov/image/art002e013365/art002e013365~large.jpg" alt="" onerror="this.remove()"></div></div>
+      <div class="content"><div class="cols">
+      <div class="card g"><h3>The concept</h3>Staged build‑up: perigee‑raise → apogee‑raise into a high Earth orbit for a full systems checkout → TLI onto a <b>hybrid free‑return</b> → lunar fly‑by → return.</div>
+      <div class="card d"><h3>The trade made explicit</h3>This profile is <b>not minimum‑ΔV</b>. It costs extra maneuvers and constrains timing — and wins anyway, because the weighted figure of merit is <b>abort safety</b>. Risk is ranked above propellant.</div>
+    </div></div>
+    </div>
+    <div class="recap" style="margin-top:1.4vmin"><b>Lesson:</b> Artemis I and II fly similar hardware, yet mission analysis chose different architectures because the <i>driver</i> changed — test‑validation (TPS) vs crew safety (free‑return). Same method; different winning figure of merit.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Case 2 · Artemis II · the result</div>
+    <div class="title">Artemis II</div>
+    <div class="subtitle-sm">The safety-driven design delivered</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="1">Baseline</text></svg>
+    <div class="illus-split">
+      <div class="illus"><div class="photo"><div class="fb"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a2" markerWidth="10" markerHeight="10" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#3fd0c0"/></marker></defs>
+<!-- Earth & Moon -->
+<circle cx="110" cy="170" r="40" fill="#2e6fb0"/><circle cx="98" cy="158" r="10" fill="#5a93c9"/>
+<circle cx="320" cy="150" r="24" fill="#c7cdd2"/>
+<!-- free-return loop -->
+<path d="M 130,150 C 250,60 300,70 336,138 C 352,168 348,168 336,168 C 300,236 250,244 130,192 C 118,187 118,155 130,150 Z"
+      fill="none" stroke="#3fd0c0" stroke-width="4" marker-end="url(#a2)"/>
+<!-- capsule dot -->
+<circle cx="238" cy="86" r="7" fill="#fff" stroke="#00573F" stroke-width="2"/>
+<text x="200" y="300" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#00573F">lunar gravity returns the crew — no rescue burn</text>
+</svg></div><img src="https://www.nasa.gov/wp-content/uploads/2026/04/art002e009288orig.jpg" alt="" onerror="this.remove()"></div></div>
+      <div class="content"><div class="cols">
+      <div class="card g"><h3>It flew — April 1–11, 2026</h3>Wiseman, Glover, Koch &amp; Hansen — the <b>first crew beyond LEO since 1972</b> — looped the Moon on a free‑return and came home safely, reaching <b>252,756 miles</b> from Earth, a new human distance record.</div>
+      <div class="card d"><h3>The mission‑analysis calls that worked</h3>The <b>free‑return</b> (chosen for abort safety) needed only minor corrections — lunar gravity brought them home. Orion's initial perigee was deliberately left <b>suborbital</b> as a safe‑abort measure. And re‑entry was flown <b>steeper</b> — the Artemis I lesson — to protect the heat shield.</div>
+    </div></div>
+    </div>
+    <div class="recap" style="margin-top:1.2vmin"><b>The lesson realised:</b> every driver the analysis named — safety via free‑return, the trajectory tweak from Artemis I — became a real decision that kept the crew safe. Mission analysis wasn't paperwork; <b>it flew</b>.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Case 5 · in-class exercise · the Death Star</div>
+    <div class="title">The Death Star</div>
+    <div class="subtitle-sm">Now you run the analysis</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.4">Baseline</text></svg>
+    <div class="illus-split">
+      <div class="illus"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="dg" cx="40%" cy="38%" r="70%"><stop offset="0%" stop-color="#5b6570"/><stop offset="100%" stop-color="#20262d"/></radialGradient></defs>
+<circle cx="200" cy="160" r="120" fill="url(#dg)"/>
+<circle cx="200" cy="160" r="120" fill="none" stroke="#12161b" stroke-width="2"/>
+<!-- equatorial trench -->
+<line x1="80" y1="150" x2="320" y2="150" stroke="#12161b" stroke-width="4"/>
+<!-- superlaser dish -->
+<circle cx="150" cy="112" r="30" fill="#2b323a" stroke="#454d57" stroke-width="2"/>
+<circle cx="150" cy="112" r="9" fill="#8fa0ad"/>
+<!-- panel lines -->
+<g stroke="#12161b" stroke-width="1" opacity=".5"><line x1="90" y1="120" x2="310" y2="120"/><line x1="90" y1="185" x2="310" y2="185"/><line x1="200" y1="42" x2="200" y2="278"/></g>
+<!-- vulnerability -->
+<circle cx="262" cy="150" r="5" fill="#ff5a4d"/>
+<text x="262" y="132" text-anchor="middle" font-family="Calibri,sans-serif" font-size="12" font-weight="700" fill="#ff5a4d">exhaust port</text>
+<text x="200" y="312" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14.5" font-weight="700" fill="#8A6D00">max firepower · one point of failure</text>
+</svg></div>
+      <div class="content"><div class="cols">
+      <div class="card d"><h3>The Emperor's brief (objectives)</h3><ul class="pts" style="margin-top:.3vmin;font-size:2.15vmin">
+        <li>Project <b>decisive military power</b> across the galaxy.</li>
+        <li>Be able to <b>destroy a planet</b>.</li>
+        <li>Rule <b>through fear</b> — an unmistakable deterrent.</li>
+        <li>Constraints: vast but finite resources; a build <b>schedule</b>; must <b>survive</b> a rebellion.</li>
+      </ul></div>
+      <div class="card g"><h3>Your job (with the class)</h3>Don't jump to "a Death Star." First reason from the objectives: <b>what do they actually demand of the design?</b> Then propose the Emperor's priorities and let the trade pick the baseline.</div>
+    </div></div>
+    </div>
+    <div class="note">This is the whole method turned into a decision <i>you</i> make: objectives → drivers → candidate concepts → trade → baseline. Let's develop the drivers first.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Case 5 · the Death Star · developing the drivers</div>
+    <div class="title">The Death Star</div>
+    <div class="subtitle-sm">From the objectives to the central tension</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.4">Baseline</text></svg>
+    <div class="illus-split">
+      <div class="illus"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="dg" cx="40%" cy="38%" r="70%"><stop offset="0%" stop-color="#5b6570"/><stop offset="100%" stop-color="#20262d"/></radialGradient></defs>
+<circle cx="200" cy="160" r="120" fill="url(#dg)"/>
+<circle cx="200" cy="160" r="120" fill="none" stroke="#12161b" stroke-width="2"/>
+<!-- equatorial trench -->
+<line x1="80" y1="150" x2="320" y2="150" stroke="#12161b" stroke-width="4"/>
+<!-- superlaser dish -->
+<circle cx="150" cy="112" r="30" fill="#2b323a" stroke="#454d57" stroke-width="2"/>
+<circle cx="150" cy="112" r="9" fill="#8fa0ad"/>
+<!-- panel lines -->
+<g stroke="#12161b" stroke-width="1" opacity=".5"><line x1="90" y1="120" x2="310" y2="120"/><line x1="90" y1="185" x2="310" y2="185"/><line x1="200" y1="42" x2="200" y2="278"/></g>
+<!-- vulnerability -->
+<circle cx="262" cy="150" r="5" fill="#ff5a4d"/>
+<text x="262" y="132" text-anchor="middle" font-family="Calibri,sans-serif" font-size="12" font-weight="700" fill="#ff5a4d">exhaust port</text>
+<text x="200" y="312" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14.5" font-weight="700" fill="#8A6D00">max firepower · one point of failure</text>
+</svg></div>
+      <div class="content"><div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">Decompose the objective into needs</div><div class="ex"><b>Firepower</b> (destroy a planet), <b>reach</b> (galaxy‑wide mobility), <b>fear</b> (a visible, awe‑inspiring deterrent), and it must <b>survive</b> a determined enemy.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">Spot the tension</div><div class="ex">Firepower + fear pull toward <b>one overwhelming station</b> (a monolith). Survivability + cost + schedule pull toward a <b>distributed force</b>. The two pull in opposite directions.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">Name the candidate architectures</div><div class="ex">One Death Star · a Star Destroyer fleet · a planet‑based superlaser · a smaller mobile battle station. Each is best on a <i>different</i> objective.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">There is no obvious answer</div><div class="ex">The winner depends entirely on <b>which objective the Emperor weights most</b>. So — set the priorities and run the trade.</div></div></div>
+    </div></div>
+    </div>
+    <div class="note">This is the moment to poll the class: which objective matters most? Then test it live on the next slide.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Case 5 · the Death Star · the operational orbit</div>
+    <div class="title">The Death Star</div>
+    <div class="subtitle-sm">Selecting the operational orbit</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.4">Baseline</text></svg>
+    <div class="illus-split">
+      <div class="illus"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="pl" cx="42%" cy="40%" r="65%"><stop offset="0%" stop-color="#2e8f7a"/><stop offset="100%" stop-color="#0b3b32"/></radialGradient></defs>
+<!-- orbit rings -->
+<circle cx="185" cy="170" r="150" fill="none" stroke="#d3d7d5" stroke-width="2" stroke-dasharray="4 6"/>
+<circle cx="185" cy="170" r="112" fill="none" stroke="#b7bec0" stroke-width="2" stroke-dasharray="4 6"/>
+<circle cx="185" cy="170" r="78"  fill="none" stroke="#3fd0c0" stroke-width="2.5" stroke-dasharray="5 5"/>
+<!-- planet -->
+<circle cx="185" cy="170" r="46" fill="url(#pl)"/>
+<!-- station on low orbit (upper-right) -->
+<g transform="translate(240,116)">
+  <circle r="17" fill="#3b424b" stroke="#1a1f25" stroke-width="1.5"/>
+  <circle cx="-6" cy="-5" r="6" fill="#8fa0ad"/>
+  <line x1="-17" y1="2" x2="17" y2="2" stroke="#1a1f25" stroke-width="1.5"/>
+  <circle cx="9" cy="6" r="3" fill="#ff5a4d"/>
+</g>
+<!-- attacking fighter + path to the port -->
+<path d="M 300,60 Q 275,95 249,122" fill="none" stroke="#ff5a4d" stroke-width="2" stroke-dasharray="4 4"/>
+<path d="M 300,60 l 10,4 -10,4 3,-4 z" fill="#ff5a4d"/>
+<!-- ring labels -->
+<g font-family="Calibri,sans-serif" font-size="12" fill="#5a6b63">
+<text x="185" y="256" text-anchor="middle" fill="#00573F" font-weight="700">low</text>
+<text x="185" y="290" text-anchor="middle">synchronous</text>
+<text x="185" y="328" text-anchor="middle">standoff</text></g>
+<text x="200" y="26" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14.5" font-weight="700" fill="#8A6D00">close = maximum effect, maximum exposure</text>
+</svg></div>
+      <div class="content"><div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">Orbit is a decision too</div><div class="ex">To destroy a planet and loom over it as a threat, the station must enter <b>orbit around the target</b>. Which orbit? That is a mission‑analysis choice, exactly like an Earth satellite's.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">The orbit options</div><div class="ex"><b>Low</b> — max weapon effect &amp; intimidation, but exposed to surface defences and starfighters. <b>Synchronous</b> — safer standoff, dominates one hemisphere. <b>Distant standoff</b> — safest, but a weak deterrent.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">The objective points low</div><div class="ex">"Destroy the planet &amp; rule by fear" pushes toward the <b>low orbit</b> — close, overwhelming, terrifying. The objective drives the orbit, just as coverage drove GNSS to MEO.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">…and low orbit is where it's exposed</div><div class="ex">The orbit that best serves the objective is the one that most <b>exposes the single point of failure</b>. It was on the close, low‑orbit attack run that one starfighter reached the exhaust port. <b>Orbit choice and survivability are coupled.</b></div></div></div>
+    </div></div>
+    </div>
+    <div class="note">The orbit that maximises the objective often maximises exposure — carry that into the trade.</div>
   </div>
 </section>
 
 <section class="slide demoslide">
   <div class="inner">
-    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Ground‑station visibility — coverage footprint &amp; pass duration vs. altitude</span></div>
-    <div class="simwrap">
-      <iframe title="visibility demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Ground visibility · AE 582&lt;/title&gt;
-&lt;style&gt;
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Trade study &mdash; what should the Empire build?</span></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.4">Baseline</text></svg>
+    <div class="simwrap"><iframe title="demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&#x27;en&#x27;&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;meta name=&#x27;viewport&#x27; content=&#x27;width=device-width, initial-scale=1&#x27;&gt;&lt;title&gt;Death Star trade &amp;middot; AE 582&lt;/title&gt;&lt;style&gt;
   :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
         --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
   *{box-sizing:border-box}html,body{margin:0;height:100%}
@@ -1505,193 +1729,128 @@
   .btnrow{display:flex;gap:8px;margin-top:6px}
   .btnrow button{flex:1;padding:9px;border:none;border-radius:9px;background:var(--green);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
   .btnrow button:hover{background:var(--forest)}
-&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
-&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM &amp;middot; AE 582 &amp;mdash; MISSION ANALYSIS&lt;/div&gt;&lt;h1&gt;Ground&amp;#8209;station visibility &amp;amp; coverage&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;&amp;#966; = &amp;minus;&amp;#949; + cos&amp;#8315;&amp;#185;(R&amp;#8407;/(R&amp;#8407;+h) cos&amp;#949;) &amp;middot; s = (R&amp;#8407;+h) sin&amp;#966;/cos&amp;#949; &amp;middot; &amp;#964; = 2&amp;#966;/&amp;#969;&lt;/div&gt;&lt;/header&gt;
-&lt;main&gt;
-  &lt;div class=&quot;stage&quot;&gt;
-    &lt;canvas id=&quot;cv&quot;&gt;&lt;/canvas&gt;
-    &lt;div class=&quot;readouts&quot;&gt;
-      &lt;div class=&quot;chip gold&quot;&gt;&lt;div class=&quot;l&quot;&gt;half&amp;#8209;angle &amp;#966;&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;phi&quot;&gt;—&lt;/span&gt;&amp;deg;&lt;/div&gt;&lt;/div&gt;
-      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;slant range s&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;s&quot;&gt;—&lt;/span&gt; km&lt;/div&gt;&lt;/div&gt;
-      &lt;div class=&quot;chip petrol&quot;&gt;&lt;div class=&quot;l&quot;&gt;coverage D&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;D&quot;&gt;—&lt;/span&gt; km&lt;/div&gt;&lt;/div&gt;
-      &lt;div class=&quot;chip&quot;&gt;&lt;div class=&quot;l&quot;&gt;max pass&lt;/div&gt;&lt;div class=&quot;v&quot;&gt;&lt;span id=&quot;tau&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;panel&quot;&gt;
-    &lt;h2&gt;Inputs&lt;/h2&gt;
-    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Altitude h &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;hV&quot;&gt;500&lt;/span&gt; km&lt;/span&gt;&lt;/label&gt;
-      &lt;input type=&quot;range&quot; id=&quot;h&quot; min=&quot;200&quot; max=&quot;36000&quot; step=&quot;50&quot; value=&quot;500&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Elevation mask &amp;#949; &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;eV&quot;&gt;5&lt;/span&gt;&amp;deg;&lt;/span&gt;&lt;/label&gt;
-      &lt;input type=&quot;range&quot; id=&quot;e&quot; min=&quot;0&quot; max=&quot;30&quot; step=&quot;1&quot; value=&quot;5&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;presets&quot;&gt;
-      &lt;button data-h=&quot;500&quot;&gt;LEO 500&lt;/button&gt;
-      &lt;button data-h=&quot;800&quot;&gt;SSO 800&lt;/button&gt;
-      &lt;button data-h=&quot;20200&quot;&gt;GPS MEO&lt;/button&gt;
-      &lt;button data-h=&quot;35786&quot;&gt;GEO&lt;/button&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;verdict&quot; id=&quot;verdict&quot;&gt;—&lt;/div&gt;
-    &lt;div class=&quot;hint&quot;&gt;The gold cap is the region of Earth that can see the satellite above the elevation mask. Raising the mask (to dodge horizon atmosphere) shrinks the cap; raising altitude enlarges it. Pass duration uses &amp;#969;&amp;#8776;631(R&amp;#8407;+h)&amp;#8315;&amp;#179;&amp;#8322; rad/s.&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/main&gt;
-&lt;script&gt;
-  const MU=398600.4418, RE=6378.14, J2=1.08263e-3, GEO=42164.0, RAD=180/Math.PI, DAY=86400;
-  const vc=r=&gt;Math.sqrt(MU/r), vv=(r,a)=&gt;Math.sqrt(MU*(2/r-1/a));
-  const f=(x,d=2)=&gt;isFinite(x)?Number(x).toLocaleString(&#x27;en-US&#x27;,{minimumFractionDigits:d,maximumFractionDigits:d}):&#x27;\u2014&#x27;;
 
-  const cv=document.getElementById(&#x27;cv&#x27;), ctx=cv.getContext(&#x27;2d&#x27;);
-  const hS=document.getElementById(&#x27;h&#x27;), eS=document.getElementById(&#x27;e&#x27;);
-  function calc(){
-    const h=+hS.value, eps=(+eS.value)/RAD, rs=RE+h;
-    const phi=-eps+Math.acos(RE/rs*Math.cos(eps));      // rad
-    const s=rs*Math.sin(phi)/Math.cos(eps);
-    const D=2*phi*RE;
-    const w=631*Math.pow(rs,-1.5);                       // rad/s (approx omega)
-    const tau=2*phi/w;                                   // s
-    return {h,eps,rs,phi,s,D,tau};
-  }
-  function fmtT(s){const m=s/60; return m&lt;90?f(m,1)+&#x27; min&#x27;:f(m/60,2)+&#x27; h&#x27;;}
-  function resize(){const r=cv.getBoundingClientRect();cv.width=r.width*devicePixelRatio;cv.height=r.height*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
-  function upd(){
-    const d=calc();
-    document.getElementById(&#x27;hV&#x27;).textContent=+hS.value;
-    document.getElementById(&#x27;eV&#x27;).textContent=+eS.value;
-    document.getElementById(&#x27;phi&#x27;).textContent=f(d.phi*RAD,2);
-    document.getElementById(&#x27;s&#x27;).textContent=f(d.s,0);
-    document.getElementById(&#x27;D&#x27;).textContent=f(d.D,0);
-    document.getElementById(&#x27;tau&#x27;).textContent=fmtT(d.tau);
-    document.getElementById(&#x27;verdict&#x27;).innerHTML=&#x27;At &#x27;+(+hS.value)+&#x27; km with a &#x27;+(+eS.value)+&#x27;&amp;deg; mask, the footprint spans &lt;b&gt;&#x27;+f(d.D,0)+&#x27; km&lt;/b&gt; and an overhead pass lasts up to &lt;b&gt;&#x27;+fmtT(d.tau)+&#x27;&lt;/b&gt;.&#x27;;
-    // draw side view
-    const W=cv.getBoundingClientRect().width, H=cv.getBoundingClientRect().height;
-    ctx.clearRect(0,0,W,H);
-    const cx=W*0.34, cy=H*0.54, Rpx=Math.min(W,H)*0.30;
-    const scale=Rpx/RE;
-    // Earth
-    const eg=ctx.createRadialGradient(cx-10,cy-10,5,cx,cy,Rpx); eg.addColorStop(0,&#x27;#2e6fb0&#x27;); eg.addColorStop(1,&#x27;#0a2340&#x27;);
-    ctx.fillStyle=eg; ctx.beginPath(); ctx.arc(cx,cy,Rpx,0,7); ctx.fill();
-    // sub-satellite direction = +x. satellite position
-    const rsp=Math.min(d.rs*scale, Math.max(W,H));       // clamp for GEO
-    const satS=Math.min(d.rs*scale, W*0.60);
-    const sx=cx+satS, sy=cy;
-    // coverage cap edges at +/- phi on Earth&#x27;s surface
-    const phi=d.phi;
-    // draw cap arc (gold) from -phi..+phi around the +x axis (sub-sat point at angle 0)
-    ctx.strokeStyle=&#x27;#DAC961&#x27;; ctx.lineWidth=4;
-    ctx.beginPath(); ctx.arc(cx,cy,Rpx,-phi,phi); ctx.stroke();
-    // cap edge points
-    const e1x=cx+Math.cos(phi)*Rpx, e1y=cy-Math.sin(phi)*Rpx;
-    const e2x=cx+Math.cos(phi)*Rpx, e2y=cy+Math.sin(phi)*Rpx;
-    // sub-satellite point
-    const subx=cx+Rpx, suby=cy;
-    ctx.fillStyle=&#x27;#DAC961&#x27;; ctx.beginPath(); ctx.arc(subx,suby,4,0,7); ctx.fill();
-    // satellite
-    ctx.fillStyle=&#x27;#fff&#x27;; ctx.beginPath(); ctx.arc(sx,sy,7,0,7); ctx.fill();
-    ctx.fillStyle=&#x27;#00c46a&#x27;; ctx.beginPath(); ctx.arc(sx,sy,4,0,7); ctx.fill();
-    ctx.fillStyle=&#x27;#cfe0e4&#x27;; ctx.font=&#x27;12px Calibri&#x27;; ctx.fillText(&#x27;satellite&#x27;,sx-18,sy-12);
-    // slant range lines to cap edges
-    ctx.strokeStyle=&#x27;rgba(255,255,255,.55)&#x27;; ctx.lineWidth=1.4;
-    ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(e1x,e1y); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(e2x,e2y); ctx.stroke();
-    // radius lines to edges
-    ctx.strokeStyle=&#x27;rgba(218,201,97,.35)&#x27;; ctx.setLineDash([3,4]);
-    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(e1x,e1y); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(e2x,e2y); ctx.stroke();
-    ctx.setLineDash([]);
-    // phi label
-    ctx.fillStyle=&#x27;#DAC961&#x27;; ctx.font=&#x27;13px Cambria&#x27;; ctx.fillText(&#x27;φ=&#x27;+f(d.phi*RAD,1)+&#x27;°&#x27;,cx+Rpx*0.30,cy-6);
-  }
-  hS.oninput=upd; eS.oninput=upd;
-  document.querySelectorAll(&#x27;.presets button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{hS.value=b.dataset.h;upd();});
-  addEventListener(&#x27;resize&#x27;,()=&gt;{resize();upd();}); resize(); upd();
-&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
-    </div>
+      .stage{min-height:0;padding:16px 20px;background:#fff;display:flex;flex-direction:column;justify-content:center}
+      .barrow{display:grid;grid-template-columns:230px 1fr 46px;align-items:center;gap:10px;margin:8px 0}
+      .bl{font-family:&quot;Calibri&quot;,sans-serif;font-size:13px;font-weight:600;color:var(--petrol)}
+      .bt{height:22px;background:#eef1f0;border-radius:6px;overflow:hidden}
+      .bf{height:100%;border-radius:6px;transition:width .25s}
+      .bv{font-family:&quot;Cambria&quot;,serif;font-weight:700;color:var(--forest);text-align:right}
+      .mtx{font-family:&quot;Calibri&quot;,sans-serif;font-size:11px;border-collapse:collapse;width:100%;margin-top:6px}
+      .mtx th,.mtx td{border:1px solid var(--line);padding:3px 5px;text-align:center}
+      .mtx th{background:var(--petrol);color:#fff}.mtx td:first-child{text-align:left}
+      .pre{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 6px}
+      .pre button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:11.5px;cursor:pointer;color:var(--petrol);font-weight:600}
+      .pre button:hover{background:var(--tint)}
+    
+  html,body{height:100%}
+  body{height:100vh;overflow:hidden;display:flex;flex-direction:column;margin:0}
+  header{flex:0 0 auto;padding:12px 24px 7px}
+  header h1{font-size:21px;margin:1px 0}
+  header .kick{font-size:11px}
+  header .eq{font-size:12.5px}
+  main{flex:1 1 auto;min-height:0;padding:12px 24px 14px;align-items:stretch}
+  .stage{min-height:0!important;height:100%;overflow:hidden}
+  .panel{height:100%;overflow:auto}
+  canvas{height:100%}
+  .row{margin:0 0 11px}
+  .hint{font-size:11px;line-height:1.4;margin-top:8px}
+  .verdict{font-size:12.5px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM &amp;middot; AE 582 &amp;mdash; IN-CLASS EXERCISE&lt;/div&gt;&lt;h1&gt;Trade study &amp;mdash; what should the Empire build?&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;weight the Emperor&amp;#8217;s objectives &amp;#8594; the baseline architecture. There is no single right answer.&lt;/div&gt;&lt;/header&gt;
+    &lt;main&gt;
+      &lt;div class=&quot;stage&quot;&gt;
+        &lt;div style=&quot;font-family:&#x27;Calibri&#x27;,sans-serif;font-size:12px;color:var(--mut);margin-bottom:2px&quot;&gt;
+          Weighted score (out of 5) &amp;mdash; &lt;b&gt;&amp;#9733; = baseline under these weights&lt;/b&gt;&lt;/div&gt;
+        &lt;div id=&quot;bars&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;verdict&quot; id=&quot;winner&quot; style=&quot;margin-top:10px&quot;&gt;&amp;mdash;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;panel&quot;&gt;
+        &lt;h2&gt;The Emperor&amp;#8217;s priorities&lt;/h2&gt;
+        &lt;div class=&quot;pre&quot;&gt;
+          &lt;button data-p=&quot;fear&quot;&gt;Firepower &amp;amp; fear&lt;/button&gt;
+          &lt;button data-p=&quot;reach&quot;&gt;Reach &amp;amp; survivability&lt;/button&gt;
+          &lt;button data-p=&quot;cost&quot;&gt;Cost &amp;amp; schedule&lt;/button&gt;
+          &lt;button data-p=&quot;bal&quot;&gt;Balanced doctrine&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Firepower &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lfire&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wfire&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Reach (galaxy-wide) &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lreach&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wreach&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Survivability &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lsurv&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wsurv&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Cost / schedule &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lcost&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wcost&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;
+        &lt;table class=&quot;mtx&quot; id=&quot;mtx&quot;&gt;&lt;/table&gt;
+        &lt;div class=&quot;hint&quot;&gt;Try each preset: the winner &lt;b&gt;changes every time&lt;/b&gt;. That is the point &amp;mdash; the baseline follows the objectives you weight, not gut feel.&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;&lt;script&gt;
+    const ARCH=[
+      {name:&#x27;One Death Star (monolith)&#x27;, s:{fire:5,reach:4,surv:1,cost:2}},
+      {name:&#x27;Star Destroyer fleet&#x27;,      s:{fire:2,reach:5,surv:5,cost:2}},
+      {name:&#x27;Planet-based superlaser&#x27;,   s:{fire:4,reach:1,surv:3,cost:5}},
+      {name:&#x27;Smaller battle station&#x27;,    s:{fire:3,reach:4,surv:4,cost:4}},
+    ];
+    const KEYS=[&#x27;fire&#x27;,&#x27;reach&#x27;,&#x27;surv&#x27;,&#x27;cost&#x27;], LAB={fire:&#x27;Fire&#x27;,reach:&#x27;Reach&#x27;,surv:&#x27;Surv&#x27;,cost:&#x27;Cost&#x27;};
+    const PRE={fear:{fire:10,reach:3,surv:1,cost:1},reach:{fire:1,reach:8,surv:8,cost:2},
+               cost:{fire:2,reach:2,surv:3,cost:10},bal:{fire:5,reach:5,surv:5,cost:5}};
+    function gv(id){return +document.getElementById(id).value;}
+    function draw(){
+      KEYS.forEach(k=&gt;document.getElementById(&#x27;l&#x27;+k).textContent=gv(&#x27;w&#x27;+k));
+      const w={fire:gv(&#x27;wfire&#x27;),reach:gv(&#x27;wreach&#x27;),surv:gv(&#x27;wsurv&#x27;),cost:gv(&#x27;wcost&#x27;)};
+      const tot=(w.fire+w.reach+w.surv+w.cost)||1;
+      let rows=ARCH.map(a=&gt;({name:a.name,surv:a.s.surv,sc:(a.s.fire*w.fire+a.s.reach*w.reach+a.s.surv*w.surv+a.s.cost*w.cost)/tot}));
+      const max=Math.max.apply(null,rows.map(r=&gt;r.sc));
+      rows.sort((x,y)=&gt;y.sc-x.sc);
+      const host=document.getElementById(&#x27;bars&#x27;); host.innerHTML=&#x27;&#x27;;
+      rows.forEach(r=&gt;{const win=Math.abs(r.sc-max)&lt;1e-9,pct=(r.sc/5*100).toFixed(0);
+        host.innerHTML+=&quot;&lt;div class=&#x27;barrow&#x27;&gt;&lt;div class=&#x27;bl&#x27;&gt;&quot;+(win?&#x27;\u2605 &#x27;:&#x27;&#x27;)+r.name+&quot;&lt;/div&gt;&quot;+
+          &quot;&lt;div class=&#x27;bt&#x27;&gt;&lt;div class=&#x27;bf&#x27; style=&#x27;width:&quot;+pct+&quot;%;background:&quot;+(win?&#x27;var(--green)&#x27;:&#x27;#9bb0a6&#x27;)+&quot;&#x27;&gt;&lt;/div&gt;&lt;/div&gt;&quot;+
+          &quot;&lt;div class=&#x27;bv&#x27;&gt;&quot;+r.sc.toFixed(2)+&quot;&lt;/div&gt;&lt;/div&gt;&quot;;});
+      const winner=rows[0];
+      let msg=&#x27;Baseline: &lt;b&gt;&#x27;+winner.name+&#x27;&lt;/b&gt; (&#x27;+winner.sc.toFixed(2)+&#x27;/5). &#x27;;
+      if(winner.name.indexOf(&#x27;Death Star&#x27;)&gt;=0) msg+=&#x27;Chosen for firepower &amp;amp; fear \u2014 but note its &lt;b&gt;survivability = 1&lt;/b&gt;: a single point of failure.&#x27;;
+      else if(winner.name.indexOf(&#x27;fleet&#x27;)&gt;=0) msg+=&#x27;A distributed force wins on reach &amp;amp; survivability \u2014 no planet‑buster, but hard to destroy.&#x27;;
+      else if(winner.name.indexOf(&#x27;superlaser&#x27;)&gt;=0) msg+=&#x27;Cheapest &amp;amp; fastest, big firepower \u2014 but fixed: no galaxy‑wide reach.&#x27;;
+      else msg+=&#x27;The compromise wins only when no single objective dominates.&#x27;;
+      document.getElementById(&#x27;winner&#x27;).innerHTML=msg;
+      let h=&#x27;&lt;tr&gt;&lt;th&gt;Architecture&lt;/th&gt;&#x27;+KEYS.map(k=&gt;&#x27;&lt;th&gt;&#x27;+LAB[k]+&#x27;&lt;/th&gt;&#x27;).join(&#x27;&#x27;)+&#x27;&lt;/tr&gt;&#x27;;
+      ARCH.forEach(a=&gt;{h+=&#x27;&lt;tr&gt;&lt;td&gt;&#x27;+a.name+&#x27;&lt;/td&gt;&#x27;+KEYS.map(k=&gt;&#x27;&lt;td&gt;&#x27;+a.s[k]+&#x27;&lt;/td&gt;&#x27;).join(&#x27;&#x27;)+&#x27;&lt;/tr&gt;&#x27;;});
+      document.getElementById(&#x27;mtx&#x27;).innerHTML=h;
+    }
+    function setW(w){KEYS.forEach(k=&gt;document.getElementById(&#x27;w&#x27;+k).value=w[k]);draw();}
+    KEYS.forEach(k=&gt;document.getElementById(&#x27;w&#x27;+k).oninput=draw);
+    document.querySelectorAll(&#x27;.pre button&#x27;).forEach(b=&gt;b.onclick=function(){setW(PRE[b.dataset.p]);});
+    draw();
+    &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
   </div>
 </section>
 
 <section class="slide">
   <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · coverage</div>
-    <div class="title">Repeating ground tracks &amp; Earth‑synchronous orbits</div>
+    <div class="kicker">Case 5 · the Death Star · the baseline &amp; the lesson</div>
+    <div class="title">The Death Star</div>
+    <div class="subtitle-sm">What the Empire chose — and the risk it ignored</div>
     <div class="accent"></div>
-    <div class="cols">
-      <div class="card g"><h3>Why tracks drift, then repeat</h3>With the orbit fixed in inertial space and Earth turning underneath, successive passes cross the equator further west. The longitude shift per orbit has two parts: Earth's rotation during one nodal period, plus J₂ nodal regression.</div>
-      <div class="card d"><h3>The repeat condition</h3>An <b>Earth‑synchronous</b> (repeating‑track) orbit closes its pattern when $n|\Delta\phi|=m\,2\pi$ — after $n$ orbits the track has slipped a whole number $m$ of turns and lands back on itself. Remote‑sensing satellites use this to revisit the same sites.</div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.6vh;display:block;margin:.2vmin 0 1.4vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.4">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="1">Baseline</text></svg>
+    <div class="illus-split">
+      <div class="illus"><svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="dg" cx="40%" cy="38%" r="70%"><stop offset="0%" stop-color="#5b6570"/><stop offset="100%" stop-color="#20262d"/></radialGradient></defs>
+<circle cx="200" cy="160" r="120" fill="url(#dg)"/>
+<circle cx="200" cy="160" r="120" fill="none" stroke="#12161b" stroke-width="2"/>
+<!-- equatorial trench -->
+<line x1="80" y1="150" x2="320" y2="150" stroke="#12161b" stroke-width="4"/>
+<!-- superlaser dish -->
+<circle cx="150" cy="112" r="30" fill="#2b323a" stroke="#454d57" stroke-width="2"/>
+<circle cx="150" cy="112" r="9" fill="#8fa0ad"/>
+<!-- panel lines -->
+<g stroke="#12161b" stroke-width="1" opacity=".5"><line x1="90" y1="120" x2="310" y2="120"/><line x1="90" y1="185" x2="310" y2="185"/><line x1="200" y1="42" x2="200" y2="278"/></g>
+<!-- vulnerability -->
+<circle cx="262" cy="150" r="5" fill="#ff5a4d"/>
+<text x="262" y="132" text-anchor="middle" font-family="Calibri,sans-serif" font-size="12" font-weight="700" fill="#ff5a4d">exhaust port</text>
+<text x="200" y="312" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14.5" font-weight="700" fill="#8A6D00">max firepower · one point of failure</text>
+</svg></div>
+      <div class="content"><div class="cols">
+      <div class="card g"><h3>The Empire's choice</h3>It weighted <b>firepower &amp; fear above all</b> → the monolith: one Death Star. In the trade that is the correct baseline <i>for those weights</i>.</div>
+      <div class="card d"><h3>The risk the weights hid</h3>Look at the same row: the monolith scores <b>lowest on survivability</b> — a single point of failure. A disciplined trade flags that as the #1 risk. A two‑metre exhaust port then turned that risk into catastrophe.</div>
+    </div></div>
     </div>
-    <div class="eqbox" style="font-size:1.95vmin">$$\Delta\phi_1=-2\pi\frac{\tau}{\tau_E},\qquad \Delta\phi_2=-\frac{3\pi J_2R_E^2\cos i}{a^2(1-e^2)^2},\qquad \Delta\phi=\Delta\phi_1+\Delta\phi_2$$</div>
-    <div class="note">Sun‑synchronous orbits (L1) are the special case where the <i>plane</i> keeps pace with the Sun (~1°/day east); combined with a repeating track they give constant‑lighting, repeat‑revisit imaging — Landsat's design.</div>
-  </div>
-</section>
-
-<section class="slide">
-  <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · constellations</div>
-    <div class="title">Satellite constellations — coverage vs cost</div>
-    <div class="accent"></div>
-    <div class="cols wide-left">
-      <div class="stack">
-        <ul class="pts" style="font-size:1.95vmin">
-          <li>A key mission‑design decision: one satellite, or a constellation? Coverage is a measure of <b>performance</b>; the number of spacecraft is a measure of <b>cost</b>.</li>
-          <li>Constellations improve coverage and reliability — they <b>degrade gracefully</b> when one satellite fails.</li>
-          <li><b>Degree of coverage:</b> comms usually need just one satellite in view; GNSS needs <b>four at once</b> (three position components + the clock offset).</li>
-        </ul>
-      </div>
-      <div class="card d"><h3>The GNSS systems</h3><table class="tbl" style="font-size:1.8vmin">
-        <tr><th>System</th><th>Satellites</th></tr>
-        <tr><td>GPS (nominal 24)</td><td>31</td></tr>
-        <tr><td>GLONASS</td><td>24</td></tr>
-        <tr><td>Galileo</td><td>30</td></tr>
-        <tr><td>BeiDou</td><td>44</td></tr>
-      </table>
-      <div class="note" style="margin-top:1vmin">GPS: 24 in 6 planes at ~20 200 km, 55°, giving global coverage.</div></div>
-    </div>
-    <div class="note">"Streets of coverage" analysis handles overlapping single/double/triple coverage bands; the goal is continuous coverage of the required region with the fewest spacecraft.</div>
-  </div>
-</section>
-
-<section class="slide">
-  <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · constellations</div>
-    <div class="title">Constellation geometries — Walker &amp; star patterns</div>
-    <div class="accent"></div>
-    <div class="cols">
-      <div class="card g"><h3>Walker Delta pattern</h3>Written $i\!:\!t/p/f$ — total sats $t$ in $p$ equally‑spaced planes, phasing integer $f$ ($0\le f\le p{-}1$). Each plane holds $s=t/p$ sats evenly spaced in true anomaly. A satellite at its node is phased by $f\cdot\text{PU}$ past the node of the next plane, where the Pattern Unit is $\text{PU}=360^{\circ}/t$.<div class="eqbox" style="margin:.6vmin 0 0;font-size:1.85vmin">e.g. $55^{\circ}\!:\!25/5/1\Rightarrow \text{PU}=14.4^{\circ}$</div></div>
-      <div class="card d"><h3>Star (polar) pattern</h3>$n$ near‑polar planes with satellites evenly distributed. Adjacent co‑rotating planes are synchronised; the two counter‑rotating "seam" planes are not, which shapes coverage and nodal spacing. Used for global polar coverage (e.g. some comms systems).</div>
-    </div>
-    <div class="note"><b>Design reality:</b> it is cheap to move a satellite <i>within</i> a plane (a small in‑plane phasing burn) but expensive to move it <i>between</i> planes (a plane change) — the L1 plane‑cost result. So constellations are launched plane‑by‑plane, and performance jumps at launches of 1, p, 2p… satellites. There are no universal rules — each design balances coverage, cost and performance.</div>
-  </div>
-</section>
-
-<section class="slide">
-  <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · power &amp; thermal</div>
-    <div class="title">Eclipse periods</div>
-    <div class="accent"></div>
-    <div class="cols">
-      <div class="card g"><h3>Why it sizes the spacecraft</h3>If solar arrays are the primary power source backed by batteries, the <b>eclipse duration</b> sets the battery size and the array's recharge margin. Computing the eclipse for a given orbit on any day of the year is a core mission‑analysis task.</div>
-      <div class="card d"><h3>The geometry</h3>Treat Earth's shadow as a cylinder and Earth as a sphere. The satellite is eclipsed when the angle $\beta$ between the satellite direction and the anti‑Sun direction falls below a threshold set by $\sin\beta=R_E/r$. The Earth–Sun vector rotates through the year, so eclipse fraction varies seasonally.</div>
-    </div>
-    <div class="eqbox" style="font-size:1.95vmin">$$\boldsymbol\rho=-\mathbf r_{\text{sun}},\qquad \beta=\sin^{-1}(R_E/r),\qquad \cos^{-1}(\boldsymbol\rho\cdot\mathbf r_{\text{sat}})\le\beta\ \Rightarrow\ \text{eclipse}$$</div>
-    <div class="note">In practice: estimate the Sun's ecliptic longitude for the day, sweep true anomaly to find shadow entry/exit, then convert those anomalies to a duration via Kepler's equation. Sun‑synchronous orbits can be chosen to minimise or even avoid eclipse.</div>
-  </div>
-</section>
-
-<section class="slide">
-  <div class="inner">
-    <div class="kicker">Week 4 · Lecture 2 · timing</div>
-    <div class="title">Launch windows</div>
-    <div class="accent"></div>
-    <div class="cols">
-      <div><ul class="pts" style="font-size:1.95vmin">
-        <li><b>Launch window:</b> the limited interval when a launch can meet the mission, set by dynamical and system constraints — the launch site must rotate through the target orbit plane.</li>
-        <li><b>Sun‑sync LEO:</b> the node must align at a set angle to the Sun — a few minutes twice a day, often once a day after azimuth limits.</li>
-        <li><b>Rendezvous:</b> geometric <i>and</i> temporal constraints; precise timing minimises phasing propellant.</li>
-      </ul></div>
-      <div><ul class="pts" style="font-size:1.95vmin">
-        <li><b>GEO:</b> system constraints (power, thermal, sun‑blinding) give two daily opportunities, around midday and midnight.</li>
-        <li><b>Interplanetary (Mars):</b> planetary alignment sets the window — the synodic period recurs every <b>~780 days</b> with a ~two‑week window; Earth's rotation narrows each daily opening to 30–60 min.</li>
-        <li>Mars must travel from $M_{\text{depart}}$ to $M_{\text{arrival}}$ while the spacecraft flies half the transfer (~259 days).</li>
-      </ul></div>
-    </div>
-    <div class="note">Launch windows tie the whole lecture together: the orbit you chose (L2), its plane precession (L1), coverage and eclipse all constrain <i>when</i> you can actually go.</div>
+    <div class="recap" style="margin-top:1.4vmin"><b>The lesson:</b> weight the <b>hardest / riskiest</b> element, not the flashiest capability. A trade study that under‑weights risk picks a baseline that looks unstoppable but fails where it is weakest — here, one exhaust port on an otherwise invincible station.</div>
   </div>
 </section>
 
@@ -1701,29 +1860,29 @@
     <div class="title">The whole week on one page</div>
     <div class="accent"></div>
     <div class="cols">
-      <div class="card g"><h3>Lecture 1 — perturbations</h3><ul class="pts" style="margin-top:.3vmin;font-size:1.9vmin">
-        <li>$\ddot{\mathbf r}+\tfrac{\mu}{r^3}\mathbf r=\mathbf b$; osculating elements, J₂ dominates.</li>
-        <li>$\dot\Omega=-\tfrac32 nJ_2(R_E/p)^2\cos i$ → Sun‑sync at $0.9856°/$d.</li>
-        <li>$\dot\omega=\tfrac34 nJ_2(R_E/p)^2(5\cos^2 i-1)$ → frozen at $63.4°$ (Molniya).</li>
+      <div class="card d"><h3>Lecture 1 — Perturbations</h3><ul class="pts" style="margin-top:.3vmin;font-size:2.0vmin">
+        <li>$\ddot{\mathbf r}+\tfrac{\mu}{r^3}\mathbf r=\mathbf b$; J₂ dominates in LEO.</li>
+        <li>$\dot\Omega=-\tfrac32 nJ_2(R_E/p)^2\cos i$ → Sun‑sync; $\dot\omega=0$ at $63.4°$ → Molniya.</li>
         <li>Drag contracts &amp; circularises → lifetime, re‑entry.</li>
+        <li>A perturbation is both a nuisance and a design tool.</li>
       </ul></div>
-      <div class="card d"><h3>Lecture 2 — mission analysis</h3><ul class="pts" style="margin-top:.3vmin;font-size:1.9vmin">
-        <li>Orbit categories &amp; the transfer problem; propellant is the mission clock.</li>
-        <li>Hohmann: $a_t=(r_1+r_2)/2$; worked LEO→GEO‑class examples.</li>
-        <li>Coverage: $\phi$, slant range, pass duration.</li>
-        <li>Eclipses size power; launch windows set the timing.</li>
+      <div class="card g"><h3>Lecture 2 — Mission analysis</h3><ul class="pts" style="margin-top:.3vmin;font-size:2.0vmin">
+        <li>Objectives → concept + <b>design drivers</b>; requirements flow down.</li>
+        <li>Size with <b>budgets</b> and <b>margins</b>; rank with figures of merit.</li>
+        <li>Artemis I: fly the driver first → caught the heat‑shield issue.</li>
+        <li>Artemis II &amp; Death Star: weight <b>safety/risk</b>, not the flashiest capability.</li>
       </ul></div>
     </div>
-    <div class="recap" style="margin-top:1.6vmin"><b>One line:</b> a real orbit drifts under perturbations you can model or exploit; mission analysis then picks the orbit a mission needs and prices — in ΔV, coverage, power and timing — the cost of using it.</div>
+    <div class="recap" style="margin-top:1.4vmin"><b>One line:</b> a real orbit drifts under perturbations you can model or exploit; mission analysis then picks the orbit a mission needs and prices — in ΔV, coverage, power, risk and timing — the cost of using it.</div>
   </div>
 </section>
 
 <section class="slide dark">
   <div class="inner">
-    <div class="kicker">Next — Week 5</div>
-    <div class="title" style="font-size:5vmin">Mission analysis II &amp; propulsion</div>
+    <div class="kicker">Next — Week 5 · Mission Analysis II</div>
+    <div class="title" style="font-size:5vmin">The mission regimes</div>
     <div class="accent"></div>
-    <div class="subtitle">Continuing mission analysis into specific regimes: GEO — the GTO, apogee‑boost insertion and east–west / north–south station‑keeping; interplanetary transfers by patched conics with the Jupiter worked example and gravity assists; small‑body and low‑thrust missions — plus the rocket equation that pays every ΔV bill in this lecture.</div>
+    <div class="subtitle">Continuing mission analysis into specific regimes: satellite constellations (Walker, streets of coverage), interplanetary transfers by patched conics with the Jupiter example and gravity assists, GEO transfer &amp; station‑keeping, small‑body and low‑thrust missions — plus the operational budgets (visibility, eclipse, launch windows, lifetime) and the rocket equation that pays every ΔV bill.</div>
   </div>
 </section>
 
