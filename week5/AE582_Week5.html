@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AE 582 — Week 5 · Mission Analysis II</title>
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--tintd:#E7EDEF;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;--bg:#F4F7F5;}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;background:#0c1a18;
+     font-family:"Calibri","Segoe UI",system-ui,sans-serif;color:var(--ink)}
+  .slide{position:fixed;inset:0;opacity:0;visibility:hidden;transition:opacity .35s ease;
+     display:flex;align-items:center;justify-content:center;padding:4.5vmin 6vmin;}
+  .slide.active{opacity:1;visibility:visible}
+  .inner{width:min(1180px,94vw);max-height:88vh}
+  /* light content slides */
+  .slide{background:var(--bg)}
+  .kicker{font-size:1.9vmin;letter-spacing:.28em;font-weight:700;color:var(--green);text-transform:uppercase;margin-bottom:1.4vmin}
+  .title{font-family:"Cambria",Georgia,serif;font-weight:700;color:var(--forest);font-size:4.4vmin;line-height:1.12;margin:0 0 1vmin}
+  .subtitle{font-size:2.35vmin;color:var(--mut);margin:.4vmin 0 2.4vmin}
+  .accent{height:.5vmin;width:9vmin;background:var(--green);border-radius:3px;margin:1.4vmin 0 2.2vmin}
+  ul.pts{margin:0;padding-left:0;list-style:none}
+  ul.pts li{position:relative;padding-left:3.4vmin;margin:1.5vmin 0;font-size:2.55vmin;line-height:1.45}
+  ul.pts li::before{content:"";position:absolute;left:.6vmin;top:.9vmin;width:1.3vmin;height:1.3vmin;background:var(--gold);border-radius:50%}
+  ul.pts li b{color:var(--forest)}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:3vmin}
+  .cols.wide-left{grid-template-columns:1.25fr .85fr}
+  .cols.wide-right{grid-template-columns:.85fr 1.25fr}
+  .stack{display:flex;flex-direction:column;justify-content:center;gap:1vmin}
+  .card{background:#fff;border:1px solid var(--line);border-radius:1.4vmin;padding:2.6vmin 2.8vmin;box-shadow:0 1vmin 3vmin rgba(0,0,0,.05)}
+  .card h3{margin:0 0 1.2vmin;font-family:"Cambria",serif;color:var(--green);font-size:2.5vmin}
+  .card.d{background:var(--tintd)} .card.g{background:var(--tint)}
+  .eqbox{background:var(--tint);border-left:.6vmin solid var(--green);border-radius:0 1vmin 1vmin 0;
+     padding:2vmin 2.6vmin;margin:1.8vmin 0;font-family:"Cambria",serif;font-size:2.5vmin;color:var(--forest)}
+  table.tbl{width:100%;border-collapse:collapse;font-size:2.2vmin}
+  table.tbl th,table.tbl td{border:1px solid var(--line);padding:1.2vmin 1.6vmin;text-align:left;vertical-align:top}
+  table.tbl th{background:var(--forest);color:#fff;font-family:"Cambria",serif}
+  table.tbl tr:nth-child(even) td{background:#fff}
+  table.tbl tr:nth-child(odd) td{background:var(--tint)}
+  .stat{display:flex;gap:2.4vmin;flex-wrap:wrap;margin-top:1.5vmin}
+  .stat .s{flex:1;min-width:22vmin;background:#fff;border:1px solid var(--line);border-top:.7vmin solid var(--green);
+     border-radius:1.2vmin;padding:2.2vmin}
+  .stat .s .n{font-family:"Cambria",serif;font-size:4.2vmin;font-weight:700;color:var(--green);line-height:1}
+  .stat .s .l{font-size:1.9vmin;color:var(--ink);margin-top:.8vmin}
+  .recap{background:var(--tint);border:1px solid var(--green);border-radius:1.4vmin;padding:2.6vmin 3vmin}
+  .recap li{font-size:2.4vmin}
+  .note{background:var(--tint);border-left:.5vmin solid var(--gold);padding:1.6vmin 2.2vmin;border-radius:0 1vmin 1vmin 0;font-size:2.25vmin;color:var(--ink);margin-top:1.8vmin}
+  .subtitle-sm{font-family:"Calibri","Segoe UI",sans-serif;font-size:2.1vmin;color:var(--mut);font-style:italic;margin:-.5vmin 0 .7vmin}
+  .illus-split{display:grid;grid-template-columns:33% 1fr;gap:3vmin;align-items:center;min-height:50vh;margin-top:.4vmin}
+  .illus-split>.illus{display:flex;align-items:center;justify-content:center}
+  .illus-split>.illus svg{width:100%;height:auto;max-height:60vh}
+  .illus-split>.content{align-self:center}
+  .illus-split .cols{gap:2.4vmin}
+  .illus-split .steps .s{margin:.2vmin 0}
+  .slide.dark .subtitle-sm{color:#9fb6bd}
+  .illus-split>.illus{align-self:stretch}
+  .photo{position:relative;width:100%;height:100%;min-height:44vh;border-radius:1.4vmin;overflow:hidden;box-shadow:0 1vmin 3vmin rgba(0,0,0,.14);background:#eef2f0}
+  .photo .fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:1.5vmin}
+  .photo .fb svg{width:100%;height:100%}
+  .photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .illus-split + .note, .illus-split + .recap{margin-top:1.4vmin}
+  /* dark slides (cover + dividers) */
+  .slide.dark{background:var(--petrol);color:#fff}
+  .slide.dark .kicker{color:var(--gold)}
+  .slide.dark .title{color:#fff;font-size:6vmin}
+  .slide.dark .subtitle{color:#cfe0e4;font-size:2.6vmin}
+  .slide.dark .accent{background:var(--gold)}
+  .bignum{font-family:"Cambria",serif;font-size:12vmin;font-weight:700;color:var(--gold);line-height:1}
+  .chips{display:flex;gap:1.4vmin;flex-wrap:wrap;margin-top:2.6vmin}
+  .chips span{background:rgba(255,255,255,.1);border:1px solid rgba(218,201,97,.5);color:#eaf3ee;
+     padding:1vmin 1.8vmin;border-radius:2vmin;font-size:1.9vmin;font-weight:600}
+  /* interactive demo slide */
+  .demoslide .inner{width:min(1240px,96vw)}
+  .demoslide .dhead{display:flex;align-items:baseline;gap:1.4vmin;margin-bottom:.6vmin}
+  .demoslide .badge{background:var(--green);color:#fff;font-weight:700;font-size:1.6vmin;padding:.7vmin 1.4vmin;border-radius:.8vmin;letter-spacing:.1em}
+  .demoslide .dt{font-family:"Cambria",serif;color:var(--forest);font-size:3vmin;font-weight:700}
+  .demoslide iframe{width:100%;height:74vh;border:1px solid var(--line);border-radius:1.2vmin;box-shadow:0 1vmin 3vmin rgba(0,0,0,.10);background:#fff}
+  /* chrome */
+  .brand{position:fixed;left:2.4vmin;bottom:1.8vmin;font-size:1.5vmin;font-weight:700;letter-spacing:.12em;color:var(--mut);z-index:20}
+  .slide.dark ~ .brand{color:#9fb6bd}
+  .pageno{position:fixed;right:2.6vmin;bottom:1.8vmin;font-size:1.6vmin;color:var(--mut);z-index:20}
+  .nav{position:fixed;bottom:1.4vmin;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:1.2vmin;z-index:30}
+  .nav button{width:4.4vmin;height:4.4vmin;border-radius:50%;border:none;background:var(--green);color:#fff;font-size:2.4vmin;cursor:pointer;line-height:1;box-shadow:0 .5vmin 1.5vmin rgba(0,0,0,.2)}
+  .nav button:hover{background:var(--forest)} .nav button:disabled{opacity:.35;cursor:default}
+  .nav .count{font-size:1.8vmin;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:2vmin;padding:.6vmin 1.6vmin;min-width:9vmin;text-align:center}
+  .progress{position:fixed;top:0;left:0;height:.5vmin;background:var(--gold);width:0;z-index:40;transition:width .35s}
+  .hintbar{position:fixed;top:1.2vmin;right:1.6vmin;font-size:1.4vmin;color:var(--mut);z-index:20;opacity:.7}
+  .steps{margin:.5vmin 0}
+  .steps .s{display:flex;gap:1.3vmin;align-items:center;margin:.6vmin 0;padding:.6vmin 1.3vmin;background:var(--tint);border-left:3px solid var(--green);border-radius:0 9px 9px 0}
+  .steps .s .k{font-family:"Cambria",serif;font-weight:700;color:var(--green);min-width:2.3vmin;font-size:2.3vmin}
+  .steps .s .m{font-size:2.3vmin;overflow-x:auto}
+  .steps .s .why{color:var(--mut);font-size:1.55vmin;margin-left:auto;white-space:nowrap;font-style:italic}
+  .simwrap{margin:.4vmin 0}
+  .simwrap iframe{width:100%;height:70vh;border:1px solid var(--line);border-radius:12px;display:block;background:#05070f}
+  .stagebar{display:flex;gap:.4vmin;align-items:center;flex-wrap:wrap;margin:-.3vmin 0 1.7vmin}
+  .stagebar .st{font-family:"Calibri","Segoe UI",sans-serif;font-size:1.32vmin;font-weight:700;letter-spacing:.02em;padding:.45vmin 1.15vmin;border-radius:2vmin;background:#e6ebe8;color:#93a29a;white-space:nowrap}
+  .stagebar .st.done{background:#d3e4d9;color:#4a6b58}
+  .stagebar .st.on{background:var(--green);color:#fff;box-shadow:0 1px 4px rgba(0,133,64,.35)}
+  .stagebar .sep{color:#c2cbc6;font-size:1.15vmin}
+  .demoslide .stagebar{margin:.2vmin 0 .7vmin}
+  .slide.dark .stagebar .st{background:#12303c;color:#7fa0ab}
+  .ibadge{display:inline-block;background:var(--green);color:#fff;font-weight:700;font-size:1.5vmin;letter-spacing:.4px;padding:.3vmin 1vmin;border-radius:6px;margin-right:1vmin}
+  .lawrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.1vmin;margin-top:1vmin}
+  .lawrow .card{padding:1vmin 1.3vmin;font-size:1.75vmin}
+  .lawrow .card h3{margin:0 0 .3vmin;font-size:1.95vmin}
+  svg.fig{display:block;width:100%;height:auto;max-height:56vh;margin:.5vmin auto}
+  .figcap{font-size:1.7vmin;color:var(--mut);text-align:center;margin-top:.7vmin}
+  .figcap b{color:var(--forest)}
+  .svgt{font-family:"Calibri","Segoe UI",sans-serif;font-size:15px;fill:var(--mut)}
+  .svgt.ink{fill:var(--ink)} .svgt.g{fill:var(--green)} .svgt.f{fill:var(--forest)} .svgt.s{fill:var(--stone)} .svgt.p{fill:var(--petrol)} .svgt.gold{fill:var(--stone)}
+  .missionimg{width:100%;height:auto;max-height:19vh;object-fit:contain;border:1px dashed var(--line);border-radius:8px;background:var(--tint);display:block;min-height:9vh;color:var(--mut);font-size:1.4vmin;text-align:center;line-height:1.4}
+  @media(max-width:820px){.cols{grid-template-columns:1fr}.title{font-size:6vw}ul.pts li{font-size:3.6vw}}
+
+  .stepper .s{opacity:0;transform:translateY(12px);align-items:flex-start;transition:opacity .45s ease, transform .45s ease}
+  .stepper .s.shown{opacity:1;transform:none}
+  .stepper .s .sc{display:flex;flex-direction:column;gap:.35vmin}
+  .stepper .s .ex{font-size:2.25vmin;color:#233a30;line-height:1.5;font-style:normal;font-family:"Calibri","Segoe UI",sans-serif}
+  #stephint{position:fixed;left:50%;transform:translateX(-50%);top:2.2vh;background:var(--forest);color:#fff;font-family:"Calibri",sans-serif;font-size:1.7vmin;font-weight:600;padding:.5vmin 1.5vmin;border-radius:20px;box-shadow:0 3px 12px rgba(0,0,0,.2);z-index:60;display:none}
+</style>
+</head>
+<body>
+
+<div class="progress" id="prog"></div>
+<div class="hintbar">← → arrows to navigate · F for fullscreen</div>
+
+
+<section class="slide dark active">
+  <div class="inner">
+    <div class="kicker">King Fahd University of Petroleum &amp; Minerals · AE 582 Satellite Engineering</div>
+    <div style="font-size:7.4vmin;font-family:Cambria,serif;font-weight:700;margin:1vmin 0 .4vmin">WEEK 5</div>
+    <div class="title" style="font-size:5vmin">Mission Analysis II — the regimes</div>
+    <div class="accent"></div>
+    <div class="subtitle">Last week we built the <b>method</b>; this week we apply it to the five regimes where mission analysis lives: <b>GEO</b> &amp; station‑keeping, <b>constellations</b>, <b>interplanetary</b> transfers, <b>small‑body</b> missions and <b>low‑thrust</b> trajectories — closing with the operational budgets that every mission must satisfy.</div>
+    <div class="chips"><span>GEO &amp; station‑keeping</span><span>Constellations</span><span>Interplanetary</span><span>Gravity assist</span><span>Small‑body</span><span>Low‑thrust</span><span>Visibility · eclipse · windows</span><span>Rocket equation</span></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Recall from Week 4 · the method</div>
+    <div class="title">Mission analysis, in one thread</div>
+    <div class="accent"></div>
+<svg class="fig" viewBox="0 0 980 130" xmlns="http://www.w3.org/2000/svg" style="max-height:16vh"><polygon points="8,42 144,42 166,75 144,108 8,108 30,75" fill="#003E51"/><text x="87" y="80" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff">Objectives</text><polygon points="168,42 304,42 326,75 304,108 168,108 190,75" fill="#0e5a44"/><text x="247" y="80" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff">Drivers</text><polygon points="328,42 464,42 486,75 464,108 328,108 350,75" fill="#1c6f4f"/><text x="407" y="80" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff">Concept</text><polygon points="488,42 624,42 646,75 624,108 488,108 510,75" fill="#2a8460"/><text x="567" y="80" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff">Budgets</text><polygon points="648,42 784,42 806,75 784,108 648,108 670,75" fill="#4f9a5a"/><text x="727" y="80" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff">Trade</text><polygon points="808,42 944,42 966,75 944,108 808,108 830,75" fill="#DAC961"/><text x="887" y="80" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b">Baseline</text></svg>
+    <div class="note">Mission analysis turns <b>objectives</b> into a feasible, costed <b>concept</b> and its <b>design drivers</b>. Every regime this week runs the same thread — <b>objectives → drivers → concept → budgets → trade → baseline</b> — with a different budget doing the driving. Orbital dynamics supplies the numbers; mission analysis assembles the decision.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Recall from Week 4 · the tools</div>
+    <div class="title">Design drivers, budgets &amp; the trade</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card d"><h3>Design drivers</h3>The <b>few</b> requirements that, once set, dictate most of the vehicle — required orbit, coverage/revisit, lifetime, pointing, power/eclipse, data rate. Find them early; everything downstream serves them.</div>
+      <div class="card g"><h3>Budgets &amp; margins</h3>Size each candidate against the <b>budgets</b> — coverage, ΔV/propellant, power/eclipse, link, lifetime, timeline, mass — each carried with <b>margin</b>. A concept "<b>closes</b>" only when all balance at once.</div>
+    </div>
+    <div class="eqbox" style="font-size:2.0vmin">Trade study: score architectures on figures of merit × weights → the weighted winner is the <b>baseline</b>, and the reasons it won are its <b>drivers</b>.</div>
+    <div class="note">This week we spend exactly these tools on five regimes. In each, watch for the one budget that <i>binds</i> — that is the regime's signature driver.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Orientation · one flow, three real missions</div>
+    <div class="title">We analyse three missions through the same flow</div>
+    <div class="accent"></div>
+    <table class="tbl" style="font-size:2.0vmin">
+      <tr><th>Regime</th><th>Mission</th><th>Signature driver</th></tr>
+      <tr><td><b>GEO</b></td><td>PanAmSat <b>PAS-1</b></td><td>commercial viability — slot &amp; capacity</td></tr>
+      <tr><td><b>Constellations</b></td><td>NASA <b>SunRISE</b></td><td>interferometric baseline &amp; # elements</td></tr>
+      <tr><td><b>Interplanetary</b></td><td>NASA <b>Europa Clipper</b></td><td>radiation dose &amp; launch energy</td></tr>
+    </table>
+    <div class="note">For each we walk all six steps — <b>objectives → drivers → concept → budgets → trade → baseline</b>. Same flow every time; only the driving budget changes. The step tracker shows where we are.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">GEO · PanAmSat PAS-1 — objectives</div>
+    <div class="title">Break the monopoly: private international broadcasting</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.32"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.32"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.32"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="cols">
+      <div class="card g"><h3>The mission objective</h3>Provide <b>commercial international TV &amp; data broadcasting</b> across the Americas and the Atlantic — the <b>first privately-owned</b> international communications satellite, breaking the Intelsat monopoly (René Anselmo, PanAmSat, launched 1988).</div>
+      <div class="card d"><h3>Why it's a mission-analysis problem</h3>A one-satellite business with no customers at start: the analysis has to turn "sell broadcasting over the Atlantic" into a specific spacecraft, orbit slot, payload and budget that <b>closes commercially</b>.</div>
+    </div>
+    <div class="note">We'll walk PAS-1 through the full flow — objective → drivers → concept → budgets → trade → baseline — the same six steps we'll use for every mission today.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">GEO · PanAmSat PAS-1 — drivers</div>
+    <div class="title">What the objective forces on the design</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.32"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.32"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <table class="tbl" style="font-size:1.95vmin">
+      <tr><th>Driver</th><th>Because…</th></tr>
+      <tr><td><b>A GEO slot over the service region</b></td><td>fixed over 45°W, one satellite sees the Americas + the Atlantic to Europe</td></tr>
+      <tr><td><b>Transponder capacity &amp; band</b></td><td>revenue = channels sold → number of transponders; C-band (wide, rain-robust) + Ku (higher power, smaller dishes)</td></tr>
+      <tr><td><b>~10-year lifetime</b></td><td>a comsat only pays back over a decade → station-keeping propellant</td></tr>
+      <tr><td><b>Low cost &amp; schedule</b></td><td>self-funded, no anchor customer → the business must close cheaply and fast</td></tr>
+      <tr><td><b>Regulatory access</b></td><td>FCC licence, an ITU longitude slot, and landing rights in each served country</td></tr>
+    </table>
+    <div class="note">The governing figure of merit here is <b>commercial viability</b> — cost and revenue, not raw performance. Watch it shape every later step.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">GEO · PanAmSat PAS-1 — concept</div>
+    <div class="title">One GEO comsat at 45° West</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.32"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="cols wide-left">
+      <div class="stack"><ul class="pts" style="font-size:2.0vmin">
+        <li>A single three-axis-stabilised <b>GEO communications satellite</b> parked at <b>45°W</b> (RCA <b>AS-3000</b> bus, ~<b>1220 kg</b>).</li>
+        <li>Payload: <b>18 transponders</b> (12 C-band + 6 Ku-band) with fixed beams shaped to the Americas / Atlantic.</li>
+        <li>Delivery: launched into <b>GTO</b>, then an <b>apogee boost motor</b> circularises and removes inclination at apogee.</li>
+      </ul></div>
+      <svg class="fig" viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg" style="max-height:34vh">
+<defs><marker id="gm" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#b3502e"/></marker></defs>
+<ellipse cx="230" cy="150" rx="170" ry="52" fill="none" stroke="#3fd0c0" stroke-width="2.5" stroke-dasharray="5 5"/>
+<circle cx="230" cy="150" r="26" fill="#2e6fb0"/>
+<circle cx="400" cy="150" r="9" fill="#12211b"/>
+<line x1="400" y1="150" x2="400" y2="92" stroke="#008540" stroke-width="3" marker-end="url(#gm)"/>
+<line x1="400" y1="150" x2="400" y2="208" stroke="#008540" stroke-width="3" marker-end="url(#gm)"/>
+<line x1="400" y1="150" x2="352" y2="135" stroke="#c98a2a" stroke-width="3" marker-end="url(#gm)"/>
+<g font-family="Calibri,sans-serif" font-size="13" font-weight="700">
+<text x="415" y="90" fill="#00573F">N</text><text x="415" y="214" fill="#00573F">S</text>
+<text x="320" y="120" fill="#8A6D00">E&#8211;W</text>
+<text x="230" y="150" text-anchor="middle" fill="#fff" font-size="11">Earth</text></g>
+<text x="230" y="285" text-anchor="middle" font-family="Calibri,sans-serif" font-size="13" fill="#5a6b63">N&#8211;S = inclination (luni-solar) &middot; E&#8211;W = longitude (triaxiality)</text>
+</svg>
+    </div>
+    <div class="note">The concept is deliberately conventional — a proven bus and a standard GTO→GEO insertion — because the risk budget is spent on the <i>business</i>, not on new technology.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">GEO · PanAmSat PAS-1 — budgets</div>
+    <div class="title">Sizing the satellite: link, power, station-keeping</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="cols">
+      <div class="card g"><h3>Link &amp; power</h3>The <b>link budget</b> (EIRP, coverage beams) sets antenna size and transponder power; the <b>power budget</b> sizes the solar arrays plus batteries to ride through the daily <b>eclipse</b>.</div>
+      <div class="card d"><h3>Station-keeping ΔV</h3>Holding the 45°W slot for 10 yr is dominated by <b>north–south</b> control (luni-solar, ~50 m/s/yr) with cheap east–west (triaxiality) trims — this fuel load sizes the tank. Quantify it → </div>
+    </div>
+    <div class="note">Every GEO comsat lives or dies on these three budgets closing inside the launch mass. Try the station-keeping budget next.</div>
+  </div>
+</section>
+
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">GEO station-keeping budget &mdash; N&#8211;S vs E&#8211;W over the mission</span></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="simwrap"><iframe title="demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&#x27;en&#x27;&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;meta name=&#x27;viewport&#x27; content=&#x27;width=device-width, initial-scale=1&#x27;&gt;&lt;title&gt;GEO station-keeping &amp;middot; AE 582&lt;/title&gt;&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:440px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none;max-width:75%}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:92px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.red .v{color:#b3261e}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--petrol);font-weight:600;background:#fff}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--tint);border-left:4px solid var(--green);font-size:13px;line-height:1.45}
+  .verdict b{color:var(--forest)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+  .btnrow{display:flex;gap:8px;margin-top:6px}
+  .btnrow button{flex:1;padding:9px;border:none;border-radius:9px;background:var(--green);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
+  .btnrow button:hover{background:var(--forest)}
+
+      .stage{min-height:0;padding:18px 22px;background:#fff;display:flex;flex-direction:column;justify-content:center}
+      .barrow{display:grid;grid-template-columns:150px 1fr 92px;align-items:center;gap:10px;margin:10px 0}
+      .bl{font-family:&quot;Calibri&quot;,sans-serif;font-size:13px;font-weight:600;color:var(--petrol)}
+      .bt{height:26px;background:#eef1f0;border-radius:6px;overflow:hidden;display:flex}
+      .bf{height:100%}
+      .bv{font-family:&quot;Cambria&quot;,serif;font-weight:700;color:var(--forest);text-align:right}
+      .big{font-family:&quot;Cambria&quot;,serif;font-size:30px;font-weight:700;color:var(--forest)}
+    
+  html,body{height:100%}
+  body{height:100vh;overflow:hidden;display:flex;flex-direction:column;margin:0}
+  header{flex:0 0 auto;padding:12px 24px 7px}
+  header h1{font-size:21px;margin:1px 0}
+  header .kick{font-size:11px}
+  header .eq{font-size:12.5px}
+  main{flex:1 1 auto;min-height:0;padding:12px 24px 14px;align-items:stretch}
+  .stage{min-height:0!important;height:100%;overflow:hidden}
+  .panel{height:100%;overflow:auto}
+  canvas{height:100%}
+  .row{margin:0 0 11px}
+  .hint{font-size:11px;line-height:1.4;margin-top:8px}
+  .verdict{font-size:12.5px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM &amp;middot; AE 582 &amp;mdash; GEO STATION-KEEPING&lt;/div&gt;&lt;h1&gt;The GEO station-keeping budget&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;north&amp;#8211;south (inclination) dominates &amp;middot; east&amp;#8211;west (longitude) is cheap&lt;/div&gt;&lt;/header&gt;
+    &lt;main&gt;
+      &lt;div class=&quot;stage&quot;&gt;
+        &lt;div class=&quot;barrow&quot;&gt;&lt;div class=&quot;bl&quot;&gt;North&amp;#8211;South (i)&lt;/div&gt;
+          &lt;div class=&quot;bt&quot;&gt;&lt;div class=&quot;bf&quot; id=&quot;fns&quot; style=&quot;background:var(--green)&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;bv&quot;&gt;&lt;span id=&quot;vns&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;barrow&quot;&gt;&lt;div class=&quot;bl&quot;&gt;East&amp;#8211;West (long.)&lt;/div&gt;
+          &lt;div class=&quot;bt&quot;&gt;&lt;div class=&quot;bf&quot; id=&quot;few&quot; style=&quot;background:#c98a2a&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;bv&quot;&gt;&lt;span id=&quot;vew&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;div style=&quot;text-align:center;margin-top:14px&quot;&gt;
+          &lt;div style=&quot;font-family:&#x27;Calibri&#x27;,sans-serif;font-size:11px;letter-spacing:.5px;color:var(--mut);text-transform:uppercase;font-weight:700&quot;&gt;total keep-alive &amp;#916;V&lt;/div&gt;
+          &lt;div class=&quot;big&quot;&gt;&lt;span id=&quot;tot&quot;&gt;—&lt;/span&gt; m/s&lt;/div&gt;
+          &lt;div style=&quot;font-family:&#x27;Calibri&#x27;,sans-serif;font-size:13px;color:var(--mut)&quot;&gt;&amp;rarr; propellant &amp;asymp; &lt;span id=&quot;prop&quot;&gt;—&lt;/span&gt;% of wet mass (I&lt;sub&gt;sp&lt;/sub&gt; &lt;span id=&quot;ispv&quot;&gt;3000&lt;/span&gt; s)&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;verdict&quot; id=&quot;verdict&quot; style=&quot;margin-top:14px&quot;&gt;—&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;panel&quot;&gt;
+        &lt;h2&gt;Mission &amp;amp; rates&lt;/h2&gt;
+        &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Mission life &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;yV&quot;&gt;15&lt;/span&gt; yr&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;y&quot; min=&quot;1&quot; max=&quot;20&quot; value=&quot;15&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;row&quot;&gt;&lt;label&gt;N&amp;#8211;S rate (luni-solar) &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;nsV&quot;&gt;50&lt;/span&gt; m/s/yr&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;ns&quot; min=&quot;40&quot; max=&quot;55&quot; value=&quot;50&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;row&quot;&gt;&lt;label&gt;E&amp;#8211;W rate (triaxiality) &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;ewV&quot;&gt;2&lt;/span&gt; m/s/yr&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;ew&quot; min=&quot;0&quot; max=&quot;6&quot; value=&quot;2&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Thruster I&lt;sub&gt;sp&lt;/sub&gt; &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;ispL&quot;&gt;3000&lt;/span&gt; s&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;isp&quot; min=&quot;220&quot; max=&quot;3500&quot; step=&quot;10&quot; value=&quot;3000&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;hint&quot;&gt;N&amp;#8211;S counters luni-solar inclination drift (~0.85&amp;deg;/yr) and eats the lion&#x27;s share of fuel; E&amp;#8211;W counters Earth triaxiality ($J_{22}$) with a small &quot;ping-pong&quot; limit cycle. Electric propulsion ($I_{sp}\sim$3000 s) slashes the propellant bill versus chemical (~300 s).&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;&lt;script&gt;
+    
+  const MU=398600.4418, RE=6378.14, J2=1.08263e-3, GEO=42164.0, RAD=180/Math.PI, DAY=86400;
+  const vc=r=&gt;Math.sqrt(MU/r), vv=(r,a)=&gt;Math.sqrt(MU*(2/r-1/a));
+  const f=(x,d=2)=&gt;isFinite(x)?Number(x).toLocaleString(&#x27;en-US&#x27;,{minimumFractionDigits:d,maximumFractionDigits:d}):&#x27;\u2014&#x27;;
+
+    const g0=9.80665;
+    const yS=document.getElementById(&#x27;y&#x27;), nsS=document.getElementById(&#x27;ns&#x27;), ewS=document.getElementById(&#x27;ew&#x27;), ispS=document.getElementById(&#x27;isp&#x27;);
+    function upd(){
+      const yr=+yS.value, ns=+nsS.value*yr, ew=+ewS.value*yr, tot=ns+ew, isp=+ispS.value;
+      document.getElementById(&#x27;yV&#x27;).textContent=yr;
+      document.getElementById(&#x27;nsV&#x27;).textContent=+nsS.value;
+      document.getElementById(&#x27;ewV&#x27;).textContent=+ewS.value;
+      document.getElementById(&#x27;ispL&#x27;).textContent=isp; document.getElementById(&#x27;ispv&#x27;).textContent=isp;
+      document.getElementById(&#x27;vns&#x27;).textContent=ns.toFixed(0)+&#x27; m/s&#x27;;
+      document.getElementById(&#x27;vew&#x27;).textContent=ew.toFixed(0)+&#x27; m/s&#x27;;
+      document.getElementById(&#x27;tot&#x27;).textContent=tot.toFixed(0);
+      const mx=Math.max(tot,1);
+      document.getElementById(&#x27;fns&#x27;).style.width=(ns/mx*100)+&#x27;%&#x27;;
+      document.getElementById(&#x27;few&#x27;).style.width=(ew/mx*100)+&#x27;%&#x27;;
+      const pf=(1-Math.exp(-(tot)/(isp*g0)))*100;
+      document.getElementById(&#x27;prop&#x27;).textContent=pf.toFixed(1);
+      const share=(ns/tot*100).toFixed(0);
+      document.getElementById(&#x27;verdict&#x27;).innerHTML=&#x27;Over &#x27;+yr+&#x27; years, &lt;b&gt;N&amp;#8211;S is &#x27;+share+&#x27;%&lt;/b&gt; of the keep-alive budget. That is why a GEO comsat carries most of its fuel for inclination control &amp;mdash; and why all-electric station-keeping (high I&lt;sub&gt;sp&lt;/sub&gt;) has transformed GEO economics.&#x27;;
+    }
+    [yS,nsS,ewS,ispS].forEach(x=&gt;x.oninput=upd); upd();
+    &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">GEO · PanAmSat PAS-1 — trade</div>
+    <div class="title">The trades that actually decided PAS-1</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.72"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <ul class="pts" style="font-size:1.95vmin">
+      <li><b>Coverage vs capacity vs band:</b> how many C- vs Ku-band transponders, and which beams — set by the target markets and the revenue plan.</li>
+      <li><b>Buy vs build:</b> Anselmo bought a <b>cut-rate cancelled satellite</b> (~$45M vs ~$80M) instead of a bespoke build — cost over customisation.</li>
+      <li><b>Launcher:</b> with the US grounded after <i>Challenger</i>, he took the cheapest ride — the maiden <b>Ariane 44LP</b> — accepting schedule/reliability risk.</li>
+      <li><b>Risk:</b> insured the satellite at only <b>half</b> its value, and signed an <b>anchor customer</b> (CNN, Latin America) to close the business.</li>
+    </ul>
+    <div class="note">Notice the trades are cost-, schedule- and risk-driven — exactly what you'd expect when the design driver is commercial viability, not performance.</div>
+  </div>
+</section>
+
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Trade study &mdash; what should PanAmSat build?</span></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.72"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="simwrap"><iframe title="demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&#x27;en&#x27;&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;meta name=&#x27;viewport&#x27; content=&#x27;width=device-width, initial-scale=1&#x27;&gt;&lt;title&gt;What should PanAmSat build?&lt;/title&gt;&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:440px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none;max-width:75%}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:92px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.red .v{color:#b3261e}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--petrol);font-weight:600;background:#fff}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--tint);border-left:4px solid var(--green);font-size:13px;line-height:1.45}
+  .verdict b{color:var(--forest)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+  .btnrow{display:flex;gap:8px;margin-top:6px}
+  .btnrow button{flex:1;padding:9px;border:none;border-radius:9px;background:var(--green);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
+  .btnrow button:hover{background:var(--forest)}
+
+  .stage{min-height:0;padding:16px 20px;background:#fff;display:flex;flex-direction:column;justify-content:center}
+  .barrow{display:grid;grid-template-columns:250px 1fr 44px;align-items:center;gap:10px;margin:8px 0}
+  .bl{font-family:&quot;Calibri&quot;,sans-serif;font-size:13px;font-weight:600;color:var(--petrol)}
+  .bt{height:22px;background:#eef1f0;border-radius:6px;overflow:hidden}
+  .bf{height:100%;border-radius:6px;transition:width .25s}
+  .bv{font-family:&quot;Cambria&quot;,serif;font-weight:700;color:var(--forest);text-align:right}
+  .mtx{font-family:&quot;Calibri&quot;,sans-serif;font-size:10.5px;border-collapse:collapse;width:100%;margin-top:6px}
+  .mtx th,.mtx td{border:1px solid var(--line);padding:3px 5px;text-align:center}
+  .mtx th{background:var(--petrol);color:#fff}.mtx td:first-child{text-align:left}
+  .pre{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 8px}
+  .pre button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:11px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .pre button:hover{background:var(--tint)}
+
+  html,body{height:100%}
+  body{height:100vh;overflow:hidden;display:flex;flex-direction:column;margin:0}
+  header{flex:0 0 auto;padding:12px 24px 7px}
+  header h1{font-size:21px;margin:1px 0}
+  header .kick{font-size:11px}
+  header .eq{font-size:12.5px}
+  main{flex:1 1 auto;min-height:0;padding:12px 24px 14px;align-items:stretch}
+  .stage{min-height:0!important;height:100%;overflow:hidden}
+  .panel{height:100%;overflow:auto}
+  canvas{height:100%}
+  .row{margin:0 0 11px}
+  .hint{font-size:11px;line-height:1.4;margin-top:8px}
+  .verdict{font-size:12.5px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM &amp;middot; AE 582 &amp;mdash; GEO · PAS-1 trade&lt;/div&gt;&lt;h1&gt;What should PanAmSat build?&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;weight a self-funded startup&amp;rsquo;s objectives &amp;#8594; the baseline satellite&lt;/div&gt;&lt;/header&gt;
+    &lt;main&gt;
+      &lt;div class=&quot;stage&quot;&gt;
+        &lt;div style=&quot;font-family:&#x27;Calibri&#x27;,sans-serif;font-size:12px;color:var(--mut);margin-bottom:2px&quot;&gt;Weighted score (of 5) &amp;mdash; &lt;b&gt;&amp;#9733; = baseline under these weights&lt;/b&gt;&lt;/div&gt;
+        &lt;div id=&quot;bars&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;verdict&quot; id=&quot;winner&quot; style=&quot;margin-top:10px&quot;&gt;&amp;mdash;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;panel&quot;&gt;
+        &lt;h2&gt;Weight the objectives&lt;/h2&gt;
+        &lt;div class=&quot;pre&quot;&gt;&lt;button data-p=&quot;startup&quot;&gt;Self-funded startup&lt;/button&gt;&lt;button data-p=&quot;revenue&quot;&gt;Max revenue&lt;/button&gt;&lt;button data-p=&quot;safe&quot;&gt;Minimise risk&lt;/button&gt;&lt;button data-p=&quot;bal&quot;&gt;Balanced&lt;/button&gt;&lt;/div&gt;
+        &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Cost &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lcost&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wcost&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;label&gt;Capacity &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lcap&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wcap&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;label&gt;Schedule &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lsched&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wsched&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;label&gt;Low risk &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lrisk&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wrisk&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;
+        &lt;table class=&quot;mtx&quot; id=&quot;mtx&quot;&gt;&lt;/table&gt;
+        &lt;div class=&quot;hint&quot;&gt;Anselmo had no customers and his own money &amp;mdash; cost &amp;amp; speed dominated, so he bought a cancelled satellite cheap and took the maiden Ariane. Try &#x27;Self-funded startup&#x27;.&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;&lt;script&gt;const KEYS=[&quot;cost&quot;, &quot;cap&quot;, &quot;sched&quot;, &quot;risk&quot;];const LAB={&quot;cost&quot;: &quot;Cost&quot;, &quot;cap&quot;: &quot;Capacity&quot;, &quot;sched&quot;: &quot;Schedule&quot;, &quot;risk&quot;: &quot;Low risk&quot;};const ARCH=[{&quot;name&quot;: &quot;Bespoke new build&quot;, &quot;s&quot;: {&quot;cost&quot;: 1, &quot;cap&quot;: 5, &quot;sched&quot;: 1, &quot;risk&quot;: 4}}, {&quot;name&quot;: &quot;Buy cut-rate satellite&quot;, &quot;s&quot;: {&quot;cost&quot;: 5, &quot;cap&quot;: 3, &quot;sched&quot;: 5, &quot;risk&quot;: 2}}, {&quot;name&quot;: &quot;Lease existing capacity&quot;, &quot;s&quot;: {&quot;cost&quot;: 4, &quot;cap&quot;: 2, &quot;sched&quot;: 5, &quot;risk&quot;: 4}}, {&quot;name&quot;: &quot;Larger high-capacity sat&quot;, &quot;s&quot;: {&quot;cost&quot;: 1, &quot;cap&quot;: 5, &quot;sched&quot;: 2, &quot;risk&quot;: 3}}];const PRE={&quot;startup&quot;: {&quot;cost&quot;: 10, &quot;sched&quot;: 8, &quot;cap&quot;: 2, &quot;risk&quot;: 1}, &quot;revenue&quot;: {&quot;cap&quot;: 10, &quot;cost&quot;: 2, &quot;sched&quot;: 2, &quot;risk&quot;: 2}, &quot;safe&quot;: {&quot;risk&quot;: 10, &quot;cost&quot;: 2, &quot;sched&quot;: 2, &quot;cap&quot;: 2}, &quot;bal&quot;: {&quot;cost&quot;: 5, &quot;cap&quot;: 5, &quot;sched&quot;: 5, &quot;risk&quot;: 5}};const BASE=&quot;Buy cut-rate satellite&quot;;
+    function gv(id){return +document.getElementById(id).value;}
+    function draw(){
+      KEYS.forEach(k=&gt;document.getElementById(&#x27;l&#x27;+k).textContent=gv(&#x27;w&#x27;+k));
+      let W={},tot=0; KEYS.forEach(k=&gt;{W[k]=gv(&#x27;w&#x27;+k);tot+=W[k];}); if(!tot)tot=1;
+      let rows=ARCH.map(a=&gt;{let sc=0;KEYS.forEach(k=&gt;sc+=a.s[k]*W[k]);return {name:a.name,sc:sc/tot};});
+      const max=Math.max.apply(null,rows.map(r=&gt;r.sc));
+      rows.sort((x,y)=&gt;y.sc-x.sc);
+      const host=document.getElementById(&#x27;bars&#x27;);host.innerHTML=&#x27;&#x27;;
+      rows.forEach(r=&gt;{const win=Math.abs(r.sc-max)&lt;1e-9,pct=(r.sc/5*100).toFixed(0);
+        host.innerHTML+=&quot;&lt;div class=&#x27;barrow&#x27;&gt;&lt;div class=&#x27;bl&#x27;&gt;&quot;+(win?&#x27;\u2605 &#x27;:&#x27;&#x27;)+r.name+&quot;&lt;/div&gt;&quot;+
+          &quot;&lt;div class=&#x27;bt&#x27;&gt;&lt;div class=&#x27;bf&#x27; style=&#x27;width:&quot;+pct+&quot;%;background:&quot;+(win?&#x27;var(--green)&#x27;:&#x27;#9bb0a6&#x27;)+&quot;&#x27;&gt;&lt;/div&gt;&lt;/div&gt;&quot;+
+          &quot;&lt;div class=&#x27;bv&#x27;&gt;&quot;+r.sc.toFixed(2)+&quot;&lt;/div&gt;&lt;/div&gt;&quot;;});
+      const w=rows[0];
+      let msg=&#x27;Baseline under these weights: &lt;b&gt;&#x27;+w.name+&#x27;&lt;/b&gt; (&#x27;+w.sc.toFixed(2)+&#x27;/5).&#x27;;
+      if(w.name===BASE) msg+=&#x27; \u2713 &lt;b&gt;This is what actually flew.&lt;/b&gt;&#x27;;
+      else msg+=&#x27; (Actually flew &lt;b&gt;&#x27;+BASE+&#x27;&lt;/b&gt; \u2014 change the weights to see when it wins.)&#x27;;
+      document.getElementById(&#x27;winner&#x27;).innerHTML=msg;
+      let h=&#x27;&lt;tr&gt;&lt;th&gt;Architecture&lt;/th&gt;&#x27;+KEYS.map(k=&gt;&#x27;&lt;th&gt;&#x27;+LAB[k]+&#x27;&lt;/th&gt;&#x27;).join(&#x27;&#x27;)+&#x27;&lt;/tr&gt;&#x27;;
+      ARCH.forEach(a=&gt;{h+=&#x27;&lt;tr&gt;&lt;td&gt;&#x27;+a.name+&#x27;&lt;/td&gt;&#x27;+KEYS.map(k=&gt;&#x27;&lt;td&gt;&#x27;+a.s[k]+&#x27;&lt;/td&gt;&#x27;).join(&#x27;&#x27;)+&#x27;&lt;/tr&gt;&#x27;;});
+      document.getElementById(&#x27;mtx&#x27;).innerHTML=h;
+    }
+    function setW(w){KEYS.forEach(k=&gt;document.getElementById(&#x27;w&#x27;+k).value=(w[k]!==undefined?w[k]:1));draw();}
+    KEYS.forEach(k=&gt;document.getElementById(&#x27;w&#x27;+k).oninput=draw);
+    document.querySelectorAll(&#x27;.pre button&#x27;).forEach(b=&gt;b.onclick=function(){setW(PRE[b.dataset.p]);});
+    draw();
+    &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">GEO · PanAmSat PAS-1 — baseline</div>
+    <div class="title">The baseline that flew</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.72"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.72"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="1">Baseline</text></svg>
+    <div class="cols">
+      <div class="card g"><h3>The baseline</h3>An 1220-kg AS-3000 comsat, <b>18 transponders</b> (12 C + 6 Ku), at <b>45°W GEO</b>, ~10-yr design life, on an <b>Ariane 44LP</b>. It broke the Intelsat monopoly and — with CNN and Gulf-War coverage — was near full capacity by 1992 (achieved 13 yr).</div>
+      <div class="card d"><h3>The flow, for GEO</h3>objective (private broadcasting) → driver (slot + capacity + viability) → concept (one comsat @45°W) → budgets (link, power, N–S ΔV) → trade (buy-vs-build, launcher, risk) → <b>baseline (PAS-1)</b>.</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Constellations · SunRISE — objectives</div>
+    <div class="title">See the Sun's radio bursts to forecast space weather</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.32"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.32"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.32"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="cols">
+      <div class="card g"><h3>The mission objective</h3>Detect and <b>map solar radio bursts</b> (0.1–25 MHz) to pinpoint where <b>solar energetic particles</b> are accelerated — improving warning of space-weather events that endanger astronauts, satellites and power grids. (NASA heliophysics; PI Univ. Michigan.)</div>
+      <div class="card d"><h3>The catch</h3>Those long wavelengths are <b>blocked by Earth's ionosphere</b> — you cannot observe them from the ground at all.</div>
+    </div>
+    <div class="note">A different kind of constellation: not for ground coverage, but to build a telescope in space. Watch how that objective forces a multi-satellite design.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Constellations · SunRISE — drivers</div>
+    <div class="title">Why the objective demands many satellites</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.32"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.32"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">Get above the ionosphere</div><div class="ex">The wavelengths of interest are blocked below ~10 MHz from the ground → the instrument must be <b>in space</b>.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">Resolution needs a huge aperture</div><div class="ex">Angular resolution ∝ wavelength / aperture. At these long wavelengths you need an aperture <b>kilometres</b> across — impossible as one dish.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">Synthesise the aperture → a constellation</div><div class="ex">Interferometry combines several small antennas spread over that distance; the <b>baseline</b> between the farthest elements <i>is</i> the aperture. Adequate imaging (u–v coverage) needs <b>several</b> elements → a constellation is the only way.</div></div></div>
+    </div>
+    <div class="note">The signature driver here is the <b>interferometric baseline</b> (and the number of elements) — the constellation analogue of "degree of coverage".</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Constellations · SunRISE — concept</div>
+    <div class="title">Six SmallSats as one virtual telescope</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.32"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="cols wide-left">
+      <div class="stack"><ul class="pts" style="font-size:2.0vmin">
+        <li><b>Six identical SmallSats</b> (cereal-box size), each deploying four 2.5-m antenna booms.</li>
+        <li>They fly in a loose <b>~10 km formation</b> slightly <b>above GEO</b> (~35 000 km).</li>
+        <li>Signals are downlinked (DSN) and combined on the ground by <b>interferometry</b> into one virtual 10-km radio telescope.</li>
+      </ul></div>
+      <svg class="fig" viewBox="0 0 440 280" xmlns="http://www.w3.org/2000/svg" style="max-height:32vh">
+<!-- radio waves from the Sun -->
+<circle cx="46" cy="52" r="20" fill="#DAC961"/>
+<g stroke="#c98a2a" stroke-width="2" fill="none" opacity=".8"><path d="M70 60 q30 12 60 6"/><path d="M66 74 q40 18 80 8"/><path d="M62 88 q50 22 100 10"/></g>
+<!-- 6 smallsats in a loose formation -->
+<g id="sats" fill="#003E51"><circle cx="250" cy="120" r="7"/><circle cx="300" cy="100" r="7"/><circle cx="340" cy="140" r="7"/><circle cx="300" cy="170" r="7"/><circle cx="250" cy="185" r="7"/><circle cx="215" cy="150" r="7"/></g>
+<!-- interferometer baselines -->
+<g stroke="#3fd0c0" stroke-width="1.3" stroke-dasharray="4 4" opacity=".85">
+<line x1="250" y1="120" x2="340" y2="140"/><line x1="300" y1="100" x2="250" y2="185"/><line x1="215" y1="150" x2="340" y2="140"/><line x1="300" y1="100" x2="300" y2="170"/><line x1="215" y1="150" x2="300" y2="170"/></g>
+<circle cx="278" cy="143" r="78" fill="none" stroke="#008540" stroke-width="1.5" stroke-dasharray="6 6"/>
+<text x="278" y="255" text-anchor="middle" font-family="Calibri,sans-serif" font-size="13" font-weight="700" fill="#00573F">6 SmallSats ≈ one virtual 10-km radio telescope</text>
+</svg>
+    </div>
+    <div class="note">Above GEO is a <b>stable "graveyard" region</b> — negligible drag and gentle perturbations — so the formation is cheap to maintain.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Constellations · SunRISE — budgets</div>
+    <div class="title">What the six-satellite design must balance</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="cols">
+      <div class="card g"><h3>Imaging budget</h3>The <b>number of elements</b> and their separations set the aperture (resolution) and the <b>u–v coverage</b> (image quality). Six gives enough baselines to locate bursts without a large, costly array.</div>
+      <div class="card d"><h3>Formation, timing &amp; data</h3>Formation-keeping ΔV is <b>small</b> (stable super-GEO orbit); the hard parts are <b>precise inter-satellite timing</b> and getting six data streams down via the DSN to correlate.</div>
+    </div>
+    <div class="note">Here the binding budget is <b>imaging fidelity per satellite</b>, not coverage or ΔV — the driver reshapes which budget matters.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Constellations · SunRISE — trade</div>
+    <div class="title">Elements vs fidelity vs cost</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.72"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <ul class="pts" style="font-size:1.95vmin">
+      <li><b>Number of satellites:</b> more elements → better u–v coverage and images, but higher cost. <b>Six SmallSats</b> is the knee — cheap, redundant, and enough baselines.</li>
+      <li><b>Formation size:</b> a wider baseline sharpens resolution but complicates formation control and timing.</li>
+      <li><b>Orbit:</b> super-GEO (stable, no drag, cheap station-keeping) over LEO (drag, short usable baselines).</li>
+      <li><b>Contrast — a <i>coverage</i> constellation (GNSS)</b> trades coverage vs cost via footprint &amp; number of planes instead. Explore that version → </li>
+    </ul>
+    <div class="note">Same trade shape as any constellation — buy capability with satellites — but the "capability" is <b>imaging fidelity</b>, not ground coverage.</div>
+  </div>
+</section>
+
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Trade study &mdash; how many satellites?</span></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.72"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="simwrap"><iframe title="demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&#x27;en&#x27;&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;meta name=&#x27;viewport&#x27; content=&#x27;width=device-width, initial-scale=1&#x27;&gt;&lt;title&gt;How many satellites for the radio telescope?&lt;/title&gt;&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:440px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none;max-width:75%}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:92px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.red .v{color:#b3261e}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--petrol);font-weight:600;background:#fff}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--tint);border-left:4px solid var(--green);font-size:13px;line-height:1.45}
+  .verdict b{color:var(--forest)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+  .btnrow{display:flex;gap:8px;margin-top:6px}
+  .btnrow button{flex:1;padding:9px;border:none;border-radius:9px;background:var(--green);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
+  .btnrow button:hover{background:var(--forest)}
+
+  .stage{min-height:0;padding:16px 20px;background:#fff;display:flex;flex-direction:column;justify-content:center}
+  .barrow{display:grid;grid-template-columns:250px 1fr 44px;align-items:center;gap:10px;margin:8px 0}
+  .bl{font-family:&quot;Calibri&quot;,sans-serif;font-size:13px;font-weight:600;color:var(--petrol)}
+  .bt{height:22px;background:#eef1f0;border-radius:6px;overflow:hidden}
+  .bf{height:100%;border-radius:6px;transition:width .25s}
+  .bv{font-family:&quot;Cambria&quot;,serif;font-weight:700;color:var(--forest);text-align:right}
+  .mtx{font-family:&quot;Calibri&quot;,sans-serif;font-size:10.5px;border-collapse:collapse;width:100%;margin-top:6px}
+  .mtx th,.mtx td{border:1px solid var(--line);padding:3px 5px;text-align:center}
+  .mtx th{background:var(--petrol);color:#fff}.mtx td:first-child{text-align:left}
+  .pre{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 8px}
+  .pre button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:11px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .pre button:hover{background:var(--tint)}
+
+  html,body{height:100%}
+  body{height:100vh;overflow:hidden;display:flex;flex-direction:column;margin:0}
+  header{flex:0 0 auto;padding:12px 24px 7px}
+  header h1{font-size:21px;margin:1px 0}
+  header .kick{font-size:11px}
+  header .eq{font-size:12.5px}
+  main{flex:1 1 auto;min-height:0;padding:12px 24px 14px;align-items:stretch}
+  .stage{min-height:0!important;height:100%;overflow:hidden}
+  .panel{height:100%;overflow:auto}
+  canvas{height:100%}
+  .row{margin:0 0 11px}
+  .hint{font-size:11px;line-height:1.4;margin-top:8px}
+  .verdict{font-size:12.5px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM &amp;middot; AE 582 &amp;mdash; SunRISE trade&lt;/div&gt;&lt;h1&gt;How many satellites for the radio telescope?&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;weight imaging, resolution, cost &amp;amp; simplicity &amp;#8594; the baseline constellation&lt;/div&gt;&lt;/header&gt;
+    &lt;main&gt;
+      &lt;div class=&quot;stage&quot;&gt;
+        &lt;div style=&quot;font-family:&#x27;Calibri&#x27;,sans-serif;font-size:12px;color:var(--mut);margin-bottom:2px&quot;&gt;Weighted score (of 5) &amp;mdash; &lt;b&gt;&amp;#9733; = baseline under these weights&lt;/b&gt;&lt;/div&gt;
+        &lt;div id=&quot;bars&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;verdict&quot; id=&quot;winner&quot; style=&quot;margin-top:10px&quot;&gt;&amp;mdash;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;panel&quot;&gt;
+        &lt;h2&gt;Weight the objectives&lt;/h2&gt;
+        &lt;div class=&quot;pre&quot;&gt;&lt;button data-p=&quot;enough&quot;&gt;Enough imaging, affordable&lt;/button&gt;&lt;button data-p=&quot;max&quot;&gt;Max fidelity/resolution&lt;/button&gt;&lt;button data-p=&quot;cheap&quot;&gt;Cheapest &amp; simplest&lt;/button&gt;&lt;button data-p=&quot;bal&quot;&gt;Balanced&lt;/button&gt;&lt;/div&gt;
+        &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Imaging &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lfid&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wfid&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;label&gt;Resolution &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lres&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wres&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;label&gt;Cost &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lcost&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wcost&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;label&gt;Simplicity &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lsimp&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wsimp&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;
+        &lt;table class=&quot;mtx&quot; id=&quot;mtx&quot;&gt;&lt;/table&gt;
+        &lt;div class=&quot;hint&quot;&gt;A single km-scale dish can&#x27;t be launched (resolution needs a km baseline); the trade is elements vs imaging fidelity vs cost. Try &#x27;Enough imaging, affordable&#x27;.&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;&lt;script&gt;const KEYS=[&quot;fid&quot;, &quot;res&quot;, &quot;cost&quot;, &quot;simp&quot;];const LAB={&quot;fid&quot;: &quot;Imaging&quot;, &quot;res&quot;: &quot;Resolution&quot;, &quot;cost&quot;: &quot;Cost&quot;, &quot;simp&quot;: &quot;Simplicity&quot;};const ARCH=[{&quot;name&quot;: &quot;1 monolithic dish&quot;, &quot;s&quot;: {&quot;fid&quot;: 3, &quot;res&quot;: 1, &quot;cost&quot;: 2, &quot;simp&quot;: 5}}, {&quot;name&quot;: &quot;3 SmallSats&quot;, &quot;s&quot;: {&quot;fid&quot;: 2, &quot;res&quot;: 4, &quot;cost&quot;: 5, &quot;simp&quot;: 4}}, {&quot;name&quot;: &quot;6 SmallSats&quot;, &quot;s&quot;: {&quot;fid&quot;: 4, &quot;res&quot;: 4, &quot;cost&quot;: 4, &quot;simp&quot;: 3}}, {&quot;name&quot;: &quot;12 SmallSats&quot;, &quot;s&quot;: {&quot;fid&quot;: 5, &quot;res&quot;: 5, &quot;cost&quot;: 2, &quot;simp&quot;: 1}}];const PRE={&quot;enough&quot;: {&quot;fid&quot;: 6, &quot;cost&quot;: 6, &quot;res&quot;: 4, &quot;simp&quot;: 3}, &quot;max&quot;: {&quot;fid&quot;: 10, &quot;res&quot;: 8, &quot;cost&quot;: 1, &quot;simp&quot;: 1}, &quot;cheap&quot;: {&quot;cost&quot;: 10, &quot;simp&quot;: 6, &quot;fid&quot;: 1, &quot;res&quot;: 1}, &quot;bal&quot;: {&quot;fid&quot;: 5, &quot;res&quot;: 5, &quot;cost&quot;: 5, &quot;simp&quot;: 5}};const BASE=&quot;6 SmallSats&quot;;
+    function gv(id){return +document.getElementById(id).value;}
+    function draw(){
+      KEYS.forEach(k=&gt;document.getElementById(&#x27;l&#x27;+k).textContent=gv(&#x27;w&#x27;+k));
+      let W={},tot=0; KEYS.forEach(k=&gt;{W[k]=gv(&#x27;w&#x27;+k);tot+=W[k];}); if(!tot)tot=1;
+      let rows=ARCH.map(a=&gt;{let sc=0;KEYS.forEach(k=&gt;sc+=a.s[k]*W[k]);return {name:a.name,sc:sc/tot};});
+      const max=Math.max.apply(null,rows.map(r=&gt;r.sc));
+      rows.sort((x,y)=&gt;y.sc-x.sc);
+      const host=document.getElementById(&#x27;bars&#x27;);host.innerHTML=&#x27;&#x27;;
+      rows.forEach(r=&gt;{const win=Math.abs(r.sc-max)&lt;1e-9,pct=(r.sc/5*100).toFixed(0);
+        host.innerHTML+=&quot;&lt;div class=&#x27;barrow&#x27;&gt;&lt;div class=&#x27;bl&#x27;&gt;&quot;+(win?&#x27;\u2605 &#x27;:&#x27;&#x27;)+r.name+&quot;&lt;/div&gt;&quot;+
+          &quot;&lt;div class=&#x27;bt&#x27;&gt;&lt;div class=&#x27;bf&#x27; style=&#x27;width:&quot;+pct+&quot;%;background:&quot;+(win?&#x27;var(--green)&#x27;:&#x27;#9bb0a6&#x27;)+&quot;&#x27;&gt;&lt;/div&gt;&lt;/div&gt;&quot;+
+          &quot;&lt;div class=&#x27;bv&#x27;&gt;&quot;+r.sc.toFixed(2)+&quot;&lt;/div&gt;&lt;/div&gt;&quot;;});
+      const w=rows[0];
+      let msg=&#x27;Baseline under these weights: &lt;b&gt;&#x27;+w.name+&#x27;&lt;/b&gt; (&#x27;+w.sc.toFixed(2)+&#x27;/5).&#x27;;
+      if(w.name===BASE) msg+=&#x27; \u2713 &lt;b&gt;This is what actually flew.&lt;/b&gt;&#x27;;
+      else msg+=&#x27; (Actually flew &lt;b&gt;&#x27;+BASE+&#x27;&lt;/b&gt; \u2014 change the weights to see when it wins.)&#x27;;
+      document.getElementById(&#x27;winner&#x27;).innerHTML=msg;
+      let h=&#x27;&lt;tr&gt;&lt;th&gt;Architecture&lt;/th&gt;&#x27;+KEYS.map(k=&gt;&#x27;&lt;th&gt;&#x27;+LAB[k]+&#x27;&lt;/th&gt;&#x27;).join(&#x27;&#x27;)+&#x27;&lt;/tr&gt;&#x27;;
+      ARCH.forEach(a=&gt;{h+=&#x27;&lt;tr&gt;&lt;td&gt;&#x27;+a.name+&#x27;&lt;/td&gt;&#x27;+KEYS.map(k=&gt;&#x27;&lt;td&gt;&#x27;+a.s[k]+&#x27;&lt;/td&gt;&#x27;).join(&#x27;&#x27;)+&#x27;&lt;/tr&gt;&#x27;;});
+      document.getElementById(&#x27;mtx&#x27;).innerHTML=h;
+    }
+    function setW(w){KEYS.forEach(k=&gt;document.getElementById(&#x27;w&#x27;+k).value=(w[k]!==undefined?w[k]:1));draw();}
+    KEYS.forEach(k=&gt;document.getElementById(&#x27;w&#x27;+k).oninput=draw);
+    document.querySelectorAll(&#x27;.pre button&#x27;).forEach(b=&gt;b.onclick=function(){setW(PRE[b.dataset.p]);});
+    draw();
+    &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Constellations · SunRISE — baseline</div>
+    <div class="title">The baseline constellation</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.72"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.72"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="1">Baseline</text></svg>
+    <div class="cols">
+      <div class="card g"><h3>The baseline</h3><b>Six SmallSats</b> in a ~10 km formation slightly above GEO, launching as a rideshare (~2026) — the smallest, cheapest constellation that synthesises an adequate radio aperture in space.</div>
+      <div class="card d"><h3>The flow, for constellations</h3>objective (map solar radio bursts) → driver (baseline &amp; # elements, above the ionosphere) → concept (6 SmallSats, super-GEO formation) → budget (u–v coverage, timing, data) → trade (elements vs fidelity vs cost) → <b>baseline (6-sat SunRISE)</b>.</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Interplanetary · Europa Clipper — objectives</div>
+    <div class="title">Is Europa's ocean habitable?</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.32"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.32"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.32"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="cols">
+      <div class="card g"><h3>The mission objective</h3>Assess the <b>habitability</b> of Europa's subsurface ocean — determine the <b>ice-shell thickness</b> and ocean interaction, the <b>composition</b>, and the <b>geology</b> — via <b>49 close flybys</b>. NASA's first mission to an ocean world (launched Oct 2024, Falcon Heavy).</div>
+      <div class="card d"><h3>The setting</h3>Europa orbits Jupiter, deep in the giant's <b>lethal radiation belts</b>, ~5 AU from the Sun and ~2.9 billion km from Earth. Everything about the design flows from that environment.</div>
+    </div>
+    <div class="note">The largest planetary spacecraft NASA has built — because the objective sits in one of the harshest places in the solar system.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Interplanetary · Europa Clipper — drivers</div>
+    <div class="title">Radiation, distance, and launch energy</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.32"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.32"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <table class="tbl" style="font-size:1.95vmin">
+      <tr><th>Driver</th><th>Consequence for the design</th></tr>
+      <tr><td><b>Jupiter's intense radiation</b></td><td>orbit <b>Jupiter</b>, not Europa — dip in for brief flybys then retreat; shield electronics in a <b>radiation vault</b></td></tr>
+      <tr><td><b>~5 AU distance / low solar flux</b></td><td>enormous <b>solar arrays</b> to make power far from the Sun (the power driver)</td></tr>
+      <tr><td><b>Huge launch energy (C₃) to Jupiter</b></td><td>a <b>gravity-assist</b> trajectory + a fully expendable <b>heavy launcher</b> (Falcon Heavy)</td></tr>
+      <tr><td><b>2.9 billion km / faint signal</b></td><td>large high-gain antenna &amp; the Deep Space Network for the data budget</td></tr>
+    </table>
+    <div class="note">The governing driver is <b>radiation dose</b> — it dictates the whole flyby architecture. Distance and launch energy dictate power and trajectory.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Interplanetary · Europa Clipper — concept</div>
+    <div class="title">A Jupiter orbiter that flies by Europa 49 times</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.32"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="cols wide-right">
+      <div class="stack"><ul class="pts" style="font-size:1.95vmin">
+        <li>Orbit <b>Jupiter</b> on a long, looping tour; make <b>49 close Europa flybys</b> — collect data on each dip, then swing back out of the worst radiation.</li>
+        <li>Reach Jupiter via a <b>Mars–Earth gravity-assist (MEGA)</b> cruise: Mars (Mar 2025) → Earth (Dec 2026) → Jupiter (Apr 2030), ~5½ yr.</li>
+        <li>A <b>Ganymede</b> gravity assist eases Jupiter capture (a ~6-hour insertion burn).</li>
+      </ul></div>
+      <svg class="fig" viewBox="0 0 440 300" xmlns="http://www.w3.org/2000/svg" style="max-height:33vh">
+<circle cx="150" cy="170" r="14" fill="#DAC961"/>
+<circle cx="150" cy="170" r="52" fill="none" stroke="#2e6fb0" stroke-width="1.6"/>
+<circle cx="150" cy="170" r="80" fill="none" stroke="#c9772e" stroke-width="1.6"/>
+<circle cx="150" cy="170" r="150" fill="none" stroke="#9a5a1e" stroke-width="1.6"/>
+<path d="M 98,170 C 40,90 150,20 230,90 C 300,150 120,250 150,290" fill="none" stroke="#008540" stroke-width="2.6"/>
+<circle cx="230" cy="90" r="6" fill="#c9772e"/><text x="240" y="86" font-size="10.5" font-family="Calibri,sans-serif" fill="#c9772e">Mars · Mar 2025</text>
+<circle cx="98" cy="170" r="6" fill="#2e6fb0"/><text x="20" y="150" font-size="10.5" font-family="Calibri,sans-serif" fill="#2e6fb0">Earth · Dec 2026</text>
+<circle cx="150" cy="290" r="6" fill="#9a5a1e"/><text x="165" y="292" font-size="10.5" font-family="Calibri,sans-serif" fill="#9a5a1e">Jupiter · Apr 2030</text>
+<text x="300" y="270" font-size="11" font-family="Calibri,sans-serif" fill="#5a6b63" font-weight="700">MEGA trajectory</text>
+</svg>
+    </div>
+    <div class="note">Orbiting Jupiter rather than Europa is the concept-level answer to the radiation driver — it trades some science continuity for a spacecraft that survives to do the science at all.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Interplanetary · Europa Clipper — budgets</div>
+    <div class="title">ΔV, power, radiation and time</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.32"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.32">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="cols">
+      <div class="card g"><h3>ΔV &amp; timeline</h3>Budget: launch <b>C₃</b> (expendable Falcon Heavy) + deep-space maneuvers + the <b>Jupiter-orbit-insertion</b> burn (~6 h). The gravity assists <b>buy the arrival energy</b> the launcher can't. Timeline: fixed <b>launch window</b> (Oct 2024) → 5½-yr cruise.</td></div>
+      <div class="card d"><h3>Power &amp; radiation</h3>The <b>power budget</b> sizes the giant solar arrays for 5 AU; the <b>radiation-dose budget</b> sets the vault shielding and the flyby-not-orbit tour so total dose stays survivable.</div>
+    </div>
+    <div class="note">Four budgets bind at once here — ΔV, power, radiation and timeline — and the concept exists to keep all four inside their limits.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Interplanetary · Europa Clipper — trade</div>
+    <div class="title">The choices that shaped Clipper</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.72"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="cols wide-left">
+      <div class="stack"><ul class="pts" style="font-size:1.9vmin">
+        <li><b>Direct vs gravity assist:</b> a direct shot needs impossible launch energy → the <b>MEGA</b> route trades ~2 extra years for a feasible C₃.</li>
+        <li><b>Orbit Europa vs orbit Jupiter:</b> orbiting Europa gives continuous science but a <b>fatal radiation dose</b> → orbit Jupiter and <b>fly by 49×</b> instead.</li>
+        <li><b>Solar vs nuclear (RTG) power:</b> chose <b>solar</b> (cost/availability) at the price of very large arrays.</li>
+      </ul></div>
+      <svg class="fig" viewBox="0 0 470 250" xmlns="http://www.w3.org/2000/svg" style="max-height:32vh">
+<defs><marker id="vt" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#5a6b63"/></marker>
+<marker id="vr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#b3502e"/></marker>
+<marker id="vo" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#008540"/></marker></defs>
+<line x1="60" y1="190" x2="260" y2="190" stroke="#5a6b63" stroke-width="3" marker-end="url(#vt)"/>
+<line x1="260" y1="190" x2="330" y2="110" stroke="#b3502e" stroke-width="2.5" marker-end="url(#vr)"/>
+<line x1="260" y1="190" x2="365" y2="175" stroke="#b3502e" stroke-width="2.5" marker-end="url(#vr)"/>
+<line x1="60" y1="190" x2="330" y2="110" stroke="#003E51" stroke-width="2.5" stroke-dasharray="5 4"/>
+<line x1="60" y1="190" x2="365" y2="175" stroke="#008540" stroke-width="3" marker-end="url(#vo)"/>
+<g font-family="Calibri,sans-serif" font-size="12.5" font-weight="700">
+<text x="120" y="208" fill="#5a6b63">V<tspan baseline-shift="sub">planet</tspan></text>
+<text x="300" y="120" fill="#b3502e">v∞ (equal in/out)</text>
+<text x="150" y="140" fill="#003E51">V<tspan baseline-shift="sub">in</tspan></text>
+<text x="250" y="168" fill="#008540">V<tspan baseline-shift="sub">out</tspan> (larger)</text></g>
+<text x="235" y="238" text-anchor="middle" font-family="Calibri,sans-serif" font-size="12.5" fill="#5a6b63">planet frame: same speed, turned by ψ · Sun frame: speed gained</text>
+</svg>
+    </div>
+    <div class="note">Every trade is dominated by the radiation and launch-energy drivers. Explore the gravity-assist geometry that makes the trajectory possible → </div>
+  </div>
+</section>
+
+<section class="slide demoslide">
+  <div class="inner">
+    <div class="dhead"><span class="badge">▶ INTERACTIVE</span><span class="dt">Trade study &mdash; how to get science at Europa &amp; survive?</span></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.72"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="1">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="0.32"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="0.32">Baseline</text></svg>
+    <div class="simwrap"><iframe title="demo" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&#x27;en&#x27;&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;meta name=&#x27;viewport&#x27; content=&#x27;width=device-width, initial-scale=1&#x27;&gt;&lt;title&gt;How do we get science at Europa &amp;mdash; and survive?&lt;/title&gt;&lt;style&gt;
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{font-family:&quot;Calibri&quot;,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f4f8f6,#eef4f1)}
+  header{padding:16px 26px 10px;border-bottom:3px solid var(--gold);background:var(--petrol);color:#fff}
+  header .kick{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+  header h1{margin:2px 0;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:26px;font-weight:700}
+  header .eq{font-family:&quot;Cambria&quot;,Georgia,serif;font-style:italic;color:#cfe0e4;font-size:15px}
+  header .eq b{color:#fff;font-style:normal}
+  main{display:grid;grid-template-columns:1fr 340px;gap:18px;padding:18px 26px 26px;max-width:1300px;margin:0 auto}
+  @media(max-width:920px){main{grid-template-columns:1fr}}
+  .stage{position:relative;background:#05070f;border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.18);min-height:440px}
+  canvas{display:block;width:100%;height:100%}
+  .readouts{position:absolute;top:14px;left:14px;display:flex;gap:9px;flex-wrap:wrap;pointer-events:none;max-width:75%}
+  .chip{background:rgba(255,255,255,.94);border-radius:10px;padding:6px 11px;min-width:92px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .chip .l{font-size:10px;letter-spacing:.4px;color:var(--mut);text-transform:uppercase;font-weight:700}
+  .chip .v{font-family:&quot;Cambria&quot;,Georgia,serif;font-size:17px;font-weight:700;color:var(--forest);line-height:1.15}
+  .chip.gold .v{color:var(--stone)}.chip.petrol .v{color:var(--petrol)}.chip.red .v{color:#b3261e}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .panel h2{margin:0 0 12px;font-family:&quot;Cambria&quot;,Georgia,serif;font-size:16px;color:var(--forest)}
+  .row{margin:0 0 14px}.row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
+  .row label .num{color:var(--green);font-family:&quot;Cambria&quot;,Georgia,serif;font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--green);height:22px}
+  select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--petrol);font-weight:600;background:#fff}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .presets button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:12px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .presets button:hover{background:var(--tint)}
+  .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--tint);border-left:4px solid var(--green);font-size:13px;line-height:1.45}
+  .verdict b{color:var(--forest)}
+  .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:14px 0}
+  .btnrow{display:flex;gap:8px;margin-top:6px}
+  .btnrow button{flex:1;padding:9px;border:none;border-radius:9px;background:var(--green);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
+  .btnrow button:hover{background:var(--forest)}
+
+  .stage{min-height:0;padding:16px 20px;background:#fff;display:flex;flex-direction:column;justify-content:center}
+  .barrow{display:grid;grid-template-columns:250px 1fr 44px;align-items:center;gap:10px;margin:8px 0}
+  .bl{font-family:&quot;Calibri&quot;,sans-serif;font-size:13px;font-weight:600;color:var(--petrol)}
+  .bt{height:22px;background:#eef1f0;border-radius:6px;overflow:hidden}
+  .bf{height:100%;border-radius:6px;transition:width .25s}
+  .bv{font-family:&quot;Cambria&quot;,serif;font-weight:700;color:var(--forest);text-align:right}
+  .mtx{font-family:&quot;Calibri&quot;,sans-serif;font-size:10.5px;border-collapse:collapse;width:100%;margin-top:6px}
+  .mtx th,.mtx td{border:1px solid var(--line);padding:3px 5px;text-align:center}
+  .mtx th{background:var(--petrol);color:#fff}.mtx td:first-child{text-align:left}
+  .pre{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 8px}
+  .pre button{padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:20px;font-size:11px;cursor:pointer;color:var(--petrol);font-weight:600}
+  .pre button:hover{background:var(--tint)}
+
+  html,body{height:100%}
+  body{height:100vh;overflow:hidden;display:flex;flex-direction:column;margin:0}
+  header{flex:0 0 auto;padding:12px 24px 7px}
+  header h1{font-size:21px;margin:1px 0}
+  header .kick{font-size:11px}
+  header .eq{font-size:12.5px}
+  main{flex:1 1 auto;min-height:0;padding:12px 24px 14px;align-items:stretch}
+  .stage{min-height:0!important;height:100%;overflow:hidden}
+  .panel{height:100%;overflow:auto}
+  canvas{height:100%}
+  .row{margin:0 0 11px}
+  .hint{font-size:11px;line-height:1.4;margin-top:8px}
+  .verdict{font-size:12.5px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;header&gt;&lt;div class=&quot;kick&quot;&gt;KFUPM &amp;middot; AE 582 &amp;mdash; Europa Clipper trade&lt;/div&gt;&lt;h1&gt;How do we get science at Europa &amp;mdash; and survive?&lt;/h1&gt;&lt;div class=&quot;eq&quot;&gt;weight launchability, science, radiation, cost &amp;amp; speed &amp;#8594; the baseline architecture&lt;/div&gt;&lt;/header&gt;
+    &lt;main&gt;
+      &lt;div class=&quot;stage&quot;&gt;
+        &lt;div style=&quot;font-family:&#x27;Calibri&#x27;,sans-serif;font-size:12px;color:var(--mut);margin-bottom:2px&quot;&gt;Weighted score (of 5) &amp;mdash; &lt;b&gt;&amp;#9733; = baseline under these weights&lt;/b&gt;&lt;/div&gt;
+        &lt;div id=&quot;bars&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;verdict&quot; id=&quot;winner&quot; style=&quot;margin-top:10px&quot;&gt;&amp;mdash;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;panel&quot;&gt;
+        &lt;h2&gt;Weight the objectives&lt;/h2&gt;
+        &lt;div class=&quot;pre&quot;&gt;&lt;button data-p=&quot;feas&quot;&gt;Feasible, survivable, affordable&lt;/button&gt;&lt;button data-p=&quot;sci&quot;&gt;Max science&lt;/button&gt;&lt;button data-p=&quot;fast&quot;&gt;Fastest&lt;/button&gt;&lt;button data-p=&quot;bal&quot;&gt;Balanced&lt;/button&gt;&lt;/div&gt;
+        &lt;div class=&quot;row&quot;&gt;&lt;label&gt;Launchable &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;llaunch&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wlaunch&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;label&gt;Science &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lsci&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wsci&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;label&gt;Radiation &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lrad&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wrad&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;label&gt;Cost &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;lcost&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wcost&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;label&gt;Speed &lt;span class=&quot;num&quot;&gt;&lt;span id=&quot;ltrip&quot;&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;wtrip&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;5&quot;&gt;&lt;/div&gt;
+        &lt;table class=&quot;mtx&quot; id=&quot;mtx&quot;&gt;&lt;/table&gt;
+        &lt;div class=&quot;hint&quot;&gt;&#x27;Radiation&#x27; scores how well the design survives Jupiter&#x27;s belts; &#x27;Launchable&#x27; whether any rocket can send it. Try &#x27;Feasible, survivable, affordable&#x27;.&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;&lt;script&gt;const KEYS=[&quot;launch&quot;, &quot;sci&quot;, &quot;rad&quot;, &quot;cost&quot;, &quot;trip&quot;];const LAB={&quot;launch&quot;: &quot;Launchable&quot;, &quot;sci&quot;: &quot;Science&quot;, &quot;rad&quot;: &quot;Radiation&quot;, &quot;cost&quot;: &quot;Cost&quot;, &quot;trip&quot;: &quot;Speed&quot;};const ARCH=[{&quot;name&quot;: &quot;Direct \u2192 orbit Europa&quot;, &quot;s&quot;: {&quot;launch&quot;: 1, &quot;sci&quot;: 5, &quot;rad&quot;: 1, &quot;cost&quot;: 2, &quot;trip&quot;: 5}}, {&quot;name&quot;: &quot;MEGA \u2192 Jupiter orbit, 49 flybys&quot;, &quot;s&quot;: {&quot;launch&quot;: 4, &quot;sci&quot;: 4, &quot;rad&quot;: 4, &quot;cost&quot;: 3, &quot;trip&quot;: 2}}, {&quot;name&quot;: &quot;Direct \u2192 Jupiter flybys&quot;, &quot;s&quot;: {&quot;launch&quot;: 1, &quot;sci&quot;: 4, &quot;rad&quot;: 4, &quot;cost&quot;: 1, &quot;trip&quot;: 4}}, {&quot;name&quot;: &quot;Orbit Europa, heavy shielding&quot;, &quot;s&quot;: {&quot;launch&quot;: 1, &quot;sci&quot;: 5, &quot;rad&quot;: 3, &quot;cost&quot;: 1, &quot;trip&quot;: 3}}];const PRE={&quot;feas&quot;: {&quot;launch&quot;: 8, &quot;rad&quot;: 8, &quot;cost&quot;: 5, &quot;sci&quot;: 4, &quot;trip&quot;: 2}, &quot;sci&quot;: {&quot;sci&quot;: 10, &quot;launch&quot;: 2, &quot;rad&quot;: 2, &quot;cost&quot;: 1, &quot;trip&quot;: 2}, &quot;fast&quot;: {&quot;trip&quot;: 10, &quot;launch&quot;: 2, &quot;sci&quot;: 2, &quot;rad&quot;: 1, &quot;cost&quot;: 1}, &quot;bal&quot;: {&quot;launch&quot;: 5, &quot;sci&quot;: 5, &quot;rad&quot;: 5, &quot;cost&quot;: 5, &quot;trip&quot;: 5}};const BASE=&quot;MEGA \u2192 Jupiter orbit, 49 flybys&quot;;
+    function gv(id){return +document.getElementById(id).value;}
+    function draw(){
+      KEYS.forEach(k=&gt;document.getElementById(&#x27;l&#x27;+k).textContent=gv(&#x27;w&#x27;+k));
+      let W={},tot=0; KEYS.forEach(k=&gt;{W[k]=gv(&#x27;w&#x27;+k);tot+=W[k];}); if(!tot)tot=1;
+      let rows=ARCH.map(a=&gt;{let sc=0;KEYS.forEach(k=&gt;sc+=a.s[k]*W[k]);return {name:a.name,sc:sc/tot};});
+      const max=Math.max.apply(null,rows.map(r=&gt;r.sc));
+      rows.sort((x,y)=&gt;y.sc-x.sc);
+      const host=document.getElementById(&#x27;bars&#x27;);host.innerHTML=&#x27;&#x27;;
+      rows.forEach(r=&gt;{const win=Math.abs(r.sc-max)&lt;1e-9,pct=(r.sc/5*100).toFixed(0);
+        host.innerHTML+=&quot;&lt;div class=&#x27;barrow&#x27;&gt;&lt;div class=&#x27;bl&#x27;&gt;&quot;+(win?&#x27;\u2605 &#x27;:&#x27;&#x27;)+r.name+&quot;&lt;/div&gt;&quot;+
+          &quot;&lt;div class=&#x27;bt&#x27;&gt;&lt;div class=&#x27;bf&#x27; style=&#x27;width:&quot;+pct+&quot;%;background:&quot;+(win?&#x27;var(--green)&#x27;:&#x27;#9bb0a6&#x27;)+&quot;&#x27;&gt;&lt;/div&gt;&lt;/div&gt;&quot;+
+          &quot;&lt;div class=&#x27;bv&#x27;&gt;&quot;+r.sc.toFixed(2)+&quot;&lt;/div&gt;&lt;/div&gt;&quot;;});
+      const w=rows[0];
+      let msg=&#x27;Baseline under these weights: &lt;b&gt;&#x27;+w.name+&#x27;&lt;/b&gt; (&#x27;+w.sc.toFixed(2)+&#x27;/5).&#x27;;
+      if(w.name===BASE) msg+=&#x27; \u2713 &lt;b&gt;This is what actually flew.&lt;/b&gt;&#x27;;
+      else msg+=&#x27; (Actually flew &lt;b&gt;&#x27;+BASE+&#x27;&lt;/b&gt; \u2014 change the weights to see when it wins.)&#x27;;
+      document.getElementById(&#x27;winner&#x27;).innerHTML=msg;
+      let h=&#x27;&lt;tr&gt;&lt;th&gt;Architecture&lt;/th&gt;&#x27;+KEYS.map(k=&gt;&#x27;&lt;th&gt;&#x27;+LAB[k]+&#x27;&lt;/th&gt;&#x27;).join(&#x27;&#x27;)+&#x27;&lt;/tr&gt;&#x27;;
+      ARCH.forEach(a=&gt;{h+=&#x27;&lt;tr&gt;&lt;td&gt;&#x27;+a.name+&#x27;&lt;/td&gt;&#x27;+KEYS.map(k=&gt;&#x27;&lt;td&gt;&#x27;+a.s[k]+&#x27;&lt;/td&gt;&#x27;).join(&#x27;&#x27;)+&#x27;&lt;/tr&gt;&#x27;;});
+      document.getElementById(&#x27;mtx&#x27;).innerHTML=h;
+    }
+    function setW(w){KEYS.forEach(k=&gt;document.getElementById(&#x27;w&#x27;+k).value=(w[k]!==undefined?w[k]:1));draw();}
+    KEYS.forEach(k=&gt;document.getElementById(&#x27;w&#x27;+k).oninput=draw);
+    document.querySelectorAll(&#x27;.pre button&#x27;).forEach(b=&gt;b.onclick=function(){setW(PRE[b.dataset.p]);});
+    draw();
+    &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Interplanetary · Europa Clipper — baseline</div>
+    <div class="title">The baseline mission</div>
+    <div class="accent"></div>
+    <svg class="track" viewBox="0 0 982 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.3vmin"><polygon points="4,3 136,3 154,23 136,43 4,43 22,23" fill="#003E51" opacity="0.72"/><text x="79" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Objectives</text><polygon points="167,3 299,3 317,23 299,43 167,43 185,23" fill="#0e5a44" opacity="0.72"/><text x="242" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Drivers</text><polygon points="330,3 462,3 480,23 462,43 330,43 348,23" fill="#1c6f4f" opacity="0.72"/><text x="405" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Concept</text><polygon points="493,3 625,3 643,23 625,43 493,43 511,23" fill="#2a8460" opacity="0.72"/><text x="568" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Budgets</text><polygon points="656,3 788,3 806,23 788,43 656,43 674,23" fill="#4f9a5a" opacity="0.72"/><text x="731" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#fff" opacity="0.72">Trade</text><polygon points="819,3 951,3 969,23 951,43 819,43 837,23" fill="#DAC961" opacity="1" stroke="#0b1f19" stroke-width="2.4"/><text x="894" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="15" font-weight="700" fill="#12211b" opacity="1">Baseline</text></svg>
+    <div class="cols">
+      <div class="card g"><h3>The baseline</h3><b>Falcon Heavy (expendable)</b> + a <b>Mars–Earth gravity-assist</b> cruise → <b>Jupiter arrival Apr 2030</b> → a Jupiter orbiter making <b>49 Europa flybys</b> (2030–2034), <b>solar-powered</b>, electronics in a <b>radiation vault</b>.</div>
+      <div class="card d"><h3>The flow, for interplanetary</h3>objective (Europa's habitability) → drivers (radiation, distance, C₃) → concept (Jupiter orbiter, 49 flybys, MEGA) → budgets (ΔV, power, dose, time) → trade (assist vs direct; flyby vs orbit; solar vs RTG) → <b>baseline (Europa Clipper)</b>.</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Other regimes — same flow, different driver</div>
+    <div class="title">The method carries to every regime</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>Small-body missions</h3>Objective: orbit/land on an asteroid or comet. <b>Driver:</b> tiny, irregular gravity &amp; navigation risk. Concept: slow proximity ops with a modelled (Mascon) gravity field. <i>e.g. NEAR, Rosetta, OSIRIS-REx.</i></div>
+      <div class="card d"><h3>Low-thrust missions</h3>Objective: reach the orbit on minimal propellant. <b>Driver:</b> trip time vs propellant. Concept: a continuous-thrust <b>spiral</b> with a steering law. <i>e.g. Dawn, all-electric GEO.</i></div>
+    </div>
+    <div class="note">Same six steps — objectives → drivers → concept → budgets → trade → baseline — only the <b>driving budget</b> changes. That is the whole discipline.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="inner">
+    <div class="kicker">Week 5 · summary</div>
+    <div class="title">The regimes on one page</div>
+    <div class="accent"></div>
+    <div class="cols">
+      <div class="card g"><h3>What drove each regime</h3><ul class="pts" style="margin-top:.3vmin;font-size:1.95vmin">
+        <li><b>GEO:</b> N–S station-keeping (~50 m/s/yr) dominates the fuel budget.</li>
+        <li><b>Constellations:</b> smallest Walker set that meets the coverage requirement.</li>
+        <li><b>Interplanetary:</b> patch the conics; capture-orbit shape trades against ΔV; gravity assists buy ΔV with time.</li>
+      </ul></div>
+      <div class="card d"><h3>…and the rest</h3><ul class="pts" style="margin-top:.3vmin;font-size:1.95vmin">
+        <li><b>Small-body:</b> irregular gravity &amp; nav risk, not ΔV, drive the design.</li>
+        <li><b>Low-thrust:</b> trade trip time for propellant; spiral, don't impulse.</li>
+        <li><b>Operational budgets:</b> visibility, eclipse, windows — and the rocket equation pays the bill.</li>
+      </ul></div>
+    </div>
+    <div class="recap" style="margin-top:1.4vmin"><b>One line:</b> mission analysis is one method with many faces — in every regime you find the driving budget, run the trade, and let orbital dynamics supply the numbers.</div>
+  </div>
+</section>
+
+<section class="slide dark">
+  <div class="inner">
+    <div class="kicker">Wrapping up the orbits &amp; mission block</div>
+    <div class="title" style="font-size:5vmin">From the two-body orbit to a flown mission</div>
+    <div class="accent"></div>
+    <div class="subtitle">Week 3 gave the ideal orbit; Week 4 corrected it for perturbations and built the mission-analysis method; Week 5 applied that method across the regimes a real programme must handle. Given any mission now — Earth, GEO, interplanetary or small-body — you can find its driver, run its trade, and size its budgets.</div>
+  </div>
+</section>
+
+<div class="brand">KFUPM · AE 582 · WEEK 5</div>
+<div class="pageno" id="pageno"></div>
+<div class="nav">
+  <button id="prev" aria-label="previous">‹</button>
+  <div class="count" id="count">1 / 1</div>
+  <button id="next" aria-label="next">›</button>
+</div>
+<div id="stephint"></div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  const prog=document.getElementById('prog'), count=document.getElementById('count'),
+        pageno=document.getElementById('pageno'), brand=document.querySelector('.brand'),
+        stephint=document.getElementById('stephint');
+  const frags=s=>[...s.querySelectorAll('.stepper .s')];
+  function updateHint(){
+    const fr=frags(slides[i]);
+    if(!fr.length){stephint.style.display='none';return;}
+    const shown=fr.filter(x=>x.classList.contains('shown')).length;
+    stephint.style.display='block';
+    stephint.textContent = shown<fr.length ? ('\u25B8  press \u2192  for next step   \u00b7   '+shown+' / '+fr.length)
+                                            : ('\u2713  all steps shown   \u00b7   \u2192  continues');
+  }
+  function show(n){
+    const prev=i;
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    const revealAll = i<prev;                 // going back reveals all; forward starts hidden
+    frags(slides[i]).forEach(x=>x.classList.toggle('shown',revealAll));
+    count.textContent=(i+1)+" / "+slides.length;
+    pageno.textContent=(i+1);
+    prog.style.width=((i)/(slides.length-1)*100)+"%";
+    document.getElementById('prev').disabled=(i===0);
+    document.getElementById('next').disabled=(i===slides.length-1);
+    const dark=slides[i].classList.contains('dark');
+    pageno.style.color=dark?'#9fb6bd':'var(--mut)'; brand.style.color=dark?'#9fb6bd':'var(--mut)';
+    updateHint();
+  }
+  function advance(){
+    const fr=frags(slides[i]);
+    const hidden=fr.find(x=>!x.classList.contains('shown'));
+    if(hidden){hidden.classList.add('shown');updateHint();return;}
+    show(i+1);
+  }
+  function retreat(){
+    const fr=frags(slides[i]);
+    const shown=fr.filter(x=>x.classList.contains('shown'));
+    if(shown.length){shown[shown.length-1].classList.remove('shown');updateHint();return;}
+    show(i-1);
+  }
+  document.getElementById('next').onclick=advance;
+  document.getElementById('prev').onclick=retreat;
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){advance();e.preventDefault();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){retreat();e.preventDefault();}
+    else if(e.key==='Home'){show(0);} else if(e.key==='End'){show(slides.length-1);}
+    else if(e.key==='f'||e.key==='F'){ if(!document.fullscreenElement)document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  });
+  let sx=null;
+  document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  document.addEventListener('touchend',e=>{ if(sx===null)return; const dx=e.changedTouches[0].clientX-sx;
+     if(Math.abs(dx)>50){dx<0?advance():retreat();} sx=null;},{passive:true});
+  show(0);
+</script>
+
+</body>
+</html>
