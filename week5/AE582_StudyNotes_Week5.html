@@ -1,0 +1,963 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AE 582 — Propulsion Systems · Study Guide</title>
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},chtml:{scale:1.03}};</script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+:root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--goldd:#8A6D00;
+--ink:#16241d;--mut:#5c6b63;--line:#dde3df;--tint:#eef5f0;--bg:#f6f8f7;--sidebar:#0c2a20}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Segoe UI",Calibri,system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;font-size:17px}
+#progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--green),var(--gold));width:0;z-index:100}
+.layout{display:flex;align-items:flex-start;max-width:1280px;margin:0 auto}
+/* sidebar */
+.toc{position:sticky;top:0;height:100vh;overflow-y:auto;flex:0 0 288px;background:var(--sidebar);color:#dfeee7;padding:22px 16px 40px}
+.toc .brand{font-family:Cambria,Georgia,serif;font-weight:700;font-size:19px;color:#fff;line-height:1.25;margin-bottom:2px}
+.toc .sub{font-size:12px;color:#9dc3b3;margin-bottom:16px}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc li a{display:block;color:#bfe0d1;text-decoration:none;font-size:13.5px;padding:6px 10px;border-radius:7px;border-left:3px solid transparent}
+.toc li a:hover{background:rgba(255,255,255,.07);color:#fff}
+.toc li a.active{background:rgba(0,133,64,.28);color:#fff;border-left-color:var(--gold);font-weight:600}
+/* main */
+main{flex:1 1 auto;min-width:0;padding:38px 52px 120px;max-width:920px}
+.hero h1{font-family:Cambria,Georgia,serif;color:var(--forest);font-size:34px;margin:0 0 4px}
+.hero .tag{color:var(--petrol);font-size:18px;margin-bottom:6px}
+.hero .meta{color:var(--mut);font-size:13.5px;border-bottom:2px solid var(--line);padding-bottom:16px;margin-bottom:8px}
+section{padding-top:26px;margin-top:10px;border-top:1px solid var(--line)}
+section:first-of-type{border-top:none}
+h2{font-family:Cambria,Georgia,serif;color:var(--forest);font-size:25px;margin:.2em 0 .5em}
+h3{font-family:Cambria,Georgia,serif;color:var(--petrol);font-size:19px;margin:1.2em 0 .3em}
+p{margin:.6em 0}
+p.lead{font-size:18.5px;color:#25352c}
+p.cap{font-size:13.5px;color:var(--mut);font-style:italic;margin-top:.3em}
+b{color:var(--forest)}
+a{color:var(--green)}
+ul.pts{margin:.4em 0;padding-left:1.3em}ul.pts li{margin:.5em 0}
+ol.assum{column-count:2;column-gap:26px;margin:.4em 0 0;padding-left:1.4em}
+ol.assum li{margin:.35em 0;break-inside:avoid;font-size:15.5px}
+ol.probs>li{margin:.7em 0}
+/* boxes */
+.key{background:var(--tint);border:1px solid #cfe3d7;border-left:5px solid var(--forest);border-radius:8px;padding:6px 16px 12px;margin:16px 0}
+.key .kt{font-family:Cambria,serif;font-weight:700;color:var(--forest);font-size:14px;text-transform:uppercase;letter-spacing:.04em;margin:8px 0 2px}
+.ex{background:#fff;border:1px solid var(--line);border-top:4px solid var(--petrol);border-radius:8px;padding:6px 16px 12px;margin:16px 0}
+.ex .et{font-family:Cambria,serif;font-weight:700;color:var(--petrol);margin:8px 0 2px}
+details.deriv,details.qa{margin:12px 0;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden}
+details.deriv>summary,details.qa>summary{cursor:pointer;padding:10px 14px;font-weight:600;color:var(--forest);background:#f0f5f2;list-style:none}
+details.qa>summary{color:var(--petrol)}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"\25B8 ";color:var(--gold)}
+details[open]>summary::before{content:"\25BE "}
+.dbody,.abody{padding:4px 16px 12px}
+.abody{color:#2a3a31}
+/* tables */
+table.tbl{border-collapse:collapse;width:100%;margin:14px 0;font-size:15px}
+table.tbl th{background:var(--forest);color:#fff;text-align:left;padding:8px 11px;font-weight:600}
+table.tbl td{border-bottom:1px solid var(--line);padding:7px 11px;vertical-align:top}
+table.tbl tr:nth-child(even) td{background:#f3f7f4}
+table.tbl.tight td{border-bottom:1px solid #edf1ee;padding:6px 10px}
+table.tbl.tight td:first-child{color:var(--mut);white-space:nowrap;width:34%}
+/* sims */
+figure.sim{margin:20px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+figure.sim figcaption{background:var(--petrol);color:#fff;font-size:14px;font-weight:600;padding:8px 14px}
+figure.sim .badge{background:var(--green);border-radius:5px;padding:2px 8px;margin-right:10px;font-size:12px}
+.simwrap{position:relative;width:100%;height:560px}
+.simwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+#top{position:fixed;right:22px;bottom:22px;background:var(--forest);color:#fff;border:none;border-radius:50%;width:46px;height:46px;font-size:20px;cursor:pointer;opacity:.85;z-index:50}
+#top:hover{opacity:1}
+mjx-container{overflow-x:auto;overflow-y:hidden;max-width:100%}
+@media(max-width:900px){.toc{display:none}main{padding:24px 18px 90px}}
+</style></head><body>
+<div id="progress"></div>
+<div class="layout">
+  <nav class="toc">
+    <div class="brand">Propulsion Systems</div>
+    <div class="sub">AE 582 · Week 5 · Study Guide</div>
+    <ul><li><a href="#intro">1 · Overview &amp; figures of merit</a></li>
+<li><a href="#thrust">2 · Thrust &amp; the momentum theorem</a></li>
+<li><a href="#isp">3 · Specific impulse &amp; efficiencies</a></li>
+<li><a href="#rocketeq">4 · The rocket equation</a></li>
+<li><a href="#gravity">5 · Gravity loss &amp; optimum acceleration</a></li>
+<li><a href="#staging">6 · Staging</a></li>
+<li><a href="#budget">7 · Mission &Delta;V budgets</a></li>
+<li><a href="#irt">8 · Ideal rocket theory</a></li>
+<li><a href="#nozzleflow">9 · Nozzle flow &amp; the area&ndash;Mach relation</a></li>
+<li><a href="#jetvel">10 · Jet velocity</a></li>
+<li><a href="#massflow">11 · Choked mass flow</a></li>
+<li><a href="#performance">12 · Nozzle performance: $C_F$ &amp; $c^*$</a></li>
+<li><a href="#nozzletypes">13 · Nozzle types &amp; real-flow losses</a></li>
+<li><a href="#chemical">14 · Chemical propulsion</a></li>
+<li><a href="#electric">15 · Electric &amp; advanced propulsion</a></li>
+<li><a href="#explorer">16 · Rocket-equation explorer</a></li>
+<li><a href="#worked">17 · Worked examples</a></li>
+<li><a href="#quiz">18 · Self-check</a></li>
+<li><a href="#formulas">19 · Formula sheet</a></li>
+<li><a href="#problems">20 · Problem set</a></li>
+<li><a href="#refs">References &amp; attribution</a></li></ul>
+  </nav>
+  <main>
+    <div class="hero">
+      <h1>Propulsion Systems — Study Guide</h1>
+      <div class="tag">Chemical &amp; electric rocket propulsion for spacecraft</div>
+      <div class="meta">AE 582 Satellite Engineering (graduate) · companion to Week 5 Lecture 2 · after TU&nbsp;Delft &sect;1.1, &sect;1.3 and MIT&nbsp;16.50. Interactive: use the contents to navigate, expand derivations, and try the embedded simulators.</div>
+    </div>
+    
+<section id="intro"><h2>1 · Overview &amp; figures of merit</h2>
+
+<p class="lead">A spacecraft propulsion system solves <b>two coupled problems</b>. The <i>mass problem</i> — how much propellant a mission's velocity budget costs — is governed by the <b>rocket equation</b>. The <i>gas-dynamics problem</i> — how a hot, high-pressure gas is turned into a fast, directed jet — is governed by <b>ideal rocket theory</b> and the <b>de&nbsp;Laval nozzle</b>. These notes develop both, following TU&nbsp;Delft <i>Rocket &amp; Onboard Propulsion</i> (&sect;1.1, &sect;1.3) and MIT&nbsp;16.50, and extend them to the satellite-relevant topics: staging, mission budgets, and electric propulsion.</p>
+
+<h3>A propulsion taxonomy</h3>
+<p>Every rocket obeys the same rocket equation, but they differ in <b>where the energy comes from</b> relative to the propellant:</p>
+<table class="tbl">
+<tr><th>Class</th><th>Energy source</th><th>$I_{sp}$ (s)</th><th>Thrust</th><th>Typical use</th></tr>
+<tr><td>Chemical &mdash; solid</td><td>propellant is fuel <i>and</i> energy</td><td>~250</td><td>very high</td><td>boosters</td></tr>
+<tr><td>Chemical &mdash; liquid (kerolox)</td><td>propellant is fuel <i>and</i> energy</td><td>~350</td><td>high</td><td>launch stages</td></tr>
+<tr><td>Chemical &mdash; liquid (hydrolox)</td><td>propellant is fuel <i>and</i> energy</td><td>~450</td><td>high</td><td>upper stages</td></tr>
+<tr><td>Electrothermal (resistojet/arcjet)</td><td>electric &rarr; heat</td><td>300&ndash;1000</td><td>low</td><td>station-keeping</td></tr>
+<tr><td>Electrostatic (ion/Hall)</td><td>electric &rarr; kinetic</td><td>1500&ndash;4000</td><td>mN</td><td>orbit raising, deep space</td></tr>
+</table>
+<p>In a <b>chemical</b> rocket the propellant carries its own energy, so the achievable jet velocity is capped by the combustion temperature. In a <b>non-chemical</b> rocket the energy and propellant are separate, so the jet velocity is limited only by how much power (and power-plant mass) you are willing to carry — a distinction that dominates satellite propulsion design (&sect;15).</p>
+
+<h3>Figures of merit</h3>
+<p>Two numbers characterise any thruster: <b>thrust</b> $F_T$ (how hard it pushes) and <b>specific impulse</b> $I_{sp}$ (how efficiently it uses propellant). A third, <b>thrust-to-weight</b> $F_T/(m\,g_0)$, decides whether a vehicle can leave the pad. The rest of these notes is, in essence, the derivation and interplay of these three.</p>
+
+</section>
+
+<section id="thrust"><h2>2 · Thrust &amp; the momentum theorem</h2>
+
+<p class="lead">Thrust is the reaction to expelling mass. It is obtained from the steady-flow momentum theorem applied to a control volume (CV) that encloses the engine.</p>
+
+<p>The net axial force equals the rate of momentum outflow plus the net pressure force on the CV boundary. With ambient pressure $p_a$ acting everywhere except over the exit plane (area $A_e$, pressure $p_e$), and negligible inlet momentum:</p>
+<div class="key"><div class="kt">Thrust equation</div>$$F_T=\underbrace{\dot m\,v_e}_{\text{momentum}}+\underbrace{(p_e-p_a)\,A_e}_{\text{pressure}}=\dot m\,v_{eq},\qquad v_{eq}=v_e+\frac{(p_e-p_a)A_e}{\dot m}$$</div>
+<p>The <b>momentum term</b> $\dot m v_e$ carries most of the thrust; the <b>pressure term</b> is the exit/ambient mismatch. Rolling both into the <b>equivalent (effective) jet velocity</b> $v_{eq}$ gives the compact form $F_T=\dot m\,v_{eq}$. When the nozzle is perfectly expanded ($p_e=p_a$), $v_{eq}=v_e$ and thrust is simply $\dot m v_e$; MIT writes this idealised case as $F=\dot m\,c$ with $c$ the far-field effective exhaust velocity.</p>
+
+<p>Because $p_a$ falls with altitude, the pressure term grows and thrust <b>rises monotonically to a vacuum maximum</b>. This is not a small effect for large first-stage engines: a sea-level-to-vacuum thrust rise of 15&ndash;25% is typical.</p>
+<figure class="sim"><figcaption><span class="badge">&#9654; INTERACTIVE</span>Thrust &amp; the pressure term vs. altitude</figcaption><div class="simwrap"><iframe title="Thrust &amp; the pressure term vs. altitude" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Thrust vs altitude&lt;/title&gt;
+&lt;style&gt;
+:root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--ink:#12211b;--mut:#5c6b63;--line:#d9dae4;--tint:#eaf3ee}
+*{box-sizing:border-box}body{margin:0;font-family:Calibri,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:#f4f7f5;padding:10px 14px}
+.wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;height:calc(100vh - 20px)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;overflow:auto}
+h2{font-family:Cambria,serif;color:var(--forest);margin:.1em 0 .4em;font-size:18px}
+label{display:block;font-size:12.5px;font-weight:700;color:var(--forest);margin:10px 0 3px}
+.val{float:right;font-family:Cambria,serif;color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:5px 0 2px}
+.chip{font-size:11.5px;border:1px solid var(--line);border-radius:20px;padding:3px 9px;background:#fff;cursor:pointer}
+.chip:hover{border-color:var(--green);color:var(--green)}
+.stage{display:grid;grid-template-rows:1fr auto auto;gap:10px;min-height:0}
+.viz{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;min-height:0;overflow:hidden}
+.viz svg{width:100%;height:100%}
+.readout{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.card{background:#fff;border:1px solid var(--line);border-top:5px solid var(--green);border-radius:10px;padding:8px 9px}
+.card .n{font-family:Cambria,serif;font-size:19px;font-weight:700;color:var(--green);line-height:1}
+.card .l{font-size:10.5px;color:var(--mut);margin-top:3px}
+.state{font-family:Cambria,serif;font-weight:700;font-size:14.5px;padding:6px 12px;border-radius:8px;color:#fff;text-align:center}
+.note{background:var(--tint);border-left:5px solid var(--gold);border-radius:0 8px 8px 0;padding:8px 11px;font-size:12.5px}
+b{color:var(--forest)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Inputs&lt;/h2&gt;
+    &lt;label&gt;Mass flow &amp;#7745; &lt;span class=&quot;val&quot; id=&quot;mdv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;md&quot; min=&quot;50&quot; max=&quot;2000&quot; step=&quot;10&quot; value=&quot;500&quot;&gt;
+    &lt;label&gt;Exhaust velocity v&lt;sub&gt;e&lt;/sub&gt; &lt;span class=&quot;val&quot; id=&quot;vev&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;ve&quot; min=&quot;1500&quot; max=&quot;4500&quot; step=&quot;10&quot; value=&quot;4400&quot;&gt;
+    &lt;label&gt;Exit pressure p&lt;sub&gt;e&lt;/sub&gt; &lt;span class=&quot;val&quot; id=&quot;pev&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;pe&quot; min=&quot;0.05&quot; max=&quot;2.5&quot; step=&quot;0.05&quot; value=&quot;0.15&quot;&gt;
+    &lt;label&gt;Exit area A&lt;sub&gt;e&lt;/sub&gt; &lt;span class=&quot;val&quot; id=&quot;aev&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;ae&quot; min=&quot;0.2&quot; max=&quot;8&quot; step=&quot;0.1&quot; value=&quot;4.2&quot;&gt;
+    &lt;div class=&quot;chips&quot;&gt;&lt;span class=&quot;chip&quot; data-eng=&quot;500,4400,0.15,4.2&quot;&gt;SSME-like&lt;/span&gt;&lt;span class=&quot;chip&quot; data-eng=&quot;1800,2650,0.7,5.3&quot;&gt;F-1-like&lt;/span&gt;&lt;span class=&quot;chip&quot; data-eng=&quot;230,4450,0.06,2.2&quot;&gt;Vac upper&lt;/span&gt;&lt;/div&gt;
+    &lt;label&gt;Altitude (sets p&lt;sub&gt;a&lt;/sub&gt;) &lt;span class=&quot;val&quot; id=&quot;hv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;h&quot; min=&quot;0&quot; max=&quot;120&quot; step=&quot;0.5&quot; value=&quot;0&quot;&gt;
+    &lt;div class=&quot;chips&quot;&gt;&lt;span class=&quot;chip&quot; data-h=&quot;0&quot;&gt;Sea level&lt;/span&gt;&lt;span class=&quot;chip&quot; data-h=&quot;12&quot;&gt;12 km&lt;/span&gt;&lt;span class=&quot;chip&quot; data-h=&quot;50&quot;&gt;50 km&lt;/span&gt;&lt;span class=&quot;chip&quot; data-h=&quot;120&quot;&gt;vacuum&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;note&quot; id=&quot;msg&quot; style=&quot;margin-top:12px&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;div class=&quot;viz&quot;&gt;&lt;svg id=&quot;fig&quot; viewBox=&quot;0 0 520 260&quot; preserveAspectRatio=&quot;xMidYMid meet&quot;&gt;&lt;/svg&gt;&lt;/div&gt;
+    &lt;div id=&quot;state&quot; class=&quot;state&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;readout&quot;&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oF&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;total thrust F&lt;sub&gt;T&lt;/sub&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oM&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;momentum &amp;#7745;v&lt;sub&gt;e&lt;/sub&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oP&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;pressure (p&lt;sub&gt;e&lt;/sub&gt;&amp;minus;p&lt;sub&gt;a&lt;/sub&gt;)A&lt;sub&gt;e&lt;/sub&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oI&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;I&lt;sub&gt;sp&lt;/sub&gt; = v&lt;sub&gt;eq&lt;/sub&gt;/g&amp;#8320;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+var g0=9.80665;
+function $(i){return document.getElementById(i)}
+function atmo(h){return 101325*Math.exp(-h/7.64);} // Pa, h in km (approx isothermal)
+function kN(x){return Math.abs(x)&gt;=1e6?(x/1e6).toFixed(2)+&#x27; MN&#x27;:(x/1e3).toFixed(0)+&#x27; kN&#x27;;}
+function upd(){
+  var md=+$(&#x27;md&#x27;).value, ve=+$(&#x27;ve&#x27;).value, pe=+$(&#x27;pe&#x27;).value*1e5, ae=+$(&#x27;ae&#x27;).value, h=+$(&#x27;h&#x27;).value;
+  $(&#x27;mdv&#x27;).textContent=md+&#x27; kg/s&#x27;; $(&#x27;vev&#x27;).textContent=ve+&#x27; m/s&#x27;;
+  $(&#x27;pev&#x27;).textContent=(pe/1e5).toFixed(2)+&#x27; bar&#x27;; $(&#x27;aev&#x27;).textContent=ae.toFixed(1)+&#x27; m\u00b2&#x27;;
+  $(&#x27;hv&#x27;).textContent=h.toFixed(1)+&#x27; km&#x27;;
+  var pa=atmo(h), Fm=md*ve, Fp=(pe-pa)*ae, F=Fm+Fp, veq=F/md, Isp=veq/g0;
+  $(&#x27;oF&#x27;).textContent=kN(F); $(&#x27;oM&#x27;).textContent=kN(Fm);
+  $(&#x27;oP&#x27;).textContent=(Fp&gt;=0?&#x27;+&#x27;:&#x27;\u2212&#x27;)+kN(Math.abs(Fp)); $(&#x27;oI&#x27;).textContent=Isp.toFixed(0)+&#x27; s&#x27;;
+  // state
+  var st=$(&#x27;state&#x27;),col,txt,tol=0.02*pe;
+  if(pa&lt;80){col=&#x27;#003E51&#x27;;txt=&#x27;NEAR-VACUUM \u2014 pressure term at its maximum, thrust maxed&#x27;;}
+  else if(Fp&lt;-tol){col=&#x27;#b3502e&#x27;;txt=&#x27;OVER-EXPANDED here (p_e &lt; p_a) \u2014 pressure term subtracts thrust&#x27;;}
+  else if(Fp&gt;tol){col=&#x27;#8A6D00&#x27;;txt=&#x27;UNDER-EXPANDED here (p_e &gt; p_a) \u2014 pressure term adds thrust&#x27;;}
+  else{col=&#x27;#008540&#x27;;txt=&#x27;ADAPTED here (p_e \u2248 p_a) \u2014 pressure term \u2248 0&#x27;;}
+  st.style.background=col; st.textContent=txt;
+  draw(md,ve,pe,ae,h,F,col);
+  var m=$(&#x27;msg&#x27;);
+  var Fsl=Fm+(pe-atmo(0))*ae, Fvac=Fm+pe*ae;
+  var gain=((Fvac-Fsl)/Fsl*100);
+  m.innerHTML=&#x27;Momentum term &lt;b&gt;&#x27;+kN(Fm)+&#x27;&lt;/b&gt; is fixed by the engine. The pressure term rides on altitude, so thrust climbs from sea level to vacuum by about &lt;b&gt;&#x27;+gain.toFixed(0)+&#x27;%&lt;/b&gt; for this nozzle. Thrust is always &lt;b&gt;maximum in vacuum&lt;/b&gt;.&#x27;;
+}
+function draw(md,ve,pe,ae,hcur,Fcur,col){
+  var s=$(&#x27;fig&#x27;),W=520,H=260,L=52,R=500,T=18,B=214;
+  var hs=[],Fs=[],Fmm=md*ve;
+  for(var h=0;h&lt;=120;h+=2){var F=Fmm+(pe-atmo(h))*ae;hs.push(h);Fs.push(F);}
+  var fmax=Fmm+pe*ae, fmin=Fmm+(pe-atmo(0))*ae;
+  var lo=Math.min(fmin,Fmm)*0.98, hi=fmax*1.02;
+  function X(h){return L+(R-L)*h/120;}
+  function Y(F){return B-(B-T)*(F-lo)/(hi-lo);}
+  var h=&#x27;&#x27;;
+  h+=&#x27;&lt;line x1=&quot;&#x27;+L+&#x27;&quot; y1=&quot;&#x27;+T+&#x27;&quot; x2=&quot;&#x27;+L+&#x27;&quot; y2=&quot;&#x27;+B+&#x27;&quot; stroke=&quot;#5a6b63&quot; stroke-width=&quot;1.3&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;line x1=&quot;&#x27;+L+&#x27;&quot; y1=&quot;&#x27;+B+&#x27;&quot; x2=&quot;&#x27;+R+&#x27;&quot; y2=&quot;&#x27;+B+&#x27;&quot; stroke=&quot;#5a6b63&quot; stroke-width=&quot;1.3&quot;/&gt;&#x27;;
+  // vacuum asymptote
+  h+=&#x27;&lt;line x1=&quot;&#x27;+L+&#x27;&quot; y1=&quot;&#x27;+Y(fmax).toFixed(1)+&#x27;&quot; x2=&quot;&#x27;+R+&#x27;&quot; y2=&quot;&#x27;+Y(fmax).toFixed(1)+&#x27;&quot; stroke=&quot;#b3502e&quot; stroke-width=&quot;1.2&quot; stroke-dasharray=&quot;5 4&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;text x=&quot;&#x27;+(R)+&#x27;&quot; y=&quot;&#x27;+(Y(fmax)-5).toFixed(1)+&#x27;&quot; text-anchor=&quot;end&quot; font-family=&quot;Calibri&quot; font-size=&quot;11&quot; fill=&quot;#b3502e&quot;&gt;vacuum thrust&lt;/text&gt;&#x27;;
+  var d=&#x27;&#x27;;
+  for(var k=0;k&lt;hs.length;k++){d+=(k?&#x27;L&#x27;:&#x27;M&#x27;)+X(hs[k]).toFixed(1)+&#x27;,&#x27;+Y(Fs[k]).toFixed(1)+&#x27; &#x27;;}
+  h+=&#x27;&lt;path d=&quot;&#x27;+d+&#x27;&quot; fill=&quot;none&quot; stroke=&quot;#008540&quot; stroke-width=&quot;3.2&quot;/&gt;&#x27;;
+  // marker at current altitude
+  h+=&#x27;&lt;line x1=&quot;&#x27;+X(hcur).toFixed(1)+&#x27;&quot; y1=&quot;&#x27;+T+&#x27;&quot; x2=&quot;&#x27;+X(hcur).toFixed(1)+&#x27;&quot; y2=&quot;&#x27;+B+&#x27;&quot; stroke=&quot;#5a6b63&quot; stroke-width=&quot;1&quot; stroke-dasharray=&quot;3 3&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;circle cx=&quot;&#x27;+X(hcur).toFixed(1)+&#x27;&quot; cy=&quot;&#x27;+Y(Fcur).toFixed(1)+&#x27;&quot; r=&quot;6&quot; fill=&quot;&#x27;+col+&#x27;&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;text x=&quot;&#x27;+((L+R)/2)+&#x27;&quot; y=&quot;&#x27;+(B+26)+&#x27;&quot; text-anchor=&quot;middle&quot; font-family=&quot;Calibri&quot; font-size=&quot;12&quot; fill=&quot;#5a6b63&quot;&gt;altitude (km) &amp;rarr;&lt;/text&gt;&#x27;;
+  h+=&#x27;&lt;text x=&quot;16&quot; y=&quot;&#x27;+((T+B)/2)+&#x27;&quot; transform=&quot;rotate(-90 16,&#x27;+((T+B)/2)+&#x27;)&quot; text-anchor=&quot;middle&quot; font-family=&quot;Calibri&quot; font-size=&quot;12&quot; fill=&quot;#5a6b63&quot;&gt;thrust&lt;/text&gt;&#x27;;
+  h+=&#x27;&lt;text x=&quot;&#x27;+((L+R)/2)+&#x27;&quot; y=&quot;14&quot; text-anchor=&quot;middle&quot; font-family=&quot;Calibri&quot; font-size=&quot;11.5&quot; font-weight=&quot;700&quot; fill=&quot;#00573F&quot;&gt;Thrust vs. altitude (this engine)&lt;/text&gt;&#x27;;
+  s.innerHTML=h;
+}
+document.querySelectorAll(&#x27;[data-eng]&#x27;).forEach(function(c){c.onclick=function(){var p=c.dataset.eng.split(&#x27;,&#x27;);$(&#x27;md&#x27;).value=p[0];$(&#x27;ve&#x27;).value=p[1];$(&#x27;pe&#x27;).value=p[2];$(&#x27;ae&#x27;).value=p[3];upd();}});
+document.querySelectorAll(&#x27;[data-h]&#x27;).forEach(function(c){c.onclick=function(){$(&#x27;h&#x27;).value=c.dataset.h;upd();}});
+[&#x27;md&#x27;,&#x27;ve&#x27;,&#x27;pe&#x27;,&#x27;ae&#x27;,&#x27;h&#x27;].forEach(function(i){$(i).addEventListener(&#x27;input&#x27;,upd)});
+upd();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div></figure>
+<p class="cap">Vary mass flow, exhaust velocity, exit pressure/area and altitude; watch the momentum and pressure contributions and the climb to the vacuum asymptote.</p>
+<details class="qa"><summary>Q. Why can the pressure term be <i>negative</i> at sea level for a vacuum-optimised nozzle?</summary><div class="abody">A large area ratio drives $p_e$ well below sea-level $p_a$, so $(p_e-p_a)<0$ and the pressure term subtracts from thrust — the nozzle is <b>over-expanded</b> (&sect;12). Such a nozzle only pays off at altitude.</div></details>
+</section>
+
+<section id="isp"><h2>3 · Specific impulse &amp; efficiencies</h2>
+
+<p class="lead">Specific impulse measures how much impulse you extract per unit of propellant consumed.</p>
+<div class="key"><div class="kt">Specific impulse</div>$$I_{sp}=\frac{1}{g_0}\,\frac{\displaystyle\int_0^{t_b}F_T\,dt}{\displaystyle\int_0^{t_b}\dot m\,dt}\;\xrightarrow[\;v_{eq}=\text{const}\;]{}\;\frac{v_{eq}}{g_0}=\frac{c}{g_0}$$</div>
+<p>It is total impulse per unit propellant <b>weight</b>, hence units of seconds. The constant $g_0=9.80665~\mathrm{m/s^2}$ is a <i>defined</i> reference, not local gravity, so $I_{sp}$ is a property of the engine, independent of where it flies. The <b>effective exhaust velocity</b> $c\equiv v_{eq}=I_{sp}g_0$ is the same quantity in velocity units.</p>
+
+<h3>Energy efficiencies</h3>
+<p>Three efficiencies connect the chemical/electrical energy input to useful thrust power:</p>
+<table class="tbl">
+<tr><th>Efficiency</th><th>Definition</th><th>Meaning</th></tr>
+<tr><td>Thermal $\eta_{th}$</td><td>jet KE / energy input $=\tfrac12\dot m c^2/\dot E$</td><td>how well energy becomes jet kinetic energy</td></tr>
+<tr><td>Propulsive $\eta_{p}$</td><td>$\dfrac{2\,u/c}{1+(u/c)^2}$</td><td>how well jet KE becomes vehicle work at flight speed $u$</td></tr>
+<tr><td>Overall $\eta_{o}$</td><td>$\eta_{th}\,\eta_{p}$</td><td>thrust power / energy input</td></tr>
+</table>
+<p>Propulsive efficiency peaks when the jet speed matches the flight speed ($u=c$) — the physical reason air-breathing engines (small $c$) are efficient at aircraft speeds while rockets (huge $c$) are not, but rockets do not care because they carry no air and must work in vacuum.</p>
+
+</section>
+
+<section id="rocketeq"><h2>4 · The rocket equation</h2>
+
+<p class="lead">The rocket equation converts a required velocity change into a propellant mass — and reveals why reaching orbit is so unforgiving.</p>
+<div class="key"><div class="kt">Tsiolkovsky rocket equation</div>$$\Delta V=v_{eq}\ln\frac{M_0}{M_f}=v_{eq}\ln\Lambda,\qquad \Lambda\equiv\frac{M_0}{M_f}=e^{\Delta V/v_{eq}}$$</div><details class="deriv"><summary>Show derivation</summary><div class="dbody"><p>In free space thrust is the only force on the vehicle of instantaneous mass $M$:</p>
+$$M\frac{dv}{dt}=-v_{eq}\frac{dM}{dt}\;(dM<0)\;\Rightarrow\;dv=-v_{eq}\frac{dM}{M}.$$
+<p>Integrating from wet mass $M_0$ to dry mass $M_f$ with constant $v_{eq}$ gives $\Delta V=v_{eq}\ln(M_0/M_f)$. If $v_{eq}=v_{eq}(t)$ only the integral form survives.</p></div></details>
+<p>Because $\Delta V$ sits in the exponent, the mass ratio grows <b>exponentially</b>: doubling $\Delta V$ squares $\Lambda$. Writing $M_0=M_s+M_p+M_{pl}$ (structure, propellant, payload) and defining the <b>structural coefficient</b> $\varepsilon_s=M_s/(M_s+M_p)$, the achievable payload fraction is</p>
+$$\pi=\frac{M_{pl}}{M_0}=\frac{1/\Lambda-\varepsilon_s}{1-\varepsilon_s}.$$
+<p>Payload vanishes when $1/\Lambda=\varepsilon_s$, i.e. at the <b>single-stage ceiling</b> $\Delta V_{\max}=v_{eq}\ln(1/\varepsilon_s)$. For $\varepsilon_s\approx0.1$, $v_{eq}\approx3.4$ km/s this is only $\approx7.8$ km/s — below the $\approx9.4$ km/s needed for LEO. Hence staging (&sect;6).</p>
+<details class="qa"><summary>Q. A stage has $v_{eq}=3.0$ km/s and must deliver 4.5 km/s at $\varepsilon_s=0.08$. Is a single stage feasible?</summary><div class="abody">$\Lambda=e^{4.5/3.0}=4.48$, so $1/\Lambda=0.223>\varepsilon_s$. Payload fraction $\pi=(0.223-0.08)/0.92=0.156$ — feasible, with 16% payload.</div></details>
+</section>
+
+<section id="gravity"><h2>5 · Gravity loss &amp; optimum acceleration</h2>
+
+<p class="lead">On a real launch, gravity subtracts speed throughout the burn. There is an <b>optimum thrust level</b> that balances this loss against the mass penalty of a bigger engine — a classic MIT&nbsp;16.50 result.</p>
+
+<p>For a vertical launch, adding the gravitational term to the momentum balance and integrating (constant $c,g$):</p>
+<div class="key"><div class="kt">Rocket equation with gravity loss</div>$$v-v_0=c\,\ln\frac{M_0}{M(t)}-\underbrace{g\,t}_{\text{gravity loss}}$$</div>
+<p>The <b>gravity loss</b> $g\,t$ shrinks if the burn is shorter, i.e. if thrust (hence initial acceleration $a_0=F/M_0$) is larger. Define the thrust-to-initial-weight ratio $n=a_0/g$. So why not make $n$ huge? Because engine mass scales with thrust: with $\delta=$ (engine weight)/thrust, the engine mass fraction is $n\delta$, which eats into payload. The two effects pull oppositely.</p>
+<details class="deriv"><summary>Show the optimum-acceleration analysis (MIT Lec 1)</summary><div class="dbody"><p>With constant $\dot m$, burn time to any mass $M$ is $t=(M_0-M)/\dot m=(1-M/M_0)\,c/(n g)$, so the gravity loss is $g t=(c/n)(1-M/M_0)$. Splitting the burnout mass into fractions $m'_{pay}+m'_{str}+n\delta$ (payload, structure, engine$\,\propto n$), the attained increment is</p>
+$$\frac{v_b-v_0}{c}=-\ln\!\big(m'_{pay}+m'_{str}+n\delta\big)-\frac{1-m'_{pay}-m'_{str}-n\delta}{n}.$$
+<p>The log term (ideal $\Delta V$) worsens as $n$ grows (heavier engine); the last term (gravity loss) improves as $n$ grows (shorter burn). Setting $\partial/\partial n=0$ yields a quadratic whose positive root is $n_{opt}$. For representative values $\varepsilon_s\approx0.1,\ \delta\approx0.02$, the optimum sits in</p>
+$$\boxed{\,n_{opt}=a_0/g\approx 3\text{ to }4\,}$$
+<p>— the "3&ndash;4 g" launch acceleration familiar to astronauts. Including drag (which penalises high speed low in the atmosphere) pushes the optimum slightly lower for small vehicles.</p></div></details>
+<p>The takeaway: launch vehicles are sized near $a_0/g\approx3$&ndash;4 not by comfort but by a genuine optimum between gravity loss and engine mass. Drag and steering add a further $\sim$0.3&ndash;0.5 km/s, and together the losses turn $\sim$7.8 km/s of orbital speed into the $\sim$9.4 km/s LEO budget.</p>
+
+</section>
+
+<section id="staging"><h2>6 · Staging</h2>
+
+<p class="lead">Staging defeats the exponential by discarding empty structure mid-flight. Because $\Delta V$ <b>adds</b> across stages while mass ratios <b>multiply</b>, several modest ratios achieve what one impossible ratio cannot.</p>
+<div class="key"><div class="kt">Multi-stage &Delta;V</div>$$\Delta V_{total}=\sum_{i=1}^{n} v_{eq,i}\,\ln\frac{1}{\varepsilon_{s,i}+(1-\varepsilon_{s,i})\lambda_i}$$</div>
+<p>Each stage's "payload" is the entire stack above it, so the ratios compound. Maximising payload for a fixed $\Delta V_{total}$ is a constrained optimisation (Lagrange multipliers); for <b>identical stages</b> the optimum is an equal split of $\Delta V$. Returns diminish quickly — each added stage buys less margin at rising structural, separation and integration cost — so practical launchers use two or three stages.</p>
+<figure class="sim"><figcaption><span class="badge">&#9654; INTERACTIVE</span>Staging explorer &mdash; payload fraction vs. number of stages</figcaption><div class="simwrap"><iframe title="Staging explorer &mdash; payload fraction vs. number of stages" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Staging explorer&lt;/title&gt;
+&lt;style&gt;
+:root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--ink:#12211b;--mut:#5c6b63;--line:#d9dae4;--tint:#eaf3ee}
+*{box-sizing:border-box}body{margin:0;font-family:Calibri,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:#f4f7f5;padding:10px 14px}
+.wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;height:calc(100vh - 20px)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;overflow:auto}
+h2{font-family:Cambria,serif;color:var(--forest);margin:.1em 0 .4em;font-size:18px}
+label{display:block;font-size:12.5px;font-weight:700;color:var(--forest);margin:10px 0 3px}
+.val{float:right;font-family:Cambria,serif;color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:5px 0 2px}
+.chip{font-size:11.5px;border:1px solid var(--line);border-radius:20px;padding:3px 9px;background:#fff;cursor:pointer}
+.chip:hover{border-color:var(--green);color:var(--green)}
+.stage{display:grid;grid-template-rows:1fr auto auto;gap:10px;min-height:0}
+.viz{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;min-height:0;overflow:hidden}
+.viz svg{width:100%;height:100%}
+.readout{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.card{background:#fff;border:1px solid var(--line);border-top:5px solid var(--green);border-radius:10px;padding:8px 9px}
+.card .n{font-family:Cambria,serif;font-size:19px;font-weight:700;color:var(--green);line-height:1}
+.card .l{font-size:10.5px;color:var(--mut);margin-top:3px}
+.state{font-family:Cambria,serif;font-weight:700;font-size:14.5px;padding:6px 12px;border-radius:8px;color:#fff;text-align:center}
+.note{background:var(--tint);border-left:5px solid var(--gold);border-radius:0 8px 8px 0;padding:8px 11px;font-size:12.5px}
+b{color:var(--forest)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Inputs&lt;/h2&gt;
+    &lt;label&gt;Stages to highlight n &lt;span class=&quot;val&quot; id=&quot;nv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;n&quot; min=&quot;1&quot; max=&quot;4&quot; step=&quot;1&quot; value=&quot;2&quot;&gt;
+    &lt;label&gt;Specific impulse I&lt;sub&gt;sp&lt;/sub&gt; &lt;span class=&quot;val&quot; id=&quot;iv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;isp&quot; min=&quot;200&quot; max=&quot;470&quot; step=&quot;5&quot; value=&quot;350&quot;&gt;
+    &lt;div class=&quot;chips&quot;&gt;&lt;span class=&quot;chip&quot; data-isp=&quot;265&quot;&gt;Solid 265&lt;/span&gt;&lt;span class=&quot;chip&quot; data-isp=&quot;350&quot;&gt;Kerolox 350&lt;/span&gt;&lt;span class=&quot;chip&quot; data-isp=&quot;450&quot;&gt;Hydrolox 450&lt;/span&gt;&lt;/div&gt;
+    &lt;label&gt;Structural fraction &amp;sigma; &lt;span class=&quot;val&quot; id=&quot;sv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;sig&quot; min=&quot;0.05&quot; max=&quot;0.20&quot; step=&quot;0.005&quot; value=&quot;0.10&quot;&gt;
+    &lt;label&gt;&amp;Delta;V target &lt;span class=&quot;val&quot; id=&quot;dv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;d&quot; min=&quot;3&quot; max=&quot;12&quot; step=&quot;0.1&quot; value=&quot;9.4&quot;&gt;
+    &lt;div class=&quot;chips&quot;&gt;&lt;span class=&quot;chip&quot; data-d=&quot;7.8&quot;&gt;LEO ideal&lt;/span&gt;&lt;span class=&quot;chip&quot; data-d=&quot;9.4&quot;&gt;LEO real&lt;/span&gt;&lt;span class=&quot;chip&quot; data-d=&quot;12&quot;&gt;GTO&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;note&quot; id=&quot;msg&quot; style=&quot;margin-top:12px&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;div class=&quot;viz&quot;&gt;&lt;svg id=&quot;fig&quot; viewBox=&quot;0 0 520 260&quot; preserveAspectRatio=&quot;xMidYMid meet&quot;&gt;&lt;/svg&gt;&lt;/div&gt;
+    &lt;div id=&quot;state&quot; class=&quot;state&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;readout&quot;&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oL&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;payload fraction (n selected)&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oR&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;mass ratio / stage&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oV&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;v&lt;sub&gt;eq&lt;/sub&gt; = I&lt;sub&gt;sp&lt;/sub&gt;g&amp;#8320;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oN&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;stages highlighted&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+var g0=9.80665;
+function $(i){return document.getElementById(i)}
+function lam(dv,veq,sig,n){var per=dv/n,R=Math.exp(per/veq),ls=(1/R-sig)/(1-sig);return {R:R,ls:ls,lt:(ls&gt;0?Math.pow(ls,n):ls)};}
+function upd(){
+  var n=+$(&#x27;n&#x27;).value, Isp=+$(&#x27;isp&#x27;).value, sig=+$(&#x27;sig&#x27;).value, dv=+$(&#x27;d&#x27;).value;
+  var veq=Isp*g0/1000;
+  $(&#x27;nv&#x27;).textContent=n; $(&#x27;iv&#x27;).textContent=Isp+&#x27; s&#x27;; $(&#x27;sv&#x27;).textContent=(sig*100).toFixed(1)+&#x27; %&#x27;;
+  $(&#x27;dv&#x27;).textContent=dv.toFixed(1)+&#x27; km/s&#x27;; $(&#x27;oV&#x27;).textContent=veq.toFixed(2)+&#x27; km/s&#x27;;
+  var res=[]; for(var k=1;k&lt;=4;k++) res.push(lam(dv,veq,sig,k));
+  var sel=res[n-1];
+  $(&#x27;oL&#x27;).textContent=sel.ls&gt;0?(sel.lt*100).toFixed(1)+&#x27;%&#x27;:&#x27;&lt; 0&#x27;;
+  $(&#x27;oR&#x27;).textContent=sel.R.toFixed(2)+&#x27;\u00d7&#x27;; $(&#x27;oN&#x27;).textContent=n;
+  draw(res,n);
+  var st=$(&#x27;state&#x27;);
+  if(sel.ls&lt;=0){st.style.background=&#x27;#b3502e&#x27;;st.textContent=&#x27;n = &#x27;+n+&#x27; is INFEASIBLE \u2014 payload fraction is negative&#x27;;}
+  else{st.style.background=&#x27;#008540&#x27;;st.textContent=&#x27;n = &#x27;+n+&#x27; delivers a payload fraction of &#x27;+(sel.lt*100).toFixed(1)+&#x27;%&#x27;;}
+  var m=$(&#x27;msg&#x27;),best=0;for(var k=0;k&lt;4;k++){if(res[k].ls&gt;0){best=k+1;break;}}
+  m.innerHTML=&#x27;&amp;Delta;V splits &lt;b&gt;equally&lt;/b&gt; across identical stages, so each stage needs only ratio &#x27;+ (res[n&gt;1?1:0]!=null?&#x27;&#x27; :&#x27;&#x27;) +&#x27;e&lt;sup&gt;&amp;Delta;V/(n\u00b7v&lt;sub&gt;eq&lt;/sub&gt;)&lt;/sup&gt;. Ratios &lt;i&gt;multiply&lt;/i&gt; while &amp;Delta;V &lt;i&gt;adds&lt;/i&gt; &amp;mdash; that is why going from one stage to &#x27;+(best||2)+&#x27; turns a negative payload positive. Beyond ~3 stages the gain is small and complexity wins.&#x27;;
+}
+function draw(res,n){
+  var s=$(&#x27;fig&#x27;),W=520,H=260,L=60,Rr=500,T=24,B=210,zero;
+  var vals=res.map(function(r){return r.ls&gt;0?r.lt:r.ls;});
+  var mx=Math.max(0.06,Math.max.apply(null,vals)), mn=Math.min(0,Math.min.apply(null,vals));
+  zero=B-(B-T)*(0-mn)/(mx-mn);
+  function Y(v){return B-(B-T)*(v-mn)/(mx-mn);}
+  var bw=70, gap=((Rr-L)-4*bw)/5, h=&#x27;&#x27;;
+  h+=&#x27;&lt;line x1=&quot;&#x27;+L+&#x27;&quot; y1=&quot;&#x27;+zero.toFixed(1)+&#x27;&quot; x2=&quot;&#x27;+Rr+&#x27;&quot; y2=&quot;&#x27;+zero.toFixed(1)+&#x27;&quot; stroke=&quot;#5a6b63&quot; stroke-width=&quot;1.3&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;text x=&quot;&#x27;+(L-8)+&#x27;&quot; y=&quot;&#x27;+(zero+4).toFixed(1)+&#x27;&quot; text-anchor=&quot;end&quot; font-family=&quot;Calibri&quot; font-size=&quot;11&quot; fill=&quot;#5a6b63&quot;&gt;0&lt;/text&gt;&#x27;;
+  for(var k=0;k&lt;4;k++){
+    var v=vals[k], x=L+gap+k*(bw+gap), y=Y(Math.max(v,0)), y2=Y(Math.min(v,0));
+    var pos=v&gt;=0, col=pos?(k+1===n?&#x27;#008540&#x27;:&#x27;#7bbf97&#x27;):&#x27;#b3502e&#x27;;
+    var top=pos?y:zero, hgt=Math.abs((pos?y:y2)-zero);
+    h+=&#x27;&lt;rect x=&quot;&#x27;+x.toFixed(1)+&#x27;&quot; y=&quot;&#x27;+top.toFixed(1)+&#x27;&quot; width=&quot;&#x27;+bw+&#x27;&quot; height=&quot;&#x27;+Math.max(hgt,1).toFixed(1)+&#x27;&quot; rx=&quot;4&quot; fill=&quot;&#x27;+col+&#x27;&quot;&#x27;+(k+1===n?&#x27; stroke=&quot;#0b1f19&quot; stroke-width=&quot;2.4&quot;&#x27;:&#x27;&#x27;)+&#x27;/&gt;&#x27;;
+    var lbl=pos?(v*100).toFixed(1)+&#x27;%&#x27;:&#x27;neg&#x27;;
+    h+=&#x27;&lt;text x=&quot;&#x27;+(x+bw/2).toFixed(1)+&#x27;&quot; y=&quot;&#x27;+(pos?y-6:y2+16).toFixed(1)+&#x27;&quot; text-anchor=&quot;middle&quot; font-family=&quot;Cambria&quot; font-size=&quot;13&quot; font-weight=&quot;700&quot; fill=&quot;&#x27;+(pos?&#x27;#00573F&#x27;:&#x27;#b3502e&#x27;)+&#x27;&quot;&gt;&#x27;+lbl+&#x27;&lt;/text&gt;&#x27;;
+    h+=&#x27;&lt;text x=&quot;&#x27;+(x+bw/2).toFixed(1)+&#x27;&quot; y=&quot;&#x27;+(B+22)+&#x27;&quot; text-anchor=&quot;middle&quot; font-family=&quot;Calibri&quot; font-size=&quot;12&quot; fill=&quot;#5a6b63&quot;&gt;&#x27;+(k+1)+(k?&#x27; stages&#x27;:&#x27; stage&#x27;)+&#x27;&lt;/text&gt;&#x27;;
+  }
+  h+=&#x27;&lt;text x=&quot;&#x27;+((L+Rr)/2)+&#x27;&quot; y=&quot;16&quot; text-anchor=&quot;middle&quot; font-family=&quot;Calibri&quot; font-size=&quot;11.5&quot; font-weight=&quot;700&quot; fill=&quot;#00573F&quot;&gt;Payload fraction vs. number of stages&lt;/text&gt;&#x27;;
+  s.innerHTML=h;
+}
+document.querySelectorAll(&#x27;[data-isp]&#x27;).forEach(function(c){c.onclick=function(){$(&#x27;isp&#x27;).value=c.dataset.isp;upd();}});
+document.querySelectorAll(&#x27;[data-d]&#x27;).forEach(function(c){c.onclick=function(){$(&#x27;d&#x27;).value=c.dataset.d;upd();}});
+[&#x27;n&#x27;,&#x27;isp&#x27;,&#x27;sig&#x27;,&#x27;d&#x27;].forEach(function(i){$(i).addEventListener(&#x27;input&#x27;,upd)});
+upd();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div></figure>
+<p class="cap">Note how a single stage gives a <i>negative</i> payload fraction for a 9.4 km/s budget, while two or three stages recover it.</p>
+
+</section>
+
+<section id="budget"><h2>7 · Mission &Delta;V budgets</h2>
+
+<p class="lead">For satellites, the rocket equation is applied to a <b>&Delta;V budget</b> — the sum of every manoeuvre from launch to disposal. Sizing the propellant is then a single application of Tsiolkovsky.</p>
+<table class="tbl">
+<tr><th>Manoeuvre</th><th>Typical &Delta;V</th><th>Notes</th></tr>
+<tr><td>Launch to LEO</td><td>~9.4 km/s</td><td>orbital speed + gravity/drag losses</td></tr>
+<tr><td>LEO &rarr; GTO (Hohmann)</td><td>~2.4 km/s</td><td>perigee burn</td></tr>
+<tr><td>GTO &rarr; GEO</td><td>~1.5 km/s</td><td>apogee burn + plane change</td></tr>
+<tr><td>GEO station-keeping</td><td>~50 m/s/yr</td><td>N&ndash;S dominates (luni-solar)</td></tr>
+<tr><td>De-orbit / graveyard</td><td>~5&ndash;150 m/s</td><td>end-of-life disposal</td></tr>
+</table>
+<p>Two design levers follow directly. <b>High $I_{sp}$</b> shrinks propellant mass exponentially — decisive for the large, repeated $\Delta V$ of orbit raising and years of station-keeping, which is why electric propulsion (&sect;15) has taken over these tasks. <b>Splitting the budget</b> between a chemical apogee kick (high thrust, fast) and electric station-keeping (high $I_{sp}$, patient) is common practice.</p>
+<details class="qa"><summary>Q. Why is electric propulsion attractive for station-keeping but not for launch?</summary><div class="abody">Station-keeping needs small, repeated $\Delta V$ over years, where the exponential propellant saving of high $I_{sp}$ dominates and low thrust is acceptable. Launch needs $a_0/g>1$ immediately (&sect;5), which mN-class electric thrust cannot provide.</div></details>
+</section>
+
+<section id="irt"><h2>8 · Ideal rocket theory</h2>
+
+<p class="lead">Ideal rocket theory predicts the jet velocity $v_e$, mass flow $\dot m$ and exit pressure $p_e$ from the chamber state $(p_C,T_C)$ and gas properties alone, using a simplified geometry and a set of assumptions.</p>
+
+<h3>The nine assumptions</h3>
+<div class="key"><div class="kt">Idealisations</div>
+<ol class="assum">
+<li>Perfect gas, $p=\rho(R_A/M_W)T$.</li>
+<li>Calorically ideal: $c_p,c_v,\gamma$ constant.</li>
+<li>Constant, homogeneous composition.</li>
+<li>Steady flow.</li>
+<li>Isentropic flow (adiabatic + reversible).</li>
+<li>One-dimensional (axial variation only).</li>
+<li>Purely axial velocity.</li>
+<li>No external body forces.</li>
+<li>Negligible chamber velocity, $v_c\approx0$.</li>
+</ol>
+<p style="margin:.4em 0 0">Plus two data assumptions: the chamber state $(p_C,T_C)$ and properties $(\gamma,c_p,M_W)$ are known and constant.</p></div>
+
+<h3>Governing equations</h3>
+$$\begin{aligned}
+\text{continuity:}\quad &\rho v A=\dot m=\text{const} & \text{momentum (Euler):}\quad & dp=-\rho v\,dv\\
+\text{energy:}\quad & h+\tfrac12 v^2=c_pT_C & \text{state, sound, Mach:}\quad & p=\rho\tfrac{R_A}{M_W}T,\ a^2=\gamma\tfrac{R_A}{M_W}T,\ M=\tfrac{v}{a}
+\end{aligned}$$
+<p>closed by the isentropic relations, from which everything else is algebra:</p>
+$$\frac{T_C}{T}=1+\frac{\gamma-1}{2}M^2,\qquad \frac{p_C}{p}=\left(\frac{T_C}{T}\right)^{\!\gamma/(\gamma-1)},\qquad \frac{\rho_C}{\rho}=\left(\frac{T_C}{T}\right)^{\!1/(\gamma-1)}.$$
+
+</section>
+
+<section id="nozzleflow"><h2>9 · Nozzle flow &amp; the area&ndash;Mach relation</h2>
+
+<p class="lead">Why must a rocket nozzle first converge, then diverge? The answer is one line of gas dynamics.</p>
+<div class="key"><div class="kt">Area&ndash;velocity relation</div>$$\frac{dA}{A}=(M^2-1)\,\frac{dv}{v}$$</div><details class="deriv"><summary>Show derivation</summary><div class="dbody"><p>Log-differentiate continuity: $\dfrac{d\rho}{\rho}+\dfrac{dv}{v}+\dfrac{dA}{A}=0$. From Euler $dp=-\rho v\,dv$ and $a^2=dp/d\rho$, $\dfrac{d\rho}{\rho}=-M^2\dfrac{dv}{v}$. Eliminating $d\rho/\rho$ gives the boxed result.</p></div></details>
+<p>For $M<1$ the factor $(M^2-1)$ is negative, so accelerating the flow ($dv>0$) needs a <b>contracting</b> area; for $M>1$ it needs an <b>expanding</b> area. The flow can only cross $M=1$ where $dA=0$ — the <b>throat</b>. Hence the convergent&ndash;divergent (de&nbsp;Laval) shape.</p>
+
+<h3>The area&ndash;Mach relation</h3>
+<p>Combining continuity at the throat with the isentropic relations gives the exit Mach number as a function of area ratio alone:</p>
+$$\frac{A}{A^*}=\frac{1}{M}\left[\frac{2}{\gamma+1}\left(1+\frac{\gamma-1}{2}M^2\right)\right]^{\frac{\gamma+1}{2(\gamma-1)}}.$$
+<p>On the supersonic branch this is monotonic, so a chosen $\varepsilon=A_e/A^*$ selects a unique $M_e$, hence unique $p_e/p_C$ and $T_e/T_C$. This is the precise sense in which <b>geometry fixes the exit pressure</b>.</p>
+<details class="qa"><summary>Q. Each $A/A^*>1$ corresponds to two Mach numbers. Which does a rocket realise, and why?</summary><div class="abody">Both a subsonic and a supersonic solution satisfy the area&ndash;Mach relation. A rocket runs the <b>supersonic</b> branch in the diverging section because the throat is choked at $M=1$ and the flow continues to accelerate ($dv>0$ with $dA>0$ requires $M>1$).</div></details>
+</section>
+
+<section id="jetvel"><h2>10 · Jet velocity</h2>
+
+<p class="lead">How fast can the jet go? Energy conservation plus the isentropic relations give a closed form.</p>
+<div class="key"><div class="kt">Jet velocity</div>$$v_e=\sqrt{\frac{2\gamma}{\gamma-1}\,\frac{R_A}{M_W}\,T_C\left[\,1-\left(\frac{p_e}{p_C}\right)^{\frac{\gamma-1}{\gamma}}\right]}$$</div><details class="deriv"><summary>Show derivation</summary><div class="dbody"><p>Energy with $v_c\approx0$: $\tfrac12 v_e^2=c_p(T_C-T_e)\Rightarrow v_e=\sqrt{2c_p(T_C-T_e)}$. Insert $T_e/T_C=(p_e/p_C)^{(\gamma-1)/\gamma}$ and $c_p=\tfrac{\gamma}{\gamma-1}\tfrac{R_A}{M_W}$ to obtain the boxed form.</p></div></details>
+<p>Three levers raise exhaust speed: <b>hotter chamber</b> ($v_e\propto\sqrt{T_C}$), <b>lighter molecules</b> ($v_e\propto1/\sqrt{M_W}$ — the strongest lever, and why hydrogen wins), and <b>deeper expansion</b> (smaller $p_e/p_C$, with diminishing returns). The thermodynamic ceiling, at $p_e/p_C\to0$, is $v_{e,\max}=\sqrt{\tfrac{2\gamma}{\gamma-1}\tfrac{R_A}{M_W}T_C}$.</p>
+<figure class="sim"><figcaption><span class="badge">&#9654; INTERACTIVE</span>Jet-velocity explorer &mdash; $T_C$, $M_W$, $\gamma$ and the expansion limit</figcaption><div class="simwrap"><iframe title="Jet-velocity explorer &mdash; $T_C$, $M_W$, $\gamma$ and the expansion limit" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Jet velocity explorer&lt;/title&gt;
+&lt;style&gt;
+:root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--ink:#12211b;--mut:#5c6b63;--line:#d9dae4;--tint:#eaf3ee}
+*{box-sizing:border-box}body{margin:0;font-family:Calibri,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:#f4f7f5;padding:10px 14px}
+.wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;height:calc(100vh - 20px)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;overflow:auto}
+h2{font-family:Cambria,serif;color:var(--forest);margin:.1em 0 .4em;font-size:18px}
+label{display:block;font-size:12.5px;font-weight:700;color:var(--forest);margin:10px 0 3px}
+.val{float:right;font-family:Cambria,serif;color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:5px 0 2px}
+.chip{font-size:11.5px;border:1px solid var(--line);border-radius:20px;padding:3px 9px;background:#fff;cursor:pointer}
+.chip:hover{border-color:var(--green);color:var(--green)}
+.stage{display:grid;grid-template-rows:1fr auto auto;gap:10px;min-height:0}
+.viz{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;min-height:0;overflow:hidden}
+.viz svg{width:100%;height:100%}
+.readout{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.card{background:#fff;border:1px solid var(--line);border-top:5px solid var(--green);border-radius:10px;padding:8px 9px}
+.card .n{font-family:Cambria,serif;font-size:19px;font-weight:700;color:var(--green);line-height:1}
+.card .l{font-size:10.5px;color:var(--mut);margin-top:3px}
+.state{font-family:Cambria,serif;font-weight:700;font-size:14.5px;padding:6px 12px;border-radius:8px;color:#fff;text-align:center}
+.note{background:var(--tint);border-left:5px solid var(--gold);border-radius:0 8px 8px 0;padding:8px 11px;font-size:12.5px}
+b{color:var(--forest)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Inputs&lt;/h2&gt;
+    &lt;label&gt;Chamber temperature T&lt;sub&gt;C&lt;/sub&gt; &lt;span class=&quot;val&quot; id=&quot;tv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;t&quot; min=&quot;1500&quot; max=&quot;3800&quot; step=&quot;10&quot; value=&quot;3400&quot;&gt;
+    &lt;label&gt;Molecular mass M&lt;sub&gt;W&lt;/sub&gt; &lt;span class=&quot;val&quot; id=&quot;mv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;m&quot; min=&quot;2&quot; max=&quot;30&quot; step=&quot;0.5&quot; value=&quot;20&quot;&gt;
+    &lt;label&gt;Specific-heat ratio &amp;gamma; &lt;span class=&quot;val&quot; id=&quot;gv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;g&quot; min=&quot;1.10&quot; max=&quot;1.30&quot; step=&quot;0.01&quot; value=&quot;1.20&quot;&gt;
+    &lt;label&gt;Pressure ratio p&lt;sub&gt;e&lt;/sub&gt;/p&lt;sub&gt;C&lt;/sub&gt; &lt;span class=&quot;val&quot; id=&quot;xv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;x&quot; min=&quot;0.001&quot; max=&quot;0.10&quot; step=&quot;0.001&quot; value=&quot;0.010&quot;&gt;
+    &lt;div class=&quot;chips&quot;&gt;&lt;span class=&quot;chip&quot; data-p=&quot;3300,13,1.20&quot;&gt;Hydrolox&lt;/span&gt;&lt;span class=&quot;chip&quot; data-p=&quot;3600,22,1.18&quot;&gt;Kerolox&lt;/span&gt;&lt;span class=&quot;chip&quot; data-p=&quot;3000,25,1.14&quot;&gt;Solid&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;note&quot; id=&quot;msg&quot; style=&quot;margin-top:12px&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;div class=&quot;viz&quot;&gt;&lt;svg id=&quot;fig&quot; viewBox=&quot;0 0 520 260&quot; preserveAspectRatio=&quot;xMidYMid meet&quot;&gt;&lt;/svg&gt;&lt;/div&gt;
+    &lt;div id=&quot;state&quot; class=&quot;state&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;readout&quot;&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oV&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;jet velocity v&lt;sub&gt;e&lt;/sub&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oI&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;I&lt;sub&gt;sp&lt;/sub&gt; = v&lt;sub&gt;e&lt;/sub&gt;/g&amp;#8320;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oM&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;thermodynamic limit v&lt;sub&gt;max&lt;/sub&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oF&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;v&lt;sub&gt;e&lt;/sub&gt;/v&lt;sub&gt;max&lt;/sub&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+var g0=9.80665, RA=8314;
+function $(i){return document.getElementById(i)}
+function veOf(Tc,MW,g,x){var k=2*g/(g-1)*(RA/MW)*Tc;return Math.sqrt(k*(1-Math.pow(x,(g-1)/g)));}
+function vmaxOf(Tc,MW,g){return Math.sqrt(2*g/(g-1)*(RA/MW)*Tc);}
+function upd(){
+  var Tc=+$(&#x27;t&#x27;).value, MW=+$(&#x27;m&#x27;).value, g=+$(&#x27;g&#x27;).value, x=+$(&#x27;x&#x27;).value;
+  $(&#x27;tv&#x27;).textContent=Tc+&#x27; K&#x27;; $(&#x27;mv&#x27;).textContent=MW.toFixed(1)+&#x27; g/mol&#x27;;
+  $(&#x27;gv&#x27;).textContent=g.toFixed(2); $(&#x27;xv&#x27;).textContent=x.toFixed(3);
+  var ve=veOf(Tc,MW,g,x), vmax=vmaxOf(Tc,MW,g), Isp=ve/g0, f=ve/vmax;
+  $(&#x27;oV&#x27;).textContent=ve.toFixed(0)+&#x27; m/s&#x27;; $(&#x27;oI&#x27;).textContent=Isp.toFixed(0)+&#x27; s&#x27;;
+  $(&#x27;oM&#x27;).textContent=vmax.toFixed(0)+&#x27; m/s&#x27;; $(&#x27;oF&#x27;).textContent=(f*100).toFixed(0)+&#x27;%&#x27;;
+  draw(Tc,MW,g,x,ve,vmax);
+  var st=$(&#x27;state&#x27;),col,txt;
+  if(Isp&gt;=400){col=&#x27;#003E51&#x27;;txt=&#x27;HIGH I\u209b\u209a regime \u2014 light molecules, hot chamber&#x27;;}
+  else if(Isp&gt;=320){col=&#x27;#008540&#x27;;txt=&#x27;TYPICAL chemical regime&#x27;;}
+  else{col=&#x27;#8A6D00&#x27;;txt=&#x27;LOW I\u209b\u209a \u2014 heavy exhaust or cool / poorly-expanded flow&#x27;;}
+  st.style.background=col; st.textContent=txt;
+  $(&#x27;msg&#x27;).innerHTML=&#x27;Molecular mass is the strongest lever: halving &lt;b&gt;M&lt;sub&gt;W&lt;/sub&gt;&lt;/b&gt; multiplies v&lt;sub&gt;e&lt;/sub&gt; by &amp;radic;2 &amp;mdash; the reason hydrogen fuels win on I&lt;sub&gt;sp&lt;/sub&gt;. Hotter &lt;b&gt;T&lt;sub&gt;C&lt;/sub&gt;&lt;/b&gt; helps as &amp;radic;T&lt;sub&gt;C&lt;/sub&gt;; deeper expansion (smaller &lt;b&gt;p&lt;sub&gt;e&lt;/sub&gt;/p&lt;sub&gt;C&lt;/sub&gt;&lt;/b&gt;) has diminishing returns.&#x27;;
+}
+function draw(Tc,MW,g,xcur,ve,vmax){
+  var s=$(&#x27;fig&#x27;),L=58,R=500,T=22,B=206;
+  // curve ve vs pe/pc from 0.001..0.3
+  var xs=[],ys=[];
+  for(var x=0.001;x&lt;=0.3001;x+=0.004){xs.push(x);ys.push(veOf(Tc,MW,g,x));}
+  var hi=vmax*1.02, lo=0;
+  function X(x){return L+(R-L)*(x/0.3);}
+  function Y(v){return B-(B-T)*(v-lo)/(hi-lo);}
+  var h=&#x27;&#x27;;
+  h+=&#x27;&lt;line x1=&quot;&#x27;+L+&#x27;&quot; y1=&quot;&#x27;+T+&#x27;&quot; x2=&quot;&#x27;+L+&#x27;&quot; y2=&quot;&#x27;+B+&#x27;&quot; stroke=&quot;#5a6b63&quot; stroke-width=&quot;1.3&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;line x1=&quot;&#x27;+L+&#x27;&quot; y1=&quot;&#x27;+B+&#x27;&quot; x2=&quot;&#x27;+R+&#x27;&quot; y2=&quot;&#x27;+B+&#x27;&quot; stroke=&quot;#5a6b63&quot; stroke-width=&quot;1.3&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;line x1=&quot;&#x27;+L+&#x27;&quot; y1=&quot;&#x27;+Y(vmax).toFixed(1)+&#x27;&quot; x2=&quot;&#x27;+R+&#x27;&quot; y2=&quot;&#x27;+Y(vmax).toFixed(1)+&#x27;&quot; stroke=&quot;#b3502e&quot; stroke-width=&quot;1.2&quot; stroke-dasharray=&quot;5 4&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;text x=&quot;&#x27;+R+&#x27;&quot; y=&quot;&#x27;+(Y(vmax)-5).toFixed(1)+&#x27;&quot; text-anchor=&quot;end&quot; font-family=&quot;Calibri&quot; font-size=&quot;11&quot; fill=&quot;#b3502e&quot;&gt;v_max (full expansion)&lt;/text&gt;&#x27;;
+  var d=&#x27;&#x27;;for(var k=0;k&lt;xs.length;k++){d+=(k?&#x27;L&#x27;:&#x27;M&#x27;)+X(xs[k]).toFixed(1)+&#x27;,&#x27;+Y(ys[k]).toFixed(1)+&#x27; &#x27;;}
+  h+=&#x27;&lt;path d=&quot;&#x27;+d+&#x27;&quot; fill=&quot;none&quot; stroke=&quot;#008540&quot; stroke-width=&quot;3.2&quot;/&gt;&#x27;;
+  var cx=X(Math.min(xcur,0.3)), cy=Y(ve);
+  h+=&#x27;&lt;line x1=&quot;&#x27;+cx.toFixed(1)+&#x27;&quot; y1=&quot;&#x27;+T+&#x27;&quot; x2=&quot;&#x27;+cx.toFixed(1)+&#x27;&quot; y2=&quot;&#x27;+B+&#x27;&quot; stroke=&quot;#5a6b63&quot; stroke-width=&quot;1&quot; stroke-dasharray=&quot;3 3&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;circle cx=&quot;&#x27;+cx.toFixed(1)+&#x27;&quot; cy=&quot;&#x27;+cy.toFixed(1)+&#x27;&quot; r=&quot;6&quot; fill=&quot;#008540&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;text x=&quot;&#x27;+((L+R)/2)+&#x27;&quot; y=&quot;&#x27;+(B+26)+&#x27;&quot; text-anchor=&quot;middle&quot; font-family=&quot;Calibri&quot; font-size=&quot;12&quot; fill=&quot;#5a6b63&quot;&gt;pressure ratio p_e/p_C &amp;rarr;&lt;/text&gt;&#x27;;
+  h+=&#x27;&lt;text x=&quot;16&quot; y=&quot;&#x27;+((T+B)/2)+&#x27;&quot; transform=&quot;rotate(-90 16,&#x27;+((T+B)/2)+&#x27;)&quot; text-anchor=&quot;middle&quot; font-family=&quot;Calibri&quot; font-size=&quot;12&quot; fill=&quot;#5a6b63&quot;&gt;jet velocity&lt;/text&gt;&#x27;;
+  h+=&#x27;&lt;text x=&quot;&#x27;+((L+R)/2)+&#x27;&quot; y=&quot;14&quot; text-anchor=&quot;middle&quot; font-family=&quot;Calibri&quot; font-size=&quot;11.5&quot; font-weight=&quot;700&quot; fill=&quot;#00573F&quot;&gt;Jet velocity vs. how far you expand&lt;/text&gt;&#x27;;
+  s.innerHTML=h;
+}
+document.querySelectorAll(&#x27;[data-p]&#x27;).forEach(function(c){c.onclick=function(){var p=c.dataset.p.split(&#x27;,&#x27;);$(&#x27;t&#x27;).value=p[0];$(&#x27;m&#x27;).value=p[1];$(&#x27;g&#x27;).value=p[2];upd();}});
+[&#x27;t&#x27;,&#x27;m&#x27;,&#x27;g&#x27;,&#x27;x&#x27;].forEach(function(i){$(i).addEventListener(&#x27;input&#x27;,upd)});
+upd();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div></figure>
+<p class="cap">Compare hydrolox, kerolox and solid presets; note how $M_W$ moves the whole curve.</p>
+
+</section>
+
+<section id="massflow"><h2>11 · Choked mass flow</h2>
+
+<p class="lead">The throat sets the mass flow. Once it is sonic, the flow is <b>choked</b> — the flow rate is fixed by the chamber and cannot be increased by lowering the back pressure. This is how a rocket regulates its own mass flow.</p>
+<div class="key"><div class="kt">Choked mass flow</div>$$\dot m=\frac{p_C\,A^*}{\sqrt{\frac{R_A}{M_W}T_C}}\,\Gamma(\gamma),\qquad \Gamma(\gamma)=\sqrt{\gamma\left(\frac{2}{\gamma+1}\right)^{\frac{\gamma+1}{\gamma-1}}}$$</div><details class="deriv"><summary>Show derivation</summary><div class="dbody"><p>Evaluate $\dot m=\rho^*v^*A^*$ at the throat, where $M=1$ so $v^*=a^*=\sqrt{\gamma(R_A/M_W)T^*}$. Use the sonic isentropic ratios $T^*/T_C=\tfrac{2}{\gamma+1}$ and $\rho^*/\rho_C=(\tfrac{2}{\gamma+1})^{1/(\gamma-1)}$ with $\rho_C=p_C/[(R_A/M_W)T_C]$. The $\gamma$-factors collect into the Vandenkerckhove function $\Gamma(\gamma)$.</p></div></details>
+<p>$\dot m$ rises with chamber pressure $p_C$ and throat area $A^*$, and — note the sign clash with $v_e$ — with <b>high</b> $M_W$ and <b>low</b> $T_C$. Thrust $\dot m v_{eq}$ is the product, so a real design balances these opposing pulls. Practically, mass flow is set at design by $A^*$ and controlled in flight by $p_C$ (throttling the feed).</p>
+
+</section>
+
+<section id="performance"><h2>12 · Nozzle performance: $C_F$ &amp; $c^*$</h2>
+
+<p class="lead">Two coefficients factor engine performance cleanly: $c^*$ isolates the chamber and propellant, $C_F$ isolates the nozzle. Their product is the effective exhaust velocity.</p>
+<div class="key"><div class="kt">Performance factoring</div>$$c^*=\frac{p_C A^*}{\dot m}=\frac{1}{\Gamma(\gamma)}\sqrt{\frac{R_A}{M_W}T_C},\qquad C_F=\frac{F_T}{p_C A^*},\qquad v_{eq}=C_F\,c^*,\quad I_{sp}=\frac{C_F c^*}{g_0}$$</div>
+<p>$c^*$ (characteristic velocity) measures the energy release — chamber temperature and molecular mass — and is a clean diagnostic of <b>combustion</b> quality. $C_F$ (thrust coefficient) measures how well the <b>nozzle</b> converts chamber pressure into thrust. The ideal thrust coefficient is</p>
+$$C_F=\Gamma(\gamma)\sqrt{\frac{2\gamma}{\gamma-1}\left[1-\left(\frac{p_e}{p_C}\right)^{\frac{\gamma-1}{\gamma}}\right]}+\varepsilon\,\frac{p_e-p_a}{p_C}.$$
+<p>The pressure term shows that, for a fixed geometry, $C_F$ (and thrust) is <b>maximised when $p_e=p_a$</b> — the nozzle is <i>adapted</i>. Since $p_e$ is fixed by $\varepsilon$ but $p_a$ varies, a fixed nozzle is adapted at only one altitude; larger area ratios help at altitude but over-expand (and may separate) low down.</p>
+<figure class="sim"><figcaption><span class="badge">&#9654; INTERACTIVE</span>Nozzle expansion explorer &mdash; regime, $C_F$ and separation across altitude</figcaption><div class="simwrap"><iframe title="Nozzle expansion explorer &mdash; regime, $C_F$ and separation across altitude" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Nozzle expansion explorer&lt;/title&gt;
+&lt;style&gt;
+:root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--ink:#12211b;--mut:#5c6b63;--line:#d9dae4;--tint:#eaf3ee}
+*{box-sizing:border-box}body{margin:0;font-family:Calibri,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:#f4f7f5;padding:10px 14px}
+.wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;height:calc(100vh - 20px)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;overflow:auto}
+h2{font-family:Cambria,serif;color:var(--forest);margin:.1em 0 .4em;font-size:18px}
+label{display:block;font-size:12.5px;font-weight:700;color:var(--forest);margin:11px 0 3px}
+.val{float:right;font-family:Cambria,serif;color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green)}
+.stage{display:grid;grid-template-rows:1fr auto auto;gap:10px;min-height:0}
+.viz{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;min-height:0;overflow:hidden}
+.viz svg{width:100%;height:100%}
+.readout{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.card{background:#fff;border:1px solid var(--line);border-top:5px solid var(--green);border-radius:10px;padding:8px 9px}
+.card .n{font-family:Cambria,serif;font-size:19px;font-weight:700;color:var(--green);line-height:1}
+.card .l{font-size:10.5px;color:var(--mut);margin-top:3px}
+.state{font-family:Cambria,serif;font-weight:700;font-size:14.5px;padding:6px 12px;border-radius:8px;color:#fff;text-align:center}
+.note{background:var(--tint);border-left:5px solid var(--gold);border-radius:0 8px 8px 0;padding:8px 11px;font-size:12.5px}
+b{color:var(--forest)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Inputs&lt;/h2&gt;
+    &lt;label&gt;Expansion ratio &amp;epsilon; = A&lt;sub&gt;e&lt;/sub&gt;/A* &lt;span class=&quot;val&quot; id=&quot;epv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;ep&quot; min=&quot;2&quot; max=&quot;200&quot; step=&quot;1&quot; value=&quot;25&quot;&gt;
+    &lt;label&gt;Chamber pressure p&lt;sub&gt;C&lt;/sub&gt; &lt;span class=&quot;val&quot; id=&quot;pcv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;pc&quot; min=&quot;10&quot; max=&quot;300&quot; step=&quot;1&quot; value=&quot;70&quot;&gt;
+    &lt;label&gt;Altitude (sets p&lt;sub&gt;a&lt;/sub&gt;) &lt;span class=&quot;val&quot; id=&quot;hv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;h&quot; min=&quot;0&quot; max=&quot;80&quot; step=&quot;0.5&quot; value=&quot;0&quot;&gt;
+    &lt;label&gt;Specific-heat ratio &amp;gamma; &lt;span class=&quot;val&quot; id=&quot;gv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;g&quot; min=&quot;1.10&quot; max=&quot;1.30&quot; step=&quot;0.01&quot; value=&quot;1.20&quot;&gt;
+    &lt;div class=&quot;note&quot; id=&quot;msg&quot; style=&quot;margin-top:14px&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;div class=&quot;viz&quot;&gt;&lt;svg id=&quot;fig&quot; viewBox=&quot;0 0 520 260&quot; preserveAspectRatio=&quot;xMidYMid meet&quot;&gt;&lt;/svg&gt;&lt;/div&gt;
+    &lt;div id=&quot;state&quot; class=&quot;state&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;readout&quot;&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;pe&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;exit pressure p&lt;sub&gt;e&lt;/sub&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;pa&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;ambient p&lt;sub&gt;a&lt;/sub&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;rat&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;p&lt;sub&gt;e&lt;/sub&gt;/p&lt;sub&gt;a&lt;/sub&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;cf&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;thrust coeff. C&lt;sub&gt;F&lt;/sub&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+function $(i){return document.getElementById(i)}
+function Gamma(g){return Math.sqrt(g*Math.pow(2/(g+1),(g+1)/(g-1)))}
+// solve pe/pc from epsilon (bisection on x in (0,1))
+function epsOf(x,g){var G=Gamma(g);var d=(2*g/(g-1))*Math.pow(x,2/g)*(1-Math.pow(x,(g-1)/g));return G/Math.sqrt(d);}
+function pratio(eps,g){var lo=1e-6,hi=0.99999;for(var k=0;k&lt;80;k++){var mid=Math.sqrt(lo*hi);if(epsOf(mid,g)&gt;eps)lo=mid;else hi=mid;}return Math.sqrt(lo*hi);}
+function atmo(h){return 101325*Math.exp(-h/7.0);} // Pa, rough scale height 7 km
+function upd(){
+  var eps=parseFloat($(&#x27;ep&#x27;).value), pc=parseFloat($(&#x27;pc&#x27;).value)*1e5, hh=parseFloat($(&#x27;h&#x27;).value), g=parseFloat($(&#x27;g&#x27;).value);
+  $(&#x27;epv&#x27;).textContent=eps.toFixed(0); $(&#x27;pcv&#x27;).textContent=(pc/1e5).toFixed(0)+&#x27; bar&#x27;;
+  $(&#x27;hv&#x27;).textContent=hh.toFixed(1)+&#x27; km&#x27;; $(&#x27;gv&#x27;).textContent=g.toFixed(2);
+  var x=pratio(eps,g);          // pe/pc
+  var pe=x*pc, pa=atmo(hh);
+  var G=Gamma(g);
+  var cfMom=G*Math.sqrt((2*g/(g-1))*(1-Math.pow(x,(g-1)/g)));
+  var cf=cfMom+(pe-pa)/pc*eps;
+  // readouts
+  function fp(p){return p&gt;=1e5?(p/1e5).toFixed(2)+&#x27; bar&#x27;:(p/1e3).toFixed(1)+&#x27; kPa&#x27;;}
+  $(&#x27;pe&#x27;).textContent=fp(pe); $(&#x27;pa&#x27;).textContent=(pa/1e3).toFixed(1)+&#x27; kPa&#x27;;
+  $(&#x27;rat&#x27;).textContent=(pe/Math.max(pa,1)).toFixed(2); $(&#x27;cf&#x27;).textContent=cf.toFixed(3);
+  // state
+  var st=$(&#x27;state&#x27;), tol=0.03, r=pe/Math.max(pa,1e-9);
+  var col,txt;
+  if(pa&lt;50){col=&#x27;#003E51&#x27;;txt=&#x27;NEAR-VACUUM \u00b7 strongly under-expanded (p_e &gt; p_a \u2248 0)&#x27;;}
+  else if(r&gt;1+tol){col=&#x27;#8A6D00&#x27;;txt=&#x27;UNDER-EXPANDED (p_e &gt; p_a) \u2014 plume keeps expanding outside&#x27;;}
+  else if(r&lt;1-tol){col=&#x27;#b3502e&#x27;;txt=&#x27;OVER-EXPANDED (p_e &lt; p_a) \u2014 plume squeezed, shocks / possible separation&#x27;;}
+  else{col=&#x27;#008540&#x27;;txt=&#x27;ADAPTED (p_e \u2248 p_a) \u2014 thrust is maximum for this geometry&#x27;;}
+  st.style.background=col; st.textContent=txt;
+  drawFig(eps,r,col);
+  var m=$(&#x27;msg&#x27;);
+  if(pa&lt;50) m.innerHTML=&#x27;In vacuum there is &lt;b&gt;no&lt;/b&gt; adapted condition &amp;mdash; every nozzle is under-expanded. Bigger &amp;epsilon; still helps because it lowers p_e and raises the momentum term. Upper stages use large &amp;epsilon;.&#x27;;
+  else if(r&lt;1-tol) m.innerHTML=&#x27;Too much nozzle for this altitude. Fine at height, but low down an over-expanded nozzle wastes thrust and risks flow separation &amp;mdash; the first-stage compromise.&#x27;;
+  else if(r&gt;1+tol) m.innerHTML=&#x27;Not enough expansion for this altitude: you are leaving energy in the plume. A larger &amp;epsilon; would recover it &amp;mdash; at the cost of mass and low-altitude over-expansion.&#x27;;
+  else m.innerHTML=&#x27;Matched: exhaust leaves at ambient pressure and the pressure term vanishes cleanly. This nozzle is optimal &lt;b&gt;only&lt;/b&gt; at this altitude.&#x27;;
+}
+function drawFig(eps,r,col){
+  var s=$(&#x27;fig&#x27;); var W=520,H=260, cy=H/2;
+  var rt=16, re=rt*Math.sqrt(Math.min(eps,200))/1.6; re=Math.min(re,110);
+  var xin=70,xth=190,xex=340;
+  var top1=cy-rt*2.2, bot1=cy+rt*2.2;
+  var h=&#x27;&#x27;;
+  // chamber + nozzle walls
+  h+=&#x27;&lt;path d=&quot;M40,&#x27;+(cy-38)+&#x27; L&#x27;+xin+&#x27;,&#x27;+(cy-38)+&#x27; L&#x27;+xth+&#x27;,&#x27;+(cy-rt)+&#x27; L&#x27;+xex+&#x27;,&#x27;+(cy-re)+&#x27;&quot; fill=&quot;none&quot; stroke=&quot;#12211b&quot; stroke-width=&quot;3.5&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;path d=&quot;M40,&#x27;+(cy+38)+&#x27; L&#x27;+xin+&#x27;,&#x27;+(cy+38)+&#x27; L&#x27;+xth+&#x27;,&#x27;+(cy+rt)+&#x27; L&#x27;+xex+&#x27;,&#x27;+(cy+re)+&#x27;&quot; fill=&quot;none&quot; stroke=&quot;#12211b&quot; stroke-width=&quot;3.5&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;line x1=&quot;40&quot; y1=&quot;&#x27;+(cy-38)+&#x27;&quot; x2=&quot;40&quot; y2=&quot;&#x27;+(cy+38)+&#x27;&quot; stroke=&quot;#12211b&quot; stroke-width=&quot;3.5&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;line x1=&quot;&#x27;+xth+&#x27;&quot; y1=&quot;&#x27;+(cy-rt-10)+&#x27;&quot; x2=&quot;&#x27;+xth+&#x27;&quot; y2=&quot;&#x27;+(cy+rt+10)+&#x27;&quot; stroke=&quot;#5a6b63&quot; stroke-width=&quot;1&quot; stroke-dasharray=&quot;3 3&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;text x=&quot;&#x27;+xth+&#x27;&quot; y=&quot;&#x27;+(cy+rt+24)+&#x27;&quot; text-anchor=&quot;middle&quot; font-family=&quot;Calibri&quot; font-size=&quot;11&quot; fill=&quot;#5a6b63&quot;&gt;throat *&lt;/text&gt;&#x27;;
+  // plume shape depends on r
+  var px=xex, plen=150;
+  if(r&gt;1.03){ // under-expanded: billow out
+    h+=&#x27;&lt;path d=&quot;M&#x27;+px+&#x27;,&#x27;+(cy-re)+&#x27; Q&#x27;+(px+plen*0.5)+&#x27;,&#x27;+(cy-re-24)+&#x27; &#x27;+(px+plen)+&#x27;,&#x27;+(cy-8)+&#x27;&quot; fill=&quot;none&quot; stroke=&quot;&#x27;+col+&#x27;&quot; stroke-width=&quot;2.6&quot;/&gt;&#x27;;
+    h+=&#x27;&lt;path d=&quot;M&#x27;+px+&#x27;,&#x27;+(cy+re)+&#x27; Q&#x27;+(px+plen*0.5)+&#x27;,&#x27;+(cy+re+24)+&#x27; &#x27;+(px+plen)+&#x27;,&#x27;+(cy+8)+&#x27;&quot; fill=&quot;none&quot; stroke=&quot;&#x27;+col+&#x27;&quot; stroke-width=&quot;2.6&quot;/&gt;&#x27;;
+  } else if(r&lt;0.97){ // over-expanded: pinch in with shock diamonds
+    h+=&#x27;&lt;path d=&quot;M&#x27;+px+&#x27;,&#x27;+(cy-re)+&#x27; Q&#x27;+(px+plen*0.4)+&#x27;,&#x27;+(cy-6)+&#x27; &#x27;+(px+plen)+&#x27;,&#x27;+(cy-14)+&#x27;&quot; fill=&quot;none&quot; stroke=&quot;&#x27;+col+&#x27;&quot; stroke-width=&quot;2.6&quot;/&gt;&#x27;;
+    h+=&#x27;&lt;path d=&quot;M&#x27;+px+&#x27;,&#x27;+(cy+re)+&#x27; Q&#x27;+(px+plen*0.4)+&#x27;,&#x27;+(cy+6)+&#x27; &#x27;+(px+plen)+&#x27;,&#x27;+(cy+14)+&#x27;&quot; fill=&quot;none&quot; stroke=&quot;&#x27;+col+&#x27;&quot; stroke-width=&quot;2.6&quot;/&gt;&#x27;;
+    for(var d=0;d&lt;3;d++){var dx=px+18+d*40;h+=&#x27;&lt;path d=&quot;M&#x27;+dx+&#x27;,&#x27;+cy+&#x27; l14,-9 l14,9 l-14,9 z&quot; fill=&quot;none&quot; stroke=&quot;&#x27;+col+&#x27;&quot; stroke-width=&quot;1.6&quot; opacity=&quot;0.8&quot;/&gt;&#x27;;}
+  } else { // adapted: parallel
+    h+=&#x27;&lt;line x1=&quot;&#x27;+px+&#x27;&quot; y1=&quot;&#x27;+(cy-re)+&#x27;&quot; x2=&quot;&#x27;+(px+plen)+&#x27;&quot; y2=&quot;&#x27;+(cy-re)+&#x27;&quot; stroke=&quot;&#x27;+col+&#x27;&quot; stroke-width=&quot;2.6&quot; stroke-dasharray=&quot;5 4&quot;/&gt;&#x27;;
+    h+=&#x27;&lt;line x1=&quot;&#x27;+px+&#x27;&quot; y1=&quot;&#x27;+(cy+re)+&#x27;&quot; x2=&quot;&#x27;+(px+plen)+&#x27;&quot; y2=&quot;&#x27;+(cy+re)+&#x27;&quot; stroke=&quot;&#x27;+col+&#x27;&quot; stroke-width=&quot;2.6&quot; stroke-dasharray=&quot;5 4&quot;/&gt;&#x27;;
+  }
+  // flow arrow
+  h+=&#x27;&lt;defs&gt;&lt;marker id=&quot;fa&quot; markerWidth=&quot;9&quot; markerHeight=&quot;9&quot; refX=&quot;6&quot; refY=&quot;3&quot; orient=&quot;auto&quot;&gt;&lt;path d=&quot;M0,0 L7,3 L0,6 Z&quot; fill=&quot;#008540&quot;/&gt;&lt;/marker&gt;&lt;/defs&gt;&#x27;;
+  h+=&#x27;&lt;line x1=&quot;90&quot; y1=&quot;&#x27;+cy+&#x27;&quot; x2=&quot;150&quot; y2=&quot;&#x27;+cy+&#x27;&quot; stroke=&quot;#008540&quot; stroke-width=&quot;3&quot; marker-end=&quot;url(#fa)&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;text x=&quot;55&quot; y=&quot;&#x27;+(cy-46)+&#x27;&quot; font-family=&quot;Calibri&quot; font-size=&quot;11&quot; font-weight=&quot;700&quot; fill=&quot;#00573F&quot;&gt;chamber&lt;/text&gt;&#x27;;
+  s.innerHTML=h;
+}
+[&#x27;ep&#x27;,&#x27;pc&#x27;,&#x27;h&#x27;,&#x27;g&#x27;].forEach(function(i){$(i).addEventListener(&#x27;input&#x27;,upd)});
+upd();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div></figure><details class="qa"><summary>Q. Increasing $\varepsilon$ always lowers $p_e$. Why not use an enormous area ratio on a first stage?</summary><div class="abody">Low down, a very small $p_e$ makes the nozzle badly over-expanded; the pressure term $\varepsilon(p_e-p_a)/p_C$ goes strongly negative and the boundary layer can separate, causing side loads. First stages use modest $\varepsilon$ (or altitude-compensating nozzles); upper stages use large $\varepsilon$.</div></details>
+</section>
+
+<section id="nozzletypes"><h2>13 · Nozzle types &amp; real-flow losses</h2>
+
+<p class="lead">Real nozzles trade ideal performance for mass, length and manufacturability, and real flow deviates from the isentropic ideal.</p>
+<h3>Nozzle geometries</h3>
+<ul class="pts">
+<li><b>Conical</b> — simple, but the divergent flow is non-axial. A half-angle $\alpha$ costs a <b>divergence loss</b> $\lambda=\tfrac12(1+\cos\alpha)$ on the momentum term (e.g. $\lambda\approx0.983$ at $15^\circ$).</li>
+<li><b>Bell (contoured)</b> — turns the flow back toward axial, recovering most of the divergence loss in a shorter length; the standard for launch engines.</li>
+<li><b>Annular / aerospike</b> — the flow expands against an outer free boundary set by ambient pressure, giving <b>altitude compensation</b> (near-adapted over a range of $p_a$) at the cost of complexity and cooling.</li>
+</ul>
+<h3>Deviations from ideal theory</h3>
+<p>Shortfalls are collected into efficiencies on $c^*$ (combustion) and $C_F$ (nozzle), each typically 0.90&ndash;0.99:</p>
+<ul class="pts">
+<li><b>Finite-rate chemistry</b> — real expansion lies between the <i>frozen</i> and <i>shifting-equilibrium</i> limits (&sect;14), changing $T_e$, composition and $v_e$.</li>
+<li><b>Real-gas / variable properties</b> — $\gamma,c_p,M_W$ drift with temperature and composition along the nozzle.</li>
+<li><b>Friction &amp; heat loss</b> — boundary layers and wall cooling make the flow non-isentropic and non-adiabatic.</li>
+<li><b>Two-phase flow</b> — condensed particles (Al$_2$O$_3$ in metallised solids) lag the gas thermally and in velocity.</li>
+</ul>
+
+</section>
+
+<section id="chemical"><h2>14 · Chemical propulsion</h2>
+
+<p class="lead">In a chemical rocket the propellant is the energy source, so performance is capped by the combustion temperature and the exhaust molecular mass — the two levers in $v_e\propto\sqrt{T_C/M_W}$.</p>
+<h3>Liquid vs. solid</h3>
+<table class="tbl">
+<tr><th></th><th>Liquid bipropellant</th><th>Solid</th></tr>
+<tr><td>$I_{sp}$</td><td>higher (350&ndash;465 s)</td><td>lower (~250 s)</td></tr>
+<tr><td>Throttle / restart</td><td>yes</td><td>no (burns to completion)</td></tr>
+<tr><td>Complexity</td><td>high (turbopumps, plumbing)</td><td>low (cast grain)</td></tr>
+<tr><td>Readiness / storage</td><td>often cryogenic</td><td>storable, instant</td></tr>
+</table>
+<p>Solid motors regulate thrust through the <b>burning-area geometry</b> of the grain (progressive, neutral or regressive), since $\dot m\propto$ burn area $\times$ regression rate and the regression rate rises with chamber pressure. Liquid engines regulate through feed pressure and are chosen for the controllability needed by upper stages and landers.</p>
+<h3>Reacting gases: frozen vs. equilibrium</h3>
+<p>The assumption of constant composition (&sect;8) is an idealisation. As the gas cools through the nozzle, recombination reactions (e.g. $\mathrm{H+OH\rightarrow H_2O}$) release energy and change $M_W$ and $\gamma$. Two limits bound reality:</p>
+<ul class="pts">
+<li><b>Frozen flow</b> — composition fixed at the chamber value; no recombination energy recovered (a lower bound on $v_e$).</li>
+<li><b>Shifting (equilibrium) flow</b> — composition re-equilibrates instantly at every station; maximum recombination energy recovered (an upper bound).</li>
+</ul>
+<p>Real nozzles fall between, nearer equilibrium in the throat and toward frozen far downstream where densities are low and reaction rates slow. This is why the effective $\gamma$ and $M_W$ used in the ideal formulas are <i>flow-averaged</i> values, not simple chamber values.</p>
+
+</section>
+
+<section id="electric"><h2>15 · Electric &amp; advanced propulsion</h2>
+
+<p class="lead">When energy and propellant are separate, there is no combustion-temperature ceiling on $v_e$. But higher $v_e$ demands more power — and power-plant mass — so there is an <b>optimum exhaust velocity</b>, a central MIT&nbsp;16.50 result and the key to satellite electric propulsion.</p>
+<h3>A taxonomy</h3>
+<ul class="pts">
+<li><b>Electrothermal</b> (resistojet, arcjet) — electricity heats the propellant, then a nozzle expands it. Modest $I_{sp}$ (300&ndash;1000 s).</li>
+<li><b>Electrostatic</b> (gridded ion, Hall) — ions are accelerated in an electric field to very high $v_e$ (1500&ndash;4000 s $I_{sp}$).</li>
+<li><b>Electromagnetic</b> (MPD, PPT) — Lorentz force accelerates a plasma.</li>
+</ul>
+<h3>Optimum exhaust velocity (power-limited)</h3>
+<p>For an electric system the total mass includes the power plant. With jet power $P=\tfrac12\dot m c^2=\tfrac12 F c$, a specific power-plant mass $\alpha_e$ (kg/W) and initial acceleration $a_0=F/m_{tot}$, the payload fraction is</p>
+<div class="key"><div class="kt">Power-limited payload fraction</div>$$\frac{m_{pay}}{m_{tot}}=e^{-\Delta V/c}-\frac{\alpha_e\,a_0}{2}\,c$$</div>
+<p>The first term rewards <b>high</b> $c$ (less propellant); the second penalises it (heavier power plant, $m_{elect}=\alpha_e P\propto c$). There is therefore a finite optimum:</p>
+$$\frac{\Delta V}{c^2}\,e^{-\Delta V/c}=\frac{\alpha_e a_0}{2}\quad\Longrightarrow\quad c_{opt}\ \text{finite}.$$
+<details class="deriv"><summary>Show the optimisation &amp; a worked estimate (MIT Lec 5)</summary><div class="dbody"><p>Differentiate the payload fraction with respect to $c$ and set to zero: $\dfrac{\Delta V}{c^2}e^{-\Delta V/c}=\dfrac{\alpha_e a_0}{2}$. Eliminating the technology group between this and the payload expression gives the design curve $\dfrac{m_{pay}}{m_{tot}}=e^{-\Delta V/c}\big(1-\tfrac{\Delta V}{c}\big)$, which only makes sense for $\Delta V/c<1$.</p>
+<p><b>Estimate:</b> take $\Delta V=10$ km/s and $\alpha_e=20$ kg/kW $=0.02$ kg/W. Insisting on $m_{pay}/m_{tot}=0.5$ gives $(\Delta V/c)_{opt}\approx0.3$ (so $c\approx33$ km/s, $I_{sp}\approx3400$ s) and $a_0\approx7\times10^{-4}\,\mathrm{m/s^2}\approx7\times10^{-5}\,g$. The burn time is then</p>
+$$t=\frac{m_{prop}}{\dot m}=\frac{c}{a_0}\left(1-e^{-\Delta V/c}\right)\approx1.2\times10^{7}\,\mathrm{s}\approx 140\ \text{days}.$$
+<p>Electric propulsion trades <b>time</b> for <b>mass</b>: the same mission by a chemical stage would leave a payload fraction of order 1%, but takes days, not months.</p></div></details>
+<p>The practical message for satellites: unlike chemical rockets, where you always want the highest $v_e$ you can get, electric systems have a <b>mission-specific optimum $I_{sp}$</b> set by the required $\Delta V$, the allowed transit time (through $a_0$), and the power-plant technology $\alpha_e$.</p>
+
+</section>
+
+<section id="explorer"><h2>16 · Rocket-equation explorer</h2>
+
+<p class="lead">Put the rocket equation to work: vary $\Delta V$, $I_{sp}$ and the structural fraction and watch where the exponential turns the payload negative.</p>
+<figure class="sim"><figcaption><span class="badge">&#9654; INTERACTIVE</span>Rocket-equation explorer &mdash; mass ratio, payload fraction &amp; the single-stage wall</figcaption><div class="simwrap"><iframe title="Rocket-equation explorer &mdash; mass ratio, payload fraction &amp; the single-stage wall" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Rocket-equation explorer&lt;/title&gt;
+&lt;style&gt;
+:root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--ink:#12211b;--mut:#5c6b63;--line:#d9dae4;--tint:#eaf3ee}
+*{box-sizing:border-box}body{margin:0;font-family:Calibri,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:#f4f7f5;padding:14px 18px}
+.wrap{display:grid;grid-template-columns:340px 1fr;gap:18px;height:calc(100vh - 30px)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow:auto}
+h2{font-family:Cambria,serif;color:var(--forest);margin:.1em 0 .5em;font-size:19px}
+label{display:block;font-size:13px;font-weight:700;color:var(--forest);margin:12px 0 3px}
+.val{float:right;font-family:Cambria,serif;color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 2px}
+.chips button{border:1px solid var(--green);background:#fff;color:var(--forest);font-weight:700;font-size:12px;border-radius:14px;padding:4px 10px;cursor:pointer}
+.chips button:hover{background:var(--tint)}
+.stage{display:flex;flex-direction:column;justify-content:center;gap:14px}
+.readout{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-top:5px solid var(--green);border-radius:12px;padding:12px}
+.card .n{font-family:Cambria,serif;font-size:30px;font-weight:700;color:var(--green);line-height:1}
+.card .l{font-size:12px;color:var(--mut);margin-top:5px}
+.card.bad{border-top-color:#b3502e}.card.bad .n{color:#b3502e}
+.bar{height:46px;border-radius:8px;overflow:hidden;display:flex;border:1px solid var(--line);font-size:12px;font-weight:700;color:#fff}
+.bar&gt;div{display:flex;align-items:center;justify-content:center;white-space:nowrap}
+.bp{background:#003E51}.bs{background:#8A6D00}.bl{background:#008540}.bn{background:#b3502e}
+.cap{font-size:12.5px;color:var(--mut);margin-top:8px;line-height:1.5}
+.note{background:var(--tint);border-left:5px solid var(--gold);border-radius:0 8px 8px 0;padding:9px 12px;font-size:13px;margin-top:12px}
+b{color:var(--forest)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Inputs&lt;/h2&gt;
+    &lt;label&gt;&amp;Delta;V target &lt;span class=&quot;val&quot; id=&quot;dvv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;dv&quot; min=&quot;3&quot; max=&quot;13&quot; step=&quot;0.1&quot; value=&quot;9.4&quot;&gt;
+    &lt;div class=&quot;chips&quot;&gt;
+      &lt;button data-dv=&quot;7.8&quot;&gt;LEO ideal 7.8&lt;/button&gt;
+      &lt;button data-dv=&quot;9.4&quot;&gt;LEO +losses 9.4&lt;/button&gt;
+      &lt;button data-dv=&quot;12.0&quot;&gt;GTO ~12&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;label&gt;Specific impulse I&lt;sub&gt;sp&lt;/sub&gt; &lt;span class=&quot;val&quot; id=&quot;ispv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;isp&quot; min=&quot;200&quot; max=&quot;3200&quot; step=&quot;10&quot; value=&quot;350&quot;&gt;
+    &lt;div class=&quot;chips&quot;&gt;
+      &lt;button data-isp=&quot;265&quot;&gt;Solid 265&lt;/button&gt;
+      &lt;button data-isp=&quot;350&quot;&gt;Kerolox 350&lt;/button&gt;
+      &lt;button data-isp=&quot;450&quot;&gt;Hydrolox 450&lt;/button&gt;
+      &lt;button data-isp=&quot;3000&quot;&gt;Ion 3000&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;label&gt;Structural fraction &amp;sigma; = m&lt;sub&gt;s&lt;/sub&gt;/(m&lt;sub&gt;s&lt;/sub&gt;+m&lt;sub&gt;p&lt;/sub&gt;) &lt;span class=&quot;val&quot; id=&quot;sigv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;sig&quot; min=&quot;4&quot; max=&quot;20&quot; step=&quot;0.5&quot; value=&quot;10&quot;&gt;
+    &lt;div class=&quot;note&quot; id=&quot;msg&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;div class=&quot;readout&quot;&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;mr&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;mass ratio M&amp;#8320;/M&lt;sub&gt;f&lt;/sub&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;pf&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;propellant fraction M&lt;sub&gt;P&lt;/sub&gt;/M&amp;#8320;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot; id=&quot;lcard&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;lam&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;payload fraction M&lt;sub&gt;pl&lt;/sub&gt;/M&amp;#8320;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;bar&quot; id=&quot;bar&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;cap&quot; id=&quot;cap&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card&quot; style=&quot;border-top-color:#003E51&quot;&gt;
+      &lt;div class=&quot;l&quot; style=&quot;font-size:13px;color:var(--ink)&quot;&gt;Per kilogram that reaches the target you must launch
+        &lt;b id=&quot;perkg&quot;&gt;&lt;/b&gt; of propellant (structure aside). This is the number that makes launch expensive &amp;mdash; and it is set by the ratio &amp;Delta;V&amp;nbsp;/&amp;nbsp;(I&lt;sub&gt;sp&lt;/sub&gt;&amp;middot;g&amp;#8320;), not by either alone.&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+var g0=9.80665;
+function $(i){return document.getElementById(i)}
+function upd(){
+  var dv=parseFloat($(&#x27;dv&#x27;).value), isp=parseFloat($(&#x27;isp&#x27;).value), sig=parseFloat($(&#x27;sig&#x27;).value)/100;
+  $(&#x27;dvv&#x27;).textContent=dv.toFixed(1)+&#x27; km/s&#x27;; $(&#x27;ispv&#x27;).textContent=isp.toFixed(0)+&#x27; s&#x27;; $(&#x27;sigv&#x27;).textContent=(sig*100).toFixed(1)+&#x27; %&#x27;;
+  var veq=isp*g0/1000; // km/s
+  var mf=Math.exp(-dv/veq);          // Mf/M0
+  var mp=1-mf;                        // propellant fraction
+  var mr=1/mf;                        // mass ratio
+  var lam=(mf-sig)/(1-sig);          // payload fraction (single stage)
+  $(&#x27;mr&#x27;).textContent=mr.toFixed(1)+&#x27;\u00d7&#x27;;
+  $(&#x27;pf&#x27;).textContent=(mp*100).toFixed(1)+&#x27;%&#x27;;
+  var lc=$(&#x27;lcard&#x27;);
+  if(lam&gt;0){ lc.className=&#x27;card&#x27;; $(&#x27;lam&#x27;).textContent=(lam*100).toFixed(1)+&#x27;%&#x27;; }
+  else { lc.className=&#x27;card bad&#x27;; $(&#x27;lam&#x27;).textContent=&#x27;&lt; 0&#x27;; }
+  $(&#x27;perkg&#x27;).textContent=(mr-1).toFixed(1)+&#x27; kg&#x27;;
+  // bar always sums to 100% of M0: propellant + (structure + payload = Mf)
+  function seg(cls,w,label){return &#x27;&lt;div class=&quot;&#x27;+cls+&#x27;&quot; style=&quot;width:&#x27;+(w*100).toFixed(1)+&#x27;%&quot;&gt;&#x27;+(w&gt;=0.12?label:&#x27;&#x27;)+&#x27;&lt;/div&gt;&#x27;;}
+  var bar=$(&#x27;bar&#x27;), h=&#x27;&#x27;;
+  h+=seg(&#x27;bp&#x27;,mp,&#x27;propellant &#x27;+(mp*100).toFixed(0)+&#x27;%&#x27;);
+  if(lam&gt;0){
+    var struct=sig*(1-lam);          // structure fraction of M0
+    h+=seg(&#x27;bs&#x27;,struct,&#x27;structure&#x27;);
+    h+=seg(&#x27;bl&#x27;,lam,&#x27;payload &#x27;+(lam*100).toFixed(0)+&#x27;%&#x27;);
+  } else {
+    h+=seg(&#x27;bn&#x27;,mf,&#x27;structure&#x27;);     // burnout is all structure, still short (see card)
+  }
+  bar.innerHTML=h;
+  $(&#x27;cap&#x27;).innerHTML=&#x27;Burnout mass M&lt;sub&gt;f&lt;/sub&gt;/M&amp;#8320; = &#x27;+(mf*100).toFixed(1)+&#x27;% &amp;nbsp;&amp;middot;&amp;nbsp; equivalent jet velocity v&lt;sub&gt;eq&lt;/sub&gt; = &#x27;+veq.toFixed(2)+&#x27; km/s&#x27;;
+  var m=$(&#x27;msg&#x27;);
+  if(lam&lt;=0){ m.innerHTML=&#x27;&lt;b&gt;Impossible as a single stage.&lt;/b&gt; The structure alone weighs more than what survives the burn (payload fraction is negative). The exponential has beaten you &amp;mdash; the fix is &lt;b&gt;staging&lt;/b&gt;: shed empty structure mid-flight.&#x27;; }
+  else if(dv/veq&gt;2.3){ m.innerHTML=&#x27;Feasible but brutal: propellant dominates and payload is a sliver. High &amp;Delta;V/v&lt;sub&gt;eq&lt;/sub&gt; is exactly where multi-stage vehicles win.&#x27;; }
+  else { m.innerHTML=&#x27;Comfortable regime: a healthy payload fraction. Low-&amp;Delta;V manoeuvres, or high-I&lt;sub&gt;sp&lt;/sub&gt; engines, live here.&#x27;; }
+}
+document.querySelectorAll(&#x27;[data-dv]&#x27;).forEach(function(b){b.onclick=function(){$(&#x27;dv&#x27;).value=b.dataset.dv;upd();}});
+document.querySelectorAll(&#x27;[data-isp]&#x27;).forEach(function(b){b.onclick=function(){$(&#x27;isp&#x27;).value=b.dataset.isp;upd();}});
+[&#x27;dv&#x27;,&#x27;isp&#x27;,&#x27;sig&#x27;].forEach(function(i){$(i).addEventListener(&#x27;input&#x27;,upd)});
+upd();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div></figure>
+</section>
+
+<section id="worked"><h2>17 · Worked examples</h2>
+
+<div class="ex"><div class="et">Worked example 1 &mdash; sizing a vacuum nozzle</div>
+<p><b>Given:</b> $p_C=70$ bar, $T_C=3500$ K, $\gamma=1.20$, $M_W=22$ kg/kmol, $\varepsilon=40$, $A^*=0.02~\mathrm{m^2}$.</p>
+<p>$R_A/M_W=8314/22=377.9~\mathrm{J/(kg\,K)}$; $\ \Gamma(1.2)=\sqrt{1.2(2/2.2)^{11}}=0.6485$.</p>
+<p>$c^*=\sqrt{377.9\times3500}/0.6485=1773~\mathrm{m/s}$; $\ \dot m=p_CA^*/c^*=(7\times10^6)(0.02)/1773=79.0~\mathrm{kg/s}$.</p>
+<p>Area&ndash;Mach at $\varepsilon=40\Rightarrow M_e=4.24$, so $p_e/p_C=(1+0.1M_e^2)^{-6}=2.1\times10^{-3}$, $p_e=14.6$ kPa, $T_e=1251$ K.</p>
+<p>$v_e=3193~\mathrm{m/s}$, $A_e=0.80~\mathrm{m^2}$. In vacuum $F_T=\dot m v_e+p_eA_e=\mathbf{263.8~kN}$, $C_F=F_T/(p_CA^*)=\mathbf{1.884}$, $I_{sp}=C_Fc^*/g_0=\mathbf{340.7~s}$. (At sea level the same nozzle is heavily over-expanded: $F_T=182.7$ kN, $I_{sp}=236$ s — an upper-stage design.)</p></div>
+
+<div class="ex"><div class="et">Worked example 2 &mdash; electric vs chemical for a 6 km/s transfer</div>
+<p><b>Chemical</b> (hydrolox, $c=4.4$ km/s, $\varepsilon_s=0.1$): $\Lambda=e^{6/4.4}=3.90$, payload fraction $\pi=(1/3.90-0.1)/0.9=0.174$ — 17%, delivered in hours.</p>
+<p><b>Electric</b> ($c=30$ km/s, $I_{sp}\approx3060$ s): propellant fraction $=1-e^{-6/30}=0.181$, so only <b>18% propellant</b> vs 74% for chemical — but the power plant mass and a transit of weeks must be carried. The choice is set by whether the mission can spend time (&sect;15).</p></div>
+
+</section>
+
+<section id="quiz"><h2>18 · Self-check</h2>
+
+<p class="lead">Check your understanding — reveal each answer after attempting it.</p>
+<details class="qa"><summary>1. Two engines have the same thrust but $I_{sp}$ of 300 s and 450 s. For a fixed $\Delta V$, how do their propellant masses compare?</summary><div class="abody">Propellant mass $\propto(1-e^{-\Delta V/(I_{sp}g_0)})$. The higher-$I_{sp}$ engine needs exponentially less propellant; the gap widens as $\Delta V$ grows.</div></details><details class="qa"><summary>2. Why is the throat, not the exit, the station that fixes $\dot m$?</summary><div class="abody">Because the throat chokes at $M=1$: for given chamber conditions there is exactly one mass flow that makes the throat sonic, and downstream conditions cannot change it.</div></details><details class="qa"><summary>3. A nozzle is adapted at 10 km altitude. Is it over- or under-expanded at sea level? In vacuum?</summary><div class="abody">Sea level ($p_a$ higher than design): <b>over-expanded</b> ($p_e<p_a$). Vacuum ($p_a\to0<p_e$): <b>under-expanded</b>.</div></details><details class="qa"><summary>4. For electric propulsion, why is 'as high as possible' the wrong target for $I_{sp}$?</summary><div class="abody">Higher $c$ means more jet power ($P=\tfrac12Fc$) and thus more power-plant mass ($\propto\alpha_e c$). Past the optimum, the added power-plant mass outweighs the propellant saving and payload falls.</div></details><details class="qa"><summary>5. Launch vehicles are sized near $a_0/g\approx3$&ndash;4. What two competing effects set this?</summary><div class="abody">Gravity loss $\propto g t$ falls with higher thrust (shorter burn), but engine mass rises with thrust. The optimum of $\Delta V$ against these gives $n_{opt}\approx3$&ndash;4.</div></details>
+</section>
+
+<section id="formulas"><h2>19 · Formula sheet</h2>
+
+<div class="key"><div class="kt">Core relations</div>
+<table class="tbl tight">
+<tr><td>Thrust</td><td>$F_T=\dot m v_e+(p_e-p_a)A_e=\dot m v_{eq}=C_F p_C A^*$</td></tr>
+<tr><td>Specific impulse</td><td>$I_{sp}=v_{eq}/g_0=C_F c^*/g_0$</td></tr>
+<tr><td>Rocket equation</td><td>$\Delta V=v_{eq}\ln\Lambda,\quad \Lambda=M_0/M_f=e^{\Delta V/v_{eq}}$</td></tr>
+<tr><td>Gravity loss (vertical)</td><td>$v-v_0=c\ln(M_0/M)-g t;\quad n_{opt}=a_0/g\approx3\text{–}4$</td></tr>
+<tr><td>Payload fraction</td><td>$\pi=(1/\Lambda-\varepsilon_s)/(1-\varepsilon_s)$</td></tr>
+<tr><td>Area&ndash;velocity</td><td>$dA/A=(M^2-1)\,dv/v$</td></tr>
+<tr><td>Area&ndash;Mach</td><td>$A/A^*=\tfrac1M[\tfrac{2}{\gamma+1}(1+\tfrac{\gamma-1}{2}M^2)]^{(\gamma+1)/2(\gamma-1)}$</td></tr>
+<tr><td>Jet velocity</td><td>$v_e=\sqrt{\tfrac{2\gamma}{\gamma-1}\tfrac{R_A}{M_W}T_C[1-(p_e/p_C)^{(\gamma-1)/\gamma}]}$</td></tr>
+<tr><td>Choked mass flow</td><td>$\dot m=\dfrac{p_CA^*}{\sqrt{(R_A/M_W)T_C}}\Gamma,\ \ \Gamma=\sqrt{\gamma(\tfrac{2}{\gamma+1})^{(\gamma+1)/(\gamma-1)}}$</td></tr>
+<tr><td>Coefficients</td><td>$c^*=\sqrt{(R_A/M_W)T_C}/\Gamma,\quad v_{eq}=C_F c^*$</td></tr>
+<tr><td>Electric optimum</td><td>$m_{pay}/m_{tot}=e^{-\Delta V/c}-\tfrac{\alpha_e a_0}{2}c$</td></tr>
+</table>
+</div>
+<p class="cap">Constants: $R_A=8314~\mathrm{J/(K\,kmol)}$, $g_0=9.80665~\mathrm{m/s^2}$.</p>
+
+</section>
+
+<section id="problems"><h2>20 · Problem set</h2>
+
+<ol class="probs">
+<li>A kerolox stage ($I_{sp}=340$ s, $\varepsilon_s=0.09$) must deliver 5.5 km/s. Find $\Lambda$, the propellant fraction, and the payload fraction. Would two equal stages help?</li>
+<li>Derive the single-stage $\Delta V$ ceiling from the payload-fraction relation and evaluate it for hydrolox ($v_{eq}=4.4$ km/s, $\varepsilon_s=0.12$).</li>
+<li>A nozzle has $\gamma=1.22$, $\varepsilon=25$. Find $M_e$ and $p_e/p_C$. At what ambient pressure is it adapted if $p_C=60$ bar?</li>
+<li>Show that halving $M_W$ raises both $v_e$ and $v_{e,\max}$ by $\sqrt2$ while raising $\dot m$ by $\sqrt2$. Explain the design tension for thrust $=\dot m v_{eq}$.</li>
+<li>A conical nozzle has a $20^\circ$ half-angle. Compute the divergence loss factor and the percentage thrust reduction on the momentum term.</li>
+<li>An ion thruster has $I_{sp}=3000$ s and must deliver 4 km/s. Find the propellant fraction. If $\alpha_e=15$ kg/kW and the mission allows $a_0=5\times10^{-4}\,g$, is $c$ near its optimum? (Use the power-limited relation.)</li>
+<li>Estimate the gravity loss for a launcher that burns for 150 s averaging $\gamma\approx60^\circ$ flight-path angle. How much extra $\Delta V$ is that?</li>
+</ol>
+<details class="qa"><summary>Selected answers</summary><div class="abody">
+<p>1. $\Lambda=e^{5.5/(340\cdot9.81/1000)}=e^{1.649}=5.20$; propellant fraction $1-1/\Lambda=0.808$; $\pi=(0.192-0.09)/0.91=0.112$. Two stages raise $\pi$ markedly (each ratio $\sqrt{5.20}=2.28$).<br>
+2. $\Delta V_{\max}=v_{eq}\ln(1/\varepsilon_s)=4.4\ln(1/0.12)=9.33$ km/s.<br>
+3. $M_e\approx3.85$, $p_e/p_C\approx3\times10^{-3}$; adapted when $p_a=p_e\approx0.18$ bar (≈14 km altitude).<br>
+5. $\lambda=\tfrac12(1+\cos20^\circ)=0.970$ → 3.0% reduction.<br>
+6. propellant fraction $=1-e^{-4/29.4}=0.127$.</p>
+</div></details>
+
+</section>
+
+<section id="refs"><h2>References &amp; attribution</h2>
+
+<p>These notes are an original synthesis for AE&nbsp;582, drawing on:</p>
+<ul class="pts">
+<li><b>TU Delft</b>, <i>Rocket &amp; Onboard Propulsion</i>, &sect;1.1 (thrust, specific impulse, the rocket equation) and &sect;1.3 (ideal rocket theory) — the core structure and notation.</li>
+<li><b>MIT OpenCourseWare 16.50</b>, <i>Introduction to Propulsion Systems</i> (Spring 2012), Prof. M. Martinez-Sanchez, notes after J. L. Kerrebrock — for gravity loss and optimum acceleration (Lec 1), non-chemical rockets and the optimum exhaust velocity (Lec 5), nozzle modelling and reacting gases (Lec 6&ndash;12). Licensed CC BY-NC-SA 4.0.</li>
+</ul>
+<p class="cap">Companion to the AE&nbsp;582 Week&nbsp;5 Lecture&nbsp;2 interactive slide deck. Equations rendered with MathJax.</p>
+
+</section>
+
+  </main>
+</div>
+<button id="top" title="Back to top">&#8593;</button>
+
+<script>
+const prog=document.getElementById('progress');
+const secs=[...document.querySelectorAll('main section')];
+const links=[...document.querySelectorAll('.toc a')];
+function onscroll(){
+  const h=document.documentElement;
+  const sc=h.scrollTop, max=h.scrollHeight-h.clientHeight;
+  prog.style.width=(max>0?sc/max*100:0)+'%';
+  let cur=secs[0]?secs[0].id:null;
+  for(const s of secs){ if(s.getBoundingClientRect().top<=140) cur=s.id; }
+  links.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+cur));
+}
+document.addEventListener('scroll',onscroll,{passive:true});
+window.addEventListener('load',onscroll);
+document.getElementById('top').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+</script>
+</body></html>
