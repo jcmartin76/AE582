@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AE 582 — Week 6 · L1 · Water-Vapor Rocket to LEO (worked solution)</title>
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},chtml:{scale:1.10,displayAlign:'center'}};</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+  :root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--stone:#8A6D00;
+        --tint:#EAF3EE;--tintd:#E7EDEF;--ink:#12211B;--mut:#5C6B64;--line:#D9DAE4;--bg:#F4F7F5;}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;background:#0c1a18;
+     font-family:"Calibri","Segoe UI",system-ui,sans-serif;color:var(--ink)}
+  .slide{position:fixed;inset:0;opacity:0;visibility:hidden;transition:opacity .35s ease;
+     display:flex;align-items:center;justify-content:center;padding:4.5vmin 6vmin;}
+  .slide.active{opacity:1;visibility:visible}
+  .inner{width:min(1180px,94vw);max-height:88vh}
+  /* light content slides */
+  .slide{background:var(--bg)}
+  .kicker{font-size:1.9vmin;letter-spacing:.28em;font-weight:700;color:var(--green);text-transform:uppercase;margin-bottom:1.4vmin}
+  .title{font-family:"Cambria",Georgia,serif;font-weight:700;color:var(--forest);font-size:4.4vmin;line-height:1.12;margin:0 0 1vmin}
+  .subtitle{font-size:2.35vmin;color:var(--mut);margin:.4vmin 0 2.4vmin}
+  .accent{height:.5vmin;width:9vmin;background:var(--green);border-radius:3px;margin:1.4vmin 0 2.2vmin}
+  ul.pts{margin:0;padding-left:0;list-style:none}
+  ul.pts li{position:relative;padding-left:3.4vmin;margin:1.5vmin 0;font-size:2.55vmin;line-height:1.45}
+  ul.pts li::before{content:"";position:absolute;left:.6vmin;top:.9vmin;width:1.3vmin;height:1.3vmin;background:var(--gold);border-radius:50%}
+  ul.pts li b{color:var(--forest)}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:3vmin}
+  .cols.wide-left{grid-template-columns:1.25fr .85fr}
+  .cols.wide-right{grid-template-columns:.85fr 1.25fr}
+  .stack{display:flex;flex-direction:column;justify-content:center;gap:1vmin}
+  .card{background:#fff;border:1px solid var(--line);border-radius:1.4vmin;padding:2.6vmin 2.8vmin;box-shadow:0 1vmin 3vmin rgba(0,0,0,.05)}
+  .card h3{margin:0 0 1.2vmin;font-family:"Cambria",serif;color:var(--green);font-size:2.5vmin}
+  .card.d{background:var(--tintd)} .card.g{background:var(--tint)}
+  .eqbox{background:var(--tint);border-left:.6vmin solid var(--green);border-radius:0 1vmin 1vmin 0;
+     padding:2vmin 2.6vmin;margin:1.8vmin 0;font-family:"Cambria",serif;font-size:2.5vmin;color:var(--forest)}
+  table.tbl{width:100%;border-collapse:collapse;font-size:2.2vmin}
+  table.tbl th,table.tbl td{border:1px solid var(--line);padding:1.2vmin 1.6vmin;text-align:left;vertical-align:top}
+  table.tbl th{background:var(--forest);color:#fff;font-family:"Cambria",serif}
+  table.tbl tr:nth-child(even) td{background:#fff}
+  table.tbl tr:nth-child(odd) td{background:var(--tint)}
+  .stat{display:flex;gap:2.4vmin;flex-wrap:wrap;margin-top:1.5vmin}
+  .stat .s{flex:1;min-width:22vmin;background:#fff;border:1px solid var(--line);border-top:.7vmin solid var(--green);
+     border-radius:1.2vmin;padding:2.2vmin}
+  .stat .s .n{font-family:"Cambria",serif;font-size:4.2vmin;font-weight:700;color:var(--green);line-height:1}
+  .stat .s .l{font-size:1.9vmin;color:var(--ink);margin-top:.8vmin}
+  .recap{background:var(--tint);border:1px solid var(--green);border-radius:1.4vmin;padding:2.6vmin 3vmin}
+  .recap li{font-size:2.4vmin}
+  .note{background:var(--tint);border-left:.5vmin solid var(--gold);padding:1.6vmin 2.2vmin;border-radius:0 1vmin 1vmin 0;font-size:2.25vmin;color:var(--ink);margin-top:1.8vmin}
+  .subtitle-sm{font-family:"Calibri","Segoe UI",sans-serif;font-size:2.1vmin;color:var(--mut);font-style:italic;margin:-.5vmin 0 .7vmin}
+  .illus-split{display:grid;grid-template-columns:33% 1fr;gap:3vmin;align-items:center;min-height:50vh;margin-top:.4vmin}
+  .illus-split>.illus{display:flex;align-items:center;justify-content:center}
+  .illus-split>.illus svg{width:100%;height:auto;max-height:60vh}
+  .illus-split>.content{align-self:center}
+  .illus-split .cols{gap:2.4vmin}
+  .illus-split .steps .s{margin:.2vmin 0}
+  .slide.dark .subtitle-sm{color:#9fb6bd}
+  .illus-split>.illus{align-self:stretch}
+  .photo{position:relative;width:100%;height:100%;min-height:44vh;border-radius:1.4vmin;overflow:hidden;box-shadow:0 1vmin 3vmin rgba(0,0,0,.14);background:#eef2f0}
+  .photo .fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:1.5vmin}
+  .photo .fb svg{width:100%;height:100%}
+  .photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .illus-split + .note, .illus-split + .recap{margin-top:1.4vmin}
+  /* dark slides (cover + dividers) */
+  .slide.dark{background:var(--petrol);color:#fff}
+  .slide.dark .kicker{color:var(--gold)}
+  .slide.dark .title{color:#fff;font-size:6vmin}
+  .slide.dark .subtitle{color:#cfe0e4;font-size:2.6vmin}
+  .slide.dark .accent{background:var(--gold)}
+  .bignum{font-family:"Cambria",serif;font-size:12vmin;font-weight:700;color:var(--gold);line-height:1}
+  .chips{display:flex;gap:1.4vmin;flex-wrap:wrap;margin-top:2.6vmin}
+  .chips span{background:rgba(255,255,255,.1);border:1px solid rgba(218,201,97,.5);color:#eaf3ee;
+     padding:1vmin 1.8vmin;border-radius:2vmin;font-size:1.9vmin;font-weight:600}
+  /* interactive demo slide */
+  .demoslide .inner{width:min(1240px,96vw)}
+  .demoslide .dhead{display:flex;align-items:baseline;gap:1.4vmin;margin-bottom:.6vmin}
+  .demoslide .badge{background:var(--green);color:#fff;font-weight:700;font-size:1.6vmin;padding:.7vmin 1.4vmin;border-radius:.8vmin;letter-spacing:.1em}
+  .demoslide .dt{font-family:"Cambria",serif;color:var(--forest);font-size:3vmin;font-weight:700}
+  .demoslide iframe{width:100%;height:74vh;border:1px solid var(--line);border-radius:1.2vmin;box-shadow:0 1vmin 3vmin rgba(0,0,0,.10);background:#fff}
+  /* chrome */
+  .brand{position:fixed;left:2.4vmin;bottom:1.8vmin;font-size:1.5vmin;font-weight:700;letter-spacing:.12em;color:var(--mut);z-index:20}
+  .slide.dark ~ .brand{color:#9fb6bd}
+  .pageno{position:fixed;right:2.6vmin;bottom:1.8vmin;font-size:1.6vmin;color:var(--mut);z-index:20}
+  .nav{position:fixed;bottom:1.4vmin;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:1.2vmin;z-index:30}
+  .nav button{width:4.4vmin;height:4.4vmin;border-radius:50%;border:none;background:var(--green);color:#fff;font-size:2.4vmin;cursor:pointer;line-height:1;box-shadow:0 .5vmin 1.5vmin rgba(0,0,0,.2)}
+  .nav button:hover{background:var(--forest)} .nav button:disabled{opacity:.35;cursor:default}
+  .nav .count{font-size:1.8vmin;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:2vmin;padding:.6vmin 1.6vmin;min-width:9vmin;text-align:center}
+  .progress{position:fixed;top:0;left:0;height:.5vmin;background:var(--gold);width:0;z-index:40;transition:width .35s}
+  .hintbar{position:fixed;top:1.2vmin;right:1.6vmin;font-size:1.4vmin;color:var(--mut);z-index:20;opacity:.7}
+  .steps{margin:.5vmin 0}
+  .steps .s{display:flex;gap:1.3vmin;align-items:center;margin:.6vmin 0;padding:.6vmin 1.3vmin;background:var(--tint);border-left:3px solid var(--green);border-radius:0 9px 9px 0}
+  .steps .s .k{font-family:"Cambria",serif;font-weight:700;color:var(--green);min-width:2.3vmin;font-size:2.3vmin}
+  .steps .s .m{font-size:2.3vmin;overflow-x:auto}
+  .steps .s .why{color:var(--mut);font-size:1.55vmin;margin-left:auto;white-space:nowrap;font-style:italic}
+  .simwrap{margin:.4vmin 0}
+  .simwrap iframe{width:100%;height:70vh;border:1px solid var(--line);border-radius:12px;display:block;background:#05070f}
+  .stagebar{display:flex;gap:.4vmin;align-items:center;flex-wrap:wrap;margin:-.3vmin 0 1.7vmin}
+  .stagebar .st{font-family:"Calibri","Segoe UI",sans-serif;font-size:1.32vmin;font-weight:700;letter-spacing:.02em;padding:.45vmin 1.15vmin;border-radius:2vmin;background:#e6ebe8;color:#93a29a;white-space:nowrap}
+  .stagebar .st.done{background:#d3e4d9;color:#4a6b58}
+  .stagebar .st.on{background:var(--green);color:#fff;box-shadow:0 1px 4px rgba(0,133,64,.35)}
+  .stagebar .sep{color:#c2cbc6;font-size:1.15vmin}
+  .demoslide .stagebar{margin:.2vmin 0 .7vmin}
+  .slide.dark .stagebar .st{background:#12303c;color:#7fa0ab}
+  .ibadge{display:inline-block;background:var(--green);color:#fff;font-weight:700;font-size:1.5vmin;letter-spacing:.4px;padding:.3vmin 1vmin;border-radius:6px;margin-right:1vmin}
+  .lawrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.1vmin;margin-top:1vmin}
+  .lawrow .card{padding:1vmin 1.3vmin;font-size:1.75vmin}
+  .lawrow .card h3{margin:0 0 .3vmin;font-size:1.95vmin}
+  svg.fig{display:block;width:100%;height:auto;max-height:56vh;margin:.5vmin auto}
+  .figcap{font-size:1.7vmin;color:var(--mut);text-align:center;margin-top:.7vmin}
+  .figcap b{color:var(--forest)}
+  .svgt{font-family:"Calibri","Segoe UI",sans-serif;font-size:15px;fill:var(--mut)}
+  .svgt.ink{fill:var(--ink)} .svgt.g{fill:var(--green)} .svgt.f{fill:var(--forest)} .svgt.s{fill:var(--stone)} .svgt.p{fill:var(--petrol)} .svgt.gold{fill:var(--stone)}
+  .missionimg{width:100%;height:auto;max-height:19vh;object-fit:contain;border:1px dashed var(--line);border-radius:8px;background:var(--tint);display:block;min-height:9vh;color:var(--mut);font-size:1.4vmin;text-align:center;line-height:1.4}
+  @media(max-width:820px){.cols{grid-template-columns:1fr}.title{font-size:6vw}ul.pts li{font-size:3.6vw}}
+
+  .stepper .s{opacity:0;transform:translateY(12px);align-items:flex-start;transition:opacity .45s ease, transform .45s ease}
+  .stepper .s.shown{opacity:1;transform:none}
+  .stepper .s .sc{display:flex;flex-direction:column;gap:.35vmin}
+  .stepper .s .ex{font-size:2.25vmin;color:#233a30;line-height:1.5;font-style:normal;font-family:"Calibri","Segoe UI",sans-serif}
+  #stephint{position:fixed;left:50%;transform:translateX(-50%);top:2.2vh;background:var(--forest);color:#fff;font-family:"Calibri",sans-serif;font-size:1.7vmin;font-weight:600;padding:.5vmin 1.5vmin;border-radius:20px;box-shadow:0 3px 12px rgba(0,0,0,.2);z-index:60;display:none}
+
+  .tag{display:inline-block;font-family:"Calibri",sans-serif;font-size:1.5vmin;font-weight:700;
+       letter-spacing:.08em;padding:.35vmin 1.1vmin;border-radius:1vmin;background:var(--forest);color:#fff}
+  .tag.o{background:#b3502e}.tag.u{background:#8A6D00}.tag.a{background:var(--green)}.tag.r{background:#b3302e}
+  .mini{font-size:1.7vmin;color:var(--mut);font-style:italic}
+  ul.pts li.sm{font-size:1.95vmin;margin:.85vmin 0}
+  .bd{display:inline-block;font-family:Calibri,sans-serif;font-size:1.3vmin;font-weight:700;
+      letter-spacing:.06em;padding:.25vmin .95vmin;border-radius:1vmin;background:var(--gold);
+      color:#3a2f00;margin-left:1.2vmin;vertical-align:middle;text-transform:uppercase}
+  .lead{font-size:2.3vmin;line-height:1.5;color:var(--ink)}
+  .keyline{font-size:1.85vmin;color:var(--mut);margin-top:1.1vmin;line-height:1.45}
+  .hist{display:flex;gap:2.2vmin;margin-top:1.2vmin}
+  .hist .card{flex:1}
+  .req{background:#eaf5ee;border:1px solid #9fd0b3;border-left:8px solid var(--green);border-radius:1.2vmin;
+       padding:1vmin 1.6vmin;margin:1.2vmin 0;font-size:2.15vmin;line-height:1.45}
+  .req .rl{display:inline-block;background:var(--green);color:#fff;font-family:Calibri,sans-serif;font-weight:700;
+       font-size:1.4vmin;letter-spacing:.06em;padding:.3vmin 1vmin;border-radius:.7vmin;margin-right:1.1vmin;
+       text-transform:uppercase;vertical-align:middle}
+  .req b{color:var(--forest)}
+  .verdict{font-family:Cambria,serif;font-weight:700;text-align:center;border-radius:1.4vmin;
+           padding:1.6vmin;margin:1.2vmin 0;font-size:2.7vmin}
+  .verdict.no{background:#fbeae6;color:#a12d12;border:2px solid #d98b73}
+  .verdict.yes{background:#e9f5ee;color:#0a6b3b;border:2px solid #7fc79e}
+  table.mt{border-collapse:collapse;width:100%;margin:1vmin 0;font-size:1.8vmin}
+  table.mt th{background:var(--forest);color:#fff;text-align:left;padding:.7vmin 1vmin}
+  table.mt td{border-bottom:1px solid var(--line);padding:.55vmin 1vmin}
+  table.mt tr:nth-child(even) td{background:#f3f7f4}
+  tr.no td{color:#a12d12} tr.yes td{color:#0a6b3b;font-weight:600}
+  .annot{font-size:1.8vmin;line-height:1.5}
+  .annot b{color:var(--forest)}
+</style>
+
+</head>
+<body>
+
+<div class="progress" id="prog"></div>
+<div class="hintbar">← → arrows to navigate · F for fullscreen</div>
+
+<section class="slide dark active"><div class="inner">
+    <div class="kicker">King Fahd University of Petroleum &amp; Minerals · AE 582 Satellite Engineering · graduate</div>
+    <div style="font-size:7.4vmin;font-family:Cambria,serif;font-weight:700;margin:1vmin 0 .4vmin">WEEK 6 · LECTURE 1</div>
+    <div class="title" style="font-size:4.6vmin">Water-vapor rocket to LEO &mdash; a worked solution</div>
+    <div class="accent"></div>
+    <div class="subtitle">The opening design challenge: place a <b>30 kg</b> satellite into a <b>450 km</b> circular orbit using a <b>water-vapor</b> rocket. We work it as engineers: first extract the <b>requirements</b> from a mission analysis, then read what the rocket equation actually demands, build the case for <b>staging</b>, deliver a feasibility verdict &mdash; and close with a spin-off: can water vapor work as an <b>orbital-maneuvering thruster</b>?</div>
+    <div class="chips"><span>Requirements</span><span>&Delta;V budget</span><span>Rocket equation, explained</span><span>The case for staging</span><span>Verdict</span><span>On-orbit spin-off</span></div>
+  </div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">The problem</div><div class="title">How a designer attacks this</div><div class="accent"></div>
+    
+    <div class="lead">We never start from the hardware. We start by turning the mission into <b>numerical requirements</b>, then test any propulsion choice against them.</div>
+    <div class="req"><span class="rl">Requirement R0</span> Deliver a payload of <b>30 kg</b> to the target orbit. <span class="mini">(given)</span></div>
+    <div class="keyline"><b>Plan:</b> &nbsp;(1) mission analysis &rarr; derive the speed and &Delta;V requirements &nbsp;·&nbsp; (2) the propellant &rarr; what water vapor can offer &nbsp;·&nbsp; (3) the rocket equation &rarr; the mass it demands &nbsp;·&nbsp; (4) staging &rarr; can it help? &nbsp;·&nbsp; (5) verdict &nbsp;·&nbsp; (6) spin-off: on-orbit use.</div></div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Requirements</div><div class="title">Deriving R1 &mdash; the orbital speed</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="0.4"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="0.4"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <div class="illus-split"><div class="illus"><svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:33vh">
+  <defs><radialGradient id="e" cx="40%" cy="38%" r="70%">
+    <stop offset="0%" stop-color="#2b7fb0"/><stop offset="60%" stop-color="#16537a"/><stop offset="100%" stop-color="#0c3350"/>
+  </radialGradient>
+  <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#b3302e"/></marker></defs>
+  <circle cx="170" cy="150" r="150" fill="none" stroke="#008540" stroke-width="2.5" stroke-dasharray="7 6"/>
+  <circle cx="170" cy="150" r="96" fill="url(#e)"/>
+  <path d="M110 120 q30 -14 60 -2 q28 10 56 -4" fill="none" stroke="#3f9a6a" stroke-width="6" opacity=".5"/>
+  <path d="M120 175 q40 16 100 4" fill="none" stroke="#3f9a6a" stroke-width="7" opacity=".45"/>
+  <g transform="translate(276,64)">
+    <rect x="-9" y="-7" width="18" height="14" rx="2" fill="#DAC961" stroke="#8A6D00" stroke-width="1.5"/>
+    <rect x="-26" y="-3.5" width="14" height="7" fill="#2a5d8f"/><rect x="12" y="-3.5" width="14" height="7" fill="#2a5d8f"/>
+    <line x1="14" y1="-20" x2="40" y2="-30" stroke="#b3302e" stroke-width="3" marker-end="url(#ah)"/>
+    <text x="30" y="-34" font-family="Cambria,serif" font-size="15" fill="#b3302e" font-weight="700">v</text>
+  </g>
+  <line x1="170" y1="150" x2="170" y2="54" stroke="#12211b" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="176" y="104" font-family="Cambria,serif" font-size="15" fill="#12211b">450 km</text>
+  <text x="150" y="156" font-family="Cambria,serif" font-size="14" fill="#dfeaf3">Earth</text>
+  <text x="150" y="292" font-family="Calibri,sans-serif" font-size="13" fill="#5c6b63" font-style="italic">not to scale</text>
+  <g font-family="Cambria,serif" font-size="16" fill="#00573F">
+    <text x="330" y="150" font-weight="700">v = 7.64 km/s</text>
+    <text x="330" y="176" font-size="14" fill="#5c6b63">T = 93.6 min</text>
+    <text x="330" y="198" font-size="14" fill="#5c6b63">r = 6828 km</text></g>
+</svg></div>
+      <div class="content">
+        <div class="lead">A circular orbit is a balance between gravity and inertia. The speed that holds a 450 km orbit follows from setting gravity equal to the centripetal requirement:</div>
+        <div class="eqbox">$$\frac{\mu}{r^2}=\frac{v_c^2}{r}\;\Rightarrow\;v_c=\sqrt{\frac{\mu}{r}},\quad r=R_\oplus+h=6828\text{ km}$$</div>
+        <div class="req"><span class="rl">Requirement R1</span> The payload must be accelerated to an <b>orbital speed of 7.64 km/s</b> (period 93.6 min) &mdash; this is a <b>speed</b> target, not an altitude target.</div>
+      </div></div></div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Requirements</div><div class="title">Deriving R2 &mdash; the velocity budget &Delta;V</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="0.4"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="0.4"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <div class="lead">A launcher cannot simply &ldquo;have&rdquo; 7.64 km/s &mdash; it must <b>build</b> that speed while fighting gravity and air. Each effect is a term we <b>add</b> to the budget:</div>
+    <table class="mt">
+      <tr><th>Contribution</th><th>Value</th><th>What it is</th></tr>
+      <tr><td>Orbital speed (from R1)</td><td><b>+7.64 km/s</b></td><td>the kinetic target</td></tr>
+      <tr><td>Gravity loss</td><td><b>+1.2 to 1.5 km/s</b></td><td>thrust supports weight while the vehicle is slow</td></tr>
+      <tr><td>Drag &amp; steering loss</td><td><b>+0.3 to 0.5 km/s</b></td><td>air resistance and turning the trajectory</td></tr>
+      <tr><td>Earth-rotation credit (launch east)</td><td><b>&minus;up to 0.4 km/s</b></td><td>the launch site already moves eastward</td></tr>
+    </table>
+    <div class="req"><span class="rl">Requirement R2</span> The vehicle must supply a total velocity budget of <b>&Delta;V &asymp; 9.4 km/s</b>. <span class="mini">This is the number the rocket equation must be paid in propellant.</span></div></div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Propellant</div><div class="title">What water vapor can offer</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="0.4"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="0.4"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <div class="lead">Store water; add heat so it flashes to steam; expand the vapor through a nozzle. No combustion, no pumps, no ignition &mdash; a &ldquo;warm-gas&rdquo; (resistojet-class) thruster.</div>
+    <ul class="pts">
+      <li class="sm">Exhaust speed scales as $v_e\propto\sqrt{T_C/M_W}$. Water is only mildly heavy ($M_W=18$), but with <b>no combustion</b> the chamber is <b>cool</b> (heater-limited, a few hundred K), so $v_e$ stays small.</li>
+      <li class="sm">Typical performance: $I_{sp}\approx110$ s &rArr; effective exhaust velocity $v_{eq}=I_{sp}\,g_0=\mathbf{1079\ m/s}$.</li>
+      <li class="sm">For comparison, chemical combustion ($T_C\approx3000$&ndash;3600 K) gives $I_{sp}=300$&ndash;450 s, i.e. $v_{eq}=3$&ndash;4.4 km/s.</li>
+    </ul>
+    <div class="req"><span class="rl">Capability</span> Water vapor delivers about <b>$v_{eq}=1.08$ km/s</b>. Set this beside <b>R2 (&Delta;V = 9.4 km/s)</b> &mdash; the whole problem lives in that mismatch.</div></div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Rocket eq.</div><div class="title">The rocket equation &mdash; the idea before the algebra</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="0.4"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <div class="lead">A rocket speeds up by throwing mass (propellant) out the back. The catch: the propellant it will burn a minute from now must be <b>carried &mdash; and accelerated &mdash; right now</b>. Early propellant has to push later propellant, so the cost of speed <b>compounds</b>. That compounding is what the equation captures.</div>
+    <div class="eqbox">$$\Delta V \;=\; v_{eq}\,\ln\!\frac{M_0}{M_f}$$</div>
+    <div class="annot"><ul class="pts" style="margin:.3vmin 0">
+      <li class="sm">$M_0$ &mdash; <b>wet mass</b>: everything at ignition (payload + structure + propellant).</li>
+      <li class="sm">$M_f$ &mdash; <b>dry mass</b>: what is left when the tanks run dry (payload + structure).</li>
+      <li class="sm">$v_{eq}=I_{sp}g_0$ &mdash; the <b>exchange rate</b>: how much velocity you buy per unit of propellant thrown.</li>
+      <li class="sm">$\ln(M_0/M_f)$ &mdash; the logarithm is the fingerprint of compounding: doubling your speed does <b>not</b> double your propellant, it squares your mass ratio.</li>
+    </ul></div></div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Rocket eq.</div><div class="title">Reading the exponential &mdash; why $v_{eq}$ is everything</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="0.4"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <div class="lead">Invert the equation to see the price of speed directly:</div>
+    <div class="eqbox">$$\frac{M_0}{M_f}=\Lambda=e^{\,\Delta V/v_{eq}}$$</div>
+    <div class="lead">The only thing that matters is the ratio $\Delta V/v_{eq}$ &mdash; the mission&rsquo;s demand measured in units of the engine&rsquo;s exhaust speed. Each whole unit multiplies your starting mass by $e\approx2.72$:</div>
+    <table class="mt">
+      <tr><th>$\Delta V/v_{eq}$</th><th>Mass ratio $\Lambda$</th><th>Propellant fraction</th><th>Reading</th></tr>
+      <tr><td>1</td><td>2.7</td><td>63%</td><td>comfortable</td></tr>
+      <tr><td>2</td><td>7.4</td><td>86%</td><td>hard</td></tr>
+      <tr><td>3</td><td>20</td><td>95%</td><td>near the limit of one stage</td></tr>
+      <tr class="no"><td>5</td><td>148</td><td>99.3%</td><td>essentially all propellant</td></tr>
+    </table>
+    <div class="keyline">Lesson: keep $\Delta V/v_{eq}$ within ~2&ndash;3. That is why <b>$v_{eq}$ (i.e. $I_{sp}$) is the single most important propulsion number</b> &mdash; it sets the scale of $\Delta V$ you can afford.</div></div></section>
+
+<section class="slide demoslide"><div class="inner">
+    <div class="dhead"><span class="badge">&#9654; INTERACTIVE</span><span class="dt">Rocket-equation explorer &mdash; set $I_{sp}\approx110$ s, raise $\Delta V$, and watch the payload fraction collapse</span></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="0.4"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <div class="simwrap"><iframe title="sim" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Rocket-equation explorer&lt;/title&gt;
+&lt;style&gt;
+:root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--ink:#12211b;--mut:#5c6b63;--line:#d9dae4;--tint:#eaf3ee}
+*{box-sizing:border-box}body{margin:0;font-family:Calibri,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:#f4f7f5;padding:14px 18px}
+.wrap{display:grid;grid-template-columns:340px 1fr;gap:18px;height:calc(100vh - 30px)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow:auto}
+h2{font-family:Cambria,serif;color:var(--forest);margin:.1em 0 .5em;font-size:19px}
+label{display:block;font-size:13px;font-weight:700;color:var(--forest);margin:12px 0 3px}
+.val{float:right;font-family:Cambria,serif;color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 2px}
+.chips button{border:1px solid var(--green);background:#fff;color:var(--forest);font-weight:700;font-size:12px;border-radius:14px;padding:4px 10px;cursor:pointer}
+.chips button:hover{background:var(--tint)}
+.stage{display:flex;flex-direction:column;justify-content:center;gap:14px}
+.readout{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-top:5px solid var(--green);border-radius:12px;padding:12px}
+.card .n{font-family:Cambria,serif;font-size:30px;font-weight:700;color:var(--green);line-height:1}
+.card .l{font-size:12px;color:var(--mut);margin-top:5px}
+.card.bad{border-top-color:#b3502e}.card.bad .n{color:#b3502e}
+.bar{height:46px;border-radius:8px;overflow:hidden;display:flex;border:1px solid var(--line);font-size:12px;font-weight:700;color:#fff}
+.bar&gt;div{display:flex;align-items:center;justify-content:center;white-space:nowrap}
+.bp{background:#003E51}.bs{background:#8A6D00}.bl{background:#008540}.bn{background:#b3502e}
+.cap{font-size:12.5px;color:var(--mut);margin-top:8px;line-height:1.5}
+.note{background:var(--tint);border-left:5px solid var(--gold);border-radius:0 8px 8px 0;padding:9px 12px;font-size:13px;margin-top:12px}
+b{color:var(--forest)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Inputs&lt;/h2&gt;
+    &lt;label&gt;&amp;Delta;V target &lt;span class=&quot;val&quot; id=&quot;dvv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;dv&quot; min=&quot;3&quot; max=&quot;13&quot; step=&quot;0.1&quot; value=&quot;9.4&quot;&gt;
+    &lt;div class=&quot;chips&quot;&gt;
+      &lt;button data-dv=&quot;7.8&quot;&gt;LEO ideal 7.8&lt;/button&gt;
+      &lt;button data-dv=&quot;9.4&quot;&gt;LEO +losses 9.4&lt;/button&gt;
+      &lt;button data-dv=&quot;12.0&quot;&gt;GTO ~12&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;label&gt;Specific impulse I&lt;sub&gt;sp&lt;/sub&gt; &lt;span class=&quot;val&quot; id=&quot;ispv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;isp&quot; min=&quot;200&quot; max=&quot;3200&quot; step=&quot;10&quot; value=&quot;350&quot;&gt;
+    &lt;div class=&quot;chips&quot;&gt;
+      &lt;button data-isp=&quot;265&quot;&gt;Solid 265&lt;/button&gt;
+      &lt;button data-isp=&quot;350&quot;&gt;Kerolox 350&lt;/button&gt;
+      &lt;button data-isp=&quot;450&quot;&gt;Hydrolox 450&lt;/button&gt;
+      &lt;button data-isp=&quot;3000&quot;&gt;Ion 3000&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;label&gt;Structural fraction &amp;sigma; = m&lt;sub&gt;s&lt;/sub&gt;/(m&lt;sub&gt;s&lt;/sub&gt;+m&lt;sub&gt;p&lt;/sub&gt;) &lt;span class=&quot;val&quot; id=&quot;sigv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;sig&quot; min=&quot;4&quot; max=&quot;20&quot; step=&quot;0.5&quot; value=&quot;10&quot;&gt;
+    &lt;div class=&quot;note&quot; id=&quot;msg&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;div class=&quot;readout&quot;&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;mr&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;mass ratio M&amp;#8320;/M&lt;sub&gt;f&lt;/sub&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;pf&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;propellant fraction M&lt;sub&gt;P&lt;/sub&gt;/M&amp;#8320;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot; id=&quot;lcard&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;lam&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;payload fraction M&lt;sub&gt;pl&lt;/sub&gt;/M&amp;#8320;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;bar&quot; id=&quot;bar&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;cap&quot; id=&quot;cap&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card&quot; style=&quot;border-top-color:#003E51&quot;&gt;
+      &lt;div class=&quot;l&quot; style=&quot;font-size:13px;color:var(--ink)&quot;&gt;Per kilogram that reaches the target you must launch
+        &lt;b id=&quot;perkg&quot;&gt;&lt;/b&gt; of propellant (structure aside). This is the number that makes launch expensive &amp;mdash; and it is set by the ratio &amp;Delta;V&amp;nbsp;/&amp;nbsp;(I&lt;sub&gt;sp&lt;/sub&gt;&amp;middot;g&amp;#8320;), not by either alone.&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+var g0=9.80665;
+function $(i){return document.getElementById(i)}
+function upd(){
+  var dv=parseFloat($(&#x27;dv&#x27;).value), isp=parseFloat($(&#x27;isp&#x27;).value), sig=parseFloat($(&#x27;sig&#x27;).value)/100;
+  $(&#x27;dvv&#x27;).textContent=dv.toFixed(1)+&#x27; km/s&#x27;; $(&#x27;ispv&#x27;).textContent=isp.toFixed(0)+&#x27; s&#x27;; $(&#x27;sigv&#x27;).textContent=(sig*100).toFixed(1)+&#x27; %&#x27;;
+  var veq=isp*g0/1000; // km/s
+  var mf=Math.exp(-dv/veq);          // Mf/M0
+  var mp=1-mf;                        // propellant fraction
+  var mr=1/mf;                        // mass ratio
+  var lam=(mf-sig)/(1-sig);          // payload fraction (single stage)
+  $(&#x27;mr&#x27;).textContent=mr.toFixed(1)+&#x27;\u00d7&#x27;;
+  $(&#x27;pf&#x27;).textContent=(mp*100).toFixed(1)+&#x27;%&#x27;;
+  var lc=$(&#x27;lcard&#x27;);
+  if(lam&gt;0){ lc.className=&#x27;card&#x27;; $(&#x27;lam&#x27;).textContent=(lam*100).toFixed(1)+&#x27;%&#x27;; }
+  else { lc.className=&#x27;card bad&#x27;; $(&#x27;lam&#x27;).textContent=&#x27;&lt; 0&#x27;; }
+  $(&#x27;perkg&#x27;).textContent=(mr-1).toFixed(1)+&#x27; kg&#x27;;
+  // bar always sums to 100% of M0: propellant + (structure + payload = Mf)
+  function seg(cls,w,label){return &#x27;&lt;div class=&quot;&#x27;+cls+&#x27;&quot; style=&quot;width:&#x27;+(w*100).toFixed(1)+&#x27;%&quot;&gt;&#x27;+(w&gt;=0.12?label:&#x27;&#x27;)+&#x27;&lt;/div&gt;&#x27;;}
+  var bar=$(&#x27;bar&#x27;), h=&#x27;&#x27;;
+  h+=seg(&#x27;bp&#x27;,mp,&#x27;propellant &#x27;+(mp*100).toFixed(0)+&#x27;%&#x27;);
+  if(lam&gt;0){
+    var struct=sig*(1-lam);          // structure fraction of M0
+    h+=seg(&#x27;bs&#x27;,struct,&#x27;structure&#x27;);
+    h+=seg(&#x27;bl&#x27;,lam,&#x27;payload &#x27;+(lam*100).toFixed(0)+&#x27;%&#x27;);
+  } else {
+    h+=seg(&#x27;bn&#x27;,mf,&#x27;structure&#x27;);     // burnout is all structure, still short (see card)
+  }
+  bar.innerHTML=h;
+  $(&#x27;cap&#x27;).innerHTML=&#x27;Burnout mass M&lt;sub&gt;f&lt;/sub&gt;/M&amp;#8320; = &#x27;+(mf*100).toFixed(1)+&#x27;% &amp;nbsp;&amp;middot;&amp;nbsp; equivalent jet velocity v&lt;sub&gt;eq&lt;/sub&gt; = &#x27;+veq.toFixed(2)+&#x27; km/s&#x27;;
+  var m=$(&#x27;msg&#x27;);
+  if(lam&lt;=0){ m.innerHTML=&#x27;&lt;b&gt;Impossible as a single stage.&lt;/b&gt; The structure alone weighs more than what survives the burn (payload fraction is negative). The exponential has beaten you &amp;mdash; the fix is &lt;b&gt;staging&lt;/b&gt;: shed empty structure mid-flight.&#x27;; }
+  else if(dv/veq&gt;2.3){ m.innerHTML=&#x27;Feasible but brutal: propellant dominates and payload is a sliver. High &amp;Delta;V/v&lt;sub&gt;eq&lt;/sub&gt; is exactly where multi-stage vehicles win.&#x27;; }
+  else { m.innerHTML=&#x27;Comfortable regime: a healthy payload fraction. Low-&amp;Delta;V manoeuvres, or high-I&lt;sub&gt;sp&lt;/sub&gt; engines, live here.&#x27;; }
+}
+document.querySelectorAll(&#x27;[data-dv]&#x27;).forEach(function(b){b.onclick=function(){$(&#x27;dv&#x27;).value=b.dataset.dv;upd();}});
+document.querySelectorAll(&#x27;[data-isp]&#x27;).forEach(function(b){b.onclick=function(){$(&#x27;isp&#x27;).value=b.dataset.isp;upd();}});
+[&#x27;dv&#x27;,&#x27;isp&#x27;,&#x27;sig&#x27;].forEach(function(i){$(i).addEventListener(&#x27;input&#x27;,upd)});
+upd();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+    </div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Rocket eq.</div><div class="title">Our numbers &mdash; what water vapor is being asked to do</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="0.4"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">Measure the demand in exhaust-speed units</div><div class="ex">$\dfrac{\Delta V}{v_{eq}}=\dfrac{9400}{1079}=8.7$. From the table above, anything past ~3 is already hopeless &mdash; we are at <b>8.7</b>.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">Turn it into a mass ratio</div><div class="ex">$\Lambda=e^{8.7}\approx\mathbf{6100}$. In words: you need about <b>6100 kg of vehicle at ignition for every 1 kg you want in orbit</b>.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">Best-case propellant (pretend the structure is weightless)</div><div class="ex">$M_p=m_{pl}(\Lambda-1)=30\times6099\approx\mathbf{183\ tonnes}$ of water to lift a 30 kg satellite.</div></div></div>
+      <div class="s"><span class="k">4</span><div class="sc"><div class="m">Add a real tank ($\varepsilon_s=0.15$)</div><div class="ex">Feasibility needs $1/\Lambda>\varepsilon_s$; here $1/\Lambda=1.6\times10^{-4}\lll0.15$. The empty tank alone outweighs the budget &mdash; payload fraction is <b>negative</b>.</div></div></div>
+    </div>
+    <div class="verdict no">A single water-vapor stage cannot reach LEO &mdash; at any payload.</div></div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Staging</div><div class="title">Why even a great single stage hits a wall</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="0.4"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <div class="lead">Suppose we had a <b>much</b> better propellant. There is still a hard ceiling on what one stage can do, because it must drag its <b>empty</b> tank all the way to burnout. Setting payload to zero in the rocket equation gives that ceiling:</div>
+    <div class="eqbox">$$\Delta V_{\max}^{\text{(1 stage)}}=v_{eq}\,\ln\frac{1}{\varepsilon_s},\qquad \varepsilon_s=\frac{M_{\text{structure}}}{M_{\text{structure}}+M_{\text{prop}}}$$</div>
+    <ul class="pts">
+      <li class="sm">Even a fine kerolox stage ($v_{eq}=3.33$ km/s, $\varepsilon_s=0.10$) tops out at $\Delta V_{\max}=3.33\ln 10=\mathbf{7.7\ km/s}$ &mdash; still short of the 9.4 km/s in <b>R2</b>, and that is with <b>zero</b> payload.</li>
+      <li class="sm">Why: near burnout you are spending precious $\Delta V$ accelerating an almost-empty tank. The dead structure caps you.</li>
+    </ul>
+    <div class="keyline">So one stage fails <b>R2</b> even for chemistry. This is the motivation for staging.</div></div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Staging</div><div class="title">The idea of a multi-stage rocket</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="0.4"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <div class="lead">If the empty tank is the problem, <b>throw it away</b>. Build the vehicle as a stack of stages; when a stage burns out, jettison its dead structure and light the next one.</div>
+    <div class="hist">
+      <div class="card g"><h3>What you gain</h3>You stop accelerating spent tanks and engines. The next stage begins with a <b>small dry mass</b>, so its mass ratio is favourable again &mdash; a fresh start on the exponential.</div>
+      <div class="card d"><h3>How it adds up</h3>Velocities <b>add</b> across stages, but the payload fractions <b>multiply</b>: $$\Delta V=\textstyle\sum_i \Delta V_i,\qquad \pi=\prod_i \pi_i.$$</div>
+    </div>
+    <div class="keyline">Splitting the total $\Delta V$ across $n$ stages keeps each stage&rsquo;s $\Delta V_i/v_{eq}$ small &mdash; so each mass ratio stays modest, and their product can remain a usable payload.</div></div></section>
+
+<section class="slide demoslide"><div class="inner">
+    <div class="dhead"><span class="badge">&#9654; INTERACTIVE</span><span class="dt">Staging explorer &mdash; hold $\Delta V$ at 9.4 km/s and add stages; watch a negative payload turn positive</span></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="0.4"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <div class="simwrap"><iframe title="sim" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Staging explorer&lt;/title&gt;
+&lt;style&gt;
+:root{--green:#008540;--forest:#00573F;--petrol:#003E51;--gold:#DAC961;--ink:#12211b;--mut:#5c6b63;--line:#d9dae4;--tint:#eaf3ee}
+*{box-sizing:border-box}body{margin:0;font-family:Calibri,&quot;Segoe UI&quot;,system-ui,sans-serif;color:var(--ink);background:#f4f7f5;padding:10px 14px}
+.wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;height:calc(100vh - 20px)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;overflow:auto}
+h2{font-family:Cambria,serif;color:var(--forest);margin:.1em 0 .4em;font-size:18px}
+label{display:block;font-size:12.5px;font-weight:700;color:var(--forest);margin:10px 0 3px}
+.val{float:right;font-family:Cambria,serif;color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:5px 0 2px}
+.chip{font-size:11.5px;border:1px solid var(--line);border-radius:20px;padding:3px 9px;background:#fff;cursor:pointer}
+.chip:hover{border-color:var(--green);color:var(--green)}
+.stage{display:grid;grid-template-rows:1fr auto auto;gap:10px;min-height:0}
+.viz{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;min-height:0;overflow:hidden}
+.viz svg{width:100%;height:100%}
+.readout{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.card{background:#fff;border:1px solid var(--line);border-top:5px solid var(--green);border-radius:10px;padding:8px 9px}
+.card .n{font-family:Cambria,serif;font-size:19px;font-weight:700;color:var(--green);line-height:1}
+.card .l{font-size:10.5px;color:var(--mut);margin-top:3px}
+.state{font-family:Cambria,serif;font-weight:700;font-size:14.5px;padding:6px 12px;border-radius:8px;color:#fff;text-align:center}
+.note{background:var(--tint);border-left:5px solid var(--gold);border-radius:0 8px 8px 0;padding:8px 11px;font-size:12.5px}
+b{color:var(--forest)}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;div class=&quot;panel&quot;&gt;
+    &lt;h2&gt;Inputs&lt;/h2&gt;
+    &lt;label&gt;Stages to highlight n &lt;span class=&quot;val&quot; id=&quot;nv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;n&quot; min=&quot;1&quot; max=&quot;4&quot; step=&quot;1&quot; value=&quot;2&quot;&gt;
+    &lt;label&gt;Specific impulse I&lt;sub&gt;sp&lt;/sub&gt; &lt;span class=&quot;val&quot; id=&quot;iv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;isp&quot; min=&quot;200&quot; max=&quot;470&quot; step=&quot;5&quot; value=&quot;350&quot;&gt;
+    &lt;div class=&quot;chips&quot;&gt;&lt;span class=&quot;chip&quot; data-isp=&quot;265&quot;&gt;Solid 265&lt;/span&gt;&lt;span class=&quot;chip&quot; data-isp=&quot;350&quot;&gt;Kerolox 350&lt;/span&gt;&lt;span class=&quot;chip&quot; data-isp=&quot;450&quot;&gt;Hydrolox 450&lt;/span&gt;&lt;/div&gt;
+    &lt;label&gt;Structural fraction &amp;sigma; &lt;span class=&quot;val&quot; id=&quot;sv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;sig&quot; min=&quot;0.05&quot; max=&quot;0.20&quot; step=&quot;0.005&quot; value=&quot;0.10&quot;&gt;
+    &lt;label&gt;&amp;Delta;V target &lt;span class=&quot;val&quot; id=&quot;dv&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;input type=&quot;range&quot; id=&quot;d&quot; min=&quot;3&quot; max=&quot;12&quot; step=&quot;0.1&quot; value=&quot;9.4&quot;&gt;
+    &lt;div class=&quot;chips&quot;&gt;&lt;span class=&quot;chip&quot; data-d=&quot;7.8&quot;&gt;LEO ideal&lt;/span&gt;&lt;span class=&quot;chip&quot; data-d=&quot;9.4&quot;&gt;LEO real&lt;/span&gt;&lt;span class=&quot;chip&quot; data-d=&quot;12&quot;&gt;GTO&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;note&quot; id=&quot;msg&quot; style=&quot;margin-top:12px&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;div class=&quot;viz&quot;&gt;&lt;svg id=&quot;fig&quot; viewBox=&quot;0 0 520 260&quot; preserveAspectRatio=&quot;xMidYMid meet&quot;&gt;&lt;/svg&gt;&lt;/div&gt;
+    &lt;div id=&quot;state&quot; class=&quot;state&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;readout&quot;&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oL&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;payload fraction (n selected)&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oR&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;mass ratio / stage&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oV&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;v&lt;sub&gt;eq&lt;/sub&gt; = I&lt;sub&gt;sp&lt;/sub&gt;g&amp;#8320;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;n&quot; id=&quot;oN&quot;&gt;&lt;/div&gt;&lt;div class=&quot;l&quot;&gt;stages highlighted&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+var g0=9.80665;
+function $(i){return document.getElementById(i)}
+function lam(dv,veq,sig,n){var per=dv/n,R=Math.exp(per/veq),ls=(1/R-sig)/(1-sig);return {R:R,ls:ls,lt:(ls&gt;0?Math.pow(ls,n):ls)};}
+function upd(){
+  var n=+$(&#x27;n&#x27;).value, Isp=+$(&#x27;isp&#x27;).value, sig=+$(&#x27;sig&#x27;).value, dv=+$(&#x27;d&#x27;).value;
+  var veq=Isp*g0/1000;
+  $(&#x27;nv&#x27;).textContent=n; $(&#x27;iv&#x27;).textContent=Isp+&#x27; s&#x27;; $(&#x27;sv&#x27;).textContent=(sig*100).toFixed(1)+&#x27; %&#x27;;
+  $(&#x27;dv&#x27;).textContent=dv.toFixed(1)+&#x27; km/s&#x27;; $(&#x27;oV&#x27;).textContent=veq.toFixed(2)+&#x27; km/s&#x27;;
+  var res=[]; for(var k=1;k&lt;=4;k++) res.push(lam(dv,veq,sig,k));
+  var sel=res[n-1];
+  $(&#x27;oL&#x27;).textContent=sel.ls&gt;0?(sel.lt*100).toFixed(1)+&#x27;%&#x27;:&#x27;&lt; 0&#x27;;
+  $(&#x27;oR&#x27;).textContent=sel.R.toFixed(2)+&#x27;\u00d7&#x27;; $(&#x27;oN&#x27;).textContent=n;
+  draw(res,n);
+  var st=$(&#x27;state&#x27;);
+  if(sel.ls&lt;=0){st.style.background=&#x27;#b3502e&#x27;;st.textContent=&#x27;n = &#x27;+n+&#x27; is INFEASIBLE \u2014 payload fraction is negative&#x27;;}
+  else{st.style.background=&#x27;#008540&#x27;;st.textContent=&#x27;n = &#x27;+n+&#x27; delivers a payload fraction of &#x27;+(sel.lt*100).toFixed(1)+&#x27;%&#x27;;}
+  var m=$(&#x27;msg&#x27;),best=0;for(var k=0;k&lt;4;k++){if(res[k].ls&gt;0){best=k+1;break;}}
+  m.innerHTML=&#x27;&amp;Delta;V splits &lt;b&gt;equally&lt;/b&gt; across identical stages, so each stage needs only ratio &#x27;+ (res[n&gt;1?1:0]!=null?&#x27;&#x27; :&#x27;&#x27;) +&#x27;e&lt;sup&gt;&amp;Delta;V/(n\u00b7v&lt;sub&gt;eq&lt;/sub&gt;)&lt;/sup&gt;. Ratios &lt;i&gt;multiply&lt;/i&gt; while &amp;Delta;V &lt;i&gt;adds&lt;/i&gt; &amp;mdash; that is why going from one stage to &#x27;+(best||2)+&#x27; turns a negative payload positive. Beyond ~3 stages the gain is small and complexity wins.&#x27;;
+}
+function draw(res,n){
+  var s=$(&#x27;fig&#x27;),W=520,H=260,L=60,Rr=500,T=24,B=210,zero;
+  var vals=res.map(function(r){return r.ls&gt;0?r.lt:r.ls;});
+  var mx=Math.max(0.06,Math.max.apply(null,vals)), mn=Math.min(0,Math.min.apply(null,vals));
+  zero=B-(B-T)*(0-mn)/(mx-mn);
+  function Y(v){return B-(B-T)*(v-mn)/(mx-mn);}
+  var bw=70, gap=((Rr-L)-4*bw)/5, h=&#x27;&#x27;;
+  h+=&#x27;&lt;line x1=&quot;&#x27;+L+&#x27;&quot; y1=&quot;&#x27;+zero.toFixed(1)+&#x27;&quot; x2=&quot;&#x27;+Rr+&#x27;&quot; y2=&quot;&#x27;+zero.toFixed(1)+&#x27;&quot; stroke=&quot;#5a6b63&quot; stroke-width=&quot;1.3&quot;/&gt;&#x27;;
+  h+=&#x27;&lt;text x=&quot;&#x27;+(L-8)+&#x27;&quot; y=&quot;&#x27;+(zero+4).toFixed(1)+&#x27;&quot; text-anchor=&quot;end&quot; font-family=&quot;Calibri&quot; font-size=&quot;11&quot; fill=&quot;#5a6b63&quot;&gt;0&lt;/text&gt;&#x27;;
+  for(var k=0;k&lt;4;k++){
+    var v=vals[k], x=L+gap+k*(bw+gap), y=Y(Math.max(v,0)), y2=Y(Math.min(v,0));
+    var pos=v&gt;=0, col=pos?(k+1===n?&#x27;#008540&#x27;:&#x27;#7bbf97&#x27;):&#x27;#b3502e&#x27;;
+    var top=pos?y:zero, hgt=Math.abs((pos?y:y2)-zero);
+    h+=&#x27;&lt;rect x=&quot;&#x27;+x.toFixed(1)+&#x27;&quot; y=&quot;&#x27;+top.toFixed(1)+&#x27;&quot; width=&quot;&#x27;+bw+&#x27;&quot; height=&quot;&#x27;+Math.max(hgt,1).toFixed(1)+&#x27;&quot; rx=&quot;4&quot; fill=&quot;&#x27;+col+&#x27;&quot;&#x27;+(k+1===n?&#x27; stroke=&quot;#0b1f19&quot; stroke-width=&quot;2.4&quot;&#x27;:&#x27;&#x27;)+&#x27;/&gt;&#x27;;
+    var lbl=pos?(v*100).toFixed(1)+&#x27;%&#x27;:&#x27;neg&#x27;;
+    h+=&#x27;&lt;text x=&quot;&#x27;+(x+bw/2).toFixed(1)+&#x27;&quot; y=&quot;&#x27;+(pos?y-6:y2+16).toFixed(1)+&#x27;&quot; text-anchor=&quot;middle&quot; font-family=&quot;Cambria&quot; font-size=&quot;13&quot; font-weight=&quot;700&quot; fill=&quot;&#x27;+(pos?&#x27;#00573F&#x27;:&#x27;#b3502e&#x27;)+&#x27;&quot;&gt;&#x27;+lbl+&#x27;&lt;/text&gt;&#x27;;
+    h+=&#x27;&lt;text x=&quot;&#x27;+(x+bw/2).toFixed(1)+&#x27;&quot; y=&quot;&#x27;+(B+22)+&#x27;&quot; text-anchor=&quot;middle&quot; font-family=&quot;Calibri&quot; font-size=&quot;12&quot; fill=&quot;#5a6b63&quot;&gt;&#x27;+(k+1)+(k?&#x27; stages&#x27;:&#x27; stage&#x27;)+&#x27;&lt;/text&gt;&#x27;;
+  }
+  h+=&#x27;&lt;text x=&quot;&#x27;+((L+Rr)/2)+&#x27;&quot; y=&quot;16&quot; text-anchor=&quot;middle&quot; font-family=&quot;Calibri&quot; font-size=&quot;11.5&quot; font-weight=&quot;700&quot; fill=&quot;#00573F&quot;&gt;Payload fraction vs. number of stages&lt;/text&gt;&#x27;;
+  s.innerHTML=h;
+}
+document.querySelectorAll(&#x27;[data-isp]&#x27;).forEach(function(c){c.onclick=function(){$(&#x27;isp&#x27;).value=c.dataset.isp;upd();}});
+document.querySelectorAll(&#x27;[data-d]&#x27;).forEach(function(c){c.onclick=function(){$(&#x27;d&#x27;).value=c.dataset.d;upd();}});
+[&#x27;n&#x27;,&#x27;isp&#x27;,&#x27;sig&#x27;,&#x27;d&#x27;].forEach(function(i){$(i).addEventListener(&#x27;input&#x27;,upd)});
+upd();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+    </div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Staging</div><div class="title">The case for multi-stage &mdash; it rescues a chemical launcher</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="0.4"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <div class="steps stepper">
+      <div class="s"><span class="k">1</span><div class="sc"><div class="m">One kerolox stage</div><div class="ex">Ceiling 7.7 km/s $<$ 9.4 km/s &rarr; <b>infeasible</b>, at any payload.</div></div></div>
+      <div class="s"><span class="k">2</span><div class="sc"><div class="m">Split into two equal stages</div><div class="ex">Each does $\Delta V=4.7$ km/s: $\Lambda_i=e^{4700/3334}=4.09$, so $\pi_i=\dfrac{1/\Lambda_i-\varepsilon_s}{1-\varepsilon_s}=16.0\%$.</div></div></div>
+      <div class="s"><span class="k">3</span><div class="sc"><div class="m">Multiply the stages</div><div class="ex">$\pi=0.160\times0.160=2.6\%$ &rarr; 30 kg rides on a <b>~1.17 tonne</b> two-stage vehicle. <b>Feasible.</b></div></div></div>
+    </div>
+    <div class="verdict yes">Staging turns an impossible single-stage mission into a real one &mdash; this is why launchers stage.</div></div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Staging</div><div class="title">&hellip;but can staging rescue <i>water vapor</i>?</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="0.4"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <div class="lead">Staging is the right tool &mdash; so let us honestly apply it to water vapor.</div>
+    <div class="eqbox">$$\Delta V_{\max}^{\text{(vapor stage)}}=1079\,\ln\frac{1}{0.15}=2.05\text{ km/s per stage (zero payload)}$$</div>
+    <ul class="pts">
+      <li class="sm">To reach 9.4 km/s you would need $9.4/2.05\approx\mathbf{4.6}$ stages <b>just to move zero payload</b> &mdash; and every stage must still carry the entire stack above it, so the masses re-explode.</li>
+      <li class="sm">The key distinction: <b>staging cures the structure penalty, not a low $v_{eq}$.</b> Water vapor&rsquo;s exhaust speed is fundamentally too small, and no amount of staging raises $v_{eq}$.</li>
+    </ul>
+    <div class="verdict no">Multi-stage does not save water vapor &mdash; the limit is the propellant itself.</div></div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Verdict</div><div class="title">Requirements vs. capability</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="0.4"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="0.4"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="0.4"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Spin-off</text></svg>
+    <table class="mt">
+      <tr><th>Requirement</th><th>Value</th><th>Water vapor?</th></tr>
+      <tr><td>R0 &mdash; deliver payload</td><td>30 kg</td><td>&mdash;</td></tr>
+      <tr><td>R1 &mdash; orbital speed</td><td>7.64 km/s</td><td>&mdash;</td></tr>
+      <tr class="no"><td>R2 &mdash; velocity budget</td><td>9.4 km/s</td><td>needs $\Lambda\approx6100$ &mdash; <b>No</b></td></tr>
+      <tr class="no"><td>&nbsp;&nbsp;&middot; via a single stage</td><td>ceiling 2.05 km/s</td><td><b>No</b></td></tr>
+      <tr class="no"><td>&nbsp;&nbsp;&middot; via staging</td><td>$v_{eq}$ too low</td><td><b>No</b></td></tr>
+    </table>
+    <div class="verdict no">NOT FEASIBLE for launch &mdash; the propellant&rsquo;s $v_{eq}$ (1.08 km/s) is nowhere near the mission&rsquo;s $\Delta V$ (9.4 km/s).</div>
+    <div class="keyline">The fix is not better tanks or more stages &mdash; it is a <b>higher-$v_{eq}$ propellant (chemical) plus staging</b>. Which raises a better question&hellip;</div></div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Spin-off</div><div class="title">Spin-off: water vapor where &Delta;V is <i>small</i></div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="0.4"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="0.4"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Spin-off</text></svg>
+    <div class="lead">The mission failed because $\Delta V/v_{eq}=8.7$ was enormous. But <b>on orbit</b>, the jobs are tiny &mdash; tens to a couple hundred m/s &mdash; so that ratio becomes small, and the exponential barely bites.</div>
+    <div class="eqbox">$$\text{for }x=\tfrac{\Delta V}{v_{eq}}\ll1:\quad \Lambda=e^{x}\approx1+x\;\Rightarrow\; M_p\approx m_{pl}\,\frac{\Delta V}{v_{eq}}$$</div>
+    <div class="keyline">The cost becomes almost <b>linear</b> and cheap: a low $v_{eq}$ that was fatal for launch is perfectly acceptable when $\Delta V$ is only a whisper of it. So the honest question is not &ldquo;can water vapor launch?&rdquo; but <b>&ldquo;can water vapor maneuver?&rdquo;</b></div></div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Spin-off</div><div class="title">Sizing real on-orbit maneuvers for the 30 kg satellite</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="0.4"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="0.4"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Spin-off</text></svg>
+    <div class="lead">Take the same 30 kg satellite, now delivered to 450 km by a launcher, and price its on-orbit life in water ($v_{eq}=1079$ m/s):</div>
+    <table class="mt">
+      <tr><th>Maneuver</th><th>$\Delta V$</th><th>Water needed</th><th>Tank</th></tr>
+      <tr class="yes"><td>Drag make-up (3-year life)</td><td>~30 m/s</td><td>0.85 kg</td><td>~0.9 L</td></tr>
+      <tr class="yes"><td>Collision-avoidance budget</td><td>~25 m/s</td><td>0.70 kg</td><td>~0.7 L</td></tr>
+      <tr class="yes"><td>Small altitude trim (20 km)</td><td>~11 m/s</td><td>0.31 kg</td><td>~0.3 L</td></tr>
+      <tr class="yes"><td>End-of-life de-orbit (perigee 450&rarr;150 km)</td><td>~86 m/s</td><td>2.5 kg</td><td>~2.5 L</td></tr>
+      <tr><td><b>Full mission budget</b></td><td><b>~150 m/s</b></td><td><b>~4.5 kg</b></td><td><b>~4.5 L</b></td></tr>
+    </table>
+    <div class="keyline">A few kilograms of water and a few litres of tank &mdash; entirely practical on a 30 kg spacecraft. The same physics that made launch impossible makes station-keeping easy.</div></div></section>
+
+<section class="slide"><div class="inner">
+    <div class="kicker">Spin-off</div><div class="title">Can it work as a thruster? Verdict &amp; trade-offs</div><div class="accent"></div>
+    <svg class="track" viewBox="0 0 966 46" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:7.4vh;display:block;margin:.2vmin 0 1.2vmin"><polygon points="6,3 134,3 150,23 134,43 6,43 22,23" fill="#003E51" opacity="0.4"/><text x="78" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Requirements</text><polygon points="164,3 292,3 308,23 292,43 164,43 180,23" fill="#0e5a44" opacity="0.4"/><text x="236" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Propellant</text><polygon points="322,3 450,3 466,23 450,43 322,43 338,23" fill="#1c6f4f" opacity="0.4"/><text x="394" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Rocket eq.</text><polygon points="480,3 608,3 624,23 608,43 480,43 496,23" fill="#2a8460" opacity="0.4"/><text x="552" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Staging</text><polygon points="638,3 766,3 782,23 766,43 638,43 654,23" fill="#3f9a5a" opacity="0.4"/><text x="710" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="0.4">Verdict</text><polygon points="796,3 924,3 940,23 924,43 796,43 812,23" fill="#5aa870" opacity="1" stroke="#0b1f19" stroke-width="2.2"/><text x="868" y="28" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" font-weight="700" fill="#fff" opacity="1">Spin-off</text></svg>
+    <div class="verdict yes">YES &mdash; for small on-orbit &Delta;V (tens to ~a couple hundred m/s), water vapor is not only feasible but attractive.</div>
+    <div class="hist">
+      <div class="card g"><h3>Why it wins here</h3><ul class="pts" style="margin:.2vmin 0"><li class="sm">Safe &amp; &ldquo;green&rdquo; &mdash; non-toxic, non-flammable, easy to handle and licence.</li><li class="sm">Dense storage ($\rho=1000$) &mdash; small tanks; self-contained, mechanically simple.</li></ul></div>
+      <div class="card d"><h3>What limits it</h3><ul class="pts" style="margin:.2vmin 0"><li class="sm">Low $I_{sp}$ caps <b>total</b> $\Delta V$ (fine for station-keeping, not transfers).</li><li class="sm">Needs electrical power/heat to vaporize; low thrust &rarr; long burns; must avoid freezing.</li></ul></div>
+    </div>
+    <div class="keyline">This is a real, growing class of smallsat propulsion &mdash; steam/resistojet and water-electrolysis thrusters &mdash; precisely because on-orbit $\Delta V$ is small. <b>Match the propellant to the job.</b></div></div></section>
+
+<section class="slide dark"><div class="inner">
+    <div class="kicker">Worked solution &mdash; the takeaway</div>
+    <div class="title" style="font-size:4.2vmin">Requirements first; the rocket equation decides; match $v_{eq}$ to the job</div>
+    <div class="accent"></div>
+    <div class="subtitle">Mission analysis set the requirements &mdash; R1: 7.64 km/s orbital speed; R2: $\Delta V\approx9.4$ km/s. Water vapor offers only $v_{eq}\approx1.08$ km/s, forcing a mass ratio near 6100 that no structure survives, and staging &mdash; which cures dead-mass, not low $v_{eq}$ &mdash; cannot rescue it. <b>Launch: infeasible.</b> Yet where $\Delta V$ is small, the same propellant shines: a few kilograms of water run a 30 kg satellite&rsquo;s whole on-orbit life. <b>On-orbit thruster: feasible.</b></div>
+  </div></section>
+
+
+<div class="brand">KFUPM · AE 582 · WEEK 6 · L1</div>
+<div class="pageno" id="pageno"></div>
+<div class="nav">
+  <button id="prev" aria-label="previous">‹</button>
+  <div class="count" id="count">1 / 1</div>
+  <button id="next" aria-label="next">›</button>
+</div>
+<div id="stephint"></div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  const prog=document.getElementById('prog'), count=document.getElementById('count'),
+        pageno=document.getElementById('pageno'), brand=document.querySelector('.brand'),
+        stephint=document.getElementById('stephint');
+  const frags=s=>[...s.querySelectorAll('.stepper .s')];
+  function updateHint(){
+    const fr=frags(slides[i]);
+    if(!fr.length){stephint.style.display='none';return;}
+    const shown=fr.filter(x=>x.classList.contains('shown')).length;
+    stephint.style.display='block';
+    stephint.textContent = shown<fr.length ? ('\u25B8  press \u2192  for next step   \u00b7   '+shown+' / '+fr.length)
+                                            : ('\u2713  all steps shown   \u00b7   \u2192  continues');
+  }
+  function show(n){
+    const prev=i;
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    const revealAll = i<prev;
+    frags(slides[i]).forEach(x=>x.classList.toggle('shown',revealAll));
+    count.textContent=(i+1)+" / "+slides.length;
+    pageno.textContent=(i+1);
+    prog.style.width=((i)/(slides.length-1)*100)+"%";
+    document.getElementById('prev').disabled=(i===0);
+    document.getElementById('next').disabled=(i===slides.length-1);
+    const dark=slides[i].classList.contains('dark');
+    pageno.style.color=dark?'#9fb6bd':'var(--mut)'; brand.style.color=dark?'#9fb6bd':'var(--mut)';
+    updateHint();
+  }
+  function advance(){
+    const fr=frags(slides[i]);
+    const hidden=fr.find(x=>!x.classList.contains('shown'));
+    if(hidden){hidden.classList.add('shown');updateHint();return;}
+    show(i+1);
+  }
+  function retreat(){
+    const fr=frags(slides[i]);
+    const shown=fr.filter(x=>x.classList.contains('shown'));
+    if(shown.length){shown[shown.length-1].classList.remove('shown');updateHint();return;}
+    show(i-1);
+  }
+  document.getElementById('next').onclick=advance;
+  document.getElementById('prev').onclick=retreat;
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){advance();e.preventDefault();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){retreat();e.preventDefault();}
+    else if(e.key==='Home'){show(0);} else if(e.key==='End'){show(slides.length-1);}
+    else if(e.key==='f'||e.key==='F'){ if(!document.fullscreenElement)document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  });
+  let sx=null;
+  document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  document.addEventListener('touchend',e=>{ if(sx===null)return; const dx=e.changedTouches[0].clientX-sx;
+     if(Math.abs(dx)>50){dx<0?advance():retreat();} sx=null;},{passive:true});
+  show(0);
+</script>
+</body>
+</html>
