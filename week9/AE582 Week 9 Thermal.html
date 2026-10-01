@@ -1,0 +1,1863 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>AE582 Week 9 Thermal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one 16:9-ish slide on a stage, KFUPM identity bar on the left edge, fixed nav at the bottom; "handout" mode stacks every slide. */
+:root{
+  --bg:#EEF3F0; --paper:#FFFFFF; --ink:#0F2A33; --muted:#52666B; --line:#D3DEDA; --soft:#F3F7F5;
+  --green:#008540; --green-ink:#006B34; --gold:#DAC961; --gold-soft:#F6F0CC; --gold-ink:#6E6212;
+  --petrol:#003E51; --on-dark:#F2F7F4;
+  --hot:#B8430F; --cold:#1D6FA3;
+  --f-display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",Helvetica,Arial,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#08161B; --paper:#0F242B; --ink:#E6EFEB; --muted:#98ADAA; --line:#27423F; --soft:#132D34;
+  --green:#34B26E; --green-ink:#5CCB8E; --gold:#DAC961; --gold-soft:#2D2B14; --gold-ink:#E3D57C;
+  --petrol:#0A3442; --on-dark:#F2F7F4; --hot:#F08A55; --cold:#6DB3E2; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#08161B; --paper:#0F242B; --ink:#E6EFEB; --muted:#98ADAA; --line:#27423F; --soft:#132D34;
+  --green:#34B26E; --green-ink:#5CCB8E; --gold:#DAC961; --gold-soft:#2D2B14; --gold-ink:#E3D57C;
+  --petrol:#0A3442; --on-dark:#F2F7F4; --hot:#F08A55; --cold:#6DB3E2; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.45;margin:0}
+.wrap{padding-inline:16px;padding-block:14px 90px;max-width:1240px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+.slide{background:var(--paper);border:1px solid var(--line);border-radius:6px;position:relative;
+  min-height:min(700px,calc(100vh - 120px));padding:30px 40px 44px 52px;display:flex;flex-direction:column;gap:16px;overflow:hidden}
+.slide::before{content:"";position:absolute;left:0;top:0;bottom:0;width:12px;background:linear-gradient(var(--green) 0 78%,var(--gold) 78% 100%)}
+.eyebrow{font-family:var(--f-display);font-weight:700;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green-ink);font-stretch:110%}
+.slide h2{font-size:clamp(24px,2.7vw,34px);font-weight:750;font-stretch:88%;color:var(--ink);line-height:1.1}
+.num{position:absolute;right:18px;bottom:12px;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.lead{color:var(--muted);max-width:72ch;margin:0}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;align-items:start}
+.cols3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;align-items:start}
+.cols>*,.cols3>*{min-width:0}
+.block h3{font-size:17px;font-weight:700;font-stretch:95%;color:var(--petrol);margin-bottom:6px}
+:root[data-theme="dark"] .block h3{color:#8FD0E0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .block h3{color:#8FD0E0}}
+ul.pts{margin:0;padding-left:1.1em;display:grid;gap:4px}
+ul.pts li::marker{color:var(--green)}
+.tile{background:var(--soft);border-top:3px solid var(--green);padding:12px 14px;border-radius:0 0 4px 4px}
+.tile b{display:block;font-family:var(--f-display);font-stretch:95%;margin-bottom:2px}
+.tile.gold{border-top-color:var(--gold)}
+.stat{font-family:var(--f-display);font-weight:800;font-size:30px;font-stretch:85%;color:var(--green-ink);line-height:1}
+.eq{font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:21px;background:var(--gold-soft);padding:10px 16px;border-radius:4px;overflow-x:auto;white-space:nowrap}
+.eq.sm{font-size:18px;padding:7px 12px}
+.eq var,.m var{font-style:italic}
+.m{font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:1.06em}
+.note{border-left:4px solid var(--gold);background:var(--soft);padding:10px 14px;font-size:15.5px}
+.src{font-size:12.5px;color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+th{font-family:var(--f-display);font-stretch:95%;text-align:left;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--green);padding:6px 8px}
+td{border-bottom:1px solid var(--line);padding:6px 8px}
+.tscroll{overflow-x:auto}
+.hot{color:var(--hot)} .cold{color:var(--cold)}
+/* title & session slides */
+.slide.cover,.slide.session{background:var(--petrol);color:var(--on-dark);border-color:transparent;justify-content:center}
+.slide.cover .eyebrow,.slide.session .eyebrow{color:var(--gold)}
+.cover h1{font-size:clamp(40px,6vw,76px);font-weight:800;font-stretch:80%;line-height:.95;color:var(--on-dark)}
+.cover p{margin:0;max-width:60ch;opacity:.9}
+.session .big{font-family:var(--f-display);font-weight:800;font-stretch:75%;font-size:clamp(80px,13vw,170px);line-height:.85;color:var(--gold)}
+.session h2{color:var(--on-dark);font-size:clamp(28px,3.4vw,44px)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid rgba(218,201,97,.6);color:var(--on-dark);padding:4px 11px;border-radius:99px;font-size:14px}
+.slide.cover .num,.slide.session .num{color:rgba(242,247,244,.6)}
+/* agenda */
+ol.agenda{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px 26px;counter-reset:a}
+ol.agenda li{counter-increment:a;display:flex;gap:14px;align-items:baseline;border-bottom:1px solid var(--line);padding:8px 0}
+ol.agenda li::before{content:counter(a);font-family:var(--f-display);font-weight:800;font-size:26px;color:var(--green);min-width:1.2em}
+/* worked example */
+.given{background:var(--soft);padding:14px 16px;border-radius:4px}
+.given h3{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--green-ink);margin:0 0 6px}
+ol.steps{list-style:none;margin:0;padding:0;counter-reset:s;display:grid;gap:8px}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}
+ol.steps li::before{content:counter(s);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;font-weight:700;font-size:14px}
+.answer{background:var(--green);color:#fff;padding:10px 16px;border-radius:4px;font-weight:600}
+:root[data-theme="dark"] .answer{color:#04160C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .answer{color:#04160C}}
+/* interactive */
+.lab{display:grid;grid-template-columns:minmax(250px,330px) 1fr;gap:22px;align-items:start}
+.lab>*{min-width:0}
+@media (max-width:760px){.lab{grid-template-columns:1fr}}
+.ctrl{display:grid;gap:10px;background:var(--soft);padding:14px;border-radius:4px}
+.ctrl label{display:grid;gap:2px;font-size:14px}
+.ctrl .lv{display:flex;justify-content:space-between;gap:8px}
+.ctrl output{font-family:var(--f-mono);font-size:13px;color:var(--green-ink)}
+input[type=range]{width:100%;accent-color:var(--green)}
+select,button{font:inherit}
+select{padding:5px 8px;border:1px solid var(--line);border-radius:4px;background:var(--paper);color:var(--ink)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:5px 11px;border-radius:4px;cursor:pointer;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.readout div{border-top:2px solid var(--line);padding-top:6px}
+.readout small{display:block;color:var(--muted);font-size:12.5px;text-transform:uppercase;letter-spacing:.06em}
+.readout strong{font-family:var(--f-display);font-size:26px;font-stretch:85%;font-variant-numeric:tabular-nums}
+.bar{display:flex;height:26px;border-radius:3px;overflow:hidden;background:var(--line)}
+.bar span{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+svg text{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+.chartbox{overflow-x:auto}
+/* quiz */
+.q{border-top:1px solid var(--line);padding-top:10px}
+.q p{margin:0 0 6px;font-weight:600}
+.q .opts{display:flex;flex-wrap:wrap;gap:6px}
+.q button{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:4px;padding:5px 10px;cursor:pointer;font-size:14.5px;text-align:left}
+.q button.ok{background:var(--green);color:#fff;border-color:var(--green)}
+.q button.no{border-color:var(--hot);color:var(--hot)}
+.q .fb{font-size:14.5px;color:var(--muted);margin-top:6px;min-height:1.2em}
+.reveal-btn{align-self:flex-start}
+.try{font-weight:600;color:var(--green-ink)}
+/* video list */
+.vids{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.vid{display:flex;gap:12px;align-items:center;border:1px solid var(--line);padding:12px;border-radius:4px;color:inherit;text-decoration:none}
+.vid:hover,.vid:focus-visible{border-color:var(--green)}
+.vid .play{flex:none;width:44px;height:44px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:16px}
+.vid small{display:block;color:var(--muted)}
+/* diagram of temperature ranges */
+.ranges{display:grid;gap:6px;font-size:13.5px}
+.rrow{display:grid;grid-template-columns:150px 1fr;gap:10px;align-items:center}
+.rtrack{position:relative;height:22px;background:var(--soft);border-radius:3px}
+.rtrack span{position:absolute;top:0;bottom:0;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:11.5px;color:#fff;white-space:nowrap}
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:1px solid var(--line);padding:8px 16px calc(8px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;z-index:5}
+.nav button{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:4px;padding:6px 12px;cursor:pointer;font-size:14px}
+.nav button.primary{background:var(--green);border-color:var(--green);color:#fff}
+.nav .count{font-family:var(--f-mono);font-size:13px;color:var(--muted);min-width:70px;text-align:center}
+.prog{position:fixed;left:0;top:0;height:3px;background:var(--gold);z-index:6;transition:width .2s}
+.overview{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.overview button{text-align:left;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:4px;padding:10px;cursor:pointer;font-size:14px;display:grid;gap:3px}
+.overview button small{font-family:var(--f-mono);color:var(--muted);font-size:11.5px}
+.overview button.sess{background:var(--petrol);color:var(--on-dark)}
+[hidden]{display:none!important}
+body.handout .slide{display:flex!important;margin-bottom:18px}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media (max-width:640px){.slide{padding:22px 16px 40px 26px;min-height:0}.slide::before{width:7px}body{font-size:16px}.rrow{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="prog" id="prog"></div>
+<div class="wrap">
+<div id="deck">
+
+<!-- ============ COVER ============ -->
+<section class="slide cover" data-t="Cover">
+  <div class="eyebrow">King Fahd University of Petroleum &amp; Minerals · Aerospace Engineering</div>
+  <h1>AE 582 Satellite Engineering<br>Week 9 · Thermal Control</h1>
+  <p>Sessions 9.1 and 9.2 · lectures, derivations, worked examples, live calculators &amp; exercises</p>
+  <p style="opacity:.75">Dr. Juan Carlos Martínez Oliveros · Aerospace Engineering</p>
+  <div class="chips"><span class="chip">9.1 Environment &amp; energy balance</span><span class="chip">9.2 Hardware, design, analysis &amp; test</span><span class="chip">Case study: Parker Solar Probe</span></div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Where we are">
+  <div class="eyebrow">Week 9 · Roadmap</div>
+  <h2>Thermal control: from the energy balance to the vacuum chamber</h2>
+  <div class="cols3">
+    <div class="tile gold"><b>Week 8 recap</b>Attitude control &amp; power: the PEL tells us how many watts every box dissipates. Every one of those watts becomes heat that thermal must reject.</div>
+    <div class="tile"><b>9.1 · Environment &amp; energy balance</b>Heat sources in orbit, β angle and eclipses, α and ε, equilibrium and transient temperature of a spacecraft.</div>
+    <div class="tile"><b>9.2 · Hardware, design, analysis &amp; test</b>The passive/active toolbox, radiator and heater sizing, lumped-parameter models, thermal-vacuum testing.</div>
+  </div>
+  <div class="cols">
+    <div class="block"><h3>The whole idea in one sentence</h3>
+      <p class="lead" style="color:var(--ink)">Keep every component inside its allowable temperature range, in every phase of the mission, with margin, using the least mass, power and cost.</p></div>
+    <div class="block"><h3>Where thermal sits in the bus</h3>
+      <p class="lead">Thermal is one of the bus subsystems in Fortescue's Fig. 1.3 (chapters 1 and 6). It depends on almost every other subsystem: power gives it dissipations, structures gives it the layout, AOCS gives it the attitude, and it hands heater power and sensor channels back to them.</p></div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<!-- ============ SESSION 9.1 ============ -->
+<section class="slide session" data-t="Session 9.1" data-s="9.1">
+  <div class="eyebrow">Week 9 · Session 1</div>
+  <div class="big">9.1</div>
+  <h2>The thermal environment &amp; the energy balance</h2>
+  <p style="margin:0;max-width:60ch;opacity:.9">Where the heat comes from, where it goes, and what temperature a spacecraft settles at</p>
+  <div class="chips"><span class="chip">Why thermal?</span><span class="chip">Margins</span><span class="chip">Sun, albedo, Earth IR</span><span class="chip">β &amp; eclipses</span><span class="chip">α / ε</span><span class="chip">Equilibrium</span><span class="chip">Transients</span></div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Agenda 9.1">
+  <div class="eyebrow">Week 9 · Session 1 · Agenda</div>
+  <h2>Session 9.1 — plan for today</h2>
+  <ol class="agenda">
+    <li>Why spacecraft need thermal control</li>
+    <li>Temperature ranges &amp; margin philosophy</li>
+    <li>The space thermal environment</li>
+    <li>Orbit geometry: β angle &amp; eclipses</li>
+    <li>Heat transfer in vacuum</li>
+    <li>Thermo-optical properties &amp; coatings</li>
+    <li>Derivation &amp; worked example: equilibrium temperature</li>
+    <li>Thermal mass &amp; orbital transients</li>
+    <li>View factors · quick check · wrap-up</li>
+  </ol>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Why thermal control?">
+  <div class="eyebrow">Week 9 · Session 9.1</div>
+  <h2>Why spacecraft need thermal control</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Two main reasons</h3>
+      <ul class="pts">
+        <li><b>Performance and life.</b> Electronics, batteries and mechanisms work within narrow ranges (roughly −15 °C to +50 °C). Outside them they drift, fail or age faster.</li>
+        <li><b>Structural and optical integrity.</b> Materials expand and contract; gradients distort structures. Telescopes may need stability to a fraction of a kelvin.</li>
+      </ul>
+      <h3 style="margin-top:14px">Why space makes it hard</h3>
+      <ul class="pts">
+        <li>No air: no convection. Radiation is the only way to reject heat.</li>
+        <li>Full Sun near Earth heats surfaces towards ~390 K; shadow drops towards ~3 K.</li>
+        <li>The Sun and Earth move around the spacecraft every orbit, and eclipses switch the Sun off.</li>
+        <li>Cold detectors and warm electronics on one vehicle mean several thermal zones.</li>
+        <li>No repairs after launch, and heat pipes behave differently in 1 g during test.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>Typical allowable temperatures (°C)</h3>
+      <div class="tscroll"><table>
+        <tr><th>Component</th><th>Operating</th><th>Survival</th></tr>
+        <tr><td>Digital electronics</td><td>0 to 50</td><td>−20 to 70</td></tr>
+        <tr><td>Analog electronics</td><td>0 to 40</td><td>−20 to 70</td></tr>
+        <tr><td>Batteries</td><td>10 to 20</td><td>0 to 35</td></tr>
+        <tr><td>IR detectors</td><td>−269 to −173</td><td>−269 to 35</td></tr>
+        <tr><td>Solid-state particle detectors</td><td>−35 to 0</td><td>−35 to 35</td></tr>
+        <tr><td>Momentum wheels</td><td>0 to 50</td><td>−20 to 70</td></tr>
+        <tr><td>Solar panels</td><td>−100 to 125</td><td>−100 to 125</td></tr>
+        <tr><td>Propulsion tank, valves</td><td>0 to 40</td><td>−10 to 50</td></tr>
+      </table></div>
+      <p class="src">J. C. Keesee (MIT); E. Grob, NASA GSFC. Batteries are the narrowest box on most buses.</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Thermal control as a mission driver">
+  <div class="eyebrow">Week 9 · Session 9.1</div>
+  <h2>Thermal control is a mission driver, not an afterthought</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>First, how is it done on Earth?</h3>
+      <p style="margin:0 0 8px">A desktop CPU (Intel Core i9-9980XE) dissipates up to <b>165 W</b> and must keep its die below <b>84 °C</b>. The solution: a heat pipe carries the heat to a finned radiator, and a fan blows air through it.</p>
+      <p style="margin:0">In orbit there is no air for the fan. The same heat pipe works (better, with no gravity), but the "radiator" must now reject everything by radiation, so it is much larger and must not see the Sun.</p>
+      <div class="note" style="margin-top:12px">The workflow is the same for every mission: <b>mission objectives</b> → <b>orbit, attitude and requirements</b> (power, temperatures, gradients, stability) → <b>thermal control methods and models</b> (worst cases) → <b>testing</b> (balance, cycling, solar simulation).</div>
+    </div>
+    <div class="block">
+      <h3>Missions whose design was shaped by thermal</h3>
+      <div class="tscroll"><table>
+        <tr><th>Mission</th><th>Thermal driver</th></tr>
+        <tr><td>Hubble (1990)</td><td>MLI and silvered-Teflon skin for a stable optical bench in LEO</td></tr>
+        <tr><td>ISO, Herschel</td><td>Superfluid-helium cryostats: helium supply set mission lifetime</td></tr>
+        <tr><td>Planck (2009)</td><td>A cooling chain from 300 K to 0.1 K</td></tr>
+        <tr><td>Curiosity, Perseverance</td><td>Pumped fluid loop distributes ≈ 2 kW of RTG waste heat</td></tr>
+        <tr><td>Solar Orbiter (2020)</td><td>Heat shield at 0.28 AU, ≈ 17 500 W/m²</td></tr>
+        <tr><td>Parker Solar Probe (2018)</td><td>Heat shield at 0.046 AU, ≈ 475 suns (case study in 9.2)</td></tr>
+        <tr><td>JWST (2021)</td><td>Five-layer sunshield for passive cooling to ≈ 40 K; MIRI cooler to ≈ 7 K</td></tr>
+        <tr><td>Athena (2030s)</td><td>X-IFU detector at 50 mK with &lt; 1 µW of cooling</td></tr>
+      </table></div>
+      <p class="src">After L. Jacques, CSL/ULiège (2022).</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Temperature ranges & margins">
+  <div class="eyebrow">Week 9 · Session 9.1</div>
+  <h2>Temperature definitions: predicted, design, acceptance, qualification</h2>
+  <div class="cols">
+    <div class="block">
+      <ul class="pts">
+        <li><b>Calculated range</b>: what the thermal model predicts for the nominal worst cases.</li>
+        <li><b>Predicted range</b> = calculated ± <b>uncertainty</b> (model, properties, dissipations). Typically ±10 K early, reduced after the model is correlated to test.</li>
+        <li><b>Design range</b> (allowable flight temperatures): the predicted range must fit inside it.</li>
+        <li><b>Acceptance range</b> = design ± acceptance margin (≈ 5 K). Every flight unit is tested here.</li>
+        <li><b>Qualification range</b> = acceptance ± qualification margin (≈ 5 K). Tested once, on a qualification unit.</li>
+      </ul>
+      <div class="note" style="margin-top:10px">NASA GSFC practice (GOLD rules): hold <b>5 °C</b> margin to limits, or, for heater-controlled parts, use no more than <b>70 %</b> of heater capacity in the worst cold case.</div>
+    </div>
+    <div class="block">
+      <h3>Example: an electronics box with a −10 to +40 °C design range</h3>
+      <div class="ranges" id="rangesViz" aria-label="Nested temperature ranges"></div>
+      <p class="src">Scale −30 °C to +60 °C. After ECSS-E-ST-31C Fig. 3-1; margins are typical values, set per project.</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="The space thermal environment">
+  <div class="eyebrow">Week 9 · Session 9.1</div>
+  <h2>The space thermal environment: five terms</h2>
+  <div class="cols3">
+    <div class="tile"><b>Direct solar</b><span class="stat">1367</span> W/m² mean at 1 AU. Largest source for most missions. Parallel beam (Sun subtends ≈ 0.5°).</div>
+    <div class="tile"><b>Albedo</b><span class="stat">0.25–0.35</span> orbit-average fraction of sunlight reflected by Earth. 0.8 over cloud and snow, 0.05 over ocean and forest.</div>
+    <div class="tile"><b>Earth IR (OLR)</b><span class="stat">≈ 190–265</span> W/m² emitted by an Earth at ≈ 255 K. Present in eclipse too.</div>
+    <div class="tile gold"><b>Internal dissipation</b>Every watt a box uses ends up as heat. See the CubeSat power table: 0.73 W of heat on a 14.6 W bus.</div>
+    <div class="tile gold"><b>Deep space</b><span class="stat">2.7–4 K</span> The only heat sink. Cold enough that a room-temperature radiator barely notices it.</div>
+  </div>
+  <div class="cols">
+    <div class="block"><h3>Design values (JAXA thermal control standard)</h3>
+      <div class="tscroll"><table>
+        <tr><th>Case</th><th>G<sub>s</sub> W/m²</th><th>q<sub>I</sub> W/m²</th><th>albedo a</th><th>When</th></tr>
+        <tr><td class="hot">MAX</td><td>1414</td><td>261</td><td>0.4</td><td>Winter solstice (perihelion, 0.983 AU)</td></tr>
+        <tr><td>AVG</td><td>1366</td><td>237</td><td>0.3</td><td>Equinoxes</td></tr>
+        <tr><td class="cold">MIN</td><td>1318</td><td>189</td><td>0.2</td><td>Summer solstice (aphelion, 1.017 AU)</td></tr>
+      </table></div></div>
+    <div class="block"><h3>Other things to remember</h3>
+      <ul class="pts">
+        <li>Earth IR from energy balance: <span class="m"><var>q</var><sub>IR</sub> = (1 − <var>a</var>) <var>G</var><sub>s</sub> / 4</span> ≈ 240 W/m².</li>
+        <li>GEO, L1/L2 and cruise: albedo and planet IR are usually negligible.</li>
+        <li>Launch: fairing up to ≈ 1000 W/m² (Ariane/Vega), then free-molecular heating after fairing separation.</li>
+        <li>Entry: aeroheating, handled by a thermal protection system (Session 9.2).</li>
+      </ul></div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Solar flux vs distance">
+  <div class="eyebrow">Week 9 · Session 9.1</div>
+  <h2>Solar flux falls with the square of distance</h2>
+  <div class="cols">
+    <div class="block">
+      <div class="eq"><var>J</var><sub>s</sub> = <var>P</var> / (4π<var>d</var>²),&nbsp;&nbsp; <var>P</var> = 3.856 × 10<sup>26</sup> W&nbsp;&nbsp;⇒&nbsp;&nbsp;<var>J</var><sub>s</sub> ≈ 1367 / <var>d</var><sub>AU</sub>² W/m²</div>
+      <div class="tscroll" style="margin-top:12px"><table>
+        <tr><th>Body</th><th>J<sub>s</sub> (% of 1 AU)</th><th>Planetary albedo</th></tr>
+        <tr><td>Mercury</td><td>667</td><td>0.06–0.10</td></tr>
+        <tr><td>Venus</td><td>191</td><td>0.60–0.76</td></tr>
+        <tr><td>Earth</td><td>100</td><td>0.31–0.39</td></tr>
+        <tr><td>Moon</td><td>100</td><td>0.07</td></tr>
+        <tr><td>Mars</td><td>43.1</td><td>0.15</td></tr>
+        <tr><td>Jupiter</td><td>3.69</td><td>0.41–0.52</td></tr>
+        <tr><td>Saturn</td><td>1.10</td><td>0.42–0.76</td></tr>
+      </table></div>
+      <p class="src">Fortescue, Table 11.1.</p>
+    </div>
+    <div class="block">
+      <h3>Two missions at the extremes</h3>
+      <ul class="pts">
+        <li><b>Solar Orbiter</b> at 0.28 AU sees ≈ 17 500 W/m², thirteen times Earth's. A heat shield protects everything behind it; instruments look through small feedthroughs.</li>
+        <li><b>New Horizons</b> at Pluto receives about 0.1 % of 1 AU flux. The design keeps heat in: MLI everywhere, RTG waste heat, and louvers that close when cold.</li>
+      </ul>
+      <div class="note" style="margin-top:12px">Try it on the next calculator slides: set <var>d</var> = 0.28 AU or 1.52 AU and watch the equilibrium temperature move.</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="β angle & eclipses (interactive)">
+  <div class="eyebrow">Week 9 · Session 9.1 · Interactive</div>
+  <h2>Orbit geometry: the β angle sets how long you sit in shadow</h2>
+  <div class="lab">
+    <div class="ctrl">
+      <label for="ecAlt"><span class="lv">Altitude <output id="ecAltO"></output></span><input type="range" id="ecAlt" min="200" max="36000" step="50" value="500"></label>
+      <label for="ecBeta"><span class="lv">β angle <output id="ecBetaO"></output></span><input type="range" id="ecBeta" min="0" max="90" step="1" value="0"></label>
+      <div class="seg" role="group" aria-label="Presets">
+        <button class="btn" data-ec="400,0">ISS-like</button><button class="btn" data-ec="525,65">SSO dawn–dusk</button><button class="btn" data-ec="35786,0">GEO equinox</button>
+      </div>
+      <p class="src" style="margin:0">β = minimum angle between the Sun vector and the orbit plane (−90° to +90°). Eclipse ends when |β| &gt; β*, where sin β* = R<sub>E</sub> / (R<sub>E</sub> + h).</p>
+    </div>
+    <div style="display:grid;gap:12px">
+      <div class="readout">
+        <div><small>Orbit period</small><strong id="ecP"></strong></div>
+        <div><small>Eclipse fraction</small><strong id="ecF"></strong></div>
+        <div><small>Eclipse duration</small><strong id="ecD"></strong></div>
+        <div><small>β* (no eclipse above)</small><strong id="ecB"></strong></div>
+      </div>
+      <div class="chartbox"><svg id="ecChart" viewBox="0 0 560 220" width="100%" role="img" aria-label="Eclipse fraction versus beta angle"></svg></div>
+      <div class="eq sm">f<sub>ecl</sub> = (1/180°) · cos<sup>−1</sup>[ √(<var>h</var>² + 2<var>R</var><sub>E</sub><var>h</var>) / ((<var>R</var><sub>E</sub> + <var>h</var>) cos β) ] &nbsp; for |β| &lt; β*</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Heat transfer in vacuum">
+  <div class="eyebrow">Week 9 · Session 9.1</div>
+  <h2>Heat transfer in vacuum: three modes become two</h2>
+  <div class="tscroll"><table>
+    <tr><th></th><th>Conduction</th><th>Convection</th><th>Radiation</th></tr>
+    <tr><td>Material parameter</td><td>thermal conductivity <var>k</var></td><td>film coefficient <var>h</var>, fluid</td><td>thermo-optical α, ε</td></tr>
+    <tr><td>Geometric parameter</td><td>cross-section <var>A</var>, length <var>L</var></td><td>surface area</td><td>area, view factor</td></tr>
+    <tr><td>Two-node law</td><td class="m"><var>Q</var> = <var>k A</var> (<var>T</var><sub>2</sub> − <var>T</var><sub>1</sub>) / <var>L</var></td><td class="m"><var>Q</var> = <var>h A</var> (<var>T</var><sub>s</sub> − <var>T</var><sub>f</sub>)</td><td class="m"><var>Q</var> = σ ε <var>A F</var> (<var>T</var><sub>1</sub><sup>4</sup> − <var>T</var><sub>2</sub><sup>4</sup>)</td></tr>
+    <tr><td>In orbit?</td><td>yes, inside the spacecraft</td><td>no (except fluid loops, ground, entry)</td><td>yes, the only path to space</td></tr>
+    <tr><td>Dissipate 10 W from a 100 × 100 mm plate at 20 °C surroundings</td><td>copper strap 50 mm², 100 mm long: <b>71 °C</b></td><td>1 m/s breeze, <var>h</var> ≈ 50: <b>40 °C</b></td><td>ε = 1, <var>F</var> = 1: <b>125 °C</b></td></tr>
+  </table></div>
+  <div class="cols">
+    <div class="note">The last row is the lesson. The same 10 W that a gentle breeze removes at 40 °C needs the plate to reach 125 °C when radiation is the only path. On the ground, fans hide this problem. In space you design for it.</div>
+    <div class="block"><h3>Conduction details that matter</h3>
+      <ul class="pts">
+        <li><var>k</var> varies with temperature and with the exact alloy: aluminium 150–237, copper ≈ 390–401 W/m·K; silica aerogel 0.02.</li>
+        <li>Two bolted parts touch only at a few points. Interface conductance is 0.1–2 W/in²·K, bare to good filler.</li>
+      </ul></div>
+  </div>
+  <p class="src">Example after L. Jacques, CSL/ULiège (2022).</p>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Thermo-optical properties">
+  <div class="eyebrow">Week 9 · Session 9.1</div>
+  <h2>Thermo-optical properties: two wavebands, two numbers</h2>
+  <div class="cols">
+    <div class="block">
+      <ul class="pts">
+        <li>Incident radiation is absorbed, reflected or transmitted: <span class="m">α + ρ + τ = 1</span>.</li>
+        <li><b>Kirchhoff's law</b>: at a given wavelength and direction, absorptance equals emittance, <span class="m">α(λ) = ε(λ)</span>.</li>
+        <li>The Sun (≈ 5800 K) emits at 0.25–2.5 µm. A spacecraft (≈ 300 K) emits at ≈ 3–40 µm. The bands barely overlap.</li>
+        <li>So engineers use two grey numbers: <b>α</b>, the solar absorptance, and <b>ε</b>, the IR emittance (which is also the IR absorptance).</li>
+      </ul>
+      <div class="eq sm" style="margin-top:10px">α<sub>vis</sub> + ρ<sub>vis</sub> + τ<sub>vis</sub> = 1 &nbsp;&nbsp;·&nbsp;&nbsp; ε<sub>IR</sub> + ρ<sub>IR</sub> + τ<sub>IR</sub> = 1</div>
+      <p class="src">ECSS convention: α weighted by the solar spectrum over 0.25–2.5 µm; ε weighted by a 300 K blackbody over 3–20 µm.</p>
+    </div>
+    <div class="block">
+      <h3>Measured values</h3>
+      <div class="tscroll"><table>
+        <tr><th>Surface</th><th>α</th><th>ε</th><th>α / ε</th></tr>
+        <tr><td>Polished aluminium</td><td>0.09</td><td>0.03</td><td>3.0</td></tr>
+        <tr><td>Polished gold</td><td>0.30</td><td>0.03</td><td>10</td></tr>
+        <tr><td>White paint</td><td>0.20</td><td>0.92</td><td>0.22</td></tr>
+        <tr><td>Black paint</td><td>0.92</td><td>0.89</td><td>1.03</td></tr>
+        <tr><td>Silver Teflon (OSR)</td><td>0.08</td><td>0.80</td><td>0.10</td></tr>
+        <tr><td>Aluminized Kapton</td><td>0.38</td><td>0.67</td><td>0.56</td></tr>
+        <tr><td>Anodized aluminium</td><td>—</td><td>0.77</td><td>—</td></tr>
+        <tr><td>Solar cells (typ.)</td><td>≈ 0.9</td><td>≈ 0.85</td><td>≈ 1.06</td></tr>
+      </table></div>
+      <p class="src">A thermal camera reads higher-ε surfaces as hotter even at equal temperature: emittance, not temperature, sets what it sees.</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Coatings set the temperature (interactive)">
+  <div class="eyebrow">Week 9 · Session 9.1 · Interactive</div>
+  <h2>Coatings set the temperature: an isothermal sphere in sunlight</h2>
+  <div class="lab">
+    <div class="ctrl">
+      <div class="seg" role="group" aria-label="Coating presets" id="spPresets">
+        <button data-a="1" data-e="1">Blackbody</button><button data-a="0.3" data-e="0.03">Polished gold</button><button data-a="0.2" data-e="0.85">White paint</button><button data-a="0.92" data-e="0.89">Black paint</button><button data-a="0.08" data-e="0.8">OSR</button>
+      </div>
+      <label for="spA"><span class="lv">Solar absorptance α <output id="spAO"></output></span><input type="range" id="spA" min="0.02" max="1" step="0.01" value="0.2"></label>
+      <label for="spE"><span class="lv">IR emittance ε <output id="spEO"></output></span><input type="range" id="spE" min="0.02" max="1" step="0.01" value="0.85"></label>
+      <label for="spD"><span class="lv">Distance from Sun <output id="spDO"></output></span><input type="range" id="spD" min="0.25" max="5.2" step="0.01" value="1"></label>
+    </div>
+    <div style="display:grid;gap:14px">
+      <div class="eq"><var>α q</var><sub>s</sub> π<var>r</var>² = 4π<var>r</var>² ε σ <var>T</var><sup>4</sup> &nbsp;⇒&nbsp; <var>T</var> = [ (α/ε) · <var>q</var><sub>s</sub> / (4σ) ]<sup>1/4</sup></div>
+      <div class="readout">
+        <div><small>Solar flux</small><strong id="spQ"></strong></div>
+        <div><small>α / ε</small><strong id="spR"></strong></div>
+        <div><small>Temperature</small><strong id="spT"></strong></div>
+      </div>
+      <div class="chartbox"><svg id="spChart" viewBox="0 0 560 90" width="100%" role="img" aria-label="Temperature on a scale"></svg></div>
+      <div class="note">Only the ratio α/ε matters here, not the values themselves. At 1 AU: blackbody 279 K (6 °C), gold 495 K (222 °C), white paint 194 K (−79 °C). Radiators want low α/ε; a part you want to keep warm wants high α/ε.</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Solar cells & real surfaces">
+  <div class="eyebrow">Week 9 · Session 9.1</div>
+  <h2>Two refinements: solar cells, and surfaces that are not grey</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Solar cells from a thermal point of view</h3>
+      <svg viewBox="0 0 420 190" width="100%" role="img" aria-label="Energy split at a solar cell">
+        <rect x="150" y="80" width="140" height="22" fill="var(--petrol)"/>
+        <text x="220" y="95" text-anchor="middle" style="fill:var(--on-dark)">solar cell</text>
+        <path d="M60 20 L160 78" stroke="var(--gold)" stroke-width="5" marker-end="url(#ah)"/>
+        <text x="40" y="16">Q<tspan dy="3" font-size="9">i</tspan><tspan dy="-3"> = A q</tspan><tspan dy="3" font-size="9">s</tspan></text>
+        <path d="M190 78 L260 18" stroke="var(--gold)" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="266" y="18">reflected (1 − α) Q<tspan dy="3" font-size="9">i</tspan></text>
+        <path d="M290 91 L390 91" stroke="var(--green)" stroke-width="3"/>
+        <text x="300" y="80">electric η Q<tspan dy="3" font-size="9">i</tspan></text>
+        <text x="300" y="112">→ heat in the bus</text>
+        <path d="M220 104 L220 160" stroke="var(--hot)" stroke-width="3"/>
+        <text x="228" y="150">heat in array</text>
+        <text x="228" y="166">(α − η) Q<tspan dy="3" font-size="9">i</tspan></text>
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--gold)"/></marker></defs>
+      </svg>
+      <ul class="pts">
+        <li>The array keeps <span class="m">(α − η)Q<sub>i</sub></span>; the electrical part <span class="m">ηQ<sub>i</sub></span> becomes heat later, in the boxes that use it. Solar power only moves heat in space and time.</li>
+        <li>So a converting array runs cooler (effective α<sub>eff</sub> = α − η). If the bus stops drawing power, the array heats up: that is the <b>hot case</b> ("not converting").</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>Real surfaces are not perfectly grey or diffuse</h3>
+      <ul class="pts">
+        <li><b>Direction.</b> Emittance of non-metals is high and fairly flat with angle; metals are low and rise at grazing angles before dropping to zero.</li>
+        <li><b>Wavelength and temperature.</b> A coating measured at 300 K may behave differently at 1000 K, when its own emission moves into the "solar" band. At high temperature ε tends towards α (relevant for Parker's shield).</li>
+        <li><b>Specular vs diffuse.</b> Models split reflectance into <span class="m">ρ = ρ<sub>s</sub> + ρ<sub>d</sub></span>. Mirrors, OSRs and polished metals are specular; paints are diffuse.</li>
+        <li><b>BSDF</b> (bidirectional scattering distribution function) describes full angular behaviour. Earth-observation instruments use it for calibration diffusers (Sentinel-4 UVN, MTG IRS).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Derivation: equilibrium temperature">
+  <div class="eyebrow">Week 9 · Session 9.1</div>
+  <h2>Derivation: the spacecraft energy balance</h2>
+  <p class="lead">Treat the spacecraft as one isothermal node of mass <var>m</var>, specific heat <var>c</var><sub>p</sub> and total radiating area <var>A</var><sub>rad</sub>. Apply the first law: no work is done, so storage = in − out.</p>
+  <ol class="steps">
+    <li><div>Heat in from the environment and from the electronics:
+      <div class="eq sm"><var>Q</var><sub>in</sub> = α <var>G</var><sub>s</sub> <var>A</var><sub>sun</sub> + α <var>G</var><sub>s</sub> <var>a F A</var><sub>E</sub> + ε <var>q</var><sub>I</sub> <var>F A</var><sub>E</sub> + <var>Q</var><sub>int</sub></div></div></li>
+    <li><div>Heat out, radiated to deep space (<var>T</var><sub>space</sub><sup>4</sup> ≈ 0): <span class="m"><var>Q</var><sub>out</sub> = ε σ <var>A</var><sub>rad</sub> <var>T</var><sup>4</sup></span></div></li>
+    <li><div>Energy balance for the node:
+      <div class="eq sm"><var>m c</var><sub>p</sub> d<var>T</var>/d<var>t</var> = <var>Q</var><sub>in</sub>(<var>t</var>) − ε σ <var>A</var><sub>rad</sub> <var>T</var><sup>4</sup></div></div></li>
+    <li><div>Steady state (d<var>T</var>/d<var>t</var> = 0) gives the equilibrium temperature. Positive right-hand side: <var>T</var> rises; negative: it falls; zero: it stays.
+      <div class="eq sm"><var>T</var><sub>eq</sub> = [ <var>Q</var><sub>in</sub> / (ε σ <var>A</var><sub>rad</sub>) ]<sup>1/4</sup></div></div></li>
+    <li><div>Here <var>F</var> = (<var>R</var><sub>E</sub> / (<var>R</var><sub>E</sub> + <var>h</var>))² is the view factor from a nadir-facing plate to Earth, and <var>a F</var> is the simplest albedo model (valid near the subsolar point; it falls towards the terminator).</div></li>
+  </ol>
+  <div class="answer">Result: <span class="m">T<sub>eq</sub> ∝ (Q<sub>in</sub>/εA)<sup>1/4</sup></span>. Doubling the heat load raises the absolute temperature by only 19 %.</div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Worked example: 1U CubeSat">
+  <div class="eyebrow">Week 9 · Session 9.1 · Worked example</div>
+  <h2>Worked example — equilibrium temperature of a white 1U CubeSat</h2>
+  <div class="cols">
+    <div class="given">
+      <h3>Given</h3>
+      <ul class="pts">
+        <li>1U cube, 10 cm sides; face area <var>A</var> = 0.01 m², radiating area 6<var>A</var> = 0.06 m²</li>
+        <li>Circular LEO, <var>h</var> = 500 km; one face to Sun, one face to nadir</li>
+        <li>White paint α = 0.20, ε = 0.85</li>
+        <li>Hot case: <var>G</var><sub>s</sub> = 1414, <var>a</var> = 0.4, <var>q</var><sub>I</sub> = 261 W/m²</li>
+        <li><var>Q</var><sub>int</sub> = 0.73 W (the CubeSat power table)</li>
+      </ul>
+      <h3 style="margin-top:10px">Find</h3>
+      <p style="margin:0">The hot-case equilibrium temperature. Is white paint a good choice?</p>
+    </div>
+    <div style="display:grid;gap:10px">
+      <ol class="steps">
+        <li><div>View factor: <span class="m">F = (6378/6878)² = 0.860</span></div></li>
+        <li><div>Sun: <span class="m">0.20 × 1414 × 0.01 = 2.83 W</span></div></li>
+        <li><div>Albedo: <span class="m">0.20 × 1414 × 0.4 × 0.860 × 0.01 = 0.97 W</span></div></li>
+        <li><div>Earth IR: <span class="m">0.85 × 261 × 0.860 × 0.01 = 1.91 W</span>; total <span class="m">Q<sub>in</sub> = 6.44 W</span></div></li>
+        <li><div><span class="m">T = [6.44 / (0.85 × 5.67·10<sup>−8</sup> × 0.06)]<sup>1/4</sup> = 217 K</span></div></li>
+      </ol>
+      <div class="answer">Answer: T ≈ 217 K (−56 °C) in the hot case — far too cold for the battery.</div>
+      <div class="note">Real CubeSats are covered in solar cells (α ≈ 0.9, ε ≈ 0.85): the same sum gives 19.7 W and <b>287 K (14 °C)</b>. In eclipse with no Sun or albedo the equilibrium would drop to ≈ 164 K, but thermal mass keeps the real swing much smaller (two slides ahead).</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="CubeSat energy balance (interactive)">
+  <div class="eyebrow">Week 9 · Session 9.1 · Interactive</div>
+  <h2>Your turn: balance the heat budget of a 1U CubeSat</h2>
+  <div class="lab">
+    <div class="ctrl">
+      <div class="seg" role="group" aria-label="Environment case" id="cbCase">
+        <button data-c="hot" aria-pressed="true">Hot · sunlit MAX</button><button data-c="cold">Cold · eclipse MIN</button>
+      </div>
+      <div class="seg" role="group" aria-label="Surface presets" id="cbPre">
+        <button data-a="0.2" data-e="0.85">White paint</button><button data-a="0.9" data-e="0.85">Solar cells</button><button data-a="0.92" data-e="0.89">Black paint</button><button data-a="0.09" data-e="0.03">Bare Al</button>
+      </div>
+      <label for="cbA"><span class="lv">α <output id="cbAO"></output></span><input type="range" id="cbA" min="0.05" max="1" step="0.01" value="0.2"></label>
+      <label for="cbE"><span class="lv">ε <output id="cbEO"></output></span><input type="range" id="cbE" min="0.03" max="1" step="0.01" value="0.85"></label>
+      <label for="cbQ"><span class="lv">Internal dissipation <output id="cbQO"></output></span><input type="range" id="cbQ" min="0" max="10" step="0.01" value="0.73"></label>
+      <label for="cbH"><span class="lv">Altitude <output id="cbHO"></output></span><input type="range" id="cbH" min="300" max="1500" step="10" value="500"></label>
+    </div>
+    <div style="display:grid;gap:12px">
+      <div class="readout">
+        <div><small>Q<sub>in</sub></small><strong id="cbIn"></strong></div>
+        <div><small>Equilibrium</small><strong id="cbT"></strong></div>
+        <div><small>Battery 10–20 °C?</small><strong id="cbOK"></strong></div>
+      </div>
+      <div class="bar" id="cbBar" aria-label="Heat input breakdown"></div>
+      <div class="legend"><span><i style="background:var(--gold)"></i>Sun</span><span><i style="background:#E0A13A"></i>Albedo</span><span><i style="background:var(--hot)"></i>Earth IR</span><span><i style="background:var(--green)"></i>Internal</span></div>
+      <div class="note">Things to try: (1) find α that puts the hot case at 20 °C with white-ish ε; (2) switch to the cold case and see how much internal power you would need to stay above 0 °C; (3) set bare aluminium and explain why a low-ε shiny box runs hot.</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Thermal mass & transients (interactive)">
+  <div class="eyebrow">Week 9 · Session 9.1 · Interactive</div>
+  <h2>Thermal mass: why a CubeSat swings and a big satellite does not</h2>
+  <div class="lab">
+    <div class="ctrl">
+      <label for="trM"><span class="lv">Mass (heat capacity) <output id="trMO"></output></span><input type="range" id="trM" min="0.3" max="12" step="0.1" value="1.3"></label>
+      <label for="trA"><span class="lv">α <output id="trAO"></output></span><input type="range" id="trA" min="0.1" max="1" step="0.01" value="0.9"></label>
+      <label for="trE"><span class="lv">ε <output id="trEO"></output></span><input type="range" id="trE" min="0.05" max="1" step="0.01" value="0.85"></label>
+      <label for="trB"><span class="lv">β angle <output id="trBO"></output></span><input type="range" id="trB" min="0" max="80" step="1" value="0"></label>
+      <label for="trQ"><span class="lv">Q<sub>int</sub> <output id="trQO"></output></span><input type="range" id="trQ" min="0" max="6" step="0.05" value="0.73"></label>
+      <p class="src" style="margin:0">One-node 1U at 500 km, average conditions, <var>c</var><sub>p</sub> = 900 J/kg·K (aluminium). Explicit time step of 5 s over four orbits; the last three are plotted.</p>
+    </div>
+    <div style="display:grid;gap:10px">
+      <div class="readout">
+        <div><small>T min</small><strong id="trMin" class="cold"></strong></div>
+        <div><small>T max</small><strong id="trMax" class="hot"></strong></div>
+        <div><small>Swing</small><strong id="trSw"></strong></div>
+        <div><small>Time constant</small><strong id="trTau"></strong></div>
+      </div>
+      <div class="chartbox"><svg id="trChart" viewBox="0 0 600 240" width="100%" role="img" aria-label="Temperature over three orbits"></svg></div>
+      <div class="eq sm"><var>m c</var><sub>p</sub> d<var>T</var>/d<var>t</var> = <var>Q</var><sub>in</sub>(<var>t</var>) − ε σ <var>A</var><sub>rad</sub> <var>T</var><sup>4</sup>,&nbsp;&nbsp; τ ≈ <var>m c</var><sub>p</sub> / (4 ε σ <var>A</var><sub>rad</sub> <var>T</var>³)</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="View factors & radiative exchange">
+  <div class="eyebrow">Week 9 · Session 9.1</div>
+  <h2>View factors: how much of surface <var>i</var> sees surface <var>j</var></h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Geometry only: the view factor F<sub>ij</sub></h3>
+      <div class="eq sm"><var>F</var><sub>ij</sub> = (1/<var>A</var><sub>i</sub>) ∫∫ cos θ<sub>i</sub> cos θ<sub>j</sub> / (π<var>r</var>²) d<var>A</var><sub>j</sub> d<var>A</var><sub>i</sub></div>
+      <ul class="pts" style="margin-top:8px">
+        <li>Fraction of diffuse energy leaving <var>i</var> that hits <var>j</var> directly. Ranges from 0 to 1.</li>
+        <li>Reciprocity: <span class="m"><var>A</var><sub>i</sub><var>F</var><sub>ij</sub> = <var>A</var><sub>j</sub><var>F</var><sub>ji</sub></span>. Enclosure: <span class="m">Σ<sub>j</sub> <var>F</var><sub>ij</sub> = 1</span>.</li>
+        <li>Inside a cube, any face sees any other face with <var>F</var> = 0.2.</li>
+      </ul>
+      <h3 style="margin-top:12px">Geometry + surfaces: the exchange factor B<sub>ij</sub></h3>
+      <ul class="pts">
+        <li>Fraction of energy emitted by <var>i</var> that is absorbed by <var>j</var>, directly or after any number of reflections.</li>
+        <li><span class="m"><var>Q</var><sub>ij</sub> = σ ε<sub>i</sub> <var>A</var><sub>i</sub> <var>B</var><sub>ij</sub> (<var>T</var><sub>i</sub><sup>4</sup> − <var>T</var><sub>j</sub><sup>4</sup>)</span>; the product ε<sub>i</sub><var>A</var><sub>i</sub><var>B</var><sub>ij</sub> is the radiative coupling (GR, "Radk").</li>
+        <li>For black surfaces <var>B</var> = <var>F</var>. Question: can <var>B</var><sub>ij</sub> ≠ 0 when <var>F</var><sub>ij</sub> = 0? (Yes, by reflection.)</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>How B is computed</h3>
+      <ul class="pts">
+        <li><b>Gebhart (1957)</b>, for diffuse grey isothermal surfaces: <span class="m"><var>B</var><sub>ij</sub> = <var>F</var><sub>ij</sub>ε<sub>j</sub> + Σ<sub>k</sub> <var>F</var><sub>ik</sub>(1 − ε<sub>k</sub>)<var>B</var><sub>kj</sub></span>, or <span class="m"><b>B</b> = (<b>I</b> − <b>F</b> + <b>β</b>)<sup>−1</sup><b>β</b></span> with β<sub>ij</sub> = <var>F</var><sub>ij</sub>ε<sub>j</sub>.</li>
+        <li><b>Monte Carlo ray tracing</b> for real geometry: fire many rays from <var>i</var> and count the fraction absorbed by <var>j</var>, <span class="m"><var>B</var><sub>ij</sub> ≈ <var>N</var><sub>ij</sub>/<var>N</var><sub>i</sub></span>. Also used for contamination and computer graphics.</li>
+        <li>A full satellite model has 5 000–20 000 surfaces and hundreds of thousands to millions of couplings, recomputed at every orbit point.</li>
+      </ul>
+      <div class="note" style="margin-top:10px">Why the book-keeping explodes: in the GSFC cube with an ε = 0.9 floor, ε = 0.1 walls and an open top, a single emitted beam splits at every wall into absorbed and reflected parts, and every reflected part splits again.</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Quick check 9.1">
+  <div class="eyebrow">Week 9 · Session 9.1 · Quick check</div>
+  <h2>Quick check — tap an answer</h2>
+  <div class="quiz" style="display:grid;gap:12px">
+    <div class="q" data-ans="1" data-fb="Radiation is the only path from the spacecraft to space. Conduction moves heat inside the spacecraft; convection needs a fluid.">
+      <p>1. A spacecraft in LEO rejects its waste heat to space by…</p>
+      <div class="opts"><button>conduction to the residual atmosphere</button><button>thermal radiation</button><button>convection in the thermosphere</button></div><div class="fb" aria-live="polite"></div></div>
+    <div class="q" data-ans="2" data-fb="Low α keeps sunlight out and high ε radiates well: α/ε ≈ 0.1. That is why radiators use OSRs or white paint.">
+      <p>2. The best coating for a sunlit radiator is…</p>
+      <div class="opts"><button>polished gold (α/ε ≈ 10)</button><button>black paint (α/ε ≈ 1)</button><button>silver Teflon OSR (α/ε ≈ 0.1)</button></div><div class="fb" aria-live="polite"></div></div>
+    <div class="q" data-ans="0" data-fb="Above β* the orbit never enters Earth's shadow; at 500 km β* ≈ 68°. Dawn–dusk sun-synchronous orbits exploit this.">
+      <p>3. At 500 km altitude and β = 75°, the eclipse lasts…</p>
+      <div class="opts"><button>0 min — no eclipse</button><button>≈ 36 min</button><button>≈ 72 min</button></div><div class="fb" aria-live="polite"></div></div>
+    <div class="q" data-ans="1" data-fb="T ∝ Q^(1/4): 2^(1/4) = 1.19, so 300 K becomes about 357 K.">
+      <p>4. Doubling Q<sub>in</sub> for a satellite at 300 K raises its equilibrium to about…</p>
+      <div class="opts"><button>600 K</button><button>357 K</button><button>424 K</button></div><div class="fb" aria-live="polite"></div></div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Watch 9.1">
+  <div class="eyebrow">Week 9 · Session 9.1</div>
+  <h2>Watch — the thermal environment and energy balance</h2>
+  <p class="lead">Recommended videos. Each card opens curated search results in a new tab.</p>
+  <div class="vids">
+    <a class="vid" href="https://www.youtube.com/results?search_query=spacecraft+thermal+control+explained" target="_blank" rel="noopener"><span class="play">▶</span><span>How spacecraft keep from freezing or overheating<small>YouTube search</small></span></a>
+    <a class="vid" href="https://www.youtube.com/results?search_query=what+is+earth%27s+albedo" target="_blank" rel="noopener"><span class="play">▶</span><span>What is Earth's albedo?<small>YouTube search (Physics Frontier)</small></span></a>
+    <a class="vid" href="https://www.youtube.com/results?search_query=beta+angle+orbit+eclipse+explained" target="_blank" rel="noopener"><span class="play">▶</span><span>Beta angle and orbital eclipses<small>YouTube search</small></span></a>
+    <a class="vid" href="https://nescacademy.nasa.gov/" target="_blank" rel="noopener"><span class="play">▶</span><span>NASA NESC Academy — Passive Thermal<small>nescacademy.nasa.gov</small></span></a>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Key takeaways 9.1">
+  <div class="eyebrow">Week 9 · Session 1 · Recap</div>
+  <h2>Key takeaways</h2>
+  <div class="cols">
+    <div class="tile"><b>Radiation is the only exit</b>Five terms in, one term out: sun + albedo + Earth IR + internal = εσA<sub>rad</sub>T⁴ + storage.</div>
+    <div class="tile"><b>Design to bounding cases</b>Hot case: 1414 W/m², a = 0.4, 261 W/m², max power. Cold case: eclipse, 189 W/m², min power. Add uncertainty, then acceptance and qualification margins.</div>
+    <div class="tile"><b>β sets the eclipse</b>At 500 km: ≈ 36 min of 95 at β = 0, none above β* ≈ 68°.</div>
+    <div class="tile"><b>α/ε is the lever</b>The same sphere at 1 AU ranges from 194 K (white paint) to 495 K (polished gold). Thermal mass then damps the orbital swing.</div>
+  </div>
+  <div class="note"><b>Next time:</b> the thermal engineer's toolbox (MLI, radiators, heaters, heat pipes, coolers), sizing radiators and heaters by hand, thermal models and the thermal-vacuum test.</div>
+  <div class="num"></div>
+</section>
+
+<!-- ============ SESSION 9.2 ============ -->
+<section class="slide session" data-t="Session 9.2" data-s="9.2">
+  <div class="eyebrow">Week 9 · Session 2</div>
+  <div class="big">9.2</div>
+  <h2>Thermal hardware, design, analysis &amp; test</h2>
+  <p style="margin:0;max-width:60ch;opacity:.9">From a heat budget to a flight design you can verify in a vacuum chamber</p>
+  <div class="chips"><span class="chip">Passive vs active</span><span class="chip">MLI</span><span class="chip">Radiators</span><span class="chip">Heaters</span><span class="chip">Heat pipes</span><span class="chip">Sizing</span><span class="chip">Models</span><span class="chip">TVAC</span></div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Agenda 9.2">
+  <div class="eyebrow">Week 9 · Session 2 · Agenda</div>
+  <h2>Session 9.2 — plan for today</h2>
+  <ol class="agenda">
+    <li>Recap of Session 9.1</li>
+    <li>The toolbox: passive vs active</li>
+    <li>Coatings, MLI, radiators &amp; louvers</li>
+    <li>Heaters, heat pipes, straps &amp; coolers</li>
+    <li>The thermal design process</li>
+    <li>Derivation &amp; worked example: radiator and heater sizing</li>
+    <li>In-class exercise</li>
+    <li>Thermal modelling &amp; heat-flow maps</li>
+    <li>Thermal-vacuum testing &amp; facilities</li>
+    <li>Case study: Parker Solar Probe, step by step</li>
+    <li>Quick check · wrap-up</li>
+  </ol>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="The toolbox: passive vs active">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>The thermal engineer's toolbox</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Passive: no power, no moving parts (mostly)</h3>
+      <div class="cols3" style="gap:10px">
+        <div class="tile"><b>Radiation</b>Coatings and tapes · MLI blankets · radiators · sunshields</div>
+        <div class="tile"><b>Conduction</b>Structural material · doublers and fillers · washers and isolators · thermal straps · foam</div>
+        <div class="tile"><b>Latent heat &amp; ablation</b>Phase-change materials · thermal protection systems · heat pipes (two-phase)</div>
+      </div>
+      <p class="lead" style="margin-top:8px">Low cost, mass, volume and risk. The default for SmallSats and CubeSats.</p>
+    </div>
+    <div class="block">
+      <h3>Active: powered or controlled</h3>
+      <div class="cols3" style="gap:10px">
+        <div class="tile gold"><b>Heaters</b>Thermostat, electronic (PID) or ground control</div>
+        <div class="tile gold"><b>Variable devices</b>Louvers · variable-conductance and loop heat pipes · thermal switches</div>
+        <div class="tile gold"><b>Coolers &amp; loops</b>Peltier (TEC) · Stirling and pulse-tube cryocoolers · pumped fluid loops</div>
+      </div>
+      <p class="lead" style="margin-top:8px">Used when passive design cannot hold a narrow range, a cryogenic detector, or a large heat load.</p>
+    </div>
+  </div>
+  <div class="note">GSFC rule of thumb: "If it is not a radiator, an aperture or a mechanism, thermal probably wants a blanket there."</div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Coatings in practice">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Coatings in practice: choosing, protecting, and ageing</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>What coatings are used for</h3>
+      <ul class="pts">
+        <li><b>External radiator</b>: white paint or OSR if it sees the Sun; black paint if it never does.</li>
+        <li><b>Keep a part warm</b>: low ε (and high α if sunlit), e.g. gold or VDA tape.</li>
+        <li><b>Internal</b>: black (high ε) to even out temperatures between boxes; low ε to isolate a sensitive unit; black also kills stray light.</li>
+        <li><b>First-surface mirror</b> (metal on top): low α, low ε. <b>Second-surface mirror / OSR</b> (metal behind glass or Teflon): low α, high ε.</li>
+      </ul>
+      <h3 style="margin-top:10px">Overcoats</h3>
+      <ul class="pts"><li>Gold instead of aluminium against corrosion · SiO<sub>x</sub> against atomic oxygen · ITO against static charge.</li></ul>
+    </div>
+    <div class="block">
+      <h3>The space environment degrades them</h3>
+      <ul class="pts">
+        <li>UV, charged particles, atomic oxygen, contamination, micrometeoroids, launch-site corrosion.</li>
+        <li>Mostly <b>α increases</b>; ε is nearly unchanged. White paint suffers from UV and particles; metallized Teflon from particles and contamination.</li>
+        <li>So each coating has <b>beginning-of-life (BOL)</b> and <b>end-of-life (EOL)</b> values. Size radiators with EOL α (hot case) and check heaters with BOL α (cold case).</li>
+        <li>Evidence: Kapton samples flown for six years on NASA's Long Duration Exposure Facility came back visibly eroded.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="MLI (interactive)">
+  <div class="eyebrow">Week 9 · Session 9.2 · Interactive</div>
+  <h2>Multi-layer insulation: many mirrors in series</h2>
+  <div class="lab">
+    <div class="ctrl">
+      <label for="mlN"><span class="lv">Number of layers N <output id="mlNO"></output></span><input type="range" id="mlN" min="1" max="40" step="1" value="15"></label>
+      <label for="mlE"><span class="lv">Layer emittance (VDA) <output id="mlEO"></output></span><input type="range" id="mlE" min="0.02" max="0.2" step="0.005" value="0.03"></label>
+      <label for="mlTi"><span class="lv">Inner temperature <output id="mlTiO"></output></span><input type="range" id="mlTi" min="200" max="350" step="1" value="293"></label>
+      <label for="mlA"><span class="lv">Blanket area <output id="mlAO"></output></span><input type="range" id="mlA" min="0.1" max="5" step="0.1" value="1"></label>
+      <p class="src" style="margin:0">Layup: VDA-Mylar reflectors separated by Dacron or nylon netting, Kapton or Beta-cloth outer layer, taped or stitched edges, grounding wires and vent holes.</p>
+    </div>
+    <div style="display:grid;gap:12px">
+      <div class="eq sm">ε<sup>*</sup><sub>ideal</sub> = 1 / [(<var>N</var> + 1)(1/ε<sub>1</sub> + 1/ε<sub>2</sub> − 1)] &nbsp;·&nbsp; <var>Q</var> = σ <var>A</var> ε<sup>*</sup> (<var>T</var><sub>i</sub><sup>4</sup> − <var>T</var><sub>o</sub><sup>4</sup>)</div>
+      <div class="readout">
+        <div><small>Ideal ε*</small><strong id="mlEi"></strong></div>
+        <div><small>Leak (ideal)</small><strong id="mlQi"></strong></div>
+        <div><small>Leak at ε* = 0.02</small><strong id="mlQr"></strong></div>
+        <div><small>Bare black surface</small><strong id="mlQb"></strong></div>
+      </div>
+      <div class="chartbox"><svg id="mlChart" viewBox="0 0 560 200" width="100%" role="img" aria-label="Effective emittance versus number of layers"></svg></div>
+      <div class="note">In practice ε* is 0.01–0.05, not the ideal value: layers touch, seams and corners leak, and vent holes and pins short-circuit the stack. Small parts often get single-layer insulation or a low-ε coating instead. Real ε* is only known after test, so analyses bracket it (low ε* in the hot case for heat trapped inside, high in the cold case).</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Radiators, sink temperature & louvers">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Radiators, sink temperature and louvers</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Radiators</h3>
+      <ul class="pts">
+        <li>A surface dedicated to rejecting heat: high ε, low α if sunlit, high conductivity to spread heat across it.</li>
+        <li>Put it where the Sun never shines: often the anti-Sun or wake side, or a side kept cold by a yaw flip at β = 0.</li>
+        <li>Stake the claim early: moving a radiator after layout freezes is painful. An oversized radiator can be blanketed late; an undersized one cannot grow.</li>
+        <li>Efficiency <span class="m">η = (T<sub>avg</sub>/T<sub>max</sub>)<sup>4</sup></span>, aim for 80–90 %. Thicker skins, doublers or embedded heat pipes raise it.</li>
+      </ul>
+      <h3 style="margin-top:10px">Sink temperature</h3>
+      <p style="margin:0">The temperature a massless, back-insulated plate reaches in the real environment. Radiators then size against <span class="m">σε(T<sub>rad</sub><sup>4</sup> − T<sub>sink</sub><sup>4</sup>)</span>. Below ≈ 200 K the sink barely matters for a 300 K radiator, which is why LN₂ shrouds at 80 K are fine for testing avionics.</p>
+    </div>
+    <div class="block">
+      <h3>Louvers — like opening a window</h3>
+      <ul class="pts">
+        <li>Low-ε blades over a high-ε radiator. Bimetallic springs open them when warm.</li>
+        <li>Effective emittance changes about <b>6×</b> between closed and open (rule of thumb).</li>
+        <li>Save heater power when a unit is off or the spacecraft is far from the Sun. Flown on Rosetta, MESSENGER and New Horizons; now used less.</li>
+      </ul>
+      <h3 style="margin-top:10px">Example: the ISS</h3>
+      <p style="margin:0">Its white radiator panels are mounted perpendicular to the solar arrays, so they stay edge-on to the Sun while ammonia loops carry heat out to them.</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Heaters, thermostats & RHUs">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Heaters: the most-used thermal component</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Why and how</h3>
+      <ul class="pts">
+        <li>Replace heat when a unit is off, warm a unit before switch-on, control gradients and stability.</li>
+        <li><b>Kapton film (thermofoil) heaters</b> bonded and over-taped with aluminium tape; <b>cartridge</b> heaters bolted in.</li>
+        <li>Control by <b>thermostat</b> (bimetallic switch, 5–7 °C deadband, &gt; 100 000 cycles) or by <b>software</b> (relay, PID, fine control, commandable).</li>
+        <li>Two thermostats in series so one failed-closed unit cannot lock a heater on; quad-redundant for both failure modes.</li>
+      </ul>
+      <div class="note" style="margin-top:10px">Sizing rule (GSFC): worst cold case at minimum bus voltage must use ≤ 70 % of heater capacity. At maximum voltage check current and watt density.</div>
+    </div>
+    <div class="block">
+      <h3>Radioisotope heater units (RHUs)</h3>
+      <ul class="pts">
+        <li>≈ 1 W each from Pu-238 decay, no power or wiring needed. Used on Galileo, Huygens and the Mars Exploration Rovers.</li>
+        <li><b>How many?</b> Start from the cold-case heat deficit of each zone: RHUs = deficit ÷ 1 W, plus margin.</li>
+        <li><b>Radiation?</b> Pu-238 is an α emitter, so the graphite and platinum-rhodium clad stops almost all of it. Low-level γ and neutrons remain and are included in the radiation budget; electronics are not specially hardened for them.</li>
+      </ul>
+      <h3 style="margin-top:10px">CubeSat reality check</h3>
+      <p style="margin:0">In the CubeSat power table the battery heater (5 W) is the largest single load after the antenna deployer. Heaters are often the first thing cut from a CubeSat power budget.</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Heat pipes">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Heat pipes: evaporation plus capillarity</h2>
+  <div class="cols">
+    <div class="block">
+      <ul class="pts">
+        <li>A sealed tube with a wick (often grooved aluminium extrusion) and a working fluid. Heat boils fluid at the evaporator, vapour flows to the condenser, condenses and releases heat, and the wick pumps liquid back.</li>
+        <li><b>CCHP</b> (constant conductance): passive, no moving parts.</li>
+        <li><b>VCHP</b>: a heated reservoir of non-condensable gas blocks part of the condenser to regulate temperature.</li>
+        <li><b>LHP</b> (loop heat pipe): wick only in the evaporator, flexible lines, much higher capacity, ±1 °C control; needs start-up heaters.</li>
+        <li><b>Ammonia</b> is the usual fluid near room temperature: boiling range matches electronics, high latent heat, low freezing point. Water freezes at 0 °C.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="cols3" style="gap:10px">
+        <div class="tile"><span class="stat">100 W</span>through a 10 mm × 1 m heat pipe (≈ 50 g) with &lt; 0.5 K gradient</div>
+        <div class="tile gold"><span class="stat">3300 K</span>gradient for the same 100 W through a solid copper rod of that size (≈ 700 g)</div>
+      </div>
+      <h3 style="margin-top:12px">Testing and CubeSats</h3>
+      <ul class="pts">
+        <li>Capillary forces are weaker than gravity: in ground test the pipe must be level, or the evaporator lower (reflux mode). 3D-bent pipes are hard to test.</li>
+        <li>Standard on commercial satellites. On CubeSats they are uncommon but feasible: small flat and flexible heat pipes exist, and the real limit is the heat load, which a 1U rarely has.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Conductive hardware">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Moving heat by conduction — and stopping it</h2>
+  <div class="cols3">
+    <div class="tile"><b>Mind the gap</b>Two bolted plates touch at a few asperities. <span class="m">Q = h<sub>if</sub> A<sub>c</sub> ΔT</span>, with h<sub>if</sub> from ≈ 0.1 (bare) to ≈ 2 W/in²·K (good filler). It depends on pressure, finish and temperature.</div>
+    <div class="tile"><b>Fillers</b>NuSil paste (excellent, messy) · CHO-THERM and CHO-SEAL sheets · eGraf / Sigraflex graphite · indium foil</div>
+    <div class="tile"><b>Thermal straps</b>Copper or high-purity aluminium foils and braids, or encapsulated pyrolytic graphite. Couple thermally while decoupling structurally (detectors to coolers).</div>
+    <div class="tile gold"><b>Doublers and spreaders</b>Local thick plates or APG (annealed pyrolytic graphite in aluminium, ≈ 4× in-plane conductivity) move heat into a radiator.</div>
+    <div class="tile gold"><b>Isolators</b>Minimise <var>k A</var>/<var>L</var>: titanium or G-10 standoffs and washers. Mechanical engineers want the opposite (short and thick), so this is a negotiation.</div>
+    <div class="tile gold"><b>Structure as a thermal part</b>Choose materials for both roles: conductivity, and a low coefficient of thermal expansion where alignment matters.</div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Active cooling & fluid loops">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Active cooling and pumped loops</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Thermoelectric coolers (Peltier)</h3>
+      <ul class="pts">
+        <li>Reverse of the thermocouple (Seebeck) effect. Compact, no vibration, reliable, only 6–10 % efficient.</li>
+        <li>Hubble STIS: lifts 0.3 W at −80 °C and rejects 17.7 W at +20 °C.</li>
+        <li>Stages stack as a pyramid, since each lower stage removes the heat and the power of the stage above. Practical floor ≈ −130 °C.</li>
+      </ul>
+      <h3 style="margin-top:10px">Cryocoolers</h3>
+      <ul class="pts">
+        <li>Stirling or pulse-tube cycles for detectors below ≈ −120 °C. Cause vibration and jitter; need control electronics.</li>
+        <li>JWST MIRI needs ≈ 7 K, colder than the other instruments, so it has its own cryocooler. CubeSat versions exist at about half a U.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>Cooling technology vs temperature</h3>
+      <div class="tscroll"><table>
+        <tr><th>Technology</th><th>Temperature</th><th>Cooling power</th></tr>
+        <tr><td>Peltier (TEC)</td><td>≈ 150–300 K</td><td>mW–W</td></tr>
+        <tr><td>Stirling / pulse tube</td><td>≈ 20–150 K</td><td>0.1–10 W</td></tr>
+        <tr><td>He / H₂ Joule–Thomson</td><td>≈ 1.6–20 K</td><td>mW</td></tr>
+        <tr><td>³He sorption, dilution</td><td>0.1–1 K</td><td>µW</td></tr>
+        <tr><td>Adiabatic demagnetisation</td><td>≈ 0.05 K</td><td>≈ µW</td></tr>
+      </table></div>
+      <h3 style="margin-top:10px">Pumped fluid loops</h3>
+      <p style="margin:0">For large powers. ISS uses external ammonia and internal water loops. Curiosity and Perseverance use a loop as a thermal bus for ≈ 2000 W of RTG waste heat. Not used on CubeSats.</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="PCM & thermal protection">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Latent heat and ablation: PCMs and thermal protection systems</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Phase-change materials</h3>
+      <ul class="pts">
+        <li>Paraffin wax in a sealed box melts while a unit is on and refreezes when it is off, holding it near the melt temperature.</li>
+        <li>Also damps the sunlight–eclipse cycle in LEO, or day–night on an airless body.</li>
+        <li>Heavy and poorly conducting (needs internal fins), so used only where stability justifies it.</li>
+        <li>Herschel's superfluid helium cryostat is the extreme case: slow evaporation (≈ 2.5 mg/s) cooled the detectors, and the helium supply set the mission lifetime.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>Thermal protection system (entry)</h3>
+      <ul class="pts">
+        <li>Blunt bodies push the bow shock forward, away from the surface: heat load falls as drag coefficient rises.</li>
+        <li><b>Ablators</b> char and erode, carrying heat away and blocking shock-layer radiation (Apollo, Huygens, Stardust PICA).</li>
+        <li><b>Reusable</b> tiles (Space Shuttle, &gt; 20 000 inspected each flight).</li>
+        <li>Peak fluxes range from ≈ 10 W/cm² (Viking, Mars Pathfinder) to ≈ 30 000 W/cm² (Galileo at Jupiter). Half of the ablators NASA used in 40 years are no longer made.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="SmallSat thermal challenges">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Why SmallSats are harder, not easier</h2>
+  <div class="tscroll"><table>
+    <tr><th>SmallSat property</th><th>Challenge</th></tr>
+    <tr><td>Low thermal mass</td><td>Reacts quickly to sunlight and eclipse (see the transient calculator)</td></tr>
+    <tr><td>Limited external area</td><td>Solar cells, radiators and instrument views compete for the same faces</td></tr>
+    <tr><td>Limited volume</td><td>Components are thermally coupled; hard to isolate zones</td></tr>
+    <tr><td>Limited power</td><td>Little left for heaters</td></tr>
+    <tr><td>Power density</td><td>Stacked boards with no direct path to a radiator</td></tr>
+    <tr><td>MLI edge effects</td><td>Seams and edges short the blanket, and a CubeSat is mostly edges</td></tr>
+  </table></div>
+  <div class="note">Typical CubeSat recipe: body-mounted solar cells set the external α/ε; the battery gets a heater and isolation; boards are black inside; one face kept free of cells as a radiator; MLI only where there is room. Adapted from NASA's SmallSat State of the Art report, Thermal chapter.</div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="The thermal design process">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>The thermal design process</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Five inputs thermal needs from others</h3>
+      <ol class="steps">
+        <li><div><b>Temperature limits</b>, operating and non-operating, from the hardware owner (never from thermal predictions).</div></li>
+        <li><div><b>Dissipations</b>, current best estimate and maximum expected value; add ≈ 30 % if only CBE exists.</div></li>
+        <li><div><b>Physical layout</b> (CAD) from the mechanical engineer.</div></li>
+        <li><div><b>Orbit and attitude</b>: β range, pointing, safe mode, launch, burns.</div></li>
+        <li><div><b>Stability and gradient requirements</b>, stated precisely: "0.1 K over 10 min", not "0.1 K".</div></li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3>Then answer the first questions</h3>
+      <ul class="pts">
+        <li>How many thermal zones? Which boxes share limits and can share a radiator?</li>
+        <li>Is there a permanently cold side? Where do radiators go and how does heat reach them (panel, strap, heat pipe)?</li>
+        <li>Which coatings, where? Where is isolation needed?</li>
+        <li>How big are the radiators (hot case) and heaters (cold case)?</li>
+        <li>Does anything need active cooling?</li>
+        <li>Where are the sensors (thermistors, PRTs, diodes)?</li>
+        <li>Can it be tested on the ground?</li>
+      </ul>
+      <p class="src">Then: analysis → procurement → integration → test → model correlation → flight. H. Peabody, NASA GSFC (2022).</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Hot and cold cases">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Stacking the worst cases</h2>
+  <p class="lead">Predictions are bounding values, not an instantaneous orbit. Each uncertain parameter is pushed to the side that hurts.</p>
+  <div class="tscroll"><table>
+    <tr><th>Parameter</th><th class="hot">Hot case</th><th class="cold">Cold case</th></tr>
+    <tr><td>Environment</td><td>1414 W/m², high albedo and OLR</td><td>1318 W/m², low albedo and OLR, longest eclipse</td></tr>
+    <tr><td>Power dissipation</td><td>maximum (MEV or +30 %)</td><td>minimum (CBE, units off)</td></tr>
+    <tr><td>Optical properties</td><td>EOL: high α, low ε</td><td>BOL: low α, high ε</td></tr>
+    <tr><td>MLI ε*</td><td>low (traps internal heat)*</td><td>high (leaks heat)*</td></tr>
+    <tr><td>Interface conductance</td><td>low (to radiator)</td><td>high</td></tr>
+    <tr><td>Solar cells</td><td>not converting (all absorbed light is heat)</td><td>converting</td></tr>
+    <tr><td>Bus voltage (heaters)</td><td>maximum</td><td>minimum</td></tr>
+    <tr><td>β angle / attitude</td><td>highest flux</td><td>lowest flux</td></tr>
+  </table></div>
+  <p class="src">* Depends on which way heat flows through the blanket. Find the worst cases with a β sweep (7–15 points) or the corners and centre of the field of regard; the worst case differs between components.</p>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Derivation: radiator & heater sizing">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Derivation — sizing a radiator and its heater by hand</h2>
+  <ol class="steps">
+    <li><div><b>Radiator temperature.</b> Start from the upper limit, subtract margin (5 °C) and the transport drop Δ<var>T</var><sub>tr</sub> (strap, heat pipe), then include fin efficiency η:
+      <div class="eq sm"><var>T</var><sub>rad</sub> = η<sup>1/4</sup> (<var>T</var><sub>max</sub> − 5 − Δ<var>T</var><sub>tr</sub>)&nbsp;&nbsp; [in kelvin]</div></div></li>
+    <li><div><b>Hot-case balance.</b> Dissipation plus absorbed environment equals radiated heat:
+      <div class="eq sm">1.3 <var>Q</var><sub>diss</sub> + <var>q</var><sub>abs</sub><var>A</var> = ε σ <var>A</var> (<var>T</var><sub>rad</sub><sup>4</sup> − <var>T</var><sub>sink</sub><sup>4</sup>)</div></div></li>
+    <li><div>Solve for area. With a clean view to deep space (<var>q</var><sub>abs</sub> = 0, <var>T</var><sub>sink</sub> ≈ 0):
+      <div class="eq sm"><var>A</var><sub>rad</sub> = 1.3 <var>Q</var><sub>diss</sub> / (ε σ <var>T</var><sub>rad</sub><sup>4</sup>)</div></div></li>
+    <li><div><b>Cold case.</b> The same radiator now runs at the lower limit plus margin, <var>T</var><sub>low</sub>. The heater supplies what dissipation and environment do not:
+      <div class="eq sm"><var>Q</var><sub>htr</sub> = ε σ <var>A</var><sub>rad</sub> <var>T</var><sub>low</sub><sup>4</sup> − <var>Q</var><sub>diss,min</sub> − <var>q</var><sub>abs</sub><var>A</var>&nbsp;&nbsp;→&nbsp;&nbsp;installed = <var>Q</var><sub>htr</sub> / 0.7</div></div></li>
+  </ol>
+  <div class="answer">The tension: a radiator big enough for the hot case is too big for the cold case, and the difference is paid in heater power.</div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Worked example: radiator & heater">
+  <div class="eyebrow">Week 9 · Session 9.2 · Worked example</div>
+  <h2>Worked example — radiator and survival heater for a 100 W box</h2>
+  <div class="cols">
+    <div class="given">
+      <h3>Given</h3>
+      <ul class="pts">
+        <li>Box dissipates 100 W (CBE); allow +30 % growth</li>
+        <li>Upper limit +40 °C, 5 °C margin, 3 °C transport drop</li>
+        <li>Radiator efficiency 85 %, ε = 0.87, clear view to deep space</li>
+        <li>Survival (box off): lower non-op limit −20 °C</li>
+      </ul>
+      <h3 style="margin-top:10px">Find</h3>
+      <p style="margin:0">Radiator area and the installed survival heater power.</p>
+    </div>
+    <div style="display:grid;gap:10px">
+      <ol class="steps">
+        <li><div><span class="m">T<sub>max,eff</sub> = 40 − 5 − 3 = 32 °C = 305.15 K</span></div></li>
+        <li><div><span class="m">T<sub>rad</sub> = 0.85<sup>1/4</sup> × 305.15 = 293.0 K (19.85 °C)</span></div></li>
+        <li><div><span class="m">A = 130 / (0.87 × 5.67·10<sup>−8</sup> × 293.0<sup>4</sup>) = 130 / 363.5 = 0.358 m²</span></div></li>
+        <li><div>Cold: <span class="m">T<sub>low</sub> = −20 + 3 = −17 °C = 256.15 K</span>; <span class="m">Q<sub>htr</sub> = 0.87σ(0.358)(256.15)<sup>4</sup> = 75.9 W</span></div></li>
+        <li><div>Installed at 70 % duty: <span class="m">75.9 / 0.7 = 108.4 W</span> at minimum voltage</div></li>
+      </ol>
+      <div class="answer">Answer: A ≈ 0.36 m², survival heater ≈ 108 W.</div>
+      <div class="note">Power budget: the 130 W allocation for the box is already booked on the array, so a 108 W heater used only while the box is off adds no array demand, but it still needs a power service, relays and harness.</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Radiator & heater sizer (interactive)">
+  <div class="eyebrow">Week 9 · Session 9.2 · Interactive</div>
+  <h2>Radiator and heater sizer</h2>
+  <div class="lab">
+    <div class="ctrl">
+      <label for="rsQ"><span class="lv">Dissipation (CBE) <output id="rsQO"></output></span><input type="range" id="rsQ" min="1" max="500" step="1" value="100"></label>
+      <label for="rsG"><span class="lv">Growth allowance <output id="rsGO"></output></span><input type="range" id="rsG" min="0" max="50" step="1" value="30"></label>
+      <label for="rsTh"><span class="lv">Upper limit <output id="rsThO"></output></span><input type="range" id="rsTh" min="-40" max="80" step="1" value="40"></label>
+      <label for="rsTl"><span class="lv">Lower limit <output id="rsTlO"></output></span><input type="range" id="rsTl" min="-60" max="30" step="1" value="-20"></label>
+      <label for="rsDT"><span class="lv">Transport ΔT <output id="rsDTO"></output></span><input type="range" id="rsDT" min="0" max="15" step="0.5" value="3"></label>
+      <label for="rsEta"><span class="lv">Radiator efficiency <output id="rsEtaO"></output></span><input type="range" id="rsEta" min="0.5" max="1" step="0.01" value="0.85"></label>
+      <label for="rsE"><span class="lv">ε <output id="rsEO"></output></span><input type="range" id="rsE" min="0.5" max="0.95" step="0.01" value="0.87"></label>
+      <label for="rsS"><span class="lv">Sink temperature <output id="rsSO"></output></span><input type="range" id="rsS" min="0" max="280" step="1" value="0"></label>
+      <label for="rsQm"><span class="lv">Dissipation in cold case <output id="rsQmO"></output></span><input type="range" id="rsQm" min="0" max="500" step="1" value="0"></label>
+    </div>
+    <div style="display:grid;gap:12px">
+      <div class="readout">
+        <div><small>T<sub>rad</sub></small><strong id="rsTr"></strong></div>
+        <div><small>Radiator area</small><strong id="rsA"></strong></div>
+        <div><small>Heater needed</small><strong id="rsH"></strong></div>
+        <div><small>Installed (÷ 0.7)</small><strong id="rsHi"></strong></div>
+      </div>
+      <div class="chartbox"><svg id="rsChart" viewBox="0 0 560 210" width="100%" role="img" aria-label="Required radiator area versus sink temperature"></svg></div>
+      <div class="note" id="rsNote">Defaults reproduce the worked example. Raise the sink temperature to see why a radiator must not see a warm Earth or spacecraft surface: area barely moves until about 200 K, then climbs steeply.</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="In-class exercise">
+  <div class="eyebrow">Week 9 · Session 9.2 · In-class exercise</div>
+  <h2>In-class exercise — an electronics box on the cold side</h2>
+  <div class="given" style="max-width:900px">
+    <h3>Problem</h3>
+    <p style="margin:0 0 8px">An electronics box dissipates 15 W (minimum) to 40 W (maximum) and must stay between −10 °C and +40 °C. The orbit has β from 0° to 90° and the spacecraft points nadir. The box is mounted on a "cold side" that never sees the Sun but always has a glancing view of Earth, with exchange factor <var>B</var> ≈ 0.2 to Earth. Radiator ε = 0.85; hold 5 °C margin.</p>
+    <h3>Work with your neighbour</h3>
+    <ul class="pts">
+      <li>Hot case: <span class="m">40 + 0.2 × 0.85 × 243 × A = σ × 0.85 × A × 308<sup>4</sup></span>. Find <var>A</var>.</li>
+      <li>Cold case: Earth IR 208 W/m², box at 15 W, radiator at 268 K. Find <var>Q</var><sub>htr</sub>.</li>
+      <li>Size the installed heater with the 70 % rule.</li>
+    </ul>
+  </div>
+  <p class="try">Try it first, then reveal the worked solution.</p>
+  <button class="btn reveal-btn" id="exBtn" aria-expanded="false" aria-controls="exSol">Show solution</button>
+  <div id="exSol" hidden>
+    <ol class="steps">
+      <li><div>Hot: <span class="m">σ·0.85·308<sup>4</sup> = 433.7 W/m²</span>; absorbed Earth IR <span class="m">0.2·0.85·243 = 41.3 W/m²</span>; <span class="m">A = 40 / (433.7 − 41.3) = 0.102 m²</span></div></li>
+      <li><div>Cold: out <span class="m">σ·0.85·0.102·268<sup>4</sup> = 25.3 W</span>; in <span class="m">15 + 0.2·0.85·208·0.102 = 18.6 W</span></div></li>
+      <li><div><span class="m">Q<sub>htr</sub> = 25.3 − 18.6 ≈ 6.7 W</span>; installed <span class="m">6.7 / 0.7 ≈ 9.6 W</span></div></li>
+    </ol>
+    <div class="answer" style="margin-top:8px">Answer: radiator ≈ 0.1 m², heater ≈ 10 W. Verify next with a model: a cube with α = ε = 1 in the real orbit gives the true environmental loads.</div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Thermal modelling">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Thermal modelling: the lumped-parameter method</h2>
+  <div class="cols">
+    <div class="block">
+      <ul class="pts">
+        <li>Split the spacecraft into isothermal <b>nodes</b>, like an electrical network. Temperature fields are smoother than stress fields, so hundreds to a few thousand nodes are enough.</li>
+        <li>Heat balance for each node <var>i</var>:</li>
+      </ul>
+      <div class="eq sm"><var>C</var><sub>i</sub> d<var>T</var><sub>i</sub>/d<var>t</var> = <var>Q</var><sub>i</sub> + Σ<sub>j</sub> <var>GL</var><sub>ij</sub>(<var>T</var><sub>j</sub> − <var>T</var><sub>i</sub>) + Σ<sub>j</sub> σ<var>GR</var><sub>ij</sub>(<var>T</var><sub>j</sub><sup>4</sup> − <var>T</var><sub>i</sub><sup>4</sup>)</div>
+      <ul class="pts" style="margin-top:8px">
+        <li><var>C</var><sub>i</sub> = ρ<var>cV</var> [J/K] · <var>GL</var> = conductive coupling [W/K] · <var>GR</var> = ε<var>AB</var> radiative coupling [m²]</li>
+        <li><b>GMM</b> (geometric model): computes GR and orbital solar, albedo and IR fluxes by ray tracing.</li>
+        <li><b>TMM</b> (thermal model): capacitances, dissipations, GLs, heater and cooler logic; solved in time.</li>
+        <li>Tools: Thermal Desktop / SINDA, ESATAN-TMS, Siemens NX/Simcenter; FEM is used when thermo-elastic results must feed structures.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>Modelling workflow</h3>
+      <div class="tscroll"><table>
+        <tr><th>Type</th><th>Item</th></tr>
+        <tr><td>Database</td><td>Orbit definition · satellite geometry · material library</td></tr>
+        <tr><td>Model</td><td>Attitude model · functional model (modes, power) · thermal model</td></tr>
+        <tr><td>Computation</td><td>Orbit propagation · view factors · thermal coupling</td></tr>
+        <tr><td>Result</td><td>Temperature evolution, fed back to geometry and design</td></tr>
+      </table></div>
+      <p class="src">After Gulde et al., "Reliable, Fast, and Flexible: A Thermal Modeling Approach for Small Satellites" (2018).</p>
+      <div class="note" style="margin-top:8px">A model is also a heat-flow map. Knowing <i>where</i> the watts go (for Solar Orbiter EUI: 25 W absorbed at the entrance, 13.6 W out through a heat pipe) matters more than a temperature map.</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Heat-flow maps & cryo chains">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Read the model as a heat-flow map</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Solar Orbiter EUI at 0.28 AU: where do 34.8 W go?</h3>
+      <div id="euiFlow"></div>
+      <ul class="pts" style="margin-top:8px">
+        <li>Most of the absorbed load arrives through the entrance filters and doors, which must look at the Sun.</li>
+        <li>A heat pipe is the main exit; the unit's own radiator handles about a fifth.</li>
+        <li>Interface temperatures depend on these loads, so spacecraft and instrument teams iterate until both models agree.</li>
+      </ul>
+      <p class="src">Values from the EUI thermal model, L. Jacques (CSL). "To S/C" is the remainder conducted to the spacecraft interfaces and structure.</p>
+    </div>
+    <div class="block">
+      <h3>Cryogenic chains: every stage protects the next</h3>
+      <div class="tscroll"><table>
+        <tr><th>Planck stage</th><th>Temperature</th><th>Heat lift</th></tr>
+        <tr><td>H₂ sorption cooler</td><td>≈ 20 K</td><td>1 W</td></tr>
+        <tr><td>⁴He Joule–Thomson</td><td>4 K</td><td>15 mW</td></tr>
+        <tr><td>JT expansion stage</td><td>1.6 K</td><td>0.5 mW</td></tr>
+        <tr><td>³He–⁴He dilution</td><td>0.1 K</td><td>0.2 µW</td></tr>
+      </table></div>
+      <p style="margin:8px 0 0">Planck launched with 36 000 L of ⁴He and 12 000 L of ³He at 300 bar. Each factor of ten in temperature costs one to two orders of magnitude in cooling power.</p>
+      <h3 style="margin-top:10px">Herschel temperature map</h3>
+      <div class="readout">
+        <div><small>Solar array</small><strong class="hot">400 K</strong></div>
+        <div><small>Service module</small><strong>293 K</strong></div>
+        <div><small>Sunshade</small><strong>220 K</strong></div>
+        <div><small>Telescope</small><strong class="cold">90 K</strong></div>
+        <div><small>Payload module</small><strong class="cold">70 K</strong></div>
+        <div><small>Detectors</small><strong class="cold">1.6 / 0.3 K</strong></div>
+      </div>
+      <p class="src" style="margin-top:6px">2400 L of superfluid helium evaporated at ≈ 2.5 mg/s (≈ 56 mW of cooling); when it ran out in 2013, the mission ended.</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Thermal-vacuum testing">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Testing: reduce the uncertainty, then correlate</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>The tests</h3>
+      <ul class="pts">
+        <li><b>Thermal balance (TBT)</b>: steady hot and cold cases to check and correlate the model.</li>
+        <li><b>Thermal vacuum (TVT)</b>: cycles in vacuum between acceptance or qualification limits, unit powered and working.</li>
+        <li><b>Thermal cycling (TCT)</b>: many cycles, often at ambient pressure, for workmanship and fatigue.</li>
+        <li><b>Bake-out</b>: heat in vacuum to drive off volatiles before flight.</li>
+      </ul>
+      <h3 style="margin-top:10px">The chamber</h3>
+      <ul class="pts">
+        <li>≈ 10<sup>−6</sup> mbar (like 200 km altitude) removes gas conduction: the Knudsen number, mean free path over gap size, exceeds ≈ 3.</li>
+        <li>Rough pumps first, then turbo, cryo or ion pumps for high vacuum.</li>
+        <li>A black, LN₂-cooled copper <b>shroud</b> plays deep space; a solar simulator or IR heaters play the Sun (needs known α).</li>
+        <li>Sensors: thermistors and PRTs for flight; thermocouples for test only; silicon diodes below 60 K.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>What happens to the spacecraft in TVAC</h3>
+      <ul class="pts">
+        <li>Outgassing · thermal expansion · thermal cycling · realistic radiative heat transfer.</li>
+      </ul>
+      <div class="note" style="margin-top:8px"><b>Student question: "Isn't outgassing something we want to prevent?"</b> Yes, in orbit. That is exactly why we provoke it on the ground: the bake-out drives volatiles out in the chamber, where a cold plate and TQCM catch them, instead of letting them condense on optics or detectors in flight.</div>
+      <div class="note" style="margin-top:8px"><b>"Why not just improve the chamber's insulation?"</b> The chamber's job is to reproduce the flight environment around the test article. Better chamber insulation cannot tell us how the spacecraft's own materials and joints behave; only testing the flight hardware can.</div>
+      <p style="margin:8px 0 0"><b>At KFUPM:</b> KFUPM has its own spacecraft thermal-vacuum chamber, sized for small-satellite TVT and bake-out.</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Chamber physics (interactive)">
+  <div class="eyebrow">Week 9 · Session 9.2 · Interactive</div>
+  <h2>How much vacuum is enough? Mean free path and the Knudsen number</h2>
+  <div class="lab">
+    <div class="ctrl">
+      <label for="kpP"><span class="lv">Chamber pressure <output id="kpPO"></output></span><input type="range" id="kpP" min="-8" max="3" step="0.1" value="-6"></label>
+      <label for="kpL"><span class="lv">Gap between surfaces <output id="kpLO"></output></span><input type="range" id="kpL" min="-3" max="0" step="0.05" value="-2"></label>
+      <p class="src" style="margin:0">N₂ at 300 K, molecular diameter <var>d</var> ≈ 0.37 nm. Rough pumps take the chamber to ≈ 10<sup>−3</sup> mbar; turbomolecular, cryo or ion pumps take it below 10<sup>−6</sup> mbar.</p>
+    </div>
+    <div style="display:grid;gap:12px">
+      <div class="eq sm">λ = <var>k</var><sub>B</sub><var>T</var> / (√2 π <var>d</var>² <var>P</var>) &nbsp;&nbsp;·&nbsp;&nbsp; Kn = λ / <var>L</var></div>
+      <div class="readout">
+        <div><small>Mean free path λ</small><strong id="kpLam"></strong></div>
+        <div><small>Knudsen number</small><strong id="kpKn"></strong></div>
+        <div><small>Gas conduction regime</small><strong id="kpReg"></strong></div>
+      </div>
+      <div class="chartbox"><svg id="kpChart" viewBox="0 0 560 200" width="100%" role="img" aria-label="Mean free path versus pressure"></svg></div>
+      <div class="note"><b>Kn &gt; 3</b>: free-molecular. Molecules cross the gap without colliding, and heat transfer is proportional to pressure, so it vanishes as P falls. <b>Kn &lt; 0.3</b>: viscous. Heat moves by collisions and is independent of pressure. Test chambers run near 10<sup>−6</sup> mbar (≈ 200 km altitude), where λ ≈ 70 m and residual-gas conduction is negligible.</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Test facilities">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Test facilities: reproducing space on the ground</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Anatomy of a thermal-vacuum chamber</h3>
+      <svg viewBox="0 0 420 230" width="100%" role="img" aria-label="Thermal vacuum chamber cross-section">
+        <circle cx="160" cy="115" r="100" fill="none" stroke="var(--muted)" stroke-width="6"/>
+        <circle cx="160" cy="115" r="84" fill="var(--soft)" stroke="var(--cold)" stroke-width="5" stroke-dasharray="10 4"/>
+        <rect x="118" y="80" width="84" height="56" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.5"/>
+        <text x="160" y="112" text-anchor="middle" style="fill:var(--ink)">test article</text>
+        <rect x="110" y="140" width="100" height="10" fill="var(--hot)"/>
+        <g style="font-size:11px">
+          <text x="276" y="30">vacuum vessel</text><line x1="274" y1="27" x2="240" y2="50" stroke="var(--muted)"/>
+          <text x="276" y="70">black LN₂ shroud (≈ 80 K)</text><line x1="274" y1="67" x2="236" y2="80" stroke="var(--muted)"/>
+          <text x="276" y="150">thermally controlled platen</text><line x1="274" y1="147" x2="212" y2="146" stroke="var(--muted)"/>
+          <text x="276" y="190">pumps: rough → turbo / cryo</text><line x1="274" y1="187" x2="236" y2="176" stroke="var(--muted)"/>
+          <text x="276" y="210">IR lamps or solar simulator</text>
+        </g>
+      </svg>
+      <ul class="pts">
+        <li>The shroud is black (high ε, low reflectivity) so it looks like deep space to the specimen.</li>
+        <li>The Sun is simulated with a collimated solar simulator, or with IR heaters that deposit the flux the specimen would absorb (requires trusting α).</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>Examples at scale</h3>
+      <div class="tscroll"><table>
+        <tr><th>Facility / test</th><th>What it shows</th></tr>
+        <tr><td>ESA Large Space Simulator (ESTEC)</td><td>Whole spacecraft (e.g. GOCE) under a 6 m collimated solar beam</td></tr>
+        <tr><td>JUICE &amp; Europa Clipper arrays</td><td>43 K ↔ 433 K cycling; &gt; 200 cycles needed a dedicated wide-range facility</td></tr>
+        <tr><td>Euclid PLM at CSL (Liège)</td><td>Payload-module thermal balance at cryogenic temperature</td></tr>
+        <tr><td>MTG IRS at CSL</td><td>Optical performance with a detector at ≈ 50 K; extremely sensitive to contamination</td></tr>
+        <tr><td>Parker Solar Probe TPS (ORNL)</td><td>Coating samples under a plasma-arc lamp, in vacuum so the carbon would not burn</td></tr>
+        <tr><td>KFUPM chamber</td><td>Small-satellite TVT and bake-out</td></tr>
+      </table></div>
+      <div class="note" style="margin-top:8px">"When using a mathematical model careful attention must be given to uncertainties in the model." R. P. Feynman, Challenger report, Appendix F. This is why we test.</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<!-- ============ PARKER CASE STUDY ============ -->
+<section class="slide session" data-t="Case study: Parker Solar Probe" data-s="psp">
+  <div class="eyebrow">Week 9 · Session 9.2 · Case study</div>
+  <h2 style="font-size:clamp(30px,4vw,54px)">Parker Solar Probe: a thermal design you can follow step by step</h2>
+  <p style="margin:0;max-width:62ch;opacity:.9">Launched 12 August 2018. 24 orbits over seven years. Final perihelia at 9.86 solar radii, 6.9 million km from the Sun's surface, at ≈ 690 000 km/h. We will redo the key thermal analyses with the tools from this week.</p>
+  <div class="chips"><span class="chip">1 · Environment</span><span class="chip">2 · Heat shield</span><span class="chip">3 · Umbra &amp; pointing</span><span class="chip">4 · Solar arrays</span><span class="chip">5 · Bus &amp; instruments</span><span class="chip">6 · Verification</span></div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="PSP 1 · Requirements & environment">
+  <div class="eyebrow">Parker Solar Probe · Step 1</div>
+  <h2>Requirements and environment: what the design has to survive</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Thermal requirements</h3>
+      <div class="tscroll"><table>
+        <tr><th>Item</th><th>Allowable</th></tr>
+        <tr><td>Core bus electronics</td><td>+10 to +50 °C</td></tr>
+        <tr><td>Battery (isolated)</td><td>0 to +15 °C</td></tr>
+        <tr><td>Instruments behind the shield</td><td>≈ +30 °C</td></tr>
+        <tr><td>Solar-array coolant (water)</td><td>+10 to +150 °C operating</td></tr>
+        <tr><td>Shield front face</td><td>≈ 1400 °C expected; tested to 1650 °C</td></tr>
+      </table></div>
+      <h3 style="margin-top:10px">Orbit drives everything</h3>
+      <ul class="pts">
+        <li>Seven Venus flybys lower perihelion from 35.7 R<sub>☉</sub> (orbits 1–3) to 9.86 R<sub>☉</sub> (orbits 22–24).</li>
+        <li>Aphelion is near Venus's orbit (≈ 0.73 AU): the same spacecraft sees a factor of ≈ 250 in solar flux every orbit.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>Work it out: the flux at 9.86 R<sub>☉</sub></h3>
+      <ol class="steps">
+        <li><div><span class="m">d = 9.86 × 695 700 km = 6.86 × 10<sup>6</sup> km = 0.0459 AU</span></div></li>
+        <li><div><span class="m">q = 1361 / 0.0459² ≈ 647 kW/m² ≈ 475 suns</span> (the mission quotes "more than 480 suns")</div></li>
+        <li><div>Sun's angular radius: <span class="m">asin(1/9.86) = 5.8°</span>, against 0.27° at Earth. Close in, the Sun is a disc, not a point.</div></li>
+      </ol>
+      <div class="note" style="margin-top:10px"><b>Hot but not heat.</b> The corona is above a million kelvin, but its density is so low that particles deliver little energy. The design case is sunlight, which is why a reflective shield works at all.</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="PSP 2 · The heat shield">
+  <div class="eyebrow">Parker Solar Probe · Step 2 · Worked example</div>
+  <h2>The heat shield: one surface takes the Sun so nothing else has to</h2>
+  <div class="cols">
+    <div class="given">
+      <h3>Design choices</h3>
+      <ul class="pts">
+        <li><b>Architecture:</b> a 2.4 m (8 ft) disc, 11.4 cm (4.5 in) thick, ≈ 73 kg (160 lb), always pointed at the Sun inside 0.7 AU.</li>
+        <li><b>Faces:</b> carbon-carbon composite sheets under 2.5 mm thick: strong at 1400 °C.</li>
+        <li><b>Core:</b> carbon foam, 97 % air: very light and a poor conductor.</li>
+        <li><b>Coating:</b> white aluminium oxide on the Sun side, with a hair-thin tungsten layer so alumina and carbon cannot react. Porous on purpose so it does not crack.</li>
+        <li><b>Mount:</b> six attachment points on a welded truss, to limit conduction into the bus.</li>
+      </ul>
+      <h3 style="margin-top:8px">Find</h3>
+      <p style="margin:0">What α/ε does the front need to stay near 1370 °C? How much heat leaks through?</p>
+    </div>
+    <div style="display:grid;gap:10px">
+      <ol class="steps">
+        <li><div>Front face, back insulated, radiating only forward: <span class="m">α q = ε σ T<sub>f</sub><sup>4</sup></span></div></li>
+        <li><div>A black front (α = ε) would reach <span class="m">(647 000/σ)<sup>1/4</sup> = 1838 K (1565 °C)</span></div></li>
+        <li><div>For <span class="m">T<sub>f</sub> = 1644 K (2500 °F)</span>: <span class="m">α/ε = σT<sub>f</sub><sup>4</sup>/q = 414/647 ≈ 0.64</span>. The white coating buys ≈ 200 K.</div></li>
+        <li><div>Back face ≈ 315 °C (600 °F) = 589 K radiates <span class="m">σT<sub>b</sub><sup>4</sup> ≈ 6.8 kW/m²</span> at most: <b>≈ 1 %</b> of the incident flux.</div></li>
+        <li><div>Implied foam conductance: <span class="m">k<sub>eff</sub> ≈ q<sub>b</sub>L/ΔT = 6810 × 0.114 / 1055 ≈ 0.7 W/m·K</span> (conduction plus radiation through the pores)</div></li>
+      </ol>
+      <div class="answer">Answer: α/ε ≈ 0.64 and ≈ 99 % of the load is re-radiated from the front.</div>
+      <p class="src" style="margin:0">Simplified one-dimensional estimate for teaching; ε changes with temperature (Session 9.1).</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="PSP 3 · Umbra & autonomy">
+  <div class="eyebrow">Parker Solar Probe · Step 3</div>
+  <h2>Living in the shadow: umbra geometry and autonomous pointing</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Geometry</h3>
+      <ol class="steps">
+        <li><div>Because the Sun is a disc of angular radius θ, the fully shadowed <b>umbra</b> is a cone behind the shield, not a cylinder.</div></li>
+        <li><div>Umbra length: <span class="m">L<sub>u</sub> = R<sub>shield</sub>/tan θ = 1.2/tan 5.8° ≈ 11.8 m</span>. At 1 AU it would be ≈ 260 m.</div></li>
+        <li><div>Shadow radius 3 m behind the shield: <span class="m">1.2 − 3 tan 5.8° ≈ 0.89 m</span>. Everything (bus, radiators, retracted arrays) must fit inside.</div></li>
+        <li><div>A pointing error δ shifts the shadow by <span class="m">z tan δ</span>. With a 0.5 m bus half-width at 3 m, the budget is ≈ 7°.</div></li>
+      </ol>
+      <div class="note" style="margin-top:8px"><b>Autonomy.</b> Light takes ≈ 8 min each way, far too slow for ground control. Small light sensors on the shield's edge detect sunlight spilling past it, and the flight computer corrects attitude by itself.</div>
+    </div>
+    <div class="block">
+      <h3>Explore it on the next slide</h3>
+      <p style="margin:0 0 8px">The design lab lets you move the probe from Venus distance to perihelion, change the coating and the pointing error, and watch the umbra shrink around the bus.</p>
+      <div class="tscroll"><table>
+        <tr><th>Distance</th><th>q (suns)</th><th>θ</th><th>Umbra length</th></tr>
+        <tr><td>0.73 AU (aphelion)</td><td>1.9</td><td>0.36°</td><td>≈ 190 m</td></tr>
+        <tr><td>35.7 R<sub>☉</sub> (0.166 AU)</td><td>36</td><td>1.6°</td><td>42.8 m</td></tr>
+        <tr><td>9.86 R<sub>☉</sub> (0.046 AU)</td><td>476</td><td>5.8°</td><td>11.8 m</td></tr>
+      </table></div>
+      <p class="src">Shield radius 1.2 m, solar constant 1361 W/m². Simplified geometry.</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="PSP design lab (interactive)">
+  <div class="eyebrow">Parker Solar Probe · Interactive design lab</div>
+  <h2>Parker design lab: fly the probe in and watch the margins</h2>
+  <div class="lab">
+    <div class="ctrl">
+      <label for="psD"><span class="lv">Distance from Sun centre <output id="psDO"></output></span><input type="range" id="psD" min="0" max="1000" step="1" value="0"></label>
+      <label for="psR"><span class="lv">Shield front α/ε <output id="psRO"></output></span><input type="range" id="psR" min="0.3" max="1.3" step="0.01" value="0.64"></label>
+      <label for="psP"><span class="lv">Pointing error δ <output id="psPO"></output></span><input type="range" id="psP" min="0" max="12" step="0.1" value="0"></label>
+      <div class="seg" role="group" aria-label="Distance presets">
+        <button class="btn" data-ps="0">Final perihelion</button><button class="btn" data-ps="417">First perihelion</button><button class="btn" data-ps="1000">1 AU</button>
+      </div>
+      <div class="readout">
+        <div><small>Solar flux</small><strong id="psQ"></strong></div>
+        <div><small>Shield front</small><strong id="psT" class="hot"></strong></div>
+        <div><small>Sun half-angle</small><strong id="psTh"></strong></div>
+        <div><small>Bus in shadow?</small><strong id="psOK"></strong></div>
+      </div>
+    </div>
+    <div style="display:grid;gap:8px">
+      <div class="chartbox"><svg id="psSvg" viewBox="0 0 420 330" width="100%" style="max-height:440px" role="img" aria-label="Side view of Parker Solar Probe with umbra"></svg></div>
+      <p class="src" style="margin:0">Side view to scale (1.2 m shield radius, 1 m wide bus reaching 3 m behind the shield). Dark cone = umbra, light band = penumbra. Front temperature from α q = εσT⁴ with an insulated back.</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="PSP 4 · Solar arrays & cooling">
+  <div class="eyebrow">Parker Solar Probe · Step 4</div>
+  <h2>Solar arrays: the part that cannot hide</h2>
+  <div class="cols">
+    <div class="block">
+      <h3>Design choices</h3>
+      <ul class="pts">
+        <li><b>Retract, don't expose.</b> Near the Sun the wings fold back into the shadow, leaving only a sliver at a grazing angle. Wing angle controls how much light (and heat) they take.</li>
+        <li><b>Actively cool what's left.</b> The Solar Array Cooling System pumps about one gallon (≈ 3.7 L) of deionized water through the array platens to four radiators behind the shield.</li>
+        <li>Peak heat load at 9.86 R<sub>☉</sub>: <b>≈ 5 900 W</b> across the two platens.</li>
+        <li>Platens are held near 60–65 °C by wing-angle control; the water loop spans only ≈ 10 °C end to end.</li>
+      </ul>
+      <h3 style="margin-top:8px">Why water, not ammonia?</h3>
+      <p style="margin:0">The loop must run up to ≈ 150 °C. Ammonia's critical point is 132 °C, so above it there is no liquid to pump. Pressurised water stays liquid to ≈ 210 °C and has a very high specific heat. Its weakness is freezing at 0 °C.</p>
+    </div>
+    <div class="block">
+      <h3>Work it out: how much radiator?</h3>
+      <ol class="steps">
+        <li><div><span class="m">A = Q / (εσT<sup>4</sup>)</span> with Q = 5900 W, ε = 0.85, clear view to space</div></li>
+        <li><div>At 100 °C (373 K): <span class="m">A ≈ 6.3 m²</span>. At 150 °C (423 K): <span class="m">A ≈ 3.8 m²</span></div></li>
+        <li><div>Running hotter shrinks the radiator by T⁴: one reason the loop is designed to run warm.</div></li>
+      </ol>
+      <h3 style="margin-top:10px">Solving the freezing problem</h3>
+      <ul class="pts">
+        <li>Water kept at 45–50 °C by ground heaters before launch, stored in a heated accumulator.</li>
+        <li>The loop launched <b>dry</b>; water was released ≈ 90 minutes after launch, once the arrays were deployed and producing heat.</li>
+        <li>Only two radiators were opened at first; the other two 33 days later, when the heat load had grown.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="PSP 5 · Layered defence">
+  <div class="eyebrow">Parker Solar Probe · Step 5</div>
+  <h2>Layered defence: from 475 suns to a 30 °C instrument deck</h2>
+  <div id="pspLayers" class="chartbox"></div>
+  <div class="cols">
+    <div class="block">
+      <h3>Inside the bus</h3>
+      <ul class="pts">
+        <li>A barrier blanket behind the shield: ≈ 165–170 °C measured at 35.7 R<sub>☉</sub>, ≈ 250 °C predicted at 9.86 R<sub>☉</sub>.</li>
+        <li>Core bus held at +10 to +50 °C, largely independent of solar distance once in umbra attitude.</li>
+        <li><b>Battery</b> isolated from the bus, 0 to +15 °C, with a 10.5 W heater. Worst-case duty 62 %: inside the ≤ 70 % heater rule from the sizing slides.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>The instrument that looks at the Sun</h3>
+      <ul class="pts">
+        <li>Solar Probe Cup peeks around the shield to catch solar-wind particles.</li>
+        <li>Built from titanium-zirconium-molybdenum (melts ≈ 2350 °C), tungsten grids (≈ 3420 °C), niobium wiring, and wires suspended in sapphire tubes.</li>
+        <li>Material choice replaces thermal control where shading is impossible.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="PSP 6 · Verification">
+  <div class="eyebrow">Parker Solar Probe · Step 6</div>
+  <h2>Verification: testing what cannot be tested whole</h2>
+  <div class="cols">
+    <div class="block">
+      <ul class="pts">
+        <li><b>No chamber can reproduce 475 suns over a 2.4 m shield.</b> So the problem was split: materials at full flux on small samples, the system at lower flux with simulators.</li>
+        <li><b>Shield coating:</b> samples heated with a high-temperature plasma-arc lamp at Oak Ridge National Laboratory, inside a vacuum chamber (carbon foam would burn in air). Qualified to ≈ 1650 °C.</li>
+        <li><b>Cooling system:</b> integrated thermal-vacuum test in March 2017 calibrated the SACS across its operating range.</li>
+        <li><b>Whole spacecraft:</b> thermal-vacuum test in early 2018 with a TPS simulator driven to 325 °C and the SACS to 125 °C.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>Did the model work? Flight correlation</h3>
+      <div class="readout">
+        <div><small>Predicted (40° array tilt)</small><strong>43.2 °C</strong></div>
+        <div><small>Measured in flight</small><strong>44 °C</strong></div>
+      </div>
+      <p style="margin:10px 0 0">After early orbits the barrier blanket read 165–170 °C at 35.7 R<sub>☉</sub>, consistent with the prediction of ≈ 250 °C at 9.86 R<sub>☉</sub>. The mission completed its closest approaches from December 2024.</p>
+      <div class="note" style="margin-top:10px">This is the full loop from the lecture: requirements → hand estimates → detailed model → component and system tests → correlation → flight data.</div>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="PSP exercise">
+  <div class="eyebrow">Parker Solar Probe · In-class exercise</div>
+  <h2>Your turn — Parker at its first perihelion</h2>
+  <div class="given" style="max-width:900px">
+    <h3>Problem</h3>
+    <p style="margin:0 0 8px">On orbits 1–3 Parker's perihelion was 35.7 R<sub>☉</sub> (R<sub>☉</sub> = 695 700 km, 1 AU = 1.496 × 10<sup>8</sup> km, solar constant 1361 W/m²). Assume the shield front has α/ε = 0.64, an insulated back, and a radius of 1.2 m.</p>
+    <ul class="pts">
+      <li>(a) Solar flux in W/m² and in "suns".</li>
+      <li>(b) Shield front temperature.</li>
+      <li>(c) Umbra length, and the shadow radius 3 m behind the shield.</li>
+      <li>(d) Discuss: the measured barrier blanket was 165–170 °C here. Why is it so much colder than the front?</li>
+    </ul>
+  </div>
+  <button class="btn reveal-btn" data-reveal="pspSol" aria-expanded="false" aria-controls="pspSol">Show solution</button>
+  <div id="pspSol" hidden>
+    <ol class="steps">
+      <li><div><span class="m">d = 35.7 × 695 700 = 2.48 × 10<sup>7</sup> km = 0.166 AU</span>; <span class="m">q = 1361/0.166² ≈ 49 400 W/m² ≈ 36 suns</span></div></li>
+      <li><div><span class="m">T = (0.64 × 49 400 / σ)<sup>1/4</sup> ≈ 864 K ≈ 591 °C</span></div></li>
+      <li><div><span class="m">θ = asin(1/35.7) = 1.61°</span>; <span class="m">L<sub>u</sub> = 1.2/tan 1.61° ≈ 42.8 m</span>; shadow radius <span class="m">1.2 − 3 tan 1.61° ≈ 1.12 m</span></div></li>
+      <li><div>The foam passes ≈ 1 % of the load, and the blanket radiates what reaches it; each layer re-radiates and attenuates.</div></li>
+    </ol>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="PSP design choices summary">
+  <div class="eyebrow">Parker Solar Probe · Summary</div>
+  <h2>Design choices, and the lecture concept behind each</h2>
+  <div class="tscroll"><table>
+    <tr><th>Problem</th><th>Parker's choice</th><th>Concept from Week 9</th></tr>
+    <tr><td>475 suns of sunlight</td><td>One Sun-pointed shield, white alumina front</td><td>α/ε sets equilibrium temperature</td></tr>
+    <tr><td>Heat leaking to the bus</td><td>97 %-air carbon foam, six-point truss mount</td><td>Conductive isolation: small <var>k A/L</var></td></tr>
+    <tr><td>Sun is a disc close in</td><td>Keep everything in a shrinking umbra</td><td>View factors and geometry; Sun not a point source</td></tr>
+    <tr><td>8-minute light time</td><td>Edge light sensors, autonomous attitude correction</td><td>Flight constraints thermal imposes on AOCS</td></tr>
+    <tr><td>Arrays must see light</td><td>Retracting wings and a pumped water loop to four radiators</td><td>Radiator sizing, pumped fluid loops, T⁴ leverage</td></tr>
+    <tr><td>Water freezes</td><td>Launch dry, heated accumulator, staged radiator activation</td><td>Cold case and operations, not just hardware</td></tr>
+    <tr><td>Battery is sensitive</td><td>Isolated zone with a 10.5 W heater at ≤ 62 % duty</td><td>Thermal zones, ≤ 70 % heater rule</td></tr>
+    <tr><td>Cannot test full flux</td><td>Sample tests at ORNL, system TVAC with simulators, flight correlation</td><td>Verification and model correlation</td></tr>
+  </table></div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Case study: New Horizons">
+  <div class="eyebrow">Week 9 · Session 9.2 · Case study</div>
+  <h2>Putting it together: New Horizons, from 1 AU to Pluto</h2>
+  <div class="cols">
+    <div class="block">
+      <p class="lead" style="color:var(--ink)">One spacecraft had to survive near-Earth sunlight at launch and ≈ 1/1000 of it at Pluto, on under 250 W of RTG power. The design is a thermos bottle.</p>
+      <ul class="pts" style="margin-top:8px">
+        <li><b>MLI</b> blankets the whole bus, including the back of the high-gain antenna.</li>
+        <li><b>Louvers</b> open near Earth and close in the outer solar system.</li>
+        <li><b>RTG</b> on a thermally isolating mount with a thermal shield; its waste heat is kept outside.</li>
+        <li><b>Shunt panel</b> converts surplus electrical power into heat inside the bus.</li>
+        <li><b>Dedicated radiators</b> for the LORRI camera, star trackers and RF switches; trim radiators for the bus.</li>
+        <li><b>Thermally coupled</b> propellant tank and electronics so they share heat.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>Discuss (5 min)</h3>
+      <ol class="steps">
+        <li><div>Which items on this list are passive and which active?</div></li>
+        <li><div>Which case drove the radiator sizes: launch and early cruise, or Pluto?</div></li>
+        <li><div>Why use a shunt panel instead of simply switching heaters on?</div></li>
+        <li><div>What would change for a 3U CubeSat going to the Moon?</div></li>
+      </ol>
+      <p class="src">Image and labels: NASA / JHU-APL.</p>
+    </div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Quick check 9.2">
+  <div class="eyebrow">Week 9 · Session 9.2 · Quick check</div>
+  <h2>Quick check — tap an answer</h2>
+  <div style="display:grid;gap:12px">
+    <div class="q" data-ans="2" data-fb="Real blankets reach ε* ≈ 0.01–0.05 because layers touch and seams and penetrations leak.">
+      <p>1. A 20-layer MLI blanket in practice achieves ε* of about…</p>
+      <div class="opts"><button>0.0001</button><button>0.3</button><button>0.01–0.05</button></div><div class="fb" aria-live="polite"></div></div>
+    <div class="q" data-ans="0" data-fb="Radiators are sized in the hot case with maximum power and EOL (degraded) α. The cold case then sizes the heater.">
+      <p>2. You size a radiator using…</p>
+      <div class="opts"><button>maximum dissipation and EOL α</button><button>minimum dissipation and BOL α</button><button>orbit-average values</button></div><div class="fb" aria-live="polite"></div></div>
+    <div class="q" data-ans="1" data-fb="Capillary pumping is weaker than gravity, so the pipe must be level or in reflux (evaporator below condenser).">
+      <p>3. During a ground thermal test, a constant-conductance heat pipe must be…</p>
+      <div class="opts"><button>vertical, evaporator on top</button><button>level, or with the evaporator below the condenser</button><button>any orientation</button></div><div class="fb" aria-live="polite"></div></div>
+    <div class="q" data-ans="1" data-fb="In series, one failed-closed thermostat cannot keep the heater on; the other still opens the circuit.">
+      <p>4. Two thermostats are wired in series to protect against…</p>
+      <div class="opts"><button>one thermostat failing open</button><button>one thermostat failing closed</button><button>bus undervoltage</button></div><div class="fb" aria-live="polite"></div></div>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Watch 9.2">
+  <div class="eyebrow">Week 9 · Session 9.2</div>
+  <h2>Watch — thermal hardware and testing</h2>
+  <p class="lead">Recommended videos. Each card opens curated search results in a new tab.</p>
+  <div class="vids">
+    <a class="vid" href="https://www.youtube.com/results?search_query=how+heat+pipes+work+animation" target="_blank" rel="noopener"><span class="play">▶</span><span>How heat pipes work<small>YouTube search</small></span></a>
+    <a class="vid" href="https://www.youtube.com/results?search_query=multi+layer+insulation+spacecraft+blanket" target="_blank" rel="noopener"><span class="play">▶</span><span>Making spacecraft MLI blankets<small>YouTube search</small></span></a>
+    <a class="vid" href="https://www.youtube.com/results?search_query=spacecraft+thermal+vacuum+test+chamber" target="_blank" rel="noopener"><span class="play">▶</span><span>Inside a thermal-vacuum chamber<small>YouTube search</small></span></a>
+    <a class="vid" href="https://www.youtube.com/results?search_query=Solar+Orbiter+heat+shield" target="_blank" rel="noopener"><span class="play">▶</span><span>Solar Orbiter's heat shield<small>YouTube search</small></span></a>
+  </div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="Key takeaways 9.2">
+  <div class="eyebrow">Week 9 · Session 2 · Recap</div>
+  <h2>Key takeaways</h2>
+  <div class="cols">
+    <div class="tile"><b>Passive first</b>Coatings, MLI, radiators and conduction paths do most of the work. Add heaters for the cold case; add louvers, heat pipes and coolers only when needed.</div>
+    <div class="tile"><b>Size by hand, then model</b>Radiator from the hot case, heater from the cold case, 5 °C margin and ≤ 70 % heater duty. 100 W → ≈ 0.36 m² and ≈ 108 W.</div>
+    <div class="tile"><b>Models are networks</b>Nodes with capacitances, conductive GLs and radiative GRs; the GMM feeds the TMM.</div>
+    <div class="tile gold"><b>Parker Solar Probe</b>Shield with α/ε ≈ 0.64 re-radiates 99 % of 475 suns; everything else lives in an 11.8 m umbra; a water loop cools the arrays; tests were split into samples and system.</div>
+    <div class="tile"><b>Test to correlate</b>Thermal balance calibrates the model; thermal vacuum and cycling qualify the hardware; bake-out removes what would outgas in flight.</div>
+  </div>
+  <div class="note"><b>Next week:</b> telecommunications — link budgets, antennas and the RF chain. The PEL you used today also sizes the transmitter's heat.</div>
+  <div class="num"></div>
+</section>
+
+<section class="slide" data-t="References">
+  <div class="eyebrow">Sources &amp; credits</div>
+  <h2>References</h2>
+  <ul class="pts">
+    <li>Fortescue, Swinerd &amp; Stark — <i>Spacecraft Systems Engineering</i>, 4th ed., Ch. 11 Thermal Control (primary text)</li>
+    <li>H. Peabody — <a href="https://ntrs.nasa.gov/api/citations/20230003714/downloads/Thermal%20Design%20for%20Spaceflight.pptx.pdf" target="_blank" rel="noopener">Thermal Design for Spaceflight</a>, NASA GSFC Spacecraft Thermal Engineering Course (2022)</li>
+    <li>L. Jacques — <a href="http://www.s3l.be/usr/files/di/fi/2/2022_10_26_Satellite_Engineering_THER_LJ_2022119854.pdf" target="_blank" rel="noopener">Spacecraft Thermal Control</a>, CSL / ULiège S3L (2022)</li>
+    <li>D. Gilmore (ed.) — <i>Spacecraft Thermal Control Handbook</i>, Vol. 1, The Aerospace Corporation (2002)</li>
+    <li>JAXA — Design Standard: Spacecraft Thermal Control System · ECSS-E-ST-31C Thermal control · NASA GSFC-STD-1000 (GOLD rules)</li>
+    <li>NASA — <i>State-of-the-Art of Small Spacecraft Technology</i>, Thermal Control chapter</li>
+    <li>M. Gulde et al. — "Reliable, Fast, and Flexible: A Thermal Modeling Approach for Small Satellites" (2018)</li>
+    <li>NASA — <a href="https://www.nasa.gov/solar-system/traveling-to-the-sun-why-wont-parker-solar-probe-melt/" target="_blank" rel="noopener">Traveling to the Sun: Why Won't Parker Solar Probe Melt?</a> and <a href="https://www.nasa.gov/centers-and-facilities/goddard/cutting-edge-heat-shield-installed-on-nasas-parker-solar-probe/" target="_blank" rel="noopener">heat shield installation</a></li>
+    <li>JHU/APL — <a href="https://tfaws.nasa.gov/wp-content/uploads/TFAWS19-AT-07-Paper.pdf" target="_blank" rel="noopener">Post-Launch and Early Mission Thermal Performance of Parker Solar Probe</a>, TFAWS 2019 · <a href="https://tfaws.nasa.gov/wp-content/uploads/TFAWS18-IN-05_Paper.pdf" target="_blank" rel="noopener">Integrated TV Testing of the Solar Array Cooling System</a>, TFAWS 2018</li>
+    <li><a href="https://phys.org/news/2018-08-parker-solar-probe.html" target="_blank" rel="noopener">Can the Parker Solar Probe take the heat?</a> (NASA/Phys.org, 2018) — TPS coating and ORNL testing</li>
+    <li>KFUPM AE 582 course slides (Thermal Control, Weeks 11–12 v2) · Wertz &amp; Larson, SMAD</li>
+  </ul>
+  <p class="src">Deck in the KFUPM visual identity: Green #008540 · Gold #DAC961 · Petrol #003E51. Calculators use simplified one-node models for teaching.</p>
+  <div class="num"></div>
+</section>
+
+</div>
+<div id="ovWrap" hidden><h2 style="font-family:var(--f-display);margin:6px 0 12px">All slides</h2><div class="overview" id="overview"></div></div>
+</div>
+
+<nav class="nav" aria-label="Slide navigation">
+  <button id="bPrev" aria-label="Previous slide">← Prev</button>
+  <span class="count" id="count"></span>
+  <button id="bNext" class="primary" aria-label="Next slide">Next →</button>
+  <button id="b91">9.1</button><button id="b92">9.2</button><button id="bPsp">Parker</button>
+  <button id="bOv" aria-pressed="false">Overview</button>
+  <button id="bHand" aria-pressed="false">Handout view</button>
+</nav>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const sigma=5.67e-8, Re=6378, mu=398600;
+const slides=[...document.querySelectorAll('.slide')];
+let cur=0;
+slides.forEach((s,i)=>{s.id='s'+(i+1);const n=s.querySelector('.num');if(n)n.textContent=(i+1)+' / '+slides.length});
+function show(i){
+  cur=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,k)=>s.hidden=document.body.classList.contains('handout')?false:k!==cur);
+  $('count').textContent=(cur+1)+' / '+slides.length;
+  $('prog').style.width=((cur+1)/slides.length*100)+'%';
+  try{history.replaceState(null,'','#s'+(cur+1))}catch(e){}
+  if(!document.body.classList.contains('handout'))window.scrollTo(0,0);
+}
+$('bPrev').onclick=()=>show(cur-1);$('bNext').onclick=()=>show(cur+1);
+const idx91=slides.findIndex(s=>s.dataset.s==='9.1'),idx92=slides.findIndex(s=>s.dataset.s==='9.2');
+const idxP=slides.findIndex(s=>s.dataset.s==='psp');$('bPsp').onclick=()=>{closeOv();show(idxP)};
+$('b91').onclick=()=>{closeOv();show(idx91)};$('b92').onclick=()=>{closeOv();show(idx92)};
+function closeOv(){$('ovWrap').hidden=true;$('deck').hidden=false;$('bOv').setAttribute('aria-pressed','false')}
+$('bOv').onclick=()=>{const open=$('ovWrap').hidden;$('ovWrap').hidden=!open;$('deck').hidden=open;$('bOv').setAttribute('aria-pressed',String(open))};
+const ov=$('overview');
+slides.forEach((s,i)=>{const b=document.createElement('button');if(s.classList.contains('session')||s.classList.contains('cover'))b.className='sess';
+  b.innerHTML='<small>'+(i+1)+'</small>'+s.dataset.t;b.onclick=()=>{closeOv();show(i)};ov.appendChild(b)});
+$('bHand').onclick=()=>{const on=document.body.classList.toggle('handout');$('bHand').setAttribute('aria-pressed',String(on));closeOv();show(cur);if(on)slides[cur].scrollIntoView()};
+document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();show(cur+1)}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(cur-1)}
+  else if(e.key==='Home')show(0);else if(e.key==='End')show(slides.length-1);
+  else if(e.key==='o')$('bOv').click();});
+const h=(location.hash||'').match(/^#s(\d+)$/);show(h?+h[1]-1:0);
+
+// helpers
+const fmt=(x,d=1)=>x.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const C=T=>T-273.15;
+function bindRange(id,fn,unit){const el=$(id),o=$(id+'O');const up=()=>{if(o)o.textContent=fn?fn(+el.value):el.value+(unit||'')};el.addEventListener('input',up);up();return el}
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function svgEl(tag,attrs){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e}
+function lineChart(svg,{W,H,pad,xs,ys,xmin,xmax,ymin,ymax,xt,yt,xl,yl,marker,bands}){
+  svg.innerHTML='';const [l,r,t,b]=pad;const X=x=>l+(x-xmin)/(xmax-xmin)*(W-l-r),Y=y=>H-b-(y-ymin)/(ymax-ymin)*(H-t-b);
+  (bands||[]).forEach(bd=>svg.appendChild(svgEl('rect',{x:X(bd[0]),y:t,width:Math.max(0,X(bd[1])-X(bd[0])),height:H-t-b,fill:'var(--soft)'})));
+  yt.forEach(v=>{svg.appendChild(svgEl('line',{x1:l,x2:W-r,y1:Y(v),y2:Y(v),stroke:'var(--line)','stroke-width':1}));const tx=svgEl('text',{x:l-6,y:Y(v)+4,'text-anchor':'end'});tx.textContent=v;svg.appendChild(tx)});
+  xt.forEach(v=>{const tx=svgEl('text',{x:X(v),y:H-b+16,'text-anchor':'middle'});tx.textContent=v;svg.appendChild(tx)});
+  if(xl){const tx=svgEl('text',{x:(l+W-r)/2,y:H-2,'text-anchor':'middle'});tx.textContent=xl;svg.appendChild(tx)}
+  if(yl){const tx=svgEl('text',{x:l,y:t-6,'text-anchor':'start'});tx.textContent=yl;svg.appendChild(tx)}
+  (ys.lines||[ys]).forEach(L=>{let d='';L.v.forEach((y,i)=>{if(y==null||isNaN(y))return;d+=(d?'L':'M')+X(xs[i]).toFixed(1)+','+Y(y).toFixed(1)});
+    svg.appendChild(svgEl('path',{d,fill:'none',stroke:L.c||'var(--green)','stroke-width':L.w||2.5,'stroke-dasharray':L.dash||''}))});
+  if(marker){svg.appendChild(svgEl('circle',{cx:X(marker[0]),cy:Y(marker[1]),r:5,fill:'var(--gold)',stroke:'var(--ink)','stroke-width':1.5}))}
+  return {X,Y};
+}
+
+// ranges viz
+(function(){const box=$('rangesViz');const lo=-30,hi=60,P=v=>(v-lo)/(hi-lo)*100;
+ const rows=[['Qualification',-20,50,'var(--petrol)'],['Acceptance',-15,45,'#2F6F7E'],['Design (AFT)',-10,40,'var(--green)'],['Predicted',-10,40,'#4E9B6F'],['Calculated',0,30,'#B39A2A']];
+ const lbl={Predicted:'calc ± 10 K uncertainty',Calculated:'model worst cases'};
+ rows.forEach(r=>{const d=document.createElement('div');d.className='rrow';d.innerHTML='<span>'+r[0]+(lbl[r[0]]?' <small style="color:var(--muted)">('+lbl[r[0]]+')</small>':'')+'</span><div class="rtrack"><span style="left:'+P(r[1])+'%;width:'+(P(r[2])-P(r[1]))+'%;background:'+r[3]+'">'+r[1]+' to +'+r[2]+' °C</span></div>';box.appendChild(d)});
+})();
+
+// eclipse
+function eclipseFrac(h,b){const bs=Math.asin(Re/(Re+h));const br=b*Math.PI/180;if(Math.abs(br)>=bs)return 0;const x=Math.sqrt(h*h+2*Re*h)/((Re+h)*Math.cos(br));return x>=1?0:Math.acos(x)/Math.PI}
+function upEc(){const h=+$('ecAlt').value,b=+$('ecBeta').value;$('ecAltO').textContent=fmt(h,0)+' km';$('ecBetaO').textContent=b+'°';
+ const P=2*Math.PI*Math.sqrt(Math.pow(Re+h,3)/mu)/60,f=eclipseFrac(h,b),bs=Math.asin(Re/(Re+h))*180/Math.PI;
+ $('ecP').textContent=P>200?fmt(P/60,2)+' h':fmt(P,1)+' min';$('ecF').textContent=fmt(f*100,1)+' %';$('ecD').textContent=fmt(f*P,1)+' min';$('ecB').textContent=fmt(bs,1)+'°';
+ const xs=[],v=[];for(let x=0;x<=90;x+=0.5){xs.push(x);v.push(eclipseFrac(h,x)*100)}
+ lineChart($('ecChart'),{W:560,H:220,pad:[44,12,20,34],xs,ys:{v},xmin:0,xmax:90,ymin:0,ymax:50,xt:[0,15,30,45,60,75,90],yt:[0,10,20,30,40,50],xl:'β angle (deg)',yl:'eclipse % of orbit',marker:[b,f*100]});}
+['ecAlt','ecBeta'].forEach(id=>$(id).addEventListener('input',upEc));
+document.querySelectorAll('[data-ec]').forEach(bt=>bt.onclick=()=>{const [h,b]=bt.dataset.ec.split(',');$('ecAlt').value=h;$('ecBeta').value=b;upEc()});upEc();
+
+// sphere
+function upSp(){const a=+$('spA').value,e=+$('spE').value,d=+$('spD').value;$('spAO').textContent=a.toFixed(2);$('spEO').textContent=e.toFixed(2);$('spDO').textContent=d.toFixed(2)+' AU';
+ const q=1367/(d*d),T=Math.pow(a*q/(4*e*sigma),0.25);$('spQ').textContent=fmt(q,0)+' W/m²';$('spR').textContent=fmt(a/e,2);$('spT').innerHTML=fmt(T,0)+' K <span style="font-size:.6em">('+fmt(C(T),0)+' °C)</span>';
+ const s=$('spChart');s.innerHTML='';const X=t=>20+(t-100)/(700-100)*520;
+ [[100,'var(--cold)'],[253,'var(--green)'],[313,'var(--hot)']].forEach(()=>{});
+ s.appendChild(svgEl('rect',{x:X(100),y:30,width:X(700)-X(100),height:14,fill:'var(--soft)',rx:3}));
+ s.appendChild(svgEl('rect',{x:X(253),y:30,width:X(313)-X(253),height:14,fill:'var(--green)',opacity:.35}));
+ [100,200,300,400,500,600,700].forEach(t=>{const tx=svgEl('text',{x:X(t),y:62,'text-anchor':'middle'});tx.textContent=t+' K';s.appendChild(tx)});
+ const tl=svgEl('text',{x:X(283),y:22,'text-anchor':'middle'});tl.textContent='electronics −20…40 °C';s.appendChild(tl);
+ const tc=Math.max(100,Math.min(700,T));s.appendChild(svgEl('path',{d:`M${X(tc)},48 l-7,12 h14 z`,fill:'var(--gold)',stroke:'var(--ink)'}));
+ s.appendChild(svgEl('line',{x1:X(tc),x2:X(tc),y1:26,y2:48,stroke:'var(--ink)','stroke-width':2}));}
+['spA','spE','spD'].forEach(id=>$(id).addEventListener('input',upSp));
+document.querySelectorAll('#spPresets button').forEach(b=>b.onclick=()=>{$('spA').value=b.dataset.a;$('spE').value=b.dataset.e;upSp()});upSp();
+
+// cubesat balance
+let cbCase='hot';
+function upCb(){const a=+$('cbA').value,e=+$('cbE').value,Qi=+$('cbQ').value,h=+$('cbH').value;
+ $('cbAO').textContent=a.toFixed(2);$('cbEO').textContent=e.toFixed(2);$('cbQO').textContent=Qi.toFixed(2)+' W';$('cbHO').textContent=h+' km';
+ const A=0.01,F=Math.pow(Re/(Re+h),2);let qs,qa,qir;
+ if(cbCase==='hot'){qs=a*1414*A;qa=a*1414*0.4*F*A;qir=e*261*F*A}else{qs=0;qa=0;qir=e*189*F*A}
+ const Q=qs+qa+qir+Qi,T=Math.pow(Q/(e*sigma*6*A),0.25),Tc=C(T);
+ $('cbIn').textContent=fmt(Q,2)+' W';$('cbT').innerHTML=fmt(T,0)+' K <span style="font-size:.6em">('+fmt(Tc,0)+' °C)</span>';
+ const ok=Tc>=10&&Tc<=20;$('cbOK').textContent=ok?'Yes':(Tc<10?'Too cold':'Too hot');$('cbOK').className=ok?'':(Tc<10?'cold':'hot');
+ const bar=$('cbBar');bar.innerHTML='';[[qs,'var(--gold)'],[qa,'#E0A13A'],[qir,'var(--hot)'],[Qi,'var(--green)']].forEach(p=>{const sp=document.createElement('span');sp.style.width=(p[0]/Q*100)+'%';sp.style.background=p[1];sp.title=p[0].toFixed(2)+' W';bar.appendChild(sp)});}
+['cbA','cbE','cbQ','cbH'].forEach(id=>$(id).addEventListener('input',upCb));
+document.querySelectorAll('#cbCase button').forEach(b=>b.onclick=()=>{cbCase=b.dataset.c;document.querySelectorAll('#cbCase button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));upCb()});
+document.querySelectorAll('#cbPre button').forEach(b=>b.onclick=()=>{$('cbA').value=b.dataset.a;$('cbE').value=b.dataset.e;upCb()});upCb();
+
+// transient
+function upTr(){const m=+$('trM').value,a=+$('trA').value,e=+$('trE').value,b=+$('trB').value,Qi=+$('trQ').value;
+ $('trMO').textContent=m.toFixed(1)+' kg';$('trAO').textContent=a.toFixed(2);$('trEO').textContent=e.toFixed(2);$('trBO').textContent=b+'°';$('trQO').textContent=Qi.toFixed(2)+' W';
+ const h=500,A=0.01,Ar=0.06,F=Math.pow(Re/(Re+h),2),P=2*Math.PI*Math.sqrt(Math.pow(Re+h,3)/mu),Cth=m*900,f=eclipseFrac(h,b),cb=Math.cos(b*Math.PI/180);
+ const Gs=1366,alb=0.3,qI=237;
+ const Qin=t=>{const th=(t%P)/P*2*Math.PI;const dth=Math.abs(th-Math.PI);const ecl=dth<f*Math.PI;
+   let q=e*qI*F*A+Qi;if(!ecl){q+=a*Gs*A;q+=a*Gs*alb*F*A*Math.max(0,Math.cos(th))*cb}return q};
+ let avg=0;const N=400;for(let i=0;i<N;i++)avg+=Qin(i/N*P)/N;let T=Math.pow(avg/(e*sigma*Ar),0.25);
+ const dt=5,steps=Math.ceil(4*P/dt),xs=[],v=[];let mn=1e9,mx=-1e9;
+ for(let i=0;i<=steps;i++){const t=i*dt;if(t>=P){const tc=(t-P)/60;if(i%6===0){xs.push(tc);v.push(C(T))}mn=Math.min(mn,T);mx=Math.max(mx,T)}
+   T+=dt*(Qin(t)-e*sigma*Ar*Math.pow(T,4))/Cth}
+ $('trMin').textContent=fmt(C(mn),0)+' °C';$('trMax').textContent=fmt(C(mx),0)+' °C';$('trSw').textContent=fmt(mx-mn,0)+' K';
+ const Tm=(mn+mx)/2,tau=Cth/(4*e*sigma*Ar*Math.pow(Tm,3))/60;$('trTau').textContent=tau>120?fmt(tau/60,1)+' h':fmt(tau,0)+' min';
+ const Pm=P/60,ymin=Math.floor((C(mn)-5)/10)*10,ymax=Math.ceil((C(mx)+5)/10)*10,yt=[];const st=(ymax-ymin)>80?20:10;for(let y=ymin;y<=ymax;y+=st)yt.push(y);
+ const bands=[];if(f>0)for(let k=0;k<3;k++){const c=(k+0.5)*Pm;bands.push([c-f*Pm/2,c+f*Pm/2])}
+ const xt=[0,Math.round(Pm),Math.round(2*Pm),Math.round(3*Pm)];
+ lineChart($('trChart'),{W:600,H:240,pad:[44,12,22,34],xs,ys:{lines:[{v:xs.map(()=>10),c:'var(--muted)',w:1,dash:'4 4'},{v:xs.map(()=>20),c:'var(--muted)',w:1,dash:'4 4'},{v,c:'var(--hot)'}]},xmin:0,xmax:3*Pm,ymin,ymax,xt,yt,xl:'time (min) · shaded = eclipse · dashed = battery 10–20 °C',yl:'°C',bands});}
+['trM','trA','trE','trB','trQ'].forEach(id=>$(id).addEventListener('input',upTr));upTr();
+
+// MLI
+function upMl(){const N=+$('mlN').value,e=+$('mlE').value,Ti=+$('mlTi').value,A=+$('mlA').value;
+ $('mlNO').textContent=N;$('mlEO').textContent=e.toFixed(3);$('mlTiO').textContent=Ti+' K ('+fmt(C(Ti),0)+' °C)';$('mlAO').textContent=A.toFixed(1)+' m²';
+ const es=1/((N+1)*(2/e-1)),To=150,dq=sigma*A*(Math.pow(Ti,4)-Math.pow(To,4));
+ $('mlEi').textContent=es<0.001?es.toExponential(1):es.toFixed(4);$('mlQi').textContent=fmt(es*dq,2)+' W';$('mlQr').textContent=fmt(0.02*dq,1)+' W';$('mlQb').textContent=fmt(0.9*dq,0)+' W';
+ const xs=[],v=[],r=[];for(let n=1;n<=40;n++){xs.push(n);v.push(Math.log10(1/((n+1)*(2/e-1))))}
+ lineChart($('mlChart'),{W:560,H:200,pad:[48,12,20,34],xs,ys:{lines:[{v:xs.map(()=>Math.log10(0.05)),c:'var(--muted)',w:1,dash:'4 4'},{v:xs.map(()=>Math.log10(0.01)),c:'var(--muted)',w:1,dash:'4 4'},{v}]},xmin:1,xmax:40,ymin:-4,ymax:0,xt:[1,10,20,30,40],yt:[-4,-3,-2,-1,0],xl:'layers N · dashed = practical ε* 0.01–0.05',yl:'log₁₀ ε* (ideal)',marker:[N,Math.log10(es)]});}
+['mlN','mlE','mlTi','mlA'].forEach(id=>$(id).addEventListener('input',upMl));upMl();
+const mlnote=document.createElement('p');mlnote.className='src';mlnote.style.margin='0';mlnote.textContent='Leak values assume a 150 K outer layer.';$('mlChart').parentNode.after(mlnote);
+
+// radiator sizer
+function upRs(){const Q=+$('rsQ').value,g=+$('rsG').value,Th=+$('rsTh').value,Tl=+$('rsTl').value,dT=+$('rsDT').value,eta=+$('rsEta').value,e=+$('rsE').value,Ts=+$('rsS').value,Qm=+$('rsQm').value;
+ $('rsQO').textContent=Q+' W';$('rsGO').textContent=g+' %';$('rsThO').textContent=Th+' °C';$('rsTlO').textContent=Tl+' °C';$('rsDTO').textContent=dT+' K';$('rsEtaO').textContent=Math.round(eta*100)+' %';$('rsEO').textContent=e.toFixed(2);$('rsSO').textContent=Ts+' K';$('rsQmO').textContent=Qm+' W';
+ const Tr=Math.pow(eta,0.25)*(Th-5-dT+273.15),Qd=Q*(1+g/100);const area=ts=>{const d=e*sigma*(Math.pow(Tr,4)-Math.pow(ts,4));return d>0?Qd/d:NaN};const A=area(Ts);
+ const Tlow=Tl+dT+273.15;let Hq=e*sigma*A*(Math.pow(Tlow,4)-Math.pow(Ts,4))-Qm;
+ $('rsTr').textContent=fmt(Tr,1)+' K';$('rsA').textContent=isNaN(A)?'—':fmt(A,3)+' m²';
+ if(isNaN(A)){$('rsH').textContent='—';$('rsHi').textContent='—';$('rsNote').textContent='The sink is warmer than the radiator: no area can reject the heat. Lower the sink temperature or raise the limit.'}
+ else{$('rsH').textContent=Hq>0?fmt(Hq,1)+' W':'none';$('rsHi').textContent=Hq>0?fmt(Hq/0.7,1)+' W':'—';
+   $('rsNote').textContent=Tl>=Th-10?'The lower limit is close to the upper limit: expect a large heater. Narrow ranges (like batteries) cost heater power.':'Defaults reproduce the worked example. Raise the sink temperature to see why a radiator must not see a warm Earth or spacecraft surface: area barely moves until about 200 K, then climbs steeply.'}
+ const xs=[],v=[];for(let s=0;s<=280;s+=4){xs.push(s);const a=area(s);v.push(a>0&&a<50?a:null)}
+ const vmax=Math.max(...v.filter(x=>x!=null));let ymax=Math.max(0.1,Math.min(vmax,(isNaN(A)?vmax:A)*4));const mag=Math.pow(10,Math.floor(Math.log10(ymax)));ymax=Math.ceil(ymax/mag)*mag;
+ const yt=[];for(let i=0;i<=4;i++)yt.push(+(ymax*i/4).toPrecision(2));
+ lineChart($('rsChart'),{W:560,H:210,pad:[48,12,20,34],xs,ys:{v:v.map(x=>x!=null&&x<=ymax*1.02?x:null)},xmin:0,xmax:280,ymin:0,ymax,xt:[0,50,100,150,200,250],yt,xl:'sink temperature (K)',yl:'area (m²)',marker:isNaN(A)||A>ymax?null:[Ts,A]});}
+['rsQ','rsG','rsTh','rsTl','rsDT','rsEta','rsE','rsS','rsQm'].forEach(id=>$(id).addEventListener('input',upRs));upRs();
+
+// quiz
+document.querySelectorAll('.q').forEach(q=>{const bs=[...q.querySelectorAll('.opts button')],ans=+q.dataset.ans,fb=q.querySelector('.fb');
+ bs.forEach((b,i)=>b.onclick=()=>{bs.forEach(x=>x.classList.remove('ok','no'));if(i===ans){b.classList.add('ok');fb.textContent='Correct. '+q.dataset.fb}else{b.classList.add('no');fb.textContent='Not quite — try again.'}})});
+// reveal
+function rev(btn,id){btn.onclick=()=>{const s=$(id);s.hidden=!s.hidden;btn.setAttribute('aria-expanded',String(!s.hidden));btn.textContent=s.hidden?'Show solution':'Hide solution'}}
+rev($('exBtn'),'exSol');document.querySelectorAll('[data-reveal]').forEach(b=>rev(b,b.dataset.reveal));
+
+// EUI heat flow
+(function(){const ins=[['FSI channel',15.8,'var(--gold)'],['HRI EUV',7.0,'#E0A13A'],['HRI Lyman-α',1.8,'var(--hot)'],['Structure & MLI',0.7,'var(--muted)'],['Electronics',9.5,'var(--green)']],
+ outs=[['Heat pipe',13.6,'var(--cold)'],['Unit radiator',7.7,'var(--petrol)'],['To S/C (remainder)',13.5,'var(--muted)']],tot=34.8;
+ const mk=(arr,lab)=>{let h='<div style="font-size:13px;color:var(--muted);margin:6px 0 3px">'+lab+'</div><div class="bar" style="height:34px">';
+  arr.forEach(a=>{h+='<span style="width:'+(a[1]/tot*100)+'%;background:'+a[2]+';color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:nowrap" title="'+a[0]+' '+a[1]+' W">'+(a[1]>=5?a[1]+' W':'')+'</span>'});
+  h+='</div><div class="legend" style="margin-top:4px">'+arr.map(a=>'<span><i style="background:'+a[2]+'"></i>'+a[0]+' '+a[1]+' W</span>').join('')+'</div>';return h};
+ $('euiFlow').innerHTML=mk(ins,'In: 25.3 W absorbed + 9.5 W dissipated')+mk(outs,'Out: 34.8 W');})();
+
+// PSP layers
+(function(){const L=[['Sunlight at 9.86 R☉','647 kW/m²','≈ 475 suns','var(--gold)'],['Shield front','≈ 1370 °C','α/ε ≈ 0.64','var(--hot)'],['Shield back','≈ 315 °C','≤ 6.8 kW/m²','#C9692F'],['Barrier blanket','≈ 250 °C','predicted max','#8C7A3A'],['Core bus','10–50 °C','umbra attitude','var(--green)'],['Instruments','≈ 30 °C','85 °F','var(--cold)']];
+ $('pspLayers').innerHTML='<div style="display:flex;gap:6px;align-items:stretch;min-width:640px">'+L.map((l,i)=>'<div style="flex:1;border-top:5px solid '+l[3]+';background:var(--soft);padding:8px 10px;border-radius:0 0 4px 4px"><small style="color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em">'+l[0]+'</small><div style="font-family:var(--f-display);font-weight:800;font-size:22px;font-stretch:85%">'+l[1]+'</div><small style="color:var(--muted)">'+l[2]+'</small></div>'+(i<L.length-1?'<div style="align-self:center;color:var(--muted)">→</div>':'')).join('')+'</div>';})();
+
+// chamber physics
+function upKp(){const P=Math.pow(10,+$('kpP').value),L=Math.pow(10,+$('kpL').value),kB=1.380649e-23,d=3.7e-10;
+ const lam=P2=>kB*300/(Math.SQRT2*Math.PI*d*d*P2*100);const l=lam(P),Kn=l/L;
+ const e=x=>{const p=Math.floor(Math.log10(x));return (x/Math.pow(10,p)).toFixed(1)+'×10<sup>'+p+'</sup>'};
+ $('kpPO').innerHTML=e(P)+' mbar';$('kpLO').textContent=L>=0.1?(L*100).toFixed(0)+' cm':(L*1000).toFixed(0)+' mm';
+ $('kpLam').innerHTML=l<1e-3?(l*1e6).toFixed(1)+' µm':l<1?(l*1000).toFixed(1)+' mm':l.toFixed(1)+' m';$('kpKn').innerHTML=e(Kn);
+ const reg=Kn>3?'Free-molecular':Kn<0.3?'Viscous':'Transition';$('kpReg').textContent=reg;$('kpReg').className=Kn>3?'':'hot';
+ const xs=[],v=[];for(let p=-8;p<=3;p+=0.25){xs.push(p);v.push(Math.log10(lam(Math.pow(10,p))))}
+ lineChart($('kpChart'),{W:560,H:200,pad:[48,12,20,34],xs,ys:{lines:[{v:xs.map(()=>Math.log10(L)),c:'var(--muted)',w:1,dash:'4 4'},{v}]},xmin:-8,xmax:3,ymin:-8,ymax:4,xt:[-8,-6,-4,-2,0,2],yt:[-8,-6,-4,-2,0,2,4],xl:'log₁₀ pressure (mbar) · dashed = gap size',yl:'log₁₀ λ (m)',marker:[+$('kpP').value,Math.log10(l)]});}
+['kpP','kpL'].forEach(id=>$(id).addEventListener('input',upKp));upKp();
+
+// Parker design lab
+function upPs(){const v=+$('psD').value,Rs=9.86*Math.pow(215.03/9.86,v/1000),AU=Rs*695700/1.496e8,q=1361/(AU*AU),ae=+$('psR').value,dl=+$('psP').value;
+ const T=Math.pow(ae*q/sigma,0.25),th=Math.asin(1/Rs);
+ $('psDO').textContent=fmt(Rs,Rs<100?2:0)+' R☉ · '+AU.toFixed(3)+' AU';$('psRO').textContent=ae.toFixed(2);$('psPO').textContent=dl.toFixed(1)+'°';
+ $('psQ').innerHTML=fmt(q/1000,q<1e4?2:0)+' kW/m² <span style="font-size:.6em">('+fmt(q/1361,q<1e4?1:0)+' suns)</span>';
+ $('psT').innerHTML=fmt(C(T),0)+' °C';$('psTh').textContent=(th*180/Math.PI).toFixed(2)+'°';
+ const s=$('psSvg');s.innerHTML='';const S=80,cx=210,y0=50,Rp=1.2*S,dr=dl*Math.PI/180,Hmax=325;
+ // sun rays
+ for(let i=-3;i<=3;i++){const x=cx+i*55;s.appendChild(svgEl('line',{x1:x-40*Math.sin(dr),y1:0,x2:x,y2:y0-12,stroke:'var(--gold)','stroke-width':2,'stroke-dasharray':'5 4'}))}
+ const tL=Math.tan(dr+th),tR=Math.tan(dr-th),pL=Math.tan(dr-th),pR=Math.tan(dr+th);
+ const xL=cx-Rp,xR=cx+Rp,yb=y0+6;
+ // penumbra region (between outer penumbra lines)
+ const bottom=Hmax,dy=bottom-yb;
+ s.appendChild(svgEl('path',{d:`M${xL},${yb} L${xL+dy*pL},${bottom} L${xR+dy*pR},${bottom} L${xR},${yb} Z`,fill:'var(--soft)'}));
+ // umbra
+ let tApex=(xR-xL)/(tL-tR);let umb;
+ if(tApex>0&&tApex<dy){umb=`M${xL},${yb} L${xL+tApex*tL},${yb+tApex} L${xR},${yb} Z`}else{umb=`M${xL},${yb} L${xL+dy*tL},${bottom} L${xR+dy*tR},${bottom} L${xR},${yb} Z`}
+ s.appendChild(svgEl('path',{d:umb,fill:'var(--petrol)',opacity:.35}));
+ // bus: from 0.5 m to 3 m behind shield, 1 m wide
+ const bt=y0+0.5*S,bb=y0+3*S,bw=0.5*S;
+ const inU=(x,y)=>{const t=y-yb;if(tApex>0&&t>tApex)return false;const l=xL+t*tL,r=xR+t*tR;return x>=l&&x<=r};
+ const ok=[[cx-bw,bt],[cx+bw,bt],[cx-bw,bb],[cx+bw,bb]].every(p=>inU(p[0],p[1]));
+ // truss
+ [[cx-bw,bt,cx-Rp*0.7,y0+6],[cx+bw,bt,cx+Rp*0.7,y0+6],[cx-bw,bt,cx,y0+6],[cx+bw,bt,cx,y0+6]].forEach(l=>s.appendChild(svgEl('line',{x1:l[0],y1:l[1],x2:l[2],y2:l[3],stroke:'var(--muted)','stroke-width':1.5})));
+ s.appendChild(svgEl('rect',{x:cx-bw,y:bt,width:2*bw,height:bb-bt,fill:ok?'var(--green)':'var(--hot)',opacity:.85,rx:3}));
+ // radiators
+ for(let k=0;k<4;k++)s.appendChild(svgEl('rect',{x:cx-bw+4+k*19,y:bt-14,width:14,height:12,fill:'var(--cold)'}));
+ // arrays (retracted) and antenna
+ s.appendChild(svgEl('line',{x1:cx-bw,y1:bt+30,x2:cx-Rp-6,y2:bt+8,stroke:'var(--petrol)','stroke-width':6}));
+ s.appendChild(svgEl('line',{x1:cx+bw,y1:bt+30,x2:cx+Rp+6,y2:bt+8,stroke:'var(--petrol)','stroke-width':6}));
+ s.appendChild(svgEl('path',{d:`M${cx-26},${bb+4} Q${cx},${bb+26} ${cx+26},${bb+4} Z`,fill:'var(--muted)'}));
+ // shield
+ s.appendChild(svgEl('rect',{x:xL,y:y0,width:2*Rp,height:9,fill:'var(--paper)',stroke:'var(--ink)','stroke-width':1.5}));
+ const lab=(x,y,t,a)=>{const e2=svgEl('text',{x,y,'text-anchor':a||'start'});e2.textContent=t;s.appendChild(e2)};
+ lab(xR+6,y0+8,'shield 2.4 m');lab(cx,bb-8,'bus','middle');lab(xR+10,bt+6,'array tip');lab(4,Hmax-6,'umbra length '+(1.2/Math.tan(th)>100?fmt(1.2/Math.tan(th),0):fmt(1.2/Math.tan(th),1))+' m');
+ lab(xL-4,y0-20,'Sun ↓','end');
+ $('psOK').textContent=ok?'Yes':'No — sunlit!';$('psOK').className=ok?'':'hot';}
+['psD','psR','psP'].forEach(id=>$(id).addEventListener('input',upPs));
+document.querySelectorAll('[data-ps]').forEach(b=>b.onclick=()=>{$('psD').value=b.dataset.ps;upPs()});upPs();
+})();
+</script>
+
+</body></html>
